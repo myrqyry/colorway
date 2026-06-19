@@ -1,0 +1,22 @@
+@OBSThemeMeta {
+    name: 'Rose Pine Dawn';
+    id: 'com.myrqyry.Colorway.RosePineDawn';
+    extends: 'com.myrqyry.Colorway';
+    author: 'Mat + AI';
+    dark: 'false';
+}
+
+@OBSThemeVars {
+    --bg_window: #faf4ed;
+    --bg_base: #faf4ed;
+    --bg_preview: #fffaf3;
+    --primary: #286983;
+    --primary_light: #56949f;
+    --text: #575279;
+    --text_muted: #797593;
+    --danger: #d7827e;
+    --warning: #ea9d34;
+    --border_color: #cecacd;
+    --input_bg: #fffaf3;
+    --button_bg: #f2e9de;
+}

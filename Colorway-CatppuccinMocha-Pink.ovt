@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Mocha — Pink';
+    id: 'com.myrqyry.Colorway.CatppuccinMocha.Pink';
+    extends: 'com.myrqyry.Colorway.CatppuccinMocha';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #f5c2e7;
+    --primary_light: #f5e0dc;
+    --primary_lighter: #f2cdcd;
+    --primary_dark: #cba6f7;
+    --primary_darker: #585b70;
+}

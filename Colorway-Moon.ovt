@@ -1,0 +1,50 @@
+@OBSThemeMeta {
+    name: 'Rosé Pine Moon';
+    id: 'com.myrqyry.Colorway.Moon';
+    extends: 'com.myrqyry.Colorway';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Base Theme Colors */
+    --bg_window: #232136;
+    --bg_base: #232136;
+    --bg_preview: #393552;
+
+    --primary: #c4a7e7;
+    --primary_light: #e0def4;
+    --primary_lighter: #f0ebff;
+    --primary_dark: #907aa9;
+    --primary_darker: #56526e;
+
+    --warning: #f6c177;
+    --danger: #eb6f92;
+
+    --text: #e0def4;
+    --text_light: #ffffff;
+    --text_muted: #908caa;
+
+    --text_disabled: #6e6a86;
+    --text_inactive: #6e6a86;
+
+    --border_color: #44415a;
+
+    /* Inputs and Buttons */
+    --input_bg: #393552;
+    --input_bg_hover: #44415a;
+    --input_bg_focus: #393552;
+
+    --list_item_bg_hover: #393552;
+
+    --input_border: #44415a;
+    --input_border_hover: #56526e;
+
+    --button_bg: #2a273f;
+    --button_bg_hover: #393552;
+    --button_bg_disabled: #2a283e;
+
+    /* Theme Aliases */
+    --bg_dock: #2a273f;
+    --bg_hover: #393552;
+}

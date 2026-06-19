@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Mocha — Peach';
+    id: 'com.myrqyry.Colorway.CatppuccinMocha.Peach';
+    extends: 'com.myrqyry.Colorway.CatppuccinMocha';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #fab387;
+    --primary_light: #f9e2af;
+    --primary_lighter: #f5e0dc;
+    --primary_dark: #eba0ac;
+    --primary_darker: #585b70;
+}

@@ -1,0 +1,26 @@
+@OBSThemeMeta {
+    name: 'Solarized Dark';
+    id: 'com.myrqyry.Colorway.SolarizedDark';
+    extends: 'com.myrqyry.Colorway';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --bg_base: #002b36;
+    --bg_window: #002b36;
+    --bg_dock: #073642;
+    --primary: #268bd2;
+    --primary_light: #839496;
+    --text: #839496;
+    --text_muted: #586e75;
+    --danger: #dc322f;
+    --warning: #b58900;
+    --border_color: #073642;
+    --input_bg: #073642;
+    --input_border: #073642;
+    --button_bg: #073642;
+    --button_bg_hover: #586e75;
+    --text_light: #eee8d5;
+    --accent: #b58900;
+}

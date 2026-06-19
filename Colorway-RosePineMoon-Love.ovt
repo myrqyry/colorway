@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Rose Pine Moon — Love';
+    id: 'com.myrqyry.Colorway.RosePineMoon.Love';
+    extends: 'com.myrqyry.Colorway.RosePineMoon';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #eb6f92;
+    --primary_light: #ea9a97;
+    --primary_lighter: #f6c177;
+    --primary_dark: #c4a7e7;
+    --primary_darker: #56526e;
+}

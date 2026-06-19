@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Frappé — Lavender';
+    id: 'com.myrqyry.Colorway.CatppuccinFrappe.Lavender';
+    extends: 'com.myrqyry.Colorway.CatppuccinFrappe';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #babbf1;
+    --primary_light: #8caaee;
+    --primary_lighter: #99d1db;
+    --primary_dark: #ca9ee6;
+    --primary_darker: #626880;
+}

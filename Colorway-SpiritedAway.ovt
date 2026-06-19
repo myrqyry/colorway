@@ -1,0 +1,52 @@
+@OBSThemeMeta {
+    name: 'Spirited Away';
+    id: 'com.myrqyry.Colorway.SpiritedAway';
+    extends: 'com.myrqyry.Colorway';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Base Theme Colors (No-Face Black) */
+    --bg_window: #202020;
+    --bg_base: #202020;
+    --bg_preview: #151515;
+
+    /* Spirited Away Accents */
+    --primary: #F3B1B3;        /* Spirited Away Pink */
+    --primary_light: #B0D9DE;  /* Chihiro's Journey Blue */
+    --primary_lighter: #A7C7D3; /* Haku's Scales */
+    --primary_dark: #6B5D7E;   /* Zeniba's Purple */
+    --primary_darker: #4E6D66; /* Forest Green */
+
+    --warning: #C0A878; /* Yubaba's Gold */
+    --danger: #8D635B;  /* Boiler Room Rusty Brown */
+
+    /* Typography */
+    --text: #E6E6E6;        /* Soft White */
+    --text_light: #FFFFFF;
+    --text_muted: #A7C7D3;  /* Haku's Scales Silver-Blue */
+
+    --text_disabled: #6B5D7E; /* Zeniba's Purple */
+    --text_inactive: #6B5D7E;
+
+    --border_color: #4E6D66; /* Forest Green */
+
+    /* Inputs and Buttons */
+    --input_bg: #1a1a1a;
+    --input_bg_hover: #4E6D66;
+    --input_bg_focus: #1a1a1a;
+
+    --list_item_bg_hover: #4E6D66;
+
+    --input_border: #4E6D66;
+    --input_border_hover: #5EB1BF; /* River Spirit Turquoise */
+
+    --button_bg: #1a1a1a;
+    --button_bg_hover: #4E6D66;
+    --button_bg_disabled: #202020;
+
+    /* Theme Aliases */
+    --bg_dock: #1a1a1a;
+    --bg_hover: #4E6D66;
+}

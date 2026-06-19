@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Mocha — Lavender';
+    id: 'com.myrqyry.Colorway.CatppuccinMocha.Lavender';
+    extends: 'com.myrqyry.Colorway.CatppuccinMocha';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #b4befe;
+    --primary_light: #89b4fa;
+    --primary_lighter: #89dceb;
+    --primary_dark: #cba6f7;
+    --primary_darker: #585b70;
+}

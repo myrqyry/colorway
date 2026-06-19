@@ -1,0 +1,52 @@
+@OBSThemeMeta {
+    name: 'Pink Glaze Macaroon';
+    id: 'com.myrqyry.Colorway.Macaroon';
+    extends: 'com.myrqyry.Colorway';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Base Theme Colors (Deep Berry/Black) */
+    --bg_window: #1a1416;
+    --bg_base: #1a1416;
+    --bg_preview: #1e181a;
+
+    /* Pink Glaze Accents */
+    --primary: #f45378;        /* Vibrant Pink */
+    --primary_light: #f7d2e5;  /* Soft Pink (Macaroon) for high contrast highlights */
+    --primary_lighter: #fadadd;
+    --primary_dark: #d9719a;
+    --primary_darker: #b75e7e;
+
+    --warning: #f7d2e5; /* Soft Pink used as warning contrast */
+    --danger: #b75e7e;  /* Accent Purple/Dark Pink */
+
+    /* Typography */
+    --text: #ede9dc;        /* Macaroon Cream */
+    --text_light: #ffffff;
+    --text_muted: #f7d2e5;  /* Soft Pink */
+
+    --text_disabled: #6b535b; /* Muted Mauve */
+    --text_inactive: #6b535b;
+
+    --border_color: #4a2b35;
+
+    /* Inputs and Buttons */
+    --input_bg: #1e181a;
+    --input_bg_hover: #4a2b35;
+    --input_bg_focus: #1e181a;
+
+    --list_item_bg_hover: #4a2b35;
+
+    --input_border: #4a2b35;
+    --input_border_hover: #b75e7e;
+
+    --button_bg: #1e181a;
+    --button_bg_hover: #4a2b35;
+    --button_bg_disabled: #1a1416;
+
+    /* Theme Aliases */
+    --bg_dock: #1e181a;
+    --bg_hover: #4a2b35;
+}

@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Frappé — Rosewater';
+    id: 'com.myrqyry.Colorway.CatppuccinFrappe.Rosewater';
+    extends: 'com.myrqyry.Colorway.CatppuccinFrappe';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #f2d5cf;
+    --primary_light: #eebebe;
+    --primary_lighter: #f4b8e4;
+    --primary_dark: #ef9f76;
+    --primary_darker: #626880;
+}

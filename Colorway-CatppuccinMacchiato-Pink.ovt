@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Macchiato — Pink';
+    id: 'com.myrqyry.Colorway.CatppuccinMacchiato.Pink';
+    extends: 'com.myrqyry.Colorway.CatppuccinMacchiato';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #f5bde6;
+    --primary_light: #f4dbd6;
+    --primary_lighter: #f0c6c6;
+    --primary_dark: #c6a0f6;
+    --primary_darker: #5b6078;
+}

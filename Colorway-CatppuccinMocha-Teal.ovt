@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Mocha — Teal';
+    id: 'com.myrqyry.Colorway.CatppuccinMocha.Teal';
+    extends: 'com.myrqyry.Colorway.CatppuccinMocha';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #94e2d5;
+    --primary_light: #a6e3a1;
+    --primary_lighter: #89dceb;
+    --primary_dark: #74c7ec;
+    --primary_darker: #585b70;
+}

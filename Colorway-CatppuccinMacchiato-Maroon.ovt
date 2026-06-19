@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Macchiato — Maroon';
+    id: 'com.myrqyry.Colorway.CatppuccinMacchiato.Maroon';
+    extends: 'com.myrqyry.Colorway.CatppuccinMacchiato';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #ee99a0;
+    --primary_light: #ed8796;
+    --primary_lighter: #f5a97f;
+    --primary_dark: #ed8796;
+    --primary_darker: #5b6078;
+}

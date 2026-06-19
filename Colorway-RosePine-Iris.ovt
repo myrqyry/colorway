@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Rosé Pine — Iris';
+    id: 'com.myrqyry.Colorway.RosePine.Iris';
+    extends: 'com.myrqyry.Colorway.RosePine';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #c4a7e7;
+    --primary_light: #ebbcba;
+    --primary_lighter: #e0def4;
+    --primary_dark: #9ccfd8;
+    --primary_darker: #524f67;
+}

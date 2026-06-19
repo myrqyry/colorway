@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Macchiato — Rosewater';
+    id: 'com.myrqyry.Colorway.CatppuccinMacchiato.Rosewater';
+    extends: 'com.myrqyry.Colorway.CatppuccinMacchiato';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #f4dbd6;
+    --primary_light: #f0c6c6;
+    --primary_lighter: #f5bde6;
+    --primary_dark: #f5a97f;
+    --primary_darker: #5b6078;
+}

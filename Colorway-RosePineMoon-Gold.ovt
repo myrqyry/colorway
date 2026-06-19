@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Rose Pine Moon — Gold';
+    id: 'com.myrqyry.Colorway.RosePineMoon.Gold';
+    extends: 'com.myrqyry.Colorway.RosePineMoon';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #f6c177;
+    --primary_light: #ea9a97;
+    --primary_lighter: #e0def4;
+    --primary_dark: #eb6f92;
+    --primary_darker: #56526e;
+}

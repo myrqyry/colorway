@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Macchiato — Yellow';
+    id: 'com.myrqyry.Colorway.CatppuccinMacchiato.Yellow';
+    extends: 'com.myrqyry.Colorway.CatppuccinMacchiato';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #eed49f;
+    --primary_light: #f5a97f;
+    --primary_lighter: #f4dbd6;
+    --primary_dark: #ee99a0;
+    --primary_darker: #5b6078;
+}

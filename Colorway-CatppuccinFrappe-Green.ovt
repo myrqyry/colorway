@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Frappé — Green';
+    id: 'com.myrqyry.Colorway.CatppuccinFrappe.Green';
+    extends: 'com.myrqyry.Colorway.CatppuccinFrappe';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #a6d189;
+    --primary_light: #81c8be;
+    --primary_lighter: #a6d189;
+    --primary_dark: #85c1dc;
+    --primary_darker: #626880;
+}

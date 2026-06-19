@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Rose Pine Moon — Foam';
+    id: 'com.myrqyry.Colorway.RosePineMoon.Foam';
+    extends: 'com.myrqyry.Colorway.RosePineMoon';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #9ccfd8;
+    --primary_light: #c4a7e7;
+    --primary_lighter: #e0def4;
+    --primary_dark: #3e8fb0;
+    --primary_darker: #56526e;
+}

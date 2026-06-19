@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Frappé — Blue';
+    id: 'com.myrqyry.Colorway.CatppuccinFrappe.Blue';
+    extends: 'com.myrqyry.Colorway.CatppuccinFrappe';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #8caaee;
+    --primary_light: #babbf1;
+    --primary_lighter: #99d1db;
+    --primary_dark: #85c1dc;
+    --primary_darker: #626880;
+}

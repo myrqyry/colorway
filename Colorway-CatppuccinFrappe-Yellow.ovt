@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Frappé — Yellow';
+    id: 'com.myrqyry.Colorway.CatppuccinFrappe.Yellow';
+    extends: 'com.myrqyry.Colorway.CatppuccinFrappe';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #e5c890;
+    --primary_light: #ef9f76;
+    --primary_lighter: #f2d5cf;
+    --primary_dark: #ea999c;
+    --primary_darker: #626880;
+}

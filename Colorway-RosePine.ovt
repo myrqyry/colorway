@@ -1,0 +1,11 @@
+@OBSThemeMeta {
+    name: 'Rosé Pine';
+    id: 'com.myrqyry.Colorway.RosePine';
+    extends: 'com.myrqyry.Colorway';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Inherits everything from the Colorway base theme (which uses Rosé Pine Main colors by default) */
+}

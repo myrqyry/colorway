@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Macchiato — Peach';
+    id: 'com.myrqyry.Colorway.CatppuccinMacchiato.Peach';
+    extends: 'com.myrqyry.Colorway.CatppuccinMacchiato';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #f5a97f;
+    --primary_light: #eed49f;
+    --primary_lighter: #f4dbd6;
+    --primary_dark: #ee99a0;
+    --primary_darker: #5b6078;
+}

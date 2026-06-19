@@ -1,0 +1,22 @@
+@OBSThemeMeta {
+    name: 'Rose Pine Moon';
+    id: 'com.myrqyry.Colorway.RosePineMoon';
+    extends: 'com.myrqyry.Colorway';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --bg_window: #232136;
+    --bg_base: #232136;
+    --bg_preview: #2a273e;
+    --primary: #c4a7e7;
+    --primary_light: #f6e3cf;
+    --text: #e0def4;
+    --text_muted: #89b8c2;
+    --danger: #eb6f92;
+    --warning: #f6c177;
+    --border_color: #393552;
+    --input_bg: #2a273e;
+    --button_bg: #393552;
+}

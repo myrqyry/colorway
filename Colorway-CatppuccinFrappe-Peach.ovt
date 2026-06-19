@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Frappé — Peach';
+    id: 'com.myrqyry.Colorway.CatppuccinFrappe.Peach';
+    extends: 'com.myrqyry.Colorway.CatppuccinFrappe';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #ef9f76;
+    --primary_light: #e5c890;
+    --primary_lighter: #f2d5cf;
+    --primary_dark: #ea999c;
+    --primary_darker: #626880;
+}

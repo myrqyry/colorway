@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Macchiato — Lavender';
+    id: 'com.myrqyry.Colorway.CatppuccinMacchiato.Lavender';
+    extends: 'com.myrqyry.Colorway.CatppuccinMacchiato';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #b7bdf8;
+    --primary_light: #8aadf4;
+    --primary_lighter: #91d7e3;
+    --primary_dark: #c6a0f6;
+    --primary_darker: #5b6078;
+}

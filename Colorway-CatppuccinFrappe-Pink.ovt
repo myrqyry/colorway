@@ -1,0 +1,15 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Frappé — Pink';
+    id: 'com.myrqyry.Colorway.CatppuccinFrappe.Pink';
+    extends: 'com.myrqyry.Colorway.CatppuccinFrappe';
+    author: 'Mat + AI';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --primary: #f4b8e4;
+    --primary_light: #f2d5cf;
+    --primary_lighter: #eebebe;
+    --primary_dark: #ca9ee6;
+    --primary_darker: #626880;
+}
