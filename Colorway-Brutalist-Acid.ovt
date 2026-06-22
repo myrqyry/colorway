@@ -28,7 +28,7 @@
 
     --border_color: #050505;
     --highlight_color: #f7ff00;
-    --border_highlight: #050505;
+    --border_highlight: var(--grey3);
 
     --input_bg: #f8fafc;
     --input_bg_hover: #e0fbff;

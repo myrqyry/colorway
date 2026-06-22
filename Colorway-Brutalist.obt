@@ -125,7 +125,7 @@
     --highlight_width: 6px;
     --highlight_color: #facc15;
 
-    --border_highlight: #020617;
+    --border_highlight: var(--grey3);
 
     /* OS Fixes */
     --os_mac_font_base_value: calc(1.2 * var(--obsFontScale));
@@ -218,7 +218,7 @@
     --input_bg_hover: #dbeafe;
     --input_bg_focus: #ffffff;
 
-    --list_item_bg_selected: #ff6b4a;
+    --list_item_bg_selected: var(--primary);
     --list_item_bg_hover: #1e3a8a;
 
     --input_border: #020617;
@@ -296,8 +296,8 @@
     --palette_text_inactive: var(--text_inactive);
 
     /* Theme Aliases */
-    --bg_dock: #1e3a8a;
-    --bg_hover: #1e3a8a;
+    --bg_dock: var(--primary_darker);
+    --bg_hover: var(--primary_dark);
     --bg_input: var(--input_bg);
     --border_base: var(--border_color);
     --border_focus: var(--warning);
@@ -2683,19 +2683,8 @@ QWidget {
 }
 
 /* ==================================================================================
-   BUTTONS - Rounded Material Design with Smooth Transitions
+   BUTTONS - Brutalist base defined above; state refinements only
    ================================================================================== */
-
-QPushButton {
-    background-color: var(--button_bg);
-    color: var(--text_muted);
-    border: 2px solid var(--button_bg);
-    border-radius: var(--border_radius); /* Propagates 9px rounding globally */
-    min-height: calc(1.8pt * var(--font_base_value));
-    padding: var(--padding_small) var(--padding_wide);
-    margin: var(--spacing_small);
-    font-weight: 500;
-}
 
 QPushButton:hover {
     color: var(--text_bright);
