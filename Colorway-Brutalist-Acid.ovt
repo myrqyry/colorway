@@ -30,41 +30,41 @@
     --highlight_color: #f7ff00;
     --border_highlight: var(--grey3);
 
-    --input_bg: #f8fafc;
-    --input_bg_hover: #e0fbff;
-    --input_bg_focus: #ffffff;
+    --input_bg: var(--text);
+    --input_bg_hover: var(--primary_lighter);
+    --input_bg_focus: var(--text_light);
 
-    --list_item_bg_selected: #ff4fd8;
-    --list_item_bg_hover: #164e63;
+    --list_item_bg_selected: var(--danger);
+    --list_item_bg_hover: var(--primary_darker);
 
-    --input_border: #050505;
-    --input_border_hover: #050505;
-    --input_border_focus: #f7ff00;
+    --input_border: var(--border_color);
+    --input_border_hover: var(--border_color);
+    --input_border_focus: var(--warning);
 
-    --button_bg: #00e5ff;
+    --button_bg: var(--primary);
     --button_bg_hover: #0e7490;
-    --button_bg_down: #ff4fd8;
+    --button_bg_down: var(--danger);
     --button_bg_disabled: #27272a;
 
-    --button_border: #050505;
-    --button_border_hover: #050505;
-    --button_border_focus: #f7ff00;
+    --button_border: var(--border_color);
+    --button_border_hover: var(--border_color);
+    --button_border_focus: var(--warning);
 
-    --tab_bg: #09090b;
-    --tab_bg_hover: #164e63;
-    --tab_bg_down: #ff4fd8;
+    --tab_bg: var(--bg_window);
+    --tab_bg_hover: var(--primary_darker);
+    --tab_bg_down: var(--danger);
     --tab_bg_disabled: #18181b;
 
-    --tab_border: #050505;
-    --tab_border_hover: #050505;
-    --tab_border_focus: #f7ff00;
-    --tab_border_selected: #050505;
+    --tab_border: var(--border_color);
+    --tab_border_hover: var(--border_color);
+    --tab_border_focus: var(--warning);
+    --tab_border_selected: var(--border_color);
 
-    --bg_dock: #164e63;
-    --bg_hover: #0e7490;
-    --text_inverse: #050505;
+    --bg_dock: var(--primary_darker);
+    --bg_hover: var(--primary_dark);
+    --text_inverse: var(--border_color);
 
-    --meter_bg_nom: #09090b;
+    --meter_bg_nom: var(--bg_window);
     --meter_bg_war: var(--warning);
     --meter_bg_err: var(--danger);
     --meter_fg_nom: var(--primary_light);

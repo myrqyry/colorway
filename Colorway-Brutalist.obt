@@ -214,39 +214,39 @@
     --input_height: calc(var(--input_height_base) - calc(var(--input_padding) * 2px));
     --input_height_half: calc(var(--input_height_base) / 2);
 
-    --input_bg: #f8fafc;
-    --input_bg_hover: #dbeafe;
-    --input_bg_focus: #ffffff;
+    --input_bg: var(--text);
+    --input_bg_hover: var(--primary_lighter);
+    --input_bg_focus: var(--text_light);
 
     --list_item_bg_selected: var(--primary);
-    --list_item_bg_hover: #1e3a8a;
+    --list_item_bg_hover: var(--primary_darker);
 
-    --input_border: #020617;
+    --input_border: var(--border_color);
     --input_border_width: 4px;
-    --input_border_hover: #020617;
-    --input_border_focus: #facc15;
+    --input_border_hover: var(--border_color);
+    --input_border_focus: var(--warning);
 
     --spacing_input: var(--spacing_base);
 
-    --button_bg: #2563eb;
+    --button_bg: var(--primary);
     --button_bg_hover: #1e40af;
-    --button_bg_down: #ff6b4a;
+    --button_bg_down: var(--danger);
     --button_bg_disabled: #334155;
 
     --button_border_width: 5px;
-    --button_border: #020617;
-    --button_border_hover: #020617;
-    --button_border_focus: #facc15;
+    --button_border: var(--border_color);
+    --button_border_hover: var(--border_color);
+    --button_border_focus: var(--warning);
 
-    --tab_bg: #0f172a;
-    --tab_bg_hover: #1e3a8a;
-    --tab_bg_down: #ff6b4a;
+    --tab_bg: var(--bg_window);
+    --tab_bg_hover: var(--primary_darker);
+    --tab_bg_down: var(--danger);
     --tab_bg_disabled: #1f2937;
 
-    --tab_border: #020617;
-    --tab_border_hover: #020617;
-    --tab_border_focus: #facc15;
-    --tab_border_selected: #020617;
+    --tab_border: var(--border_color);
+    --tab_border_hover: var(--border_color);
+    --tab_border_focus: var(--warning);
+    --tab_border_selected: var(--border_color);
 
     --tab_padding_base: calc(5px + var(--padding_base));
     --tab_padding_large: calc(9px + var(--padding_base));
@@ -282,7 +282,7 @@
     --palette_dark: var(--bg_dock);
 
     --palette_highlight: var(--danger);
-    --palette_highlightedText: #020617;
+    --palette_highlightedText: var(--border_color);
 
     --palette_text: var(--text);
     --palette_link: var(--primary_light);
@@ -303,11 +303,11 @@
     --border_focus: var(--warning);
     --text_base: var(--text);
     --text_bright: var(--text_light);
-    --text_inverse: #020617;
+    --text_inverse: var(--border_color);
     --primary_hover: var(--primary_light);
     --primary_dark_alias: var(--primary_dark);
 
-    --meter_bg_nom: #0f172a;
+    --meter_bg_nom: var(--bg_window);
     --meter_bg_war: var(--warning);
     --meter_bg_err: var(--danger);
     --meter_fg_nom: var(--primary_light);
