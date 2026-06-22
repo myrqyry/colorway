@@ -64,6 +64,12 @@
     --bg_hover: var(--primary);
     --text_inverse: var(--border_color);
 
+    --live: #a8a29e;
+    --recording: #ff6b4a;
+
+    --scrollbar_bg: #0c0a09;
+    --scrollbar_border: #0c0a09;
+
     --meter_bg_nom: var(--bg_window);
     --meter_bg_war: var(--warning);
     --meter_bg_err: var(--danger);
