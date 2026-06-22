@@ -1,0 +1,73 @@
+@OBSThemeMeta {
+    name: 'Colorway Brutalist Acid';
+    id: 'com.myrqyry.ColorwayBrutalist.Acid';
+    extends: 'com.myrqyry.ColorwayBrutalist';
+    author: 'myrqyry';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --bg_window: #09090b;
+    --bg_base: #0b0b0f;
+    --bg_preview: #050505;
+
+    --primary: #00e5ff;
+    --primary_light: #67f8ff;
+    --primary_lighter: #e0fbff;
+    --primary_dark: #0891b2;
+    --primary_darker: #164e63;
+
+    --warning: #f7ff00;
+    --danger: #ff4fd8;
+
+    --text: #f8fafc;
+    --text_light: #ffffff;
+    --text_muted: #a1a1aa;
+    --text_disabled: #71717a;
+    --text_inactive: #71717a;
+
+    --border_color: #050505;
+    --highlight_color: #f7ff00;
+    --border_highlight: #050505;
+
+    --input_bg: #f8fafc;
+    --input_bg_hover: #e0fbff;
+    --input_bg_focus: #ffffff;
+
+    --list_item_bg_selected: #ff4fd8;
+    --list_item_bg_hover: #164e63;
+
+    --input_border: #050505;
+    --input_border_hover: #050505;
+    --input_border_focus: #f7ff00;
+
+    --button_bg: #00e5ff;
+    --button_bg_hover: #67f8ff;
+    --button_bg_down: #ff4fd8;
+    --button_bg_disabled: #27272a;
+
+    --button_border: #050505;
+    --button_border_hover: #050505;
+    --button_border_focus: #f7ff00;
+
+    --tab_bg: #09090b;
+    --tab_bg_hover: #164e63;
+    --tab_bg_down: #ff4fd8;
+    --tab_bg_disabled: #18181b;
+
+    --tab_border: #050505;
+    --tab_border_hover: #050505;
+    --tab_border_focus: #f7ff00;
+    --tab_border_selected: #050505;
+
+    --bg_dock: #164e63;
+    --bg_hover: #0891b2;
+    --text_inverse: #050505;
+
+    --meter_bg_nom: #09090b;
+    --meter_bg_war: var(--warning);
+    --meter_bg_err: var(--danger);
+    --meter_fg_nom: var(--primary_light);
+    --meter_fg_war: var(--warning);
+    --meter_fg_err: var(--danger);
+}
