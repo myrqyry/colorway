@@ -71,3 +71,26 @@
     --meter_fg_war: var(--warning);
     --meter_fg_err: var(--danger);
 }
+
+/* Neo-brutalist drop shadow simulation */
+QPushButton {
+    border: 5px solid var(--border_color);
+    border-top-color: var(--border_highlight);
+    border-left-color: var(--border_highlight);
+    border-bottom-color: var(--border_color);
+    border-right-color: var(--border_color);
+    background: var(--button_bg);
+    margin: 2px;
+}
+QPushButton:pressed {
+    border: 5px solid var(--border_color);
+    border-top-color: var(--border_color);
+    border-left-color: var(--border_color);
+    border-bottom-color: var(--border_highlight);
+    border-right-color: var(--border_highlight);
+    background: var(--button_bg_down);
+}
+QPushButton:hover {
+    border: 6px solid var(--border_highlight);
+    background: var(--button_bg_hover);
+}

@@ -42,7 +42,7 @@
     --input_border_focus: #f7ff00;
 
     --button_bg: #00e5ff;
-    --button_bg_hover: #67f8ff;
+    --button_bg_hover: #0e7490;
     --button_bg_down: #ff4fd8;
     --button_bg_disabled: #27272a;
 
@@ -61,7 +61,7 @@
     --tab_border_selected: #050505;
 
     --bg_dock: #164e63;
-    --bg_hover: #0891b2;
+    --bg_hover: #0e7490;
     --text_inverse: #050505;
 
     --meter_bg_nom: #09090b;

@@ -122,7 +122,7 @@
     --padding_base_value: var(--obsPadding);
     --spacing_base_value: calc(2 + calc(var(--obsPadding) / 2));
 
-    --highlight_width: 3px;
+    --highlight_width: 6px;
     --highlight_color: #facc15;
 
     --border_highlight: #020617;
@@ -193,9 +193,9 @@
     --tint_red: rgba(244, 63, 94, 0.1);
 
     /* Material Rounded Corners */
-    --border_radius: 0px;
-    --border_radius_small: 0px;
-    --border_radius_large: 2px;
+    --border_radius: 10px;
+    --border_radius_small: 6px;
+    --border_radius_large: 16px;
 
     /* Accessibility Sizing for Sliders (Enlarged and aligned to track height) */
     --slider_groove_thickness: 16px;
@@ -222,18 +222,18 @@
     --list_item_bg_hover: #1e3a8a;
 
     --input_border: #020617;
-    --input_border_width: 3px;
+    --input_border_width: 4px;
     --input_border_hover: #020617;
     --input_border_focus: #facc15;
 
     --spacing_input: var(--spacing_base);
 
     --button_bg: #2563eb;
-    --button_bg_hover: #60a5fa;
+    --button_bg_hover: #1e40af;
     --button_bg_down: #ff6b4a;
     --button_bg_disabled: #334155;
 
-    --button_border_width: 3px;
+    --button_border_width: 5px;
     --button_border: #020617;
     --button_border_hover: #020617;
     --button_border_focus: #facc15;
@@ -297,7 +297,7 @@
 
     /* Theme Aliases */
     --bg_dock: #1e3a8a;
-    --bg_hover: #1d4ed8;
+    --bg_hover: #1e3a8a;
     --bg_input: var(--input_bg);
     --border_base: var(--border_color);
     --border_focus: var(--warning);
@@ -336,6 +336,30 @@
 }
 
 /* Brutalist structure: thick borders and square geometry are intentional. */
+
+/* Neo-brutalist drop shadow simulation */
+QPushButton {
+    border: 5px solid var(--border_color);
+    border-top-color: var(--border_highlight);
+    border-left-color: var(--border_highlight);
+    border-bottom-color: var(--border_color);
+    border-right-color: var(--border_color);
+    background: var(--button_bg);
+    margin: 2px;
+}
+QPushButton:pressed {
+    border: 5px solid var(--border_color);
+    border-top-color: var(--border_color);
+    border-left-color: var(--border_color);
+    border-bottom-color: var(--border_highlight);
+    border-right-color: var(--border_highlight);
+    background: var(--button_bg_down);
+}
+QPushButton:hover {
+    border: 6px solid var(--border_highlight);
+    background: var(--button_bg_hover);
+}
+
 
 /* --------------------- */
 /* General Styling Hints */
