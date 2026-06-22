@@ -335,6 +335,8 @@
 
 }
 
+/* Brutalist structure: thick borders and square geometry are intentional. */
+
 /* --------------------- */
 /* General Styling Hints */
 
@@ -1895,7 +1897,7 @@ QGroupBox::indicator {
 .indicator-lock::indicator:checked:hover {
     image: url(theme:icons/colorway/iconamoon/normal/lock.svg);
     background: var(--tint_amber);
-    border-radius: 2px;
+    border-radius: 0px;
 }
 
 SourceTreeItem:selected:hover .indicator-lock::indicator:checked {
@@ -1917,7 +1919,7 @@ SourceTreeItem:selected:hover .indicator-lock::indicator:unchecked {
 .indicator-visibility::indicator:checked:hover {
     image: url(theme:icons/colorway/iconamoon/normal/eye.svg);
     background: var(--tint_green); /* Green tint */
-    border-radius: 2px;
+    border-radius: 0px;
 }
 
 SourceTreeItem:selected:hover .indicator-visibility::indicator:checked {
@@ -1928,7 +1930,7 @@ SourceTreeItem:selected:hover .indicator-visibility::indicator:checked {
 .indicator-visibility::indicator:unchecked:hover {
     image: url(theme:icons/colorway/iconamoon/normal/eye-off.svg);
     background: var(--tint_red); /* Red tint */
-    border-radius: 2px;
+    border-radius: 0px;
 }
 
 SourceTreeItem:selected:hover .indicator-visibility::indicator:unchecked {
@@ -2606,7 +2608,7 @@ idian--RowFrame.hover idian--ExpandButton::indicator {
 AlignmentSelector {
     border: 1px solid var(--input_border);
     margin: 0px;
-    border-radius: 2px;
+    border-radius: 0px;
 }
 
 AlignmentSelector:focus,
