@@ -95,37 +95,37 @@
     --black5: #828282;
 
     /* Base Theme Colors */
-    --bg_window: #191724;
-    --bg_base: #191724;
-    --bg_preview: #26233a;
+    --bg_window: #0f172a;
+    --bg_base: #111827;
+    --bg_preview: #020617;
 
-    --primary: #c4a7e7;
-    --primary_light: #e0def4;
-    --primary_lighter: #f0ebff;
-    --primary_dark: #907aa9;
-    --primary_darker: #524f67;
+    --primary: #2563eb;
+    --primary_light: #60a5fa;
+    --primary_lighter: #dbeafe;
+    --primary_dark: #1d4ed8;
+    --primary_darker: #1e3a8a;
 
-    --warning: #f6c177;
-    --danger: #eb6f92;
+    --warning: #facc15;
+    --danger: #ff6b4a;
 
-    --text: #e0def4;
+    --text: #f8fafc;
     --text_light: #ffffff;
-    --text_muted: #908caa;
+    --text_muted: #94a3b8;
 
-    --text_disabled: #6e6a86;
-    --text_inactive: #6e6a86;
+    --text_disabled: #64748b;
+    --text_inactive: #64748b;
 
-    --border_color: #403d52;
+    --border_color: #020617;
 
     /* Layout & Accessibility Scaling */
     --font_base_value: var(--obsFontScale);
     --padding_base_value: var(--obsPadding);
     --spacing_base_value: calc(2 + calc(var(--obsPadding) / 2));
 
-    --highlight_width: 1px;
-    --highlight_color: var(--primary_lighter);
+    --highlight_width: 3px;
+    --highlight_color: #facc15;
 
-    --border_highlight: transparent;
+    --border_highlight: #020617;
 
     /* OS Fixes */
     --os_mac_font_base_value: calc(1.2 * var(--obsFontScale));
@@ -193,16 +193,16 @@
     --tint_red: rgba(244, 63, 94, 0.1);
 
     /* Material Rounded Corners */
-    --border_radius: 9px;
-    --border_radius_small: 5px;
-    --border_radius_large: 12px;
+    --border_radius: 0px;
+    --border_radius_small: 0px;
+    --border_radius_large: 2px;
 
     /* Accessibility Sizing for Sliders (Enlarged and aligned to track height) */
-    --slider_groove_thickness: 14px;
-    --slider_groove_radius: 7px;
-    --slider_handle_size: 14px;       /* Set equal to track thickness to stop vertical clipping */
-    --slider_handle_radius: 7px;     /* Half of 14px for a perfect circle */
-    --slider_handle_margin: 0px;      /* Set to 0px since no vertical centering offset is needed */
+    --slider_groove_thickness: 16px;
+    --slider_groove_radius: 0px;
+    --slider_handle_size: 18px;
+    --slider_handle_radius: 0px;
+    --slider_handle_margin: -1px;
 
     /* Inputs & Layout Controls */
     --input_font_scale: calc(var(--font_base_value) * 2.2);
@@ -214,39 +214,39 @@
     --input_height: calc(var(--input_height_base) - calc(var(--input_padding) * 2px));
     --input_height_half: calc(var(--input_height_base) / 2);
 
-    --input_bg: #26233a;
-    --input_bg_hover: #403d52;
-    --input_bg_focus: #26233a;
+    --input_bg: #f8fafc;
+    --input_bg_hover: #dbeafe;
+    --input_bg_focus: #ffffff;
 
-    --list_item_bg_selected: var(--primary);
-    --list_item_bg_hover: #26233a;
+    --list_item_bg_selected: #ff6b4a;
+    --list_item_bg_hover: #1e3a8a;
 
-    --input_border: #403d52;
-    --input_border_width: 1px;
-    --input_border_hover: #524f67;
-    --input_border_focus: var(--primary);
+    --input_border: #020617;
+    --input_border_width: 3px;
+    --input_border_hover: #020617;
+    --input_border_focus: #facc15;
 
     --spacing_input: var(--spacing_base);
 
-    --button_bg: #1f1d2e;
-    --button_bg_hover: #26233a;
-    --button_bg_down: var(--primary);
-    --button_bg_disabled: #21202e;
+    --button_bg: #2563eb;
+    --button_bg_hover: #60a5fa;
+    --button_bg_down: #ff6b4a;
+    --button_bg_disabled: #334155;
 
-    --button_border_width: var(--input_border_width);
-    --button_border: var(--button_bg);
-    --button_border_hover: var(--border_color);
-    --button_border_focus: var(--primary);
+    --button_border_width: 3px;
+    --button_border: #020617;
+    --button_border_hover: #020617;
+    --button_border_focus: #facc15;
 
-    --tab_bg: var(--button_bg_disabled);
-    --tab_bg_hover: var(--button_bg_hover);
-    --tab_bg_down: var(--primary);
-    --tab_bg_disabled: var(--button_bg_disabled);
+    --tab_bg: #0f172a;
+    --tab_bg_hover: #1e3a8a;
+    --tab_bg_down: #ff6b4a;
+    --tab_bg_disabled: #1f2937;
 
-    --tab_border: var(--border_color);
-    --tab_border_hover: var(--button_border_hover);
-    --tab_border_focus: var(--primary_lighter);
-    --tab_border_selected: var(--primary);
+    --tab_border: #020617;
+    --tab_border_hover: #020617;
+    --tab_border_focus: #facc15;
+    --tab_border_selected: #020617;
 
     --tab_padding_base: calc(5px + var(--padding_base));
     --tab_padding_large: calc(9px + var(--padding_base));
@@ -260,7 +260,7 @@
     --action_row_border: 3px;
     --action_row_input_width: calc(var(--action_row_base) * 4);
     --action_row_collapse: calc(var(--action_row_base) + var(--padding_large));
-    --action_row_collapse_radius: calc(var(--action_row_collapse) / 2);
+    --action_row_collapse_radius: 0px;
     --action_row_padding: calc(var(--padding_large) * 1.5);
     --action_row_padding_x: calc(var(--action_row_padding) * 2);
     --action_row_padding_nested: calc(var(--action_row_padding_x) * 1.5);
@@ -270,7 +270,7 @@
     --toggle_width: calc(var(--action_row_base) * 1.8);
     --toggle_height: calc(var(--action_row_base) * 0.9);
     --toggle_handle: calc(calc(calc(var(--toggle_height) * 0.9) - calc(var(--toggle_border) * 2)) - var(--toggle_margin));
-    --toggle_radius: calc(var(--toggle_height) / 2);
+    --toggle_radius: 0px;
 
     /* Qt Palette variables can be set with the "palette_" prefix */
     --palette_window: var(--bg_window);
@@ -281,8 +281,8 @@
     --palette_mid: var(--bg_preview);
     --palette_dark: var(--bg_dock);
 
-    --palette_highlight: var(--primary);
-    --palette_highlightedText: var(--text_inverse);
+    --palette_highlight: var(--danger);
+    --palette_highlightedText: #020617;
 
     --palette_text: var(--text);
     --palette_link: var(--primary_light);
@@ -296,21 +296,21 @@
     --palette_text_inactive: var(--text_inactive);
 
     /* Theme Aliases */
-    --bg_dock: #1f1d2e;
-    --bg_hover: #26233a;
+    --bg_dock: #1e3a8a;
+    --bg_hover: #1d4ed8;
     --bg_input: var(--input_bg);
     --border_base: var(--border_color);
-    --border_focus: var(--primary);
+    --border_focus: var(--warning);
     --text_base: var(--text);
     --text_bright: var(--text_light);
-    --text_inverse: var(--bg_base);
+    --text_inverse: #020617;
     --primary_hover: var(--primary_light);
     --primary_dark_alias: var(--primary_dark);
 
-    --meter_bg_nom: var(--bg_hover);
+    --meter_bg_nom: #0f172a;
     --meter_bg_war: var(--warning);
     --meter_bg_err: var(--danger);
-    --meter_fg_nom: var(--primary);
+    --meter_fg_nom: var(--primary_light);
     --meter_fg_war: var(--warning);
     --meter_fg_err: var(--danger);
 
