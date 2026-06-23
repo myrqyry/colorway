@@ -2,7 +2,7 @@
     name: 'Rose Pine Moon — Iris';
     id: 'com.myrqyry.Colorway.RosePineMoon.Iris';
     extends: 'com.myrqyry.Colorway.RosePineMoon';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -12,4 +12,8 @@
     --primary_lighter: #e0def4;
     --primary_dark: #9ccfd8;
     --primary_darker: #56526e;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #232136;
 }

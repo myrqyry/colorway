@@ -2,7 +2,7 @@
     name: 'Rosé Pine — Love';
     id: 'com.myrqyry.Colorway.RosePine.Love';
     extends: 'com.myrqyry.Colorway.RosePine';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -12,4 +12,8 @@
     --primary_lighter: #f6c177;
     --primary_dark: #c4a7e7;
     --primary_darker: #524f67;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #191724;
 }

@@ -2,7 +2,7 @@
     name: 'Catppuccin Mocha — Teal';
     id: 'com.myrqyry.Colorway.CatppuccinMocha.Teal';
     extends: 'com.myrqyry.Colorway.CatppuccinMocha';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -12,4 +12,8 @@
     --primary_lighter: #89dceb;
     --primary_dark: #74c7ec;
     --primary_darker: #585b70;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #1e1e2e;
 }

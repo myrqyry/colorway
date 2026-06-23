@@ -2,11 +2,12 @@
     name: 'Claude Dark';
     id: 'com.myrqyry.Colorway.ClaudeDark';
     extends: 'com.myrqyry.Colorway';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
 @OBSThemeVars {
+    --text_inverse: #101010;
     /* Base Theme Colors (Warm Charcoal) */
     --bg_window: #1B1B1A;
     --bg_base: #1B1B1A;
@@ -27,8 +28,8 @@
     --text_light: #FFFFFF;
     --text_muted: #B1ADA1;  /* Cloudy Gray */
 
-    --text_disabled: #66635E;
-    --text_inactive: #66635E;
+    --text_disabled: #696661;
+    --text_inactive: #696661;
 
     --border_color: #3d3c3a;
 
@@ -49,4 +50,8 @@
     /* Theme Aliases */
     --bg_dock: #242423;
     --bg_hover: #3d3c3a;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #1B1B1A;
 }

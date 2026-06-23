@@ -2,21 +2,53 @@
     name: 'Rose Pine Dawn';
     id: 'com.myrqyry.Colorway.RosePineDawn';
     extends: 'com.myrqyry.Colorway';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'false';
 }
 
 @OBSThemeVars {
+    /* Base Theme Colors */
     --bg_window: #faf4ed;
     --bg_base: #faf4ed;
     --bg_preview: #fffaf3;
+
     --primary: #286983;
     --primary_light: #56949f;
-    --text: #575279;
-    --text_muted: #797593;
-    --danger: #d7827e;
+    --primary_lighter: #907aa9;
+    --primary_dark: #b4637a;
+    --primary_darker: #cecacd;
+
     --warning: #ea9d34;
+    --danger: #b4637a;
+
+    --text: #575279;
+    --text_light: #191724;
+    --text_muted: #797593;
+
+    --text_disabled: #8F8A9B;
+    --text_inactive: #8F8A9B;
+
     --border_color: #cecacd;
+
+    /* Inputs and Buttons */
     --input_bg: #fffaf3;
+    --input_bg_hover: #f2e9e1;
+    --input_bg_focus: #fffaf3;
+
+    --list_item_bg_hover: #f2e9e1;
+
+    --input_border: #cecacd;
+    --input_border_hover: #9893a5;
+
     --button_bg: #f2e9de;
+    --button_bg_hover: #dfdad9;
+    --button_bg_disabled: #faf4ed;
+
+    /* Theme Aliases */
+    --bg_dock: #f2e9e1;
+    --bg_hover: #f2e9e1;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #faf4ed;
 }

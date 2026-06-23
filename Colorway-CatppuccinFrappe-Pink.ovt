@@ -2,7 +2,7 @@
     name: 'Catppuccin Frappé — Pink';
     id: 'com.myrqyry.Colorway.CatppuccinFrappe.Pink';
     extends: 'com.myrqyry.Colorway.CatppuccinFrappe';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -12,4 +12,8 @@
     --primary_lighter: #eebebe;
     --primary_dark: #ca9ee6;
     --primary_darker: #626880;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #303446;
 }

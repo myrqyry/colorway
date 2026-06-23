@@ -2,7 +2,7 @@
     name: 'Catppuccin Macchiato — Teal';
     id: 'com.myrqyry.Colorway.CatppuccinMacchiato.Teal';
     extends: 'com.myrqyry.Colorway.CatppuccinMacchiato';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -12,4 +12,8 @@
     --primary_lighter: #91d7e3;
     --primary_dark: #7dc4e4;
     --primary_darker: #5b6078;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #24273a;
 }

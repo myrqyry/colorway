@@ -2,14 +2,19 @@
     name: 'Rosé Pine — Pine';
     id: 'com.myrqyry.Colorway.RosePine.Pine';
     extends: 'com.myrqyry.Colorway.RosePine';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
 @OBSThemeVars {
+    --text_inverse: #EFEFF0;
     --primary: #31748f;
     --primary_light: #9ccfd8;
     --primary_lighter: #e0def4;
     --primary_dark: #ebbcba;
     --primary_darker: #524f67;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #c6d0f5;
 }

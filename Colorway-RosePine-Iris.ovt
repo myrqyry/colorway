@@ -2,7 +2,7 @@
     name: 'Rosé Pine — Iris';
     id: 'com.myrqyry.Colorway.RosePine.Iris';
     extends: 'com.myrqyry.Colorway.RosePine';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -12,4 +12,8 @@
     --primary_lighter: #e0def4;
     --primary_dark: #9ccfd8;
     --primary_darker: #524f67;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #191724;
 }

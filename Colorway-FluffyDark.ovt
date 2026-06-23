@@ -2,7 +2,7 @@
     name: 'Fluffy Dark';
     id: 'com.myrqyry.Colorway.FluffyDark';
     extends: 'com.myrqyry.Colorway';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -27,8 +27,8 @@
     --text_light: #FFFFFF;
     --text_muted: #8c8c8c;  /* Muted Grey */
 
-    --text_disabled: #666666; /* Disabled Grey */
-    --text_inactive: #666666;
+    --text_disabled: #6B6B6B; /* Disabled Grey */
+    --text_inactive: #6B6B6B;
 
     --border_color: #3A3D41;
 
@@ -49,4 +49,8 @@
     /* Theme Aliases */
     --bg_dock: #252525;
     --bg_hover: #3A3D41;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #212121;
 }

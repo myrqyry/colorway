@@ -2,51 +2,50 @@
     name: 'Spirited Away';
     id: 'com.myrqyry.Colorway.SpiritedAway';
     extends: 'com.myrqyry.Colorway';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
 @OBSThemeVars {
-    /* Base Theme Colors (No-Face Black) */
-    --bg_window: #202020;
-    --bg_base: #202020;
-    --bg_preview: #151515;
+    --bg_window: #1a1d1c;
+    --bg_base: #1a1d1c;
+    --bg_preview: #121615;
 
-    /* Spirited Away Accents */
-    --primary: #F3B1B3;        /* Spirited Away Pink */
-    --primary_light: #B0D9DE;  /* Chihiro's Journey Blue */
-    --primary_lighter: #A7C7D3; /* Haku's Scales */
-    --primary_dark: #6B5D7E;   /* Zeniba's Purple */
-    --primary_darker: #4E6D66; /* Forest Green */
+    --primary: #F3B1B3;
+    --primary_light: #B0D9DE;
+    --primary_lighter: #D4EDF0;
+    --primary_dark: #6B5D7E;
+    --primary_darker: #4E6D66;
 
-    --warning: #C0A878; /* Yubaba's Gold */
-    --danger: #8D635B;  /* Boiler Room Rusty Brown */
+    --warning: #C0A878;
+    --danger: #8D635B;
 
-    /* Typography */
-    --text: #E6E6E6;        /* Soft White */
+    --text: #E6E6E6;
     --text_light: #FFFFFF;
-    --text_muted: #A7C7D3;  /* Haku's Scales Silver-Blue */
+    --text_muted: #7A9A9E;
 
-    --text_disabled: #6B5D7E; /* Zeniba's Purple */
-    --text_inactive: #6B5D7E;
+    --text_disabled: #506E68;
+    --text_inactive: #506E68;
 
-    --border_color: #4E6D66; /* Forest Green */
+    --border_color: #2E3A38;
 
-    /* Inputs and Buttons */
-    --input_bg: #1a1a1a;
-    --input_bg_hover: #4E6D66;
-    --input_bg_focus: #1a1a1a;
+    --input_bg: #222726;
+    --input_bg_hover: #2E3A38;
+    --input_bg_focus: #222726;
 
-    --list_item_bg_hover: #4E6D66;
+    --list_item_bg_hover: #2E3A38;
 
-    --input_border: #4E6D66;
-    --input_border_hover: #5EB1BF; /* River Spirit Turquoise */
+    --input_border: #2E3A38;
+    --input_border_hover: #5EB1BF;
 
-    --button_bg: #1a1a1a;
-    --button_bg_hover: #4E6D66;
-    --button_bg_disabled: #202020;
+    --button_bg: #222726;
+    --button_bg_hover: #2E3A38;
+    --button_bg_disabled: #1a1d1c;
 
-    /* Theme Aliases */
-    --bg_dock: #1a1a1a;
-    --bg_hover: #4E6D66;
+    --bg_dock: #1f2322;
+    --bg_hover: #2E3A38;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #1a1d1c;
 }

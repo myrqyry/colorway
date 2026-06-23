@@ -2,7 +2,7 @@
     name: 'Pink Glaze Macaroon';
     id: 'com.myrqyry.Colorway.Macaroon';
     extends: 'com.myrqyry.Colorway';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -27,8 +27,8 @@
     --text_light: #ffffff;
     --text_muted: #f7d2e5;  /* Soft Pink */
 
-    --text_disabled: #6b535b; /* Muted Mauve */
-    --text_inactive: #6b535b;
+    --text_disabled: #745D65; /* Muted Mauve */
+    --text_inactive: #745D65;
 
     --border_color: #4a2b35;
 
@@ -49,4 +49,8 @@
     /* Theme Aliases */
     --bg_dock: #1e181a;
     --bg_hover: #4a2b35;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #1a1416;
 }

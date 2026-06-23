@@ -2,7 +2,7 @@
     name: 'Catppuccin Macchiato';
     id: 'com.myrqyry.Colorway.CatppuccinMacchiato';
     extends: 'com.myrqyry.Colorway';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -47,4 +47,8 @@
     /* Theme Aliases */
     --bg_dock: #1e2030;
     --bg_hover: #363a4f;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #24273a;
 }

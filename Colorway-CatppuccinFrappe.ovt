@@ -2,7 +2,7 @@
     name: 'Catppuccin Frappé';
     id: 'com.myrqyry.Colorway.CatppuccinFrappe';
     extends: 'com.myrqyry.Colorway';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -47,4 +47,8 @@
     /* Theme Aliases */
     --bg_dock: #292c3c;
     --bg_hover: #414559;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #303446;
 }

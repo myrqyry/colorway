@@ -2,7 +2,7 @@
     name: 'Dark Magic';
     id: 'com.myrqyry.Colorway.DarkMagic';
     extends: 'com.myrqyry.Colorway';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -27,8 +27,8 @@
     --text_light: #fafffe;
     --text_muted: #828b9c;  /* Muted Grey-Blue */
 
-    --text_disabled: #505663; /* Disabled Grey-Blue */
-    --text_inactive: #505663;
+    --text_disabled: #5B606C; /* Disabled Grey-Blue */
+    --text_inactive: #5B606C;
 
     --border_color: #2f2f40;
 
@@ -49,4 +49,8 @@
     /* Theme Aliases */
     --bg_dock: #17171f;
     --bg_hover: #2f2f40;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #0f0f17;
 }

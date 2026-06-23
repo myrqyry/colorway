@@ -1,26 +1,52 @@
 @OBSThemeMeta {
-    name: 'Solarized Dark';
+    name: 'Solarized Dark+';
     id: 'com.myrqyry.Colorway.SolarizedDark';
     extends: 'com.myrqyry.Colorway';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
 @OBSThemeVars {
-    --bg_base: #002b36;
+    --text_inverse: #00222B;
     --bg_window: #002b36;
-    --bg_dock: #073642;
+    --bg_base: #002b36;
+    --bg_preview: #001f26;
+
     --primary: #268bd2;
-    --primary_light: #839496;
-    --text: #839496;
-    --text_muted: #586e75;
-    --danger: #dc322f;
+    --primary_light: #2aa198;
+    --primary_lighter: #94e0db;
+    --primary_dark: #1a6d9e;
+    --primary_darker: #073642;
+
     --warning: #b58900;
-    --border_color: #073642;
-    --input_bg: #073642;
-    --input_border: #073642;
-    --button_bg: #073642;
-    --button_bg_hover: #586e75;
+    --danger: #dc322f;
+
+    --text: #839496;
     --text_light: #eee8d5;
-    --accent: #b58900;
+    --text_muted: #5F747B;
+
+    --text_disabled: #4C7685;
+    --text_inactive: #4C7685;
+
+    --border_color: #073642;
+
+    --input_bg: #073642;
+    --input_bg_hover: #09414d;
+    --input_bg_focus: #073642;
+
+    --list_item_bg_hover: #09414d;
+
+    --input_border: #073642;
+    --input_border_hover: #586e75;
+
+    --button_bg: #073642;
+    --button_bg_hover: #09414d;
+    --button_bg_disabled: #002b36;
+
+    --bg_dock: #001f26;
+    --bg_hover: #09414d;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #002b36;
 }

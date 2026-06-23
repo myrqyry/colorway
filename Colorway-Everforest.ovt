@@ -1,52 +1,51 @@
 @OBSThemeMeta {
-    name: 'Everforest';
+    name: 'Everforest Dark';
     id: 'com.myrqyry.Colorway.Everforest';
     extends: 'com.myrqyry.Colorway';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
 @OBSThemeVars {
-    /* Base Theme Colors (Warm Forest Greens/Browns) */
-    --bg_window: #2b3339;
-    --bg_base: #2b3339;
-    --bg_preview: #232a2f; /* Slightly darker than base for canvas */
+    --bg_window: #2D353B;
+    --bg_base: #2D353B;
+    --bg_preview: #232A2E;
 
-    /* Everforest Accents */
-    --primary: #a7c080;        /* Everforest Green */
-    --primary_light: #d3c6aa;  /* Cream for high contrast highlights */
-    --primary_lighter: #e6e2cc;
-    --primary_dark: #8da468;
-    --primary_darker: #4a5b48;
+    --primary: #A7C080;
+    --primary_light: #D3C6AA;
+    --primary_lighter: #E6E2CC;
+    --primary_dark: #8DA468;
+    --primary_darker: #4A5B48;
 
-    --warning: #dbbc7f; /* Everforest Yellow */
-    --danger: #e67e80;  /* Everforest Red */
+    --warning: #DBBC7F;
+    --danger: #E67E80;
 
-    /* Typography (Warm Cream) */
-    --text: #d3c6aa;
-    --text_light: #ffffff;
-    --text_muted: #9da9a0;
+    --text: #D3C6AA;
+    --text_light: #FFFFFF;
+    --text_muted: #9DA9A0;
 
-    --text_disabled: #7a8478;
-    --text_inactive: #7a8478;
+    --text_disabled: #7A8478;
+    --text_inactive: #7A8478;
 
-    --border_color: #434f55;
+    --border_color: #475258;
 
-    /* Inputs and Buttons */
-    --input_bg: #323c41;
-    --input_bg_hover: #3a454a;
-    --input_bg_focus: #323c41;
+    --input_bg: #343F44;
+    --input_bg_hover: #3D484D;
+    --input_bg_focus: #343F44;
 
-    --list_item_bg_hover: #3a454a;
+    --list_item_bg_hover: #3D484D;
 
-    --input_border: #434f55;
-    --input_border_hover: #5c6a72;
+    --input_border: #475258;
+    --input_border_hover: #859289;
 
-    --button_bg: #323c41;
-    --button_bg_hover: #3a454a;
-    --button_bg_disabled: #2b3339;
+    --button_bg: #343F44;
+    --button_bg_hover: #3D484D;
+    --button_bg_disabled: #2D353B;
 
-    /* Theme Aliases */
-    --bg_dock: #323c41;
-    --bg_hover: #3a454a;
+    --bg_dock: #343F44;
+    --bg_hover: #3D484D;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #2D353B;
 }

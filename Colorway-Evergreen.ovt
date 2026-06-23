@@ -7,6 +7,8 @@
 }
 
 @OBSThemeVars {
+    --text_inactive: #7D7992;
+    --text_disabled: #7D7992;
     /* Adapta Evergreen colors */
     --bg_base: #2b3339;
     --bg_window: #2b3339;

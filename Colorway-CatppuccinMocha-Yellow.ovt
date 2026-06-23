@@ -2,7 +2,7 @@
     name: 'Catppuccin Mocha — Yellow';
     id: 'com.myrqyry.Colorway.CatppuccinMocha.Yellow';
     extends: 'com.myrqyry.Colorway.CatppuccinMocha';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -12,4 +12,8 @@
     --primary_lighter: #f5e0dc;
     --primary_dark: #eba0ac;
     --primary_darker: #585b70;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #1e1e2e;
 }

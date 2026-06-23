@@ -2,7 +2,7 @@
     name: 'Hatsune Miku';
     id: 'com.myrqyry.Colorway.HatsuneMiku';
     extends: 'com.myrqyry.Colorway';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -26,8 +26,8 @@
     --text_light: #ffffff;
     --text_muted: #808080;
 
-    --text_disabled: #4d4d4d;
-    --text_inactive: #4d4d4d;
+    --text_disabled: #666666;
+    --text_inactive: #666666;
 
     --border_color: #4d4d4d;
 
@@ -48,4 +48,8 @@
     /* Theme Aliases */
     --bg_dock: #2d2d2d;
     --bg_hover: #4d4d4d;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #1a1a1a;
 }

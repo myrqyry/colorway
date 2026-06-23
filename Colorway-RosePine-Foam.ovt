@@ -2,7 +2,7 @@
     name: 'Rosé Pine — Foam';
     id: 'com.myrqyry.Colorway.RosePine.Foam';
     extends: 'com.myrqyry.Colorway.RosePine';
-    author: 'Mat + AI';
+    author: 'myrqyry';
     dark: 'true';
 }
 
@@ -12,4 +12,8 @@
     --primary_lighter: #e0def4;
     --primary_dark: #31748f;
     --primary_darker: #524f67;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #191724;
 }
