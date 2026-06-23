@@ -11,6 +11,13 @@
 }
 
 @font-face {
+    font-family: 'Bricolage Grotesque';
+    src: url(theme:BricolageGrotesque-VariableFont_opsz,wdth,wght.ttf);
+    font-weight: 200 800;
+    font-style: normal;
+}
+
+@font-face {
     font-family: 'Maple Mono';
     src: url(theme:MapleMono-SemiBold.ttf);
     font-weight: normal;
@@ -722,7 +729,7 @@ QWidget {
     selection-background-color: var(--primary);
     selection-color: var(--text_inverse);
     font-size: var(--font_base);
-    font-family: 'Maple Mono', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Bricolage Grotesque', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', Arial, sans-serif;
 }
 
 QWidget:disabled {
@@ -2678,7 +2685,7 @@ AlignmentSelector::indicator:checked:disabled {
    GLOBAL FONTS
    ================================================================================== */
 QWidget {
-    font-family: 'Maple Mono', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Bricolage Grotesque', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', Arial, sans-serif;
     font-size: var(--font_base); /* Restored layout parity */
 }
 
