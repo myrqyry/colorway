@@ -25,7 +25,7 @@
 
     /* Typography */
     --text: #F4F3EE;        /* Pampas Off-white */
-    --text_light: #FFFFFF;
+    --text_light: #F4F3EE;
     --text_muted: #B1ADA1;  /* Cloudy Gray */
 
     --text_disabled: #696661;

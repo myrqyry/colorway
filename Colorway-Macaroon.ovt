@@ -24,7 +24,7 @@
 
     /* Typography */
     --text: #ede9dc;        /* Macaroon Cream */
-    --text_light: #ffffff;
+    --text_light: #ede9dc;
     --text_muted: #f7d2e5;  /* Soft Pink */
 
     --text_disabled: #745D65; /* Muted Mauve */

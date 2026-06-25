@@ -41,7 +41,7 @@
 
     --list_item_bg_hover: #393a4d;
 
-    --input_border: #44475A;
+    --input_border: #5D6179;
     --input_border_hover: #6272A4;
 
     --button_bg: #191A21;

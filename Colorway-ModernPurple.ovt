@@ -25,8 +25,8 @@
     --danger: #ce838e;
 
     --text: #e2e2e2;
-    --text_light: #ffffff;
-    --text_muted: #616769;
+    --text_light: #e2e2e2;
+    --text_muted: #767C7E;
 
     --text_disabled: #4a4a6a;
     --text_inactive: #4a4a6a;
@@ -39,7 +39,7 @@
 
     --list_item_bg_hover: #3e3a52;
 
-    --input_border: #342f42;
+    --input_border: #4F4864;
     --input_border_hover: #6471e4;
 
     --button_bg: #375dda;

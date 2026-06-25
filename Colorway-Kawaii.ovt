@@ -25,8 +25,8 @@
     --danger: #ff62a5;
 
     --text: #FFF0F5;
-    --text_light: #FFFFFF;
-    --text_muted: #857282;
+    --text_light: #FFF0F5;
+    --text_muted: #998996;
 
     --text_disabled: #9498a1;
     --text_inactive: #9498a1;

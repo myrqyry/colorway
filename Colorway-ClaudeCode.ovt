@@ -27,7 +27,7 @@
 
     --text: #c3c1ba;
     --text_light: #f7f5ee;
-    --text_muted: #51504a;
+    --text_muted: #77756E;
 
     --text_disabled: #3e3e38;
     --text_inactive: #3e3e38;
