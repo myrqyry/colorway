@@ -1,0 +1,56 @@
+@OBSThemeMeta {
+    name: 'Claude Code';
+    id: 'com.myrqyry.Colorway.ClaudeCode';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(216, 119, 87, 0.3);
+    --accent_bg_end: rgba(216, 119, 87, 0.1);
+
+    /* Base Theme Colors */
+    --bg_window: #1a1a1a;
+    --bg_base: #1a1a1a;
+    --bg_preview: #121212;
+
+    --primary: #d87757;
+    --primary_light: #f3d5a3;
+    --primary_lighter: #ffdec8;
+    --primary_dark: #9e4b2d;
+    --primary_darker: #7a3820;
+
+    --warning: #e1a035;
+    --danger: #e33737;
+
+    --text: #c3c1ba;
+    --text_light: #f7f5ee;
+    --text_muted: #51504a;
+
+    --text_disabled: #3e3e38;
+    --text_inactive: #3e3e38;
+
+    --border_color: #2a2a2a;
+
+    --input_bg: #2a2a2a;
+    --input_bg_hover: #303030;
+    --input_bg_focus: var(--input_bg_hover);
+
+    --list_item_bg_hover: #303030;
+
+    --input_border: #3e3e38;
+    --input_border_hover: #51504a;
+
+    --button_bg: #2a2a2a;
+    --button_bg_hover: #303030;
+    --button_bg_disabled: #1a1a1a;
+
+    --bg_dock: #1E1F22;
+    --bg_hover: #303030;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #1a1a1a;
+}

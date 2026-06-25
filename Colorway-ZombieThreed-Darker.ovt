@@ -1,0 +1,55 @@
+@OBSThemeMeta {
+    name: 'Zombie Threed Darker';
+    id: 'com.myrqyry.Colorway.ZombieThreed.Darker';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(248, 144, 112, 0.3);
+    --accent_bg_end: rgba(248, 144, 112, 0.1);
+
+    --bg_window: #080808;
+    --bg_base: #080808;
+    --bg_preview: #040404;
+
+    --primary: #F89070;
+    --primary_light: #ffcf32;
+    --primary_lighter: #ffe070;
+    --primary_dark: #2fff89;
+    --primary_darker: #20c066;
+
+    --warning: #ffcf32;
+    --danger: #ff4a6a;
+
+    --text: #F0FAFF;
+    --text_light: #FFFFFF;
+    --text_muted: #46ffcd;
+
+    --text_disabled: #333333;
+    --text_inactive: #333333;
+
+    --border_color: #1a1a1a;
+
+    --input_bg: #111111;
+    --input_bg_hover: #1a1a1a;
+    --input_bg_focus: var(--input_bg_hover);
+
+    --list_item_bg_hover: #1a1a1a;
+
+    --input_border: #1a1a1a;
+    --input_border_hover: #F89070;
+
+    --button_bg: #F89070;
+    --button_bg_hover: #ffa888;
+    --button_bg_disabled: #080808;
+
+    --bg_dock: #0c0c0c;
+    --bg_hover: #1a1a1a;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #080808;
+}

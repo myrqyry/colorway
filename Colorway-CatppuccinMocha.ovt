@@ -7,6 +7,10 @@
 }
 
 @OBSThemeVars {
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(203, 166, 247, 0.3);
+    --accent_bg_end: rgba(203, 166, 247, 0.1);
+
     /* Base Theme Colors */
     --bg_window: #181825;
     --bg_base: #1e1e2e;
@@ -45,10 +49,6 @@
     --button_bg_disabled: #1e1e2e;
 
     /* Theme Aliases */
-    /* Replay/VirtualCam active state — derived from --primary */
-    --accent_bg_start: rgba(203, 166, 247, 0.3);
-    --accent_bg_end: rgba(203, 166, 247, 0.1);
-
     --bg_dock: #181825;
     --bg_hover: #313244;
 

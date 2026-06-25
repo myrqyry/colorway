@@ -1,0 +1,55 @@
+@OBSThemeMeta {
+    name: 'Ethereal Default';
+    id: 'com.myrqyry.Colorway.EtherealDefault';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(156, 210, 255, 0.3);
+    --accent_bg_end: rgba(156, 210, 255, 0.1);
+
+    --bg_window: #07080c;
+    --bg_base: #07080c;
+    --bg_preview: #030406;
+
+    --primary: #9cd2ff;
+    --primary_light: #e2f1ff;
+    --primary_lighter: #f8fbff;
+    --primary_dark: #6baadd;
+    --primary_darker: #4a8ab8;
+
+    --warning: #ffd166;
+    --danger: #ff6b6b;
+
+    --text: #e2f1ff;
+    --text_light: #ffffff;
+    --text_muted: #8aa2b8;
+
+    --text_disabled: #3a4a5a;
+    --text_inactive: #3a4a5a;
+
+    --border_color: #1a1f2a;
+
+    --input_bg: #0d1017;
+    --input_bg_hover: #141922;
+    --input_bg_focus: var(--input_bg_hover);
+
+    --list_item_bg_hover: #141922;
+
+    --input_border: #1a1f2a;
+    --input_border_hover: #8aa2b8;
+
+    --button_bg: #0d1017;
+    --button_bg_hover: #141922;
+    --button_bg_disabled: #07080c;
+
+    --bg_dock: #0d1017;
+    --bg_hover: #141922;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #07080c;
+}

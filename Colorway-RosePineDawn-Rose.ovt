@@ -1,0 +1,26 @@
+@OBSThemeMeta {
+    name: 'Rose Pine Dawn — Rose';
+    id: 'com.myrqyry.Colorway.RosePineDawn.Rose';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'false';
+}
+
+@OBSThemeVars {
+    /* Light theme: selected-item text stays dark */
+    --text_inverse: #191724;
+
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(215, 130, 126, 0.3);
+    --accent_bg_end: rgba(215, 130, 126, 0.1);
+
+    --primary: #d7827e;
+    --primary_light: #ea9d34;
+    --primary_lighter: #907aa9;
+    --primary_dark: #b4637a;
+    --primary_darker: #cecacd;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #faf4ed;
+}

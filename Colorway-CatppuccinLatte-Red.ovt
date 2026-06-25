@@ -1,0 +1,26 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Latte — Red';
+    id: 'com.myrqyry.Colorway.CatppuccinLatte.Red';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'false';
+}
+
+@OBSThemeVars {
+    /* Light theme: selected-item text stays dark */
+    --text_inverse: #191724;
+
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(210, 15, 57, 0.3);
+    --accent_bg_end: rgba(210, 15, 57, 0.1);
+
+    --primary: #d20f39;
+    --primary_light: #e64553;
+    --primary_lighter: #fe640b;
+    --primary_dark: #e64553;
+    --primary_darker: #acb0be;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #eff1f5;
+}

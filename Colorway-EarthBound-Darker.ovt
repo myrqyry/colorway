@@ -1,0 +1,55 @@
+@OBSThemeMeta {
+    name: 'Earthbound Darker';
+    id: 'com.myrqyry.Colorway.EarthBound.Darker';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(37, 255, 129, 0.3);
+    --accent_bg_end: rgba(37, 255, 129, 0.1);
+
+    --bg_window: #080808;
+    --bg_base: #080808;
+    --bg_preview: #050505;
+
+    --primary: #25ff81;
+    --primary_light: #70caff;
+    --primary_lighter: #a0ddff;
+    --primary_dark: #fafd51;
+    --primary_darker: #c4b800;
+
+    --warning: #fafd51;
+    --danger: #fb967f;
+
+    --text: #ffffff;
+    --text_light: #ffffff;
+    --text_muted: #ffff79;
+
+    --text_disabled: #333333;
+    --text_inactive: #333333;
+
+    --border_color: #1a1a1a;
+
+    --input_bg: #111111;
+    --input_bg_hover: #1a1a1a;
+    --input_bg_focus: var(--input_bg_hover);
+
+    --list_item_bg_hover: #1a1a1a;
+
+    --input_border: #1a1a1a;
+    --input_border_hover: #25ff81;
+
+    --button_bg: #25ff81;
+    --button_bg_hover: #4fff99;
+    --button_bg_disabled: #080808;
+
+    --bg_dock: #0a0a0a;
+    --bg_hover: #1a1a1a;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #080808;
+}
