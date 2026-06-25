@@ -42,7 +42,7 @@
     --input_border: #9498a1;
     --input_border_hover: #FFE175;
 
-    --button_bg: #ff5c8d;
+    --button_bg: #B24062;
     --button_bg_hover: #ff8cb4;
     --button_bg_disabled: #353042;
 
