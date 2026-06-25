@@ -2715,9 +2715,7 @@ QSlider::groove:horizontal {
 }
 
 QSlider::sub-page:horizontal {
-    background: var(--primary);
-    height: var(--slider_groove_thickness);
-    border-radius: 0px var(--slider_groove_radius) var(--slider_groove_radius) 0px;
+    border-radius: 8px;
 }
 
 QSlider::add-page:horizontal {
