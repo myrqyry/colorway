@@ -33,9 +33,9 @@
     /* Inputs and Buttons */
     --input_bg: #414559;
     --input_bg_hover: #51576d;
-    --input_bg_focus: #414559;
+    --input_bg_focus: #464d5e;
 
-    --list_item_bg_hover: #414559;
+    --list_item_bg_hover: #484f5f;
 
     --input_border: #414559;
     --input_border_hover: #626880;

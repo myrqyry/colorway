@@ -1,19 +1,39 @@
 @OBSThemeMeta {
     name: 'Catppuccin Macchiato — Yellow';
     id: 'com.myrqyry.Colorway.CatppuccinMacchiato.Yellow';
-    extends: 'com.myrqyry.Colorway.CatppuccinMacchiato';
+    extends: 'com.myrqyry.Colorway';
     author: 'myrqyry';
     dark: 'true';
 }
 
 @OBSThemeVars {
+    --bg_window: #1e2030;
+    --bg_base: #24273a;
+    --bg_preview: #181926;
     --primary: #eed49f;
     --primary_light: #f5a97f;
     --primary_lighter: #f4dbd6;
     --primary_dark: #ee99a0;
     --primary_darker: #5b6078;
-
-    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --warning: #f5a97f;
+    --danger: #ed8796;
+    --text: #cad3f5;
+    --text_light: #f5f5f5;
+    --text_muted: #8087a2;
+    --text_disabled: #a5adcb;
+    --text_inactive: #a5adcb;
+    --border_color: #363a4f;
+    --input_bg: #363a4f;
+    --input_bg_hover: #494d64;
+    --input_bg_focus: #3d4159;
+    --list_item_bg_hover: #3f4359;
+    --input_border: #363a4f;
+    --input_border_hover: #5b6078;
+    --button_bg: #1e2030;
+    --button_bg_hover: #363a4f;
+    --button_bg_disabled: #24273a;
+    --bg_dock: #1e2030;
+    --bg_hover: #363a4f;
     --ico: var(--text);
     --ico_selected: #24273a;
 }

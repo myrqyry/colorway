@@ -5,30 +5,6 @@
     dark: 'true';
 }
 
-@font-face {
-    font-family: 'MingCute';
-    src: url(theme:MingCute.ttf);
-}
-
-@font-face {
-    font-family: 'Bricolage Grotesque';
-    src: url(theme:BricolageGrotesque-VariableFont_opsz,wdth,wght.ttf);
-    font-weight: 200 800;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Maple Mono';
-    src: url(theme:MapleMono-SemiBold.ttf);
-    font-weight: normal;
-}
-
-@font-face {
-    font-family: 'Maple Mono';
-    src: url(theme:MapleMono-ExtraBold.ttf);
-    font-weight: bold;
-}
-
 @OBSThemeVars {
     /* OBS Color Palette */
     --blue1: #718CDC;
@@ -223,10 +199,10 @@
 
     --input_bg: #26233a;
     --input_bg_hover: #403d52;
-    --input_bg_focus: #26233a;
+    --input_bg_focus: #2d2a42;
 
     --list_item_bg_selected: var(--primary);
-    --list_item_bg_hover: #26233a;
+    --list_item_bg_hover: #332f4a;
 
     --input_border: #403d52;
     --input_border_width: 1px;
@@ -338,7 +314,46 @@
     --icon_dock_close: url(theme:icons/colorway/iconamoon/normal/close.svg);
     --icon_dock_popout: url(theme:icons/colorway/iconamoon/normal/popout.svg);
     --icon_check: url(theme:icons/colorway/iconamoon/normal/check.svg);
-    --pattern_eyes: url(theme:patterns/eyes-muted-use.svg);
+    --pattern_eyes: url(theme:patterns/pattern.svg);
+
+    /* Elevation & Depth Simulation */
+    --elevation_1: rgba(0, 0, 0, 0.15);
+    --elevation_2: rgba(0, 0, 0, 0.25);
+
+    /* Focus Glow */
+    --focus_glow: rgba(196, 167, 231, 0.15);
+
+    /* M3 Expressive - Surface Tone Hierarchy (auto-adapts to variants) */
+    --surface0: var(--bg_base);
+    --surface1: var(--bg_dock);
+    --surface2: var(--bg_preview);
+    --surface3: var(--input_bg_focus);
+    --surface4: var(--input_bg_hover);
+    --surface_dim: var(--grey8);
+
+    /* M3 Expressive - Container Colors */
+    --primary_container: var(--surface3);
+    --on_primary_container: var(--text);
+    --secondary_container: var(--surface2);
+    --on_secondary_container: var(--text);
+
+    /* M3 Expressive - Expanded Shape Scale */
+    --shape_xs: 3px;
+    --shape_sm: 5px;
+    --shape_md: 9px;
+    --shape_lg: 16px;
+    --shape_xl: 24px;
+    --shape_full: 999px;
+
+    /* M3 Expressive - Typography Role Aliases */
+    --font_label_size: var(--font_small);
+    --font_label_weight: 500;
+    --font_body_size: var(--font_base);
+    --font_body_weight: 400;
+    --font_title_size: var(--font_xlarge);
+    --font_title_weight: 600;
+    --font_headline_size: var(--font_heading);
+    --font_headline_weight: 700;
 
 }
 
@@ -419,8 +434,8 @@
 }
 
 .dialog-frame {
-    background-color: var(--grey6);
-    border-radius: var(--border_radius);
+    background-color: var(--surface1);
+    border-radius: var(--shape_md);
     border: 1px solid var(--border_color);
     margin: var(--spacing_base);
 }
@@ -695,6 +710,11 @@ QTreeView::item:selected:hover .icon-media-previous {
     qproperty-icon: url(theme:icons/colorway/iconamoon/selected/skip_previous.svg);
 }
 
+@font-face {
+    font-family: 'Bricolage Grotesque';
+    src: url(theme:BricolageGrotesqueVariable.ttf);
+}
+
 /* Default widget style, we override only what is needed. */
 
 QWidget {
@@ -714,22 +734,24 @@ QWidget:disabled {
 
 QDialog,
 QMainWindow,
+QMessageBox,
 QStatusBar,
 QMenuBar,
 QMenu {
     background-color: var(--bg_window);
+    color: var(--text_base);
 }
 
 OBSBasic,
 QDialog {
     background-color: var(--bg_window);
-    background-image: url(theme:patterns/eyes-muted-use.svg);
+    background-image: url(theme:patterns/pattern.svg);
 }
 
 /* Central widget of the main window */
 OBSBasic > QWidget {
     background: transparent;
-    background-image: url(theme:patterns/eyes-muted-use.svg);
+    background-image: url(theme:patterns/pattern.svg);
 }
 
 /* General Widgets */
@@ -766,7 +788,7 @@ QRadioButton {
 
 QAbstractItemView {
     background-color: var(--bg_base);
-    background-image: url(theme:patterns/eyes-muted-use.svg);
+    background-image: url(theme:patterns/pattern.svg);
     background-repeat: repeat;
 }
 
@@ -774,7 +796,7 @@ QListWidget,
 SceneTree,
 SourceTree {
     background-color: var(--bg_base);
-    background-image: url(theme:patterns/eyes-muted-use.svg);
+    background-image: url(theme:patterns/pattern.svg);
     background-repeat: repeat;
 }
 
@@ -811,46 +833,14 @@ QToolBar::separator {
     margin: 0px var(--spacing_base) 0px;
 }
 
-QListView,
-QListWidget,
-QMenu {
-    padding: var(--spacing_base);
-    outline: none;
-}
-
 QListWidget::item,
 SourceTreeItem {
     padding: var(--padding_large) var(--padding_large);
 }
 
-QMenu::item,
-QMenu > QWidget {
-    padding: var(--padding_large) var(--padding_menu);
-    padding-right: 20px;
-}
-
-QMenu > QWidget {
-    outline: none;
-}
-
-QMenu::item,
-QMenu > QWidget,
-QListView::item,
-QListWidget::item {
-    border-radius: var(--border_radius);
-    color: var(--text);
-    border: 1px solid transparent;
-}
-
 SourceTreeItem {
     border-radius: var(--border_radius);
     color: var(--text);
-}
-
-QMenu,
-QMenu > QMenu {
-    border: 1px solid var(--border_color);
-    padding: var(--spacing_base);
 }
 
 /* Temporary fix for plugins affected by fix in #11555 */
@@ -884,8 +874,8 @@ QMenu::item:hover,
 QListView::item:hover,
 QListWidget::item:hover,
 SourceTreeItem:hover {
-    background: var(--grey4);
-    border: 1px solid var(--grey3);
+    background: var(--list_item_bg_hover);
+    border: 1px solid var(--border_base);
 }
 
 QMenu::item:focus,
@@ -952,11 +942,11 @@ OBSBasicSettings #PropertiesContainer {
 
 /* Dock Widget */
 OBSDock > QWidget {
-    background: var(--bg_base);
-    background-image: url(theme:patterns/eyes-muted-use.svg);
+    background: var(--surface1);
+    background-image: url(theme:patterns/pattern.svg);
     background-repeat: repeat;
-    border-bottom-left-radius: var(--border_radius);
-    border-bottom-right-radius: var(--border_radius);
+    border-bottom-left-radius: var(--shape_lg);
+    border-bottom-right-radius: var(--shape_lg);
     border: 1px solid var(--border_color);
     border-top: none;
 }
@@ -973,6 +963,7 @@ OBSDock QToolBar {
 OBSDock QToolBar QToolButton {
     background: transparent;
     border: 1px solid transparent;
+    border-radius: var(--border_radius_small);
     margin: 1px;
     margin-top: 2px;
     padding: var(--padding_large);
@@ -1021,13 +1012,6 @@ StatusBarWidget > QFrame {
 
 /* ScrollBars */
 
-QScrollBar {
-    background-color: var(--scrollbar_bg);
-    margin: 0px;
-    border-radius: var(--border_radius);
-    border: 1px solid var(--grey6);
-}
-
 ::corner {
     background-color: var(--bg_window);
     border: none;
@@ -1051,18 +1035,6 @@ QScrollBar::sub-page:horizontal {
     color: none;
 }
 
-QScrollBar::handle {
-    background-color: var(--scrollbar_handle);
-    margin: 2px;
-    border-radius: var(--border_radius_small);
-    border: 1px solid var(--scrollbar_handle);
-}
-
-QScrollBar::handle:hover {
-    background-color: var(--scrollbar_hover);
-    border-color: var(--scrollbar_border);
-}
-
 QScrollBar::handle:pressed {
     background-color: var(--scrollbar_down);
     border-color: var(--scrollbar_down);
@@ -1074,7 +1046,7 @@ QScrollBar::handle:disabled {
 }
 
 OBSDock QScrollBar {
-    border-radius: 0;
+    border-radius: var(--border_radius_small);
 }
 
 OBSDock QListWidget::corner {
@@ -1094,9 +1066,9 @@ OBSDock QScrollBar:vertical {
 /* Source Context Bar */
 
 #contextContainer {
-    background-color: var(--bg_base);
+    background-color: var(--surface1);
     margin-top: 4px;
-    border-radius: var(--border_radius);
+    border-radius: var(--shape_md);
 }
 
 #contextContainer QPushButton {
@@ -1138,35 +1110,6 @@ QTabWidget::tab-bar {
     alignment: left;
 }
 
-QTabBar QToolButton {
-    background: var(--button_bg);
-    border: none;
-}
-
-QTabBar::tab:top {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-}
-
-QTabBar::tab:bottom {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-}
-
-QTabBar::tab:pressed {
-    background: var(--tab_bg_down);
-}
-
-QTabBar::tab:hover {
-    background: var(--tab_bg_hover);
-    border-color: var(--tab_border_hover);
-    color: var(--text);
-}
-
-QTabBar::tab:focus {
-    border-color: var(--tab_border_focus);
-}
-
 QTabBar::tab:top {
     border-bottom: 0px solid transparent;
     margin-bottom: 0px;
@@ -1177,22 +1120,7 @@ QTabBar::tab:bottom {
     margin-top: 0px;
 }
 
-QTabBar QToolButton {
-    background: var(--button_bg);
-    min-width: 16px;
-    padding: 0px;
-}
-
 /* ComboBox */
-
-QComboBox,
-QDateTimeEdit {
-    background-color: var(--input_bg);
-    border: 1px solid var(--input_bg);
-    border-radius: var(--border_radius);
-    padding: var(--input_padding) var(--input_text_padding);
-    height: var(--input_height);
-}
 
 QComboBox QAbstractItemView {
     padding: var(--spacing_base) var(--spacing_large);
@@ -1202,6 +1130,7 @@ QComboBox QAbstractItemView {
 
 QComboBox QAbstractItemView::item {
     padding: var(--padding_large) var(--padding_xlarge);
+    border-radius: var(--shape_sm);
 }
 
 QComboBox QAbstractItemView::item:selected {
@@ -1218,6 +1147,7 @@ QComboBox:hover,
 QComboBox:focus,
 QDateTimeEdit:hover,
 QDateTimeEdit:selected {
+    background-color: var(--input_bg_hover);
     border-color: var(--input_border_hover);
 }
 
@@ -1281,8 +1211,9 @@ QPlainTextEdit:hover {
 QLineEdit:read-only,
 QLineEdit:read-only:hover,
 QLineEdit:read-only:focus {
-    background-color: transparent;
-    border-color: var(--input_bg);
+    background-color: var(--button_bg_disabled);
+    border-color: var(--input_border);
+    color: var(--text_muted);
 }
 
 QTextEdit:!editable,
@@ -1382,12 +1313,6 @@ QTreeView::item:selected:hover QDoubleSpinBox::down-arrow {
     color: var(--lavender_accent);
 }
 
-QPushButton:checked {
-    background-color: var(--lavender_accent);
-    border-color: var(--lavender_accent);
-    color: var(--text_inverse);
-}
-
 /* Primary Control Button Checked Coloring */
 #streamButton:!hover:!pressed.state-active,
 #recordButton:!hover:!pressed.state-active,
@@ -1412,9 +1337,13 @@ QPushButton:checked {
 }
 
 
-QPushButton:hover,
 QPushButton:focus {
-    border-color: var(--button_border_hover);
+    background: qradialgradient(
+        cx:0.5, cy:0.5, radius: 0.9, fx:0.5, fy:0.5,
+        stop:0    var(--button_bg),
+        stop:0.5  var(--button_bg),
+        stop:1    var(--primary)
+    );
 }
 
 QPushButton::flat {
@@ -1429,12 +1358,6 @@ QPushButton:checked {
 QPushButton:checked:hover,
 QPushButton:checked:focus {
     border-color: var(--primary_lighter);
-}
-
-QPushButton:pressed,
-QPushButton:pressed:hover {
-    background-color: var(--button_bg_down);
-    border-color: var(--button_border);
 }
 
 QPushButton::menu-indicator {
@@ -1470,7 +1393,8 @@ QToolButton:hover,
 QToolButton:focus,
 .btn-tool:hover,
 .btn-tool:focus {
-    border-color: var(--button_border);
+    border-color: var(--primary);
+    border-width: 2px;
     background-color: var(--button_bg_hover);
 }
 
@@ -1490,12 +1414,6 @@ QToolButton:disabled,
 
 /* Sliders */
 
-QSlider::groove {
-    background-color: var(--grey4);
-    border: none;
-    border-radius: var(--slider_groove_radius);
-}
-
 QSlider::sub-page:horizontal:disabled {
     background-color: var(--grey4);
     border-radius: var(--slider_groove_radius);
@@ -1514,19 +1432,6 @@ QSlider::add-page:vertical:disabled {
 QSlider::sub-page:vertical:disabled {
     background-color: var(--grey7);
     border-radius: var(--slider_groove_radius);
-}
-
-QSlider::handle {
-    background-color: var(--white1);
-    border-radius: var(--slider_handle_radius);
-}
-
-QSlider::handle:hover {
-    background-color: var(--white4);
-}
-
-QSlider::handle:pressed {
-    background-color: var(--white3);
 }
 
 QSlider::handle:disabled {
@@ -1902,7 +1807,7 @@ QGroupBox::indicator {
 .indicator-lock::indicator:checked:hover {
     image: url(theme:icons/colorway/iconamoon/normal/lock.svg);
     background: var(--tint_amber);
-    border-radius: 2px;
+    border-radius: var(--border_radius_small);
 }
 
 SourceTreeItem:selected:hover .indicator-lock::indicator:checked {
@@ -1923,8 +1828,8 @@ SourceTreeItem:selected:hover .indicator-lock::indicator:unchecked {
 .indicator-visibility::indicator:checked,
 .indicator-visibility::indicator:checked:hover {
     image: url(theme:icons/colorway/iconamoon/normal/eye.svg);
-    background: var(--tint_green); /* Green tint */
-    border-radius: 2px;
+    background: var(--tint_green);
+    border-radius: var(--border_radius_small);
 }
 
 SourceTreeItem:selected:hover .indicator-visibility::indicator:checked {
@@ -1934,8 +1839,8 @@ SourceTreeItem:selected:hover .indicator-visibility::indicator:checked {
 .indicator-visibility::indicator:unchecked,
 .indicator-visibility::indicator:unchecked:hover {
     image: url(theme:icons/colorway/iconamoon/normal/eye-off.svg);
-    background: var(--tint_red); /* Red tint */
-    border-radius: 2px;
+    background: var(--tint_red);
+    border-radius: var(--border_radius_small);
 }
 
 SourceTreeItem:selected:hover .indicator-visibility::indicator:unchecked {
@@ -2013,7 +1918,7 @@ OBSBasic {
 SceneTree,
 SourceTree {
     background-color: var(--bg_base);
-    background-image: url(theme:patterns/eyes-muted-use.svg);
+    background-image: url(theme:patterns/pattern.svg);
     background-repeat: repeat;
 }
 
@@ -2223,8 +2128,6 @@ OBSBasicAdvAudio #scrollAreaWidgetContents {
     max-height: 14px;
     padding: 0px;
     margin: 0;
-    border: none;
-    border-radius: 0;
 }
 
 #previewXContainer {
@@ -2304,7 +2207,7 @@ SourceSelectButton {
     background: var(--button_bg);
     padding: var(--padding_base) var(--padding_large);
     margin: var(--spacing_base);
-    border-radius: var(--border_radius);
+    border-radius: var(--shape_lg);
     border: 1px solid var(--border_color);
     outline: none;
 }
@@ -2343,7 +2246,9 @@ SourceSelectButton:pressed:hover {
 
 /* Idian Widgets */
 idian--Group {
-    border-radius: var(--border_radius);
+    background: var(--surface1);
+    border-radius: var(--shape_md);
+    padding: var(--padding_base);
     font-weight: bold;
     margin: 0 0 var(--spacing_base);
     min-width: 300px;
@@ -2352,12 +2257,13 @@ idian--Group {
 
 idian--Group .header .title {
     font-weight: bold;
-    padding: var(--padding_large) 0;
+    padding: var(--padding_large);
+    color: var(--on_primary_container);
 }
 
 idian--Group .header .description {
     color: var(--text_muted);
-    padding: var(--spacing_small) 0;
+    padding: var(--spacing_small) var(--padding_small);
 }
 
 idian--PropertiesList {
@@ -2656,12 +2562,8 @@ AlignmentSelector::indicator:checked:disabled {
    ================================================================================== */
 
 /* ==================================================================================
-   GLOBAL FONTS
+   GLOBAL FONTS (font-family set globally on QWidget above; nothing to override here)
    ================================================================================== */
-QWidget {
-    font-family: 'Bricolage Grotesque', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', Arial, sans-serif;
-    font-size: var(--font_base); /* Restored layout parity */
-}
 
 /* ==================================================================================
    BUTTONS - Rounded Material Design with Smooth Transitions
@@ -2726,17 +2628,23 @@ QComboBox, QSpinBox, QDoubleSpinBox, QLineEdit, QPlainTextEdit, QTextEdit {
     selection-color: var(--text_inverse);
 }
 
+QSpinBox, QDoubleSpinBox {
+    min-height: calc(2.6pt * var(--font_base_value));
+}
+
 QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus, QLineEdit:focus {
-    border: 1px solid var(--border_focus);
+    border: 2px solid var(--border_focus);
+    background-color: var(--input_bg_focus);
 }
 
 QPlainTextEdit:focus, QTextEdit:focus,
 QTreeView:focus, QListWidget:focus, QTableView:focus {
-    border: 1px solid var(--border_focus);
+    border: 2px solid var(--border_focus);
 }
 
 QComboBox:hover, QSpinBox:hover, QDoubleSpinBox:hover, QLineEdit:hover {
-    background: var(--bg_hover);
+    background: var(--input_bg_hover);
+    border-color: var(--input_border_hover);
 }
 
 /* Dropdown Arrow Area */
@@ -2862,12 +2770,12 @@ QCheckBox::indicator, QRadioButton::indicator {
     width: var(--icon_base);
     height: var(--icon_base);
     border: 1px solid var(--border_base);
-    border-radius: var(--border_radius_small);
+    border-radius: var(--shape_sm);
     background: var(--bg_base);
 }
 
 QRadioButton::indicator {
-    border-radius: calc(var(--icon_base) / 2);
+    border-radius: var(--shape_full);
 }
 
 QCheckBox::indicator:hover, QRadioButton::indicator:hover {
@@ -2923,14 +2831,6 @@ QCheckBox[themeID="muteCheckBox"]::indicator:checked {
     background: transparent;
 }
 
-/* ==================================================================================
-   WINDOW & DIALOG FIXES
-   ================================================================================== */
-QDialog, QMainWindow, QMessageBox {
-    background-color: var(--bg_base);
-    color: var(--text_base);
-}
-
 OBSBasicStats, OBSBasicFilters, OBSBasicSettings {
     background-color: var(--bg_base);
     color: var(--text_base);
@@ -2952,13 +2852,14 @@ QScrollArea, QScrollArea > QWidget, QScrollArea > QWidget > QWidget {
 QMenu {
     background-color: var(--bg_dock);
     border: 1px solid var(--border_base);
+    border-bottom: 2px solid var(--elevation_2);
     padding: var(--spacing_base);
 }
 
 QMenu::item {
     padding: var(--padding_large) var(--padding_menu);
     margin: var(--spacing_small);
-    border-radius: var(--border_radius_small);
+    border-radius: var(--shape_sm);
     color: var(--text_base);
 }
 
@@ -2993,13 +2894,14 @@ QDockWidget::title {
     padding: var(--padding_base) var(--padding_large);
     font-size: var(--font_small);
     font-weight: bold;
-    background: var(--bg_dock);
+    background: var(--surface1);
     color: var(--primary);
-    border-bottom: 1px solid var(--border_base);
+    border-bottom: 2px solid var(--border_base);
 }
 
 QDockWidget::close-button, QDockWidget::float-button {
     border: none;
+    border-radius: var(--border_radius_small);
     background: transparent;
     padding: var(--padding_small);
     icon-size: var(--icon_small);
@@ -3007,7 +2909,6 @@ QDockWidget::close-button, QDockWidget::float-button {
 
 QDockWidget::close-button:hover, QDockWidget::float-button:hover {
     background: var(--primary);
-    border-radius: var(--border_radius_small);
 }
 
 /* ==================================================================================
@@ -3015,7 +2916,7 @@ QDockWidget::close-button:hover, QDockWidget::float-button:hover {
    ================================================================================== */
 QListWidget, QTreeView, QTableView {
     background-color: var(--bg_base);
-    background-image: url(theme:patterns/eyes-muted-use.svg);
+    background-image: url(theme:patterns/pattern.svg);
     background-repeat: repeat;
     border: 1px solid var(--border_base);
     color: var(--text_base);
@@ -3044,7 +2945,7 @@ QListWidget::item:selected, QTreeView::item:selected {
 }
 
 QListWidget::item:hover:!selected, QTreeView::item:hover:!selected {
-    background: var(--bg_hover);
+    background: var(--list_item_bg_hover);
     color: var(--text_bright);
 }
 
@@ -3097,6 +2998,14 @@ QScrollBar::handle:vertical:hover {
     background: var(--primary);
 }
 
+QScrollBar::handle:vertical:pressed {
+    background: var(--primary_dark);
+}
+
+QScrollBar::handle:vertical:disabled {
+    background: transparent;
+}
+
 QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
     height: 0px;
 }
@@ -3123,6 +3032,14 @@ QScrollBar::handle:horizontal:hover {
     background: var(--primary);
 }
 
+QScrollBar::handle:horizontal:pressed {
+    background: var(--primary_dark);
+}
+
+QScrollBar::handle:horizontal:disabled {
+    background: transparent;
+}
+
 QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
     width: 0px;
 }
@@ -3136,7 +3053,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
    ================================================================================== */
 QTabWidget::pane {
     border: 1px solid var(--border_base);
-    background: var(--bg_dock);
+    background: var(--surface1);
     top: -1px;
 }
 
@@ -3145,33 +3062,50 @@ QTabBar::tab {
     color: var(--text_muted);
     padding: var(--padding_base) var(--padding_large);
     min-width: 50px;
-    border-top-left-radius: var(--border_radius_small);
-    border-top-right-radius: var(--border_radius_small);
+    border-top-left-radius: var(--shape_sm);
+    border-top-right-radius: var(--shape_sm);
     margin-right: 2px;
     font-size: var(--font_small);
 }
 
 QTabBar::tab:selected {
-    background: var(--bg_dock);
+    background: var(--surface1);
     color: var(--primary);
     border-bottom: 2px solid var(--primary);
     font-weight: bold;
 }
 
 QTabBar::tab:hover:!selected {
-    background: var(--bg_hover);
-    color: var(--text_base);
+    background: var(--surface2);
+    color: var(--text_bright);
+    border-bottom: 2px solid var(--border_base);
+}
+
+QTabBar::tab:pressed {
+    background: var(--tab_bg_down);
+}
+
+QTabBar::tab:focus {
+    border-color: var(--tab_border_focus);
+}
+
+QTabBar QToolButton {
+    background: var(--button_bg);
+    border: none;
+    border-radius: var(--border_radius_small);
+    min-width: 16px;
+    padding: 0px;
 }
 
 /* ==================================================================================
    GROUP BOXES
    ================================================================================== */
 QGroupBox {
+    background: var(--surface1);
     border: 1px solid var(--border_base);
-    border-radius: var(--border_radius_small);
+    border-radius: var(--shape_md);
     margin-top: 16px;
-    padding-top: 8px;
-    padding-bottom: 4px;
+    padding: var(--padding_large);
     font-size: var(--font_base);
 }
 
@@ -3189,10 +3123,10 @@ QGroupBox::title {
    TOOLTIPS
    ================================================================================== */
 QToolTip {
-    background-color: var(--bg_dock);
+    background-color: var(--surface2);
     color: var(--text_bright);
     border: 1px solid var(--primary);
-    border-radius: var(--border_radius_small);
+    border-radius: var(--shape_sm);
     padding: var(--padding_base) var(--padding_large);
     font-size: var(--font_small);
 }
@@ -3279,7 +3213,7 @@ OBSPropertiesView QPushButton,
 OBSPropertiesView QComboBox,
 OBSPropertiesView QSpinBox,
 OBSPropertiesView QLineEdit {
-    margin: 1px 0px;
+    margin: var(--spacing_base) 0px;
 }
 
 OBSPropertiesView IconLabel {
@@ -3299,7 +3233,7 @@ OBSPropertiesView QSlider:horizontal {
    ================================================================================== */
 OBSBasicSettings QListWidget {
     background-color: var(--bg_dock);
-    background-image: url(theme:patterns/eyes-muted-use.svg);
+    background-image: url(theme:patterns/pattern.svg);
     background-repeat: repeat;
     border: none;
     border-right: 1px solid var(--border_base);
@@ -3310,14 +3244,14 @@ OBSBasicSettings QListWidget {
 }
 
 OBSBasicSettings QListWidget::item {
-    padding: 8px 12px;
-    margin: 0px 4px 2px 4px;
+    padding: var(--padding_large) var(--padding_xlarge);
+    margin: 0px var(--spacing_small) var(--spacing_small) var(--spacing_small);
     color: var(--text_muted);
-    border-radius: var(--border_radius_small);
+    border-radius: var(--shape_md);
 }
 
 OBSBasicSettings QListWidget::item:hover {
-    background-color: var(--bg_hover);
+    background-color: var(--surface2);
     color: var(--text_bright);
 }
 
@@ -3344,7 +3278,7 @@ QLabel[openExternalLinks="true"] {
    ================================================================================== */
 OBSBasicFilters QListWidget {
     background-color: var(--bg_dock);
-    background-image: url(theme:patterns/eyes-muted-use.svg);
+    background-image: url(theme:patterns/pattern.svg);
     background-repeat: repeat;
     border: 1px solid var(--border_base);
     color: var(--text_base);
@@ -3399,7 +3333,7 @@ VolumeMeter {
    ================================================================================== */
 QProgressBar {
     border: 1px solid var(--border_base);
-    border-radius: var(--border_radius_small);
+    border-radius: var(--shape_full);
     text-align: center;
     background: var(--bg_base);
     color: var(--text_base);
@@ -3408,7 +3342,7 @@ QProgressBar {
 
 QProgressBar::chunk {
     background: var(--primary);
-    border-radius: var(--border_radius_small);
+    border-radius: var(--shape_full);
 }
 
 /* ==================================================================================

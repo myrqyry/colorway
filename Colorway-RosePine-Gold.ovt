@@ -1,19 +1,39 @@
 @OBSThemeMeta {
     name: 'Rosé Pine — Gold';
     id: 'com.myrqyry.Colorway.RosePine.Gold';
-    extends: 'com.myrqyry.Colorway.RosePine';
+    extends: 'com.myrqyry.Colorway';
     author: 'myrqyry';
     dark: 'true';
 }
 
 @OBSThemeVars {
+    --bg_window: #191724;
+    --bg_base: #191724;
+    --bg_preview: #26233a;
     --primary: #f6c177;
     --primary_light: #ebbcba;
     --primary_lighter: #e0def4;
     --primary_dark: #eb6f92;
     --primary_darker: #524f67;
-
-    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --warning: #f6c177;
+    --danger: #eb6f92;
+    --text: #e0def4;
+    --text_light: #ffffff;
+    --text_muted: #908caa;
+    --text_disabled: #6e6a86;
+    --text_inactive: #6e6a86;
+    --border_color: #403d52;
+    --input_bg: #26233a;
+    --input_bg_hover: #403d52;
+    --input_bg_focus: #332f4a;
+    --list_item_bg_hover: #332f4a;
+    --input_border: #403d52;
+    --input_border_hover: #524f67;
+    --button_bg: #1f1d2e;
+    --button_bg_hover: #26233a;
+    --button_bg_disabled: #191724;
+    --bg_dock: #1f1d2e;
+    --bg_hover: #26233a;
     --ico: var(--text);
     --ico_selected: #191724;
 }

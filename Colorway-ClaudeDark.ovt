@@ -36,7 +36,7 @@
     /* Inputs and Buttons */
     --input_bg: #242423;
     --input_bg_hover: #3d3c3a;
-    --input_bg_focus: #242423;
+    --input_bg_focus: #353532;
 
     --list_item_bg_hover: #3d3c3a;
 

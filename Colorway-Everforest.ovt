@@ -31,7 +31,7 @@
 
     --input_bg: #343F44;
     --input_bg_hover: #3D484D;
-    --input_bg_focus: #343F44;
+    --input_bg_focus: #404b51;
 
     --list_item_bg_hover: #3D484D;
 
