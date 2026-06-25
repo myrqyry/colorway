@@ -710,8 +710,13 @@ QTreeView::item:selected:hover .icon-media-previous {
     qproperty-icon: url(theme:icons/colorway/iconamoon/selected/skip_previous.svg);
 }
 
-/* Bricolage Grotesque is installed system-wide.
-   Qt resolves weights (normal/500/600/bold) from the variable font automatically. */
+/* Bricolage Grotesque variable font via @font-face.
+   Fallback to system fonts if Qt fails to load it. */
+
+@font-face {
+    font-family: "Bricolage Grotesque";
+    src: url("theme:BricolageGrotesqueVariable.ttf");
+}
 
 QWidget {
     alternate-background-color: var(--bg_base);
