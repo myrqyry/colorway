@@ -45,6 +45,10 @@
     --bg_dock: #1f2322;
     --bg_hover: #2E3A38;
 
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(243, 177, 179, 0.3);
+    --accent_bg_end: rgba(243, 177, 179, 0.1);
+
     /* Icon colors (currentColor SVGs, controlled via CSS color) */
     --ico: var(--text);
     --ico_selected: #1a1d1c;

@@ -44,7 +44,14 @@
     --button_bg_hover: #dfdad9;
     --button_bg_disabled: #faf4ed;
 
+    /* Light theme: override text_inverse so selected-item text stays dark */
+    --text_inverse: #191724;
+
     /* Theme Aliases */
+    /* Replay/VirtualCam active state — derived from --primary */
+    --accent_bg_start: rgba(40, 105, 131, 0.3);
+    --accent_bg_end: rgba(40, 105, 131, 0.1);
+
     --bg_dock: #f2e9e1;
     --bg_hover: #f2e9e1;
 

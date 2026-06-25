@@ -26,4 +26,8 @@
     --button_bg_hover: #3a454a;
     --text_light: #ffffff;
     --accent: #fffd79;
+
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(167, 192, 128, 0.3);
+    --accent_bg_end: rgba(167, 192, 128, 0.1);
 }

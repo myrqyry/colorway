@@ -36,4 +36,8 @@
     --bg_hover: #414559;
     --ico: var(--text);
     --ico_selected: #303446;
+
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(242, 213, 207, 0.3);
+    --accent_bg_end: rgba(242, 213, 207, 0.1);
 }

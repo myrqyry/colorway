@@ -48,6 +48,10 @@
     --button_bg_disabled: #1B1B1A;
 
     /* Theme Aliases */
+    /* Replay/VirtualCam active state — derived from --primary */
+    --accent_bg_start: rgba(193, 95, 60, 0.3);
+    --accent_bg_end: rgba(193, 95, 60, 0.1);
+
     --bg_dock: #242423;
     --bg_hover: #3d3c3a;
 

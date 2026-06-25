@@ -194,7 +194,7 @@
     --input_height_base: max(calc(var(--input_font_scale) + var(--input_font_padding)), 24);
     --input_padding: calc(2px + var(--padding_base));
     --input_text_padding: max(calc(6px + var(--padding_base)), 8px);
-    --input_height: calc(var(--input_height_base) - calc(var(--input_padding) * 2px));
+    --input_height: calc(var(--input_height_base) - calc(var(--input_padding) * 2));
     --input_height_half: calc(var(--input_height_base) / 2);
 
     --input_bg: #26233a;
@@ -262,7 +262,7 @@
 
     --palette_light: var(--input_bg_hover);
     --palette_mid: var(--bg_preview);
-    --palette_dark: var(--bg_dock);
+    --palette_dark: #1f1d2e;
 
     --palette_highlight: var(--primary);
     --palette_highlightedText: var(--text_inverse);
@@ -745,13 +745,13 @@ QMenu {
 OBSBasic,
 QDialog {
     background-color: var(--bg_window);
-    background-image: url(theme:patterns/pattern.svg);
+    background-image: var(--pattern_eyes);
 }
 
 /* Central widget of the main window */
 OBSBasic > QWidget {
     background: transparent;
-    background-image: url(theme:patterns/pattern.svg);
+    background-image: var(--pattern_eyes);
 }
 
 /* General Widgets */
@@ -788,7 +788,7 @@ QRadioButton {
 
 QAbstractItemView {
     background-color: var(--bg_base);
-    background-image: url(theme:patterns/pattern.svg);
+    background-image: var(--pattern_eyes);
     background-repeat: repeat;
 }
 
@@ -796,7 +796,7 @@ QListWidget,
 SceneTree,
 SourceTree {
     background-color: var(--bg_base);
-    background-image: url(theme:patterns/pattern.svg);
+    background-image: var(--pattern_eyes);
     background-repeat: repeat;
 }
 
@@ -943,7 +943,7 @@ OBSBasicSettings #PropertiesContainer {
 /* Dock Widget */
 OBSDock > QWidget {
     background: var(--surface1);
-    background-image: url(theme:patterns/pattern.svg);
+    background-image: var(--pattern_eyes);
     background-repeat: repeat;
     border-bottom-left-radius: var(--shape_lg);
     border-bottom-right-radius: var(--shape_lg);
@@ -1918,7 +1918,7 @@ OBSBasic {
 SceneTree,
 SourceTree {
     background-color: var(--bg_base);
-    background-image: url(theme:patterns/pattern.svg);
+    background-image: var(--pattern_eyes);
     background-repeat: repeat;
 }
 
@@ -2571,7 +2571,7 @@ AlignmentSelector::indicator:checked:disabled {
 
 QPushButton {
     background-color: var(--button_bg);
-    color: var(--text_muted);
+    color: var(--text);
     border: 2px solid var(--button_bg);
     border-radius: var(--border_radius); /* Propagates 9px rounding globally */
     min-height: calc(1.8pt * var(--font_base_value));
@@ -2916,7 +2916,7 @@ QDockWidget::close-button:hover, QDockWidget::float-button:hover {
    ================================================================================== */
 QListWidget, QTreeView, QTableView {
     background-color: var(--bg_base);
-    background-image: url(theme:patterns/pattern.svg);
+    background-image: var(--pattern_eyes);
     background-repeat: repeat;
     border: 1px solid var(--border_base);
     color: var(--text_base);
@@ -3233,7 +3233,7 @@ OBSPropertiesView QSlider:horizontal {
    ================================================================================== */
 OBSBasicSettings QListWidget {
     background-color: var(--bg_dock);
-    background-image: url(theme:patterns/pattern.svg);
+    background-image: var(--pattern_eyes);
     background-repeat: repeat;
     border: none;
     border-right: 1px solid var(--border_base);
@@ -3278,7 +3278,7 @@ QLabel[openExternalLinks="true"] {
    ================================================================================== */
 OBSBasicFilters QListWidget {
     background-color: var(--bg_dock);
-    background-image: url(theme:patterns/pattern.svg);
+    background-image: var(--pattern_eyes);
     background-repeat: repeat;
     border: 1px solid var(--border_base);
     color: var(--text_base);
