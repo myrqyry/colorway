@@ -557,7 +557,7 @@
 
 .icon-media-next { qproperty-icon: url(theme:icons/colorway/iconamoon/normal/skip_forward.svg); }
 
-.icon-media-previous { qproperty-icon: url(theme:icons/colorway/iconamoon/normal/skip_previous.svg); }
+.icon-media-prev { qproperty-icon: url(theme:icons/colorway/iconamoon/normal/skip_previous.svg); }
 
 /* Dark icon swaps for icon classes on light backgrounds */
 QListView::item:selected:hover .icon-plus,
@@ -704,9 +704,9 @@ QTreeView::item:selected:hover .icon-media-next {
     qproperty-icon: url(theme:icons/colorway/iconamoon/selected/skip_forward.svg);
 }
 
-QListView::item:selected:hover .icon-media-previous,
-QListWidget::item:selected:hover .icon-media-previous,
-QTreeView::item:selected:hover .icon-media-previous {
+QListView::item:selected:hover .icon-media-prev,
+QListWidget::item:selected:hover .icon-media-prev,
+QTreeView::item:selected:hover .icon-media-prev {
     qproperty-icon: url(theme:icons/colorway/iconamoon/selected/skip_previous.svg);
 }
 
@@ -1025,7 +1025,7 @@ QScrollBar::add-page:vertical,
 QScrollBar::sub-page:vertical {
     border: none;
     background: none;
-    color: none;
+    color: transparent;
 }
 
 QScrollBar::left-arrow:horizontal,
@@ -1034,7 +1034,7 @@ QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal {
     border: none;
     background: none;
-    color: none;
+    color: transparent;
 }
 
 QScrollBar::handle:pressed {
@@ -1167,7 +1167,6 @@ QDateTimeEdit::drop-down {
 
 QComboBox::down-arrow,
 QDateTimeEdit::down-arrow {
-    qproperty-alignment: AlignTop;
     image: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
     width: 100%;
 }
@@ -1198,7 +1197,6 @@ QDateTimeEdit::drop-down:editable {
 
 QComboBox::down-arrow:editable,
 QDateTimeEdit::down-arrow:editable {
-    qproperty-alignment: AlignTop;
     image: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
     width: 100%;
 }
@@ -1315,27 +1313,37 @@ QTreeView::item:selected:hover QDoubleSpinBox::down-arrow {
     color: var(--lavender_accent);
 }
 
-/* Primary Control Button Checked Coloring */
-#streamButton:!hover:!pressed.state-active,
-#recordButton:!hover:!pressed.state-active,
-#pauseRecordButton:!hover:!pressed.state-active,
-#replayBufferButton:!hover:!pressed.state-active,
-#virtualCamButton:!hover:!pressed.state-active,
-#modeSwitch:!hover:!pressed.state-active,
-#broadcastButton:!hover:!pressed.state-active {
-    background: var(--primary);
+/* Primary Control Button Active Hover States */
+#streamButton:hover:!pressed.state-active,
+#broadcastButton:hover:!pressed.state-active {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(56, 189, 248, 0.45), stop:1 rgba(56, 189, 248, 0.15));
+    border-color: var(--live);
+    color: var(--text_light);
 }
 
-/* Primary Control Button Hover Coloring */
-#streamButton:hover:!pressed.state-active,
 #recordButton:hover:!pressed.state-active,
-#pauseRecordButton:hover:!pressed.state-active,
-#replayBufferButton:!pressed.state-active,
-#virtualCamButton:!pressed.state-active,
-#modeSwitch:hover:!pressed.state-active,
-#broadcastButton:hover:!pressed.state-active {
+#pauseRecordButton:hover:!pressed.state-active {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(251, 77, 93, 0.45), stop:1 rgba(251, 77, 93, 0.15));
+    border-color: var(--recording);
+    color: var(--text_light);
+}
+
+#replayBufferButton:hover:!pressed.state-active,
+#virtualCamButton:hover:!pressed.state-active {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(196, 167, 231, 0.45), stop:1 rgba(196, 167, 231, 0.15));
+    border-color: var(--lavender_accent);
+    color: var(--text_light);
+}
+
+/* Studio Mode Switch Toggled States */
+#modeSwitch:!hover:!pressed:checked {
+    background: var(--primary);
+    color: var(--text_inverse);
+}
+
+#modeSwitch:hover:!pressed:checked {
     background: var(--primary_light);
-    color: var(--text);
+    color: var(--text_inverse);
 }
 
 
@@ -1348,7 +1356,7 @@ QPushButton:focus {
     );
 }
 
-QPushButton::flat {
+QPushButton:flat {
     background-color: var(--button_bg);
 }
 
@@ -1779,6 +1787,43 @@ QTableView::indicator {
 
 QGroupBox::indicator {
     margin-left: 2px;
+    border: 1px solid var(--border_base);
+    border-radius: var(--shape_sm);
+    background: var(--bg_base);
+}
+
+QTableView::indicator {
+    border: 1px solid var(--border_base);
+    border-radius: var(--shape_sm);
+    background: var(--bg_base);
+}
+
+QGroupBox::indicator:hover,
+QTableView::indicator:hover {
+    border-color: var(--primary);
+    background: var(--bg_hover);
+}
+
+QGroupBox::indicator:checked {
+    background: var(--primary);
+    border-color: var(--primary);
+    image: var(--icon_check);
+}
+
+QGroupBox::indicator:disabled {
+    border-color: var(--button_bg_disabled);
+    background: var(--button_bg_disabled);
+}
+
+QTableView::indicator:checked {
+    background: var(--primary);
+    border-color: var(--primary);
+    image: var(--icon_check);
+}
+
+QTableView::indicator:disabled {
+    border-color: var(--button_bg_disabled);
+    background: var(--button_bg_disabled);
 }
 
 /* Icon Checkboxes */
@@ -1874,20 +1919,20 @@ OBSHotkeyWidget QPushButton {
 
 .indicator-expand::indicator:checked,
 .indicator-expand::indicator:checked:hover {
-    image: url(theme:icons/colorway/iconamoon/normal/chevron-right.svg);
+    image: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
 }
 
 SourceTreeItem:selected:hover .indicator-expand::indicator:checked {
-    image: url(theme:icons/colorway/iconamoon/normal/chevron-right.svg);
+    image: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
 }
 
 .indicator-expand::indicator:unchecked,
 .indicator-expand::indicator:unchecked:hover {
-    image: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
+    image: url(theme:icons/colorway/iconamoon/normal/chevron-right.svg);
 }
 
 SourceTreeItem:selected:hover .indicator-expand::indicator:unchecked {
-    image: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
+    image: url(theme:icons/colorway/iconamoon/normal/chevron-right.svg);
 }
 
 /* Source Icons */
@@ -2005,7 +2050,6 @@ OBSYoutubeActions {
 
 /* Calendar Widget */
 QDateTimeEdit::down-arrow {
-    qproperty-alignment: AlignTop;
     image: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
     width: 100%;
 }
@@ -2938,6 +2982,7 @@ QListWidget, QTreeView, QTableView {
     selection-background-color: var(--primary);
     selection-color: var(--text_inverse);
     show-decoration-selected: 1;
+    gridline-color: var(--grey1);
 }
 
 QListWidget::item, QTreeView::item {
@@ -3254,6 +3299,18 @@ OBSBasicSettings QListWidget {
     padding: var(--padding_container) 0px;
     font-weight: bold;
     min-width: 140px;
+}
+
+OBSBasicSettings {
+    qproperty-generalIcon: url(theme:icons/colorway/iconamoon/normal/settings.svg);
+    qproperty-appearanceIcon: url(theme:icons/colorway/iconamoon/normal/brush.svg);
+    qproperty-streamIcon: url(theme:icons/colorway/iconamoon/normal/output.svg);
+    qproperty-outputIcon: url(theme:icons/colorway/iconamoon/normal/media-play.svg);
+    qproperty-audioIcon: url(theme:icons/colorway/iconamoon/normal/audio.svg);
+    qproperty-videoIcon: url(theme:icons/colorway/iconamoon/normal/display.svg);
+    qproperty-hotkeysIcon: url(theme:icons/colorway/iconamoon/normal/gamepad.svg);
+    qproperty-accessibilityIcon: url(theme:icons/colorway/iconamoon/normal/eye.svg);
+    qproperty-advancedIcon: url(theme:icons/colorway/iconamoon/normal/cogs.svg);
 }
 
 OBSBasicSettings QListWidget::item {
