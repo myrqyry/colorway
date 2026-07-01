@@ -1,0 +1,55 @@
+@OBSThemeMeta {
+    name: '90s Anime';
+    id: 'com.myrqyry.Colorway.90sAnime';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(255, 56, 100, 0.3);
+    --accent_bg_end: rgba(255, 56, 100, 0.1);
+
+    --bg_window: #13062b;
+    --bg_base: #13062b;
+    --bg_preview: #0b021b;
+
+    --primary: #FF3864;
+    --primary_light: #9C95DC;
+    --primary_lighter: #C19AB7;
+    --primary_dark: #ff0095;
+    --primary_darker: #261447;
+
+    --warning: #FFE97F;
+    --danger: #FF3864;
+
+    --text: #E0E1DD;
+    --text_light: #E0E1DD;
+    --text_muted: #7DCFB6;
+
+    --text_disabled: #65737E;
+    --text_inactive: #65737E;
+
+    --border_color: #261447;
+
+    --input_bg: #191331;
+    --input_bg_hover: #271f47;
+    --input_bg_focus: #261447;
+
+    --list_item_bg_hover: #3b2369;
+
+    --input_border: #261447;
+    --input_border_hover: #3b2369;
+
+    --button_bg: #261447;
+    --button_bg_hover: #3b2369;
+    --button_bg_disabled: #13062b;
+
+    --bg_dock: #13062b;
+    --bg_hover: #3b2369;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #13062b;
+}

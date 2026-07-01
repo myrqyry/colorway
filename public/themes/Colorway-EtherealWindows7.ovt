@@ -1,0 +1,55 @@
+@OBSThemeMeta {
+    name: 'Ethereal Windows 7';
+    id: 'com.myrqyry.Colorway.EtherealWindows7';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(89, 178, 255, 0.3);
+    --accent_bg_end: rgba(89, 178, 255, 0.1);
+
+    --bg_window: #0a111a;
+    --bg_base: #0a111a;
+    --bg_preview: #050a10;
+
+    --primary: #59b2ff;
+    --primary_light: #ffd166;
+    --primary_lighter: #ffe4a8;
+    --primary_dark: #3a8fd4;
+    --primary_darker: #2668a8;
+
+    --warning: #e1a035;
+    --danger: #ff5c5c;
+
+    --text: #d6e8ff;
+    --text_light: #d6e8ff;
+    --text_muted: #6090b8;
+
+    --text_disabled: #182430;
+    --text_inactive: #182430;
+
+    --border_color: #142030;
+
+    --input_bg: #0f1824;
+    --input_bg_hover: #172636;
+    --input_bg_focus: var(--input_bg_hover);
+
+    --list_item_bg_hover: #172636;
+
+    --input_border: #142030;
+    --input_border_hover: #6090b8;
+
+    --button_bg: #0f1824;
+    --button_bg_hover: #172636;
+    --button_bg_disabled: #0a111a;
+
+    --bg_dock: #0f1824;
+    --bg_hover: #172636;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #0a111a;
+}

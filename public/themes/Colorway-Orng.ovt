@@ -1,0 +1,58 @@
+@OBSThemeMeta {
+    name: 'Orng';
+    id: 'com.myrqyry.Colorway.Orng';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(236, 91, 43, 0.3);
+    --accent_bg_end: rgba(236, 91, 43, 0.1);
+
+    /* Base Theme Colors */
+    --bg_window: #0a0a0a;
+    --bg_base: #0a0a0a;
+    --bg_preview: #232323;
+
+    --primary: #EC5B2B;
+    --primary_light: #56b6c2;
+    --primary_lighter: #FFF7F1;
+    --primary_dark: #6ba1e6;
+    --primary_darker: #808080;
+
+    --warning: #EC5B2B;
+    --danger: #e06c75;
+
+    --text: #eeeeee;
+    --text_light: #ffffff;
+    --text_muted: #808080;
+
+    --text_disabled: #6d6d6d;
+    --text_inactive: #6d6d6d;
+
+    --border_color: #1e1e1e;
+
+    /* Inputs and Buttons */
+    --input_bg: #232323;
+    --input_bg_hover: #2e2e2e;
+    --input_bg_focus: var(--input_bg_hover);
+
+    --list_item_bg_hover: #2e2e2e;
+
+    --input_border: #1e1e1e;
+    --input_border_hover: #EC5B2B;
+
+    --button_bg: #0a0a0a;
+    --button_bg_hover: #2e2e2e;
+    --button_bg_disabled: #0a0a0a;
+
+    /* Theme Aliases */
+    --bg_dock: #0a0a0a;
+    --bg_hover: #2e2e2e;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #0a0a0a;
+}

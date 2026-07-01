@@ -1,0 +1,39 @@
+@OBSThemeMeta {
+    name: 'Rose Pine Moon — Iris';
+    id: 'com.myrqyry.Colorway.RosePineMoon.Iris';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --bg_window: #232136;
+    --bg_base: #232136;
+    --bg_preview: #2a273f;
+    --primary: #c4a7e7;
+    --primary_light: #ea9a97;
+    --primary_lighter: #e0def4;
+    --primary_dark: #9ccfd8;
+    --primary_darker: #56526e;
+    --warning: #f6c177;
+    --danger: #eb6f92;
+    --text: #e0def4;
+    --text_light: #ffffff;
+    --text_muted: #908caa;
+    --text_disabled: #6e6a86;
+    --text_inactive: #6e6a86;
+    --border_color: #393552;
+    --input_bg: #2a273f;
+    --input_bg_hover: #393552;
+    --input_bg_focus: #3a3751;
+    --list_item_bg_hover: #3a3751;
+    --input_border: #393552;
+    --input_border_hover: #56526e;
+    --button_bg: #393552;
+    --button_bg_hover: #44415a;
+    --button_bg_disabled: #232136;
+    --bg_dock: #2a273f;
+    --bg_hover: #393552;
+    --ico: var(--text);
+    --ico_selected: #232136;
+}

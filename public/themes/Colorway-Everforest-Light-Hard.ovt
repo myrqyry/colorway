@@ -1,0 +1,58 @@
+@OBSThemeMeta {
+    name: 'Everforest Light Hard';
+    id: 'com.myrqyry.Colorway.Everforest.Light.Hard';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'false';
+}
+
+@OBSThemeVars {
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(141, 161, 1, 0.3);
+    --accent_bg_end: rgba(141, 161, 1, 0.1);
+
+    --bg_window: #FFFBEF;
+    --bg_base: #FFFBEF;
+    --bg_preview: #F8F5E4;
+
+    --primary: #8DA101;
+    --primary_light: #5C6A72;
+    --primary_lighter: #4A555B;
+    --primary_dark: #6E7F26;
+    --primary_darker: #4A5B2E;
+
+    --warning: #DFA000;
+    --danger: #F85552;
+
+    --text: #5C6A72;
+    --text_light: #2D353B;
+    --text_muted: #829181;
+
+    --text_disabled: #A6B0A0;
+    --text_inactive: #A6B0A0;
+
+    --border_color: #E8E5D5;
+
+    --input_bg: #F8F5E4;
+    --input_bg_hover: #F2EFDF;
+    --input_bg_focus: var(--input_bg_hover);
+
+    --list_item_bg_hover: #F2EFDF;
+
+    --input_border: #BDC3AF;
+    --input_border_hover: #859289;
+
+    --button_bg: #F8F5E4;
+    --button_bg_hover: #F2EFDF;
+    --button_bg_disabled: #FFFBEF;
+
+    /* Light theme: selected-item text stays dark */
+    --text_inverse: #191724;
+
+    --bg_dock: #F8F5E4;
+    --bg_hover: #F2EFDF;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
+    --ico_selected: #FFFBEF;
+}
