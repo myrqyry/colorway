@@ -2,40 +2,79 @@ const LOCAL_THEMES = '/themes/';
 
 const cache = new Map();
 
-export const PALETTE_VARS = [
-  ['--bg_window', 'Window'],
-  ['--bg_base', 'Base'],
-  ['--bg_preview', 'Preview'],
-  ['--bg_dock', 'Dock'],
-  ['--bg_hover', 'Hover'],
-  ['--button_bg', 'Button'],
-  ['--button_bg_hover', 'Button hover'],
-  ['--button_bg_disabled', 'Button disabled'],
-  ['--input_bg', 'Input'],
-  ['--input_bg_hover', 'Input hover'],
-  ['--input_bg_focus', 'Input focus'],
-  ['--input_border', 'Input border'],
-  ['--input_border_hover', 'Input border hover'],
-  ['--list_item_bg_hover', 'List hover'],
-  ['--primary', 'Primary'],
-  ['--primary_light', 'Primary light'],
-  ['--primary_lighter', 'Primary lighter'],
-  ['--primary_dark', 'Primary dark'],
-  ['--primary_darker', 'Primary darker'],
-  ['--accent_bg_start', 'Accent start'],
-  ['--accent_bg_end', 'Accent end'],
-  ['--text', 'Text'],
-  ['--text_light', 'Text light'],
-  ['--text_muted', 'Muted'],
-  ['--text_inactive', 'Inactive'],
-  ['--text_inverse', 'Inverse'],
-  ['--text_disabled', 'Disabled'],
-  ['--border_color', 'Border'],
-  ['--ico', 'Icon'],
-  ['--ico_selected', 'Icon selected'],
-  ['--warning', 'Warning'],
-  ['--danger', 'Danger'],
+const PALETTE_GROUPS = [
+  {
+    label: 'Backgrounds',
+    vars: [
+      ['--bg_window', 'Window'],
+      ['--bg_base', 'Base'],
+      ['--bg_preview', 'Preview'],
+      ['--bg_dock', 'Dock'],
+      ['--bg_hover', 'Hover'],
+    ],
+  },
+  {
+    label: 'Text',
+    vars: [
+      ['--text', 'Text'],
+      ['--text_light', 'Text light'],
+      ['--text_muted', 'Muted'],
+      ['--text_inactive', 'Inactive'],
+      ['--text_inverse', 'Inverse'],
+      ['--text_disabled', 'Disabled'],
+    ],
+  },
+  {
+    label: 'Accent / Primary',
+    vars: [
+      ['--primary', 'Primary'],
+      ['--primary_light', 'Light'],
+      ['--primary_lighter', 'Lighter'],
+      ['--primary_dark', 'Dark'],
+      ['--primary_darker', 'Darker'],
+    ],
+  },
+  {
+    label: 'Inputs & Borders',
+    vars: [
+      ['--input_bg', 'Input bg'],
+      ['--input_bg_hover', 'Input bg hover'],
+      ['--input_bg_focus', 'Input bg focus'],
+      ['--input_border', 'Input border'],
+      ['--input_border_hover', 'Border hover'],
+    ],
+  },
+  {
+    label: 'Buttons & Lists',
+    vars: [
+      ['--button_bg', 'Button bg'],
+      ['--button_bg_hover', 'Button hover'],
+      ['--button_bg_disabled', 'Button disabled'],
+      ['--list_item_bg_hover', 'List hover'],
+    ],
+  },
+  {
+    label: 'UI Elements',
+    vars: [
+      ['--border_color', 'Border'],
+      ['--ico', 'Icon'],
+      ['--ico_selected', 'Icon selected'],
+      ['--accent_bg_start', 'Accent start'],
+      ['--accent_bg_end', 'Accent end'],
+      ['--warning', 'Warning'],
+      ['--danger', 'Danger'],
+      ['--meter_bg_nom', 'Meter bg norm'],
+      ['--meter_bg_war', 'Meter bg warn'],
+      ['--meter_bg_err', 'Meter bg error'],
+      ['--meter_fg_nom', 'Meter fg norm'],
+      ['--meter_fg_war', 'Meter fg warn'],
+      ['--meter_fg_err', 'Meter fg error'],
+    ],
+  },
 ];
+
+export const PALETTE_VARS = PALETTE_GROUPS.flatMap((g) => g.vars);
+export { PALETTE_GROUPS };
 
 export function parseOVT(text) {
   const vars = {};

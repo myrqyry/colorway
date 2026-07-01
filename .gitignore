@@ -2,3 +2,7 @@
 !.gitignore
 !icons/
 !patterns/
+!src/
+!public/
+.vercel
+
