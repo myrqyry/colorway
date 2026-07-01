@@ -9,9 +9,6 @@ function renderPalette() {
   return PALETTE_GROUPS.map((group) => {
     const chips = group.vars.map(([variable, label]) => {
       const color = styles.getPropertyValue(variable).trim();
-      const isMeterOrAccent = variable.includes('meter') || variable.includes('accent_bg');
-      const gradientVar = isMeterOrAccent && color.startsWith('var(') ? '' :
-        isMeterOrAccent ? `background:${color}` : '';
       return `
         <div class="palette-chip" title="${variable}: ${color}">
           <span class="palette-swatch" style="background:${color}"></span>
