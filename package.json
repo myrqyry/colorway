@@ -9,10 +9,11 @@
     "preview": "vite preview --host 0.0.0.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-legacy": "latest",
-    "@tailwindcss/postcss": "latest",
+    "vite": "latest"
+  },
+  "dependencies": {
     "autoprefixer": "latest",
     "postcss": "latest",
-    "vite": "latest"
+    "tailwindcss": "latest"
   }
 }

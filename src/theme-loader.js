@@ -10,7 +10,7 @@ export const PALETTE_VARS = [
   ['--primary_darker', 'Primary darker'],
   ['--bg_window', 'Window'],
   ['--bg_base', 'Base'],
-  ['--bg_preview', 'Preview'],
+  ['--bg_preview', 'UI'],
   ['--bg_dock', 'Dock'],
   ['--input_bg', 'Input'],
   ['--border_color', 'Border'],
