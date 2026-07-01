@@ -34,6 +34,8 @@
     --text_inactive: #a6adc8;
     --text_inverse: #1e1e2e;
     --border_color: #313244;
+    --ico: #f5f5f5;
+    --ico_selected: #1e1e2e;
     --meter_bg_nom: var(--bg_hover);
     --meter_bg_war: var(--warning);
     --meter_bg_err: var(--danger);
@@ -73,29 +75,43 @@
 
 @layer components {
   .obs-app-shell {
-    @apply grid min-h-screen grid-rows-[auto_1fr_auto];
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
     background: var(--bg_window);
     color: var(--text);
   }
 
   .obs-titlebar {
-    @apply grid grid-cols-[auto_1fr_auto] items-center gap-3 border-b px-3 py-1;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border_color);
+    padding: 8px 12px;
     background: var(--bg_window);
-    border-color: var(--border_color);
   }
 
   .window-title {
-    @apply whitespace-nowrap text-[11px] font-semibold;
+    white-space: nowrap;
+    font-size: 11px;
+    font-weight: 600;
     color: var(--text_light);
   }
 
   .obs-menubar {
-    @apply flex min-w-0 items-center gap-1 overflow-hidden text-[11px];
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow: hidden;
+    font-size: 11px;
     color: var(--text_muted);
   }
 
   .obs-menubar span {
-    @apply rounded px-2 py-1;
+    border-radius: 4px;
+    padding: 4px 8px;
+    color: var(--text_muted);
   }
 
   .obs-menubar span:hover {
@@ -104,16 +120,22 @@
   }
 
   .theme-picker {
-    @apply flex items-center gap-2 text-[11px];
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
     color: var(--text_muted);
   }
 
   .theme-picker select,
   .obs-select,
   .obs-input {
-    @apply rounded border px-2 py-1 text-[11px] outline-none;
+    border-radius: 4px;
+    border: 1px solid var(--input_border);
+    padding: 6px 8px;
+    font-size: 11px;
+    outline: none;
     background: var(--input_bg);
-    border-color: var(--input_border);
     color: var(--text);
   }
 
@@ -132,18 +154,30 @@
   }
 
   .obs-workspace {
-    @apply grid min-h-0 grid-cols-[1fr_280px] grid-rows-[minmax(260px,1fr)_260px] gap-1 p-1;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    grid-template-rows: minmax(260px, 1fr) 260px;
+    gap: 4px;
+    padding: 4px;
+    min-height: 0;
     background: var(--bg_base);
   }
 
   .preview-stage {
-    @apply min-h-0 rounded border p-2;
+    min-height: 0;
+    border-radius: 6px;
+    border: 1px solid var(--border_color);
+    padding: 8px;
     background: var(--bg_window);
-    border-color: var(--border_color);
   }
 
   .preview-canvas {
-    @apply relative h-full min-h-[240px] overflow-hidden rounded border;
+    position: relative;
+    height: 100%;
+    min-height: 240px;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid var(--border_color);
     background:
       linear-gradient(45deg, rgba(255, 255, 255, 0.035) 25%, transparent 25%),
       linear-gradient(-45deg, rgba(255, 255, 255, 0.035) 25%, transparent 25%),
@@ -152,43 +186,60 @@
       var(--bg_preview);
     background-position: 0 0, 0 8px, 8px -8px, -8px 0;
     background-size: 16px 16px;
-    border-color: var(--border_color);
   }
 
   .safe-frame {
-    @apply pointer-events-none absolute border;
-    border-color: color-mix(in srgb, var(--primary) 45%, transparent);
+    pointer-events: none;
+    position: absolute;
+    border: 1px solid var(--primary);
+    opacity: 0.45;
   }
 
   .safe-frame-outer {
-    @apply inset-[8%];
+    inset: 8%;
   }
 
   .safe-frame-inner {
-    @apply inset-[14%] border-dashed;
+    inset: 14%;
+    border-style: dashed;
   }
 
   .canvas-source {
-    @apply absolute rounded border px-3 py-2 text-[11px] shadow-lg;
-    background: color-mix(in srgb, var(--bg_dock) 88%, transparent);
-    border-color: var(--border_color);
+    position: absolute;
+    border-radius: 6px;
+    border: 1px solid var(--border_color);
+    padding: 10px 12px;
+    font-size: 11px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    background: rgba(24, 24, 37, 0.88);
     color: var(--text);
   }
 
   .camera-source {
-    @apply bottom-[11%] right-[10%] h-24 w-36;
+    bottom: 11%;
+    right: 10%;
+    height: 96px;
+    width: 144px;
   }
 
   .alert-source {
-    @apply left-[12%] top-[14%];
+    left: 12%;
+    top: 14%;
     border-color: var(--primary);
     color: var(--primary_light);
   }
 
   .canvas-hud {
-    @apply absolute bottom-3 left-3 flex gap-3 rounded border px-2 py-1 text-[11px];
-    background: color-mix(in srgb, var(--bg_window) 88%, transparent);
-    border-color: var(--border_color);
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    display: flex;
+    gap: 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border_color);
+    padding: 8px 10px;
+    font-size: 11px;
+    background: rgba(24, 24, 37, 0.88);
     color: var(--text_muted);
   }
 
@@ -197,24 +248,39 @@
   }
 
   .dock-grid {
-    @apply col-span-2 grid min-h-0 grid-cols-[1fr_1.25fr_1.7fr_1fr_1fr] gap-1;
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1.25fr 1.7fr 1fr 1fr;
+    gap: 4px;
+    min-height: 0;
   }
 
   .dock-panel {
-    @apply min-h-0 overflow-hidden rounded border;
+    min-height: 0;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid var(--border_color);
     background: var(--bg_dock);
-    border-color: var(--border_color);
   }
 
   .dock-header {
-    @apply border-b px-2 py-1 text-[11px] font-semibold;
+    border-bottom: 1px solid var(--border_color);
+    padding: 8px 10px;
+    font-size: 11px;
+    font-weight: 600;
     background: var(--bg_window);
-    border-color: var(--border_color);
     color: var(--text_muted);
   }
 
   .dock-row {
-    @apply flex w-full items-center gap-2 border-0 px-2 py-1.5 text-left text-[12px];
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 8px;
+    border: 0;
+    padding: 8px 10px;
+    font-size: 12px;
+    text-align: left;
     background: transparent;
     color: var(--text);
   }
@@ -232,17 +298,45 @@
     color: var(--text_inactive);
   }
 
+  .status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 9999px;
+    border: 1px solid var(--border_color);
+    padding: 1px 8px;
+    font-size: 11px;
+    background: linear-gradient(90deg, var(--accent_bg_start), var(--accent_bg_end));
+    color: var(--text);
+  }
+
+  .status-dot {
+    height: 8px;
+    width: 8px;
+    border-radius: 9999px;
+    background: var(--danger);
+  }
+
+  .controls-dock .obs-button.disabled {
+    background: var(--button_bg_disabled);
+    border-color: var(--border_color);
+    color: var(--text_disabled);
+  }
+
   .nested {
-    @apply pl-7;
+    padding-left: 28px;
   }
 
   .disclosure {
-    @apply w-3 text-center;
+    width: 12px;
+    text-align: center;
   }
 
   .source-icon {
-    @apply h-2.5 w-2.5 rounded-sm border;
-    border-color: var(--border_color);
+    height: 10px;
+    width: 10px;
+    border-radius: 3px;
+    border: 1px solid var(--border_color);
   }
 
   .source-icon.visible {
@@ -259,22 +353,32 @@
   }
 
   .mixer-strip {
-    @apply grid grid-cols-[92px_1fr_80px_44px] items-center gap-2 px-2 py-1.5 text-[11px];
+    display: grid;
+    grid-template-columns: 92px 1fr 80px 44px;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    font-size: 11px;
     border-bottom: 1px solid var(--border_color);
   }
 
   .mixer-name {
-    @apply truncate;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     color: var(--text);
   }
 
   .meter-track {
-    @apply h-2 overflow-hidden rounded-sm;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 4px;
     background: var(--meter_bg_nom);
   }
 
   .meter-track span {
-    @apply block h-full;
+    display: block;
+    height: 100%;
     background: linear-gradient(90deg, var(--meter_fg_nom), var(--meter_fg_war), var(--meter_fg_err));
   }
 
@@ -284,9 +388,11 @@
 
   .mixer-mute,
   .obs-button {
-    @apply rounded border px-2 py-1 text-[11px];
+    border-radius: 6px;
+    border: 1px solid var(--border_color);
+    padding: 6px 10px;
+    font-size: 11px;
     background: var(--button_bg);
-    border-color: var(--border_color);
     color: var(--text);
   }
 
@@ -310,68 +416,103 @@
   }
 
   .controls-dock {
-    @apply flex flex-col;
+    display: flex;
+    flex-direction: column;
   }
 
   .controls-dock .obs-button {
-    @apply mx-2 mt-2;
+    margin: 8px;
+    margin-top: 8px;
   }
 
   .transition-dock {
-    @apply p-2;
+    padding: 10px;
   }
 
   .transition-dock .dock-header {
-    @apply -mx-2 -mt-2 mb-2;
+    margin: -10px -10px 10px;
   }
 
   .field-label {
-    @apply mb-1 mt-2 block text-[10px] uppercase tracking-wide;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 6px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     color: var(--text_muted);
   }
 
   .theme-inspector {
-    @apply row-span-2;
+    grid-row: span 2;
   }
 
   .inspector-body {
-    @apply flex flex-col gap-4 p-3;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 14px;
   }
 
   .theme-name {
-    @apply text-sm font-semibold;
+    font-size: 14px;
+    font-weight: 600;
     color: var(--text_light);
   }
 
   .theme-status {
-    @apply mt-1 text-[11px];
+    margin-top: 4px;
+    font-size: 11px;
     color: var(--text_muted);
   }
 
   .palette-grid {
-    @apply grid grid-cols-2 gap-1.5;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 
   .palette-chip {
-    @apply flex items-center gap-1.5 rounded border px-1.5 py-1 text-[10px];
-    border-color: var(--border_color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border_color);
+    padding: 6px 10px;
+    font-size: 10px;
     color: var(--text_muted);
   }
 
   .palette-swatch {
-    @apply h-3 w-3 rounded-sm border;
-    border-color: color-mix(in srgb, var(--text) 20%, transparent);
+    height: 12px;
+    width: 12px;
+    border-radius: 3px;
+    border: 1px solid rgba(205, 214, 244, 0.2);
   }
 
   .state-samples {
-    @apply flex flex-wrap gap-2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   .obs-statusbar {
-    @apply flex items-center gap-4 border-t px-3 py-1 text-[11px];
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-top: 1px solid var(--border_color);
+    padding: 10px 14px;
+    font-size: 11px;
     background: var(--bg_window);
-    border-color: var(--border_color);
     color: var(--text_muted);
+  }
+
+  .iconic {
+    color: var(--ico);
+  }
+
+  .iconic-selected {
+    color: var(--ico_selected);
   }
 
   @media (max-width: 980px) {
@@ -380,24 +521,27 @@
     }
 
     .obs-workspace {
-      @apply grid-cols-1 grid-rows-none;
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
     }
 
     .theme-inspector,
     .dock-grid {
-      @apply col-span-1 row-span-1;
+      grid-column: span 1;
+      grid-row: span 1;
     }
 
     .dock-grid {
-      @apply grid-cols-1;
+      grid-template-columns: 1fr;
     }
 
     .obs-titlebar {
-      @apply grid-cols-1 items-start;
+      grid-template-columns: 1fr;
+      align-items: start;
     }
 
     .obs-statusbar {
-      @apply flex-wrap;
+      flex-wrap: wrap;
     }
   }
 }

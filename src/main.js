@@ -62,6 +62,17 @@ function renderApp() {
               <div id="theme-status" class="theme-status">Fetching theme variables</div>
             </div>
             <div>
+              <div class="field-label">Connection</div>
+              <div class="status-indicator">
+                <span class="status-dot"></span>
+                Connected
+              </div>
+              <div class="status-indicator disabled">
+                <span class="status-dot"></span>
+                Disabled
+              </div>
+            </div>
+            <div>
               <div class="field-label">Palette</div>
               <div id="palette-grid" class="palette-grid"></div>
             </div>
@@ -69,6 +80,7 @@ function renderApp() {
               <button class="obs-button primary">Primary</button>
               <button class="obs-button">Neutral</button>
               <button class="obs-button danger">Danger</button>
+              <button class="obs-button disabled">Disabled</button>
             </div>
           </div>
         </aside>
@@ -118,8 +130,14 @@ function renderApp() {
       </main>
 
       <footer class="obs-statusbar">
-        <span>LIVE 00:12:47</span>
-        <span>REC 00:12:47</span>
+        <span class="status-indicator iconic" aria-label="Live is active">
+          <span class="status-dot"></span>
+          LIVE
+        </span>
+        <span class="status-indicator iconic" aria-label="Recording is active">
+          <span class="status-dot"></span>
+          REC
+        </span>
         <span>CPU: 4.2%</span>
         <span>60.00 fps</span>
         <span>Dropped frames: 0.3%</span>
