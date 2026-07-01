@@ -38,23 +38,8 @@ function renderMixerStrip(label, level) {
     <div class="mixer-strip">
       <div class="mixer-name">${label}</div>
       <div class="meter-track"><span style="width:${level}%"></span></div>
-      <input class="mixer-slider" type="range" value="${level}" aria-label="${label} volume" />
-      <button class="mixer-mute" type="button">Mute</button>
-    </div>
-  `;
-}
-
-function renderContextMenu() {
-  return `
-    <div class="context-menu">
-      <div class="context-menu-item disabled">Properties</div>
-      <div class="context-menu-item">Filters</div>
-      <div class="context-menu-divider"></div>
-      <div class="context-menu-item">Copy</div>
-      <div class="context-menu-item">Paste (Replace)</div>
-      <div class="context-menu-divider"></div>
-      <div class="context-menu-item">Rename</div>
-      <div class="context-menu-item danger">Remove</div>
+      <input class="mixer-slider" type="range" value="${level}" aria-label="${label} volume" style="--slider-pct:${level}%" />
+      <button class="mixer-mute" type="button">M</button>
     </div>
   `;
 }
@@ -77,66 +62,25 @@ function renderApp() {
       <main class="obs-workspace">
         <section class="preview-stage" aria-label="OBS preview canvas">
           <div class="preview-canvas">
-            <div class="safe-frame safe-frame-outer"></div>
-            <div class="safe-frame safe-frame-inner"></div>
             <div class="canvas-source camera-source">Camera</div>
             <div class="canvas-source alert-source">Follower alert</div>
             <div class="canvas-hud">
-              <span>Preview</span>
               <strong>1920 × 1080</strong>
             </div>
-            <div class="canvas-tabs">
-              <span class="canvas-tab active">Preview</span>
-              <span class="canvas-tab">Sources</span>
-              <span class="canvas-tab">Audio</span>
-              <span class="canvas-tab disabled">Transitions</span>
+            <div id="canvas-palette" class="canvas-palette">
+              <div class="canvas-palette-header">Palette <span class="inspector-badge">${PALETTE_VARS.length} vars</span></div>
+              <div id="palette-grid" class="palette-grid"></div>
+            </div>
+            <div class="canvas-theme-info">
+              <div id="active-theme-name" class="canvas-theme-name">Loading...</div>
+              <div id="theme-status" class="canvas-theme-status">Fetching theme variables</div>
             </div>
           </div>
         </section>
 
-        <aside class="theme-inspector dock-panel">
-          <div class="dock-header">Theme inspector
-            <span class="dock-badge">0.4</span>
-          </div>
-          <div class="inspector-body">
-            <div>
-              <div class="field-label">Active theme</div>
-              <div id="active-theme-name" class="theme-name">Loading...</div>
-              <div id="theme-status" class="theme-status">Fetching theme variables</div>
-            </div>
-            <div>
-              <div class="field-label">Connection</div>
-              <div class="status-indicator">
-                <span class="status-dot"></span>
-                Connected
-              </div>
-              <div class="status-indicator disabled">
-                <span class="status-dot"></span>
-                Disabled
-              </div>
-            </div>
-            <div>
-              <div class="field-label">Palette (${PALETTE_VARS.length} vars)</div>
-              <div id="palette-grid" class="palette-grid"></div>
-            </div>
-            <div class="state-samples">
-              <button class="obs-button primary">Primary</button>
-              <button class="obs-button">Neutral</button>
-              <button class="obs-button danger">Danger</button>
-              <button class="obs-button disabled">Disabled</button>
-            </div>
-          </div>
-        </aside>
-
-        <section class="dock-grid" aria-label="OBS dock preview">
+        <aside class="right-panel">
           <section class="dock-panel scenes-dock">
-            <div class="dock-header">
-              Scenes
-              <span class="dock-toolbar">
-                <span class="toolbar-btn" title="Add Scene">+</span>
-                <span class="toolbar-btn" title="Remove Scene">−</span>
-              </span>
-            </div>
+            <div class="dock-header">Scenes</div>
             <div class="dock-scrollable">
               <button class="dock-row" type="button">Gaming</button>
               <button class="dock-row selected" type="button">Just Chatting</button>
@@ -144,26 +88,16 @@ function renderApp() {
               <button class="dock-row" type="button">Starting Soon</button>
               <button class="dock-row inactive" type="button">Stream Ending</button>
             </div>
-            <div class="context-menu-trigger" id="context-menu-trigger">Demo context menu <span class="tooltip-trigger" data-tooltip="Right-click mock">ⓘ</span></div>
-            <div id="context-menu-area" class="context-menu-area">${renderContextMenu()}</div>
           </section>
 
           <section class="dock-panel sources-dock">
-            <div class="dock-header">
-              Sources
-              <span class="dock-toolbar">
-                <span class="toolbar-btn" title="Add Source">+</span>
-                <span class="toolbar-btn" title="Remove Source">−</span>
-                <span class="toolbar-btn" title="Settings">⚙</span>
-              </span>
-            </div>
+            <div class="dock-header">Sources</div>
             <div class="dock-scrollable">
-              <button class="dock-row source-row" type="button"><span class="disclosure">▾</span><span class="source-icon visible"></span>Scene group</button>
-              <button class="dock-row source-row nested" type="button"><span class="source-icon visible"></span>Game Capture</button>
-              <button class="dock-row source-row nested selected" type="button"><span class="source-icon locked"></span>Camera</button>
-              <button class="dock-row source-row inactive" type="button"><span class="source-icon hidden"></span>Chat overlay</button>
-              <button class="dock-row source-row inactive" type="button"><span class="source-icon hidden"></span>Alert box</button>
-              <button class="dock-row source-row" type="button"><span class="source-icon visible"></span>Browser Source</button>
+              <button class="dock-row" type="button">Game Capture</button>
+              <button class="dock-row selected" type="button">Camera</button>
+              <button class="dock-row inactive" type="button">Chat overlay</button>
+              <button class="dock-row inactive" type="button">Alert box</button>
+              <button class="dock-row" type="button">Browser Source</button>
             </div>
           </section>
 
@@ -174,152 +108,29 @@ function renderApp() {
             ${renderMixerStrip('Music', 35)}
           </section>
 
-          <section class="dock-panel transition-dock settings-panel">
-            <div class="dock-header">Settings</div>
-
-            <div class="settings-group">
-              <div class="field-label">Test toggles</div>
-              <label class="toggle-row">
-                <span class="toggle">
-                  <input type="checkbox" checked />
-                  <span class="toggle-slider"></span>
-                </span>
-                <span class="toggle-label">Enable notifications</span>
-              </label>
-              <label class="toggle-row">
-                <span class="toggle">
-                  <input type="checkbox" />
-                  <span class="toggle-slider"></span>
-                </span>
-                <span class="toggle-label">Auto-reconnect</span>
-              </label>
-            </div>
-
-            <div class="settings-group">
-              <div class="field-label">Radio buttons</div>
-              <label class="radio-row">
-                <input type="radio" name="demo-radio" checked />
-                <span>Stream</span>
-              </label>
-              <label class="radio-row">
-                <input type="radio" name="demo-radio" />
-                <span>Record</span>
-              </label>
-              <label class="radio-row">
-                <input type="radio" name="demo-radio" />
-                <span>Virtual Cam</span>
-              </label>
-            </div>
-
-            <div class="settings-group">
-              <div class="field-label">Checkboxes</div>
-              <label class="checkbox-row">
-                <input type="checkbox" checked />
-                <span>Show sources</span>
-              </label>
-              <label class="checkbox-row">
-                <input type="checkbox" />
-                <span>Enable overlays</span>
-              </label>
-            </div>
-
-            <div class="settings-group">
-              <div class="field-label">Text input</div>
-              <input class="obs-input" placeholder="Stream key..." />
-              <input class="obs-input focused-demo" value="Focused input demo" />
-            </div>
-          </section>
-
           <section class="dock-panel controls-dock">
             <div class="dock-header">Controls</div>
             <button class="obs-button primary" type="button">Start Streaming</button>
             <button id="record-toggle" class="obs-button recording" type="button">Stop Recording</button>
             <button class="obs-button" type="button">Start Virtual Camera</button>
-            <button class="obs-button" type="button">Studio Mode</button>
             <button class="obs-button" type="button">Settings</button>
-            <button class="obs-button" type="button">Exit</button>
           </section>
-        </section>
-
-        <section class="dock-panel extended-status">
-          <div class="dock-header">
-            Status
-            <div class="dock-tabs">
-              <span class="dock-tab active">Info</span>
-              <span class="dock-tab">Stats</span>
-              <span class="dock-tab">History</span>
-            </div>
-          </div>
-          <div class="status-grid">
-            <div class="status-item">
-              <span class="status-item-label">Stream</span>
-              <span class="status-indicator iconic" aria-label="Live is active">
-                <span class="status-dot"></span>
-                LIVE
-              </span>
-              <span class="status-timer">01:23:47</span>
-            </div>
-            <div class="status-item">
-              <span class="status-item-label">Record</span>
-              <span class="status-indicator iconic recording-indicator" aria-label="Recording is active">
-                <span class="status-dot"></span>
-                REC
-              </span>
-              <span class="status-timer">01:23:47</span>
-            </div>
-            <div class="status-item">
-              <span class="status-item-label">CPU</span>
-              <span class="status-value" id="cpu-value">4.2%</span>
-              <div class="status-bar">
-                <span class="status-bar-fill" style="width:4.2%"></span>
-              </div>
-            </div>
-            <div class="status-item">
-              <span class="status-item-label">FPS</span>
-              <span class="status-value" id="fps-value">60.00</span>
-              <div class="status-bar">
-                <span class="status-bar-fill warn" style="width:100%"></span>
-              </div>
-            </div>
-            <div class="status-item">
-              <span class="status-item-label">Dropped</span>
-              <span class="status-value" id="dropped-value">0.3%</span>
-              <div class="status-bar">
-                <span class="status-bar-fill danger" style="width:0.3%"></span>
-              </div>
-            </div>
-            <div class="status-item">
-              <span class="status-item-label">Bitrate</span>
-              <span class="status-value" id="bitrate-value">3820 kb/s</span>
-              <div class="bitrate-chart" id="bitrate-chart">
-                ${Array.from({length: 20}, (_, i) =>
-                  `<span class="bitrate-bar" style="height:${30 + Math.sin(i * 1.2) * 20 + Math.random() * 20}%"></span>`
-                ).join('')}
-              </div>
-            </div>
-            <div class="status-item span-2">
-              <span class="status-item-label">Bandwidth meter</span>
-              <div class="meter-track full-width">
-                <span style="width:67%;background:linear-gradient(90deg,var(--meter_fg_nom),var(--meter_fg_war),var(--meter_fg_err))"></span>
-              </div>
-            </div>
-          </div>
-        </section>
+        </aside>
       </main>
 
       <footer class="obs-statusbar">
-        <span class="status-indicator iconic" aria-label="Live is active">
-          <span class="status-dot"></span>
+        <span class="status-indicator" aria-label="Live is active">
+          <span class="status-dot live"></span>
           LIVE
         </span>
-        <span class="status-indicator iconic recording-indicator" aria-label="Recording is active">
+        <span class="status-indicator recording-indicator" aria-label="Recording is active">
           <span class="status-dot"></span>
           REC
         </span>
-        <span class="status-text" data-tooltip="CPU usage">CPU: 4.2%</span>
-        <span class="status-text" data-tooltip="Frames per second">60.00 fps</span>
-        <span class="status-text" data-tooltip="Dropped frames">Dropped frames: 0.3%</span>
-        <span class="status-text" data-tooltip="Bitrate">3820 kb/s</span>
+        <span>CPU: <span id="cpu-value">4.2%</span></span>
+        <span><span id="fps-value">60.00</span> fps</span>
+        <span>Dropped: <span id="dropped-value">0.3%</span></span>
+        <span><span id="bitrate-value">3820</span> kb/s</span>
       </footer>
     </div>
   `;
@@ -350,7 +161,7 @@ function updateStatusDemo() {
   if (cpu) cpu.textContent = `${(Math.random() * 15 + 2).toFixed(1)}%`;
   if (fps) fps.textContent = `${(Math.random() * 10 + 55).toFixed(2)}`;
   if (dropped) dropped.textContent = `${(Math.random() * 2).toFixed(1)}%`;
-  if (bitrate) bitrate.textContent = `${Math.floor(Math.random() * 3000 + 2000)} kb/s`;
+  if (bitrate) bitrate.textContent = `${Math.floor(Math.random() * 3000 + 2000)}`;
 }
 
 renderApp();
@@ -369,18 +180,5 @@ document.querySelectorAll('.dock-row').forEach((row) => {
 document.querySelector('#record-toggle').addEventListener('click', (event) => {
   event.currentTarget.classList.toggle('recording');
 });
-
-// Context menu toggle
-const contextTrigger = document.querySelector('#context-menu-trigger');
-if (contextTrigger) {
-  contextTrigger.addEventListener('click', () => {
-    document.querySelector('#context-menu-area').classList.toggle('visible');
-  });
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('#context-menu-trigger') && !e.target.closest('#context-menu-area')) {
-      document.querySelector('#context-menu-area').classList.remove('visible');
-    }
-  });
-}
 
 setTheme(themeSelect.value);

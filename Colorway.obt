@@ -1201,54 +1201,7 @@ QDateTimeEdit::down-arrow:editable {
     width: 100%;
 }
 
-QLineEdit:hover,
-QTextEdit:hover,
-QPlainTextEdit:hover {
-    background-color: var(--input_bg_hover);
-    border-color: var(--input_border_hover);
-}
 
-QLineEdit:read-only,
-QLineEdit:read-only:hover,
-QLineEdit:read-only:focus {
-    background-color: var(--button_bg_disabled);
-    border-color: var(--input_border);
-    color: var(--text_muted);
-}
-
-QTextEdit:!editable,
-QTextEdit:!editable:hover,
-QTextEdit:!editable:focus {
-    background-color: var(--input_bg);
-}
-
-QSpinBox::up-button:hover,
-QSpinBox::down-button:hover,
-QDoubleSpinBox::up-button:hover,
-QDoubleSpinBox::down-button:hover {
-    background-color: var(--button_bg_hover);
-}
-
-QSpinBox::up-button:pressed,
-QSpinBox::down-button:pressed,
-QDoubleSpinBox::up-button:pressed,
-QDoubleSpinBox::down-button:pressed {
-    background-color: var(--button_bg_down);
-}
-
-QSpinBox::up-button:disabled,
-QSpinBox::up-button:off,
-QSpinBox::down-button:disabled,
-QSpinBox::down-button:off {
-    background-color: var(--button_bg_disabled);
-}
-
-QDoubleSpinBox::up-button:disabled,
-QDoubleSpinBox::up-button:off,
-QDoubleSpinBox::down-button:disabled,
-QDoubleSpinBox::down-button:off {
-    background-color: var(--button_bg_disabled);
-}
 
 QListView::item:selected:hover QSpinBox::up-arrow,
 QListWidget::item:selected:hover QSpinBox::up-arrow,
@@ -1356,97 +1309,10 @@ QPushButton:focus {
     );
 }
 
-QPushButton:flat {
-    background-color: var(--button_bg);
-}
 
-QPushButton:checked {
-    background-color: var(--primary);
-    border-color: var(--primary_light);
-}
-
-QPushButton:checked:hover,
-QPushButton:checked:focus {
-    border-color: var(--primary_lighter);
-}
-
-QPushButton::menu-indicator {
-    image: none;
-    width: 0px;
-    height: 0px;
-    subcontrol-position: right;
-    subcontrol-origin: content;
-    margin-left: 0px;
-    right: -2px;
-}
-
-QToolButton {
-    border: 1px solid var(--button_border);
-}
-
-QToolButton,
-.btn-tool {
-    background-color: var(--button_bg);
-    padding: var(--padding_base) var(--padding_base);
-    margin: 0px 0px;
-    border: 1px solid var(--button_border);
-    border-radius: var(--border_radius);
-    icon-size: var(--icon_base);
-}
-
-QToolButton:last-child,
-.btn-tool:last-child {
-    margin-right: 0px;
-}
-
-QToolButton:hover,
-QToolButton:focus,
-.btn-tool:hover,
-.btn-tool:focus {
-    border-color: var(--primary);
-    border-width: 2px;
-    background-color: var(--button_bg_hover);
-}
-
-QToolButton:pressed,
-QToolButton:pressed:hover,
-.btn-tool:pressed,
-.btn-tool:pressed:hover {
-    background-color: var(--button_bg_down);
-    border-color: var(--button_border);
-}
-
-QToolButton:disabled,
-.btn-tool:disabled {
-    background-color: var(--button_bg_disabled);
-    border-color: transparent;
-}
 
 /* Sliders */
 
-QSlider::sub-page:horizontal:disabled {
-    background-color: var(--grey4);
-    border-radius: var(--slider_groove_radius);
-}
-
-QSlider::add-page:horizontal:disabled {
-    background-color: var(--grey7);
-    border-radius: var(--slider_groove_radius);
-}
-
-QSlider::add-page:vertical:disabled {
-    background-color: var(--grey4);
-    border-radius: var(--slider_groove_radius);
-}
-
-QSlider::sub-page:vertical:disabled {
-    background-color: var(--grey7);
-    border-radius: var(--slider_groove_radius);
-}
-
-QSlider::handle:disabled {
-    background-color: var(--white5);
-}
 
 #stackedMixerArea {
     border: none;
@@ -1777,54 +1643,6 @@ OBSBasicFilters #widget_2 QPushButton {
 
 /* Checkboxes */
 
-QCheckBox::indicator,
-QGroupBox::indicator,
-QTableView::indicator {
-    width: var(--icon_base);
-    height: var(--icon_base);
-    margin-right: var(--spacing_large);
-}
-
-QGroupBox::indicator {
-    margin-left: 2px;
-    border: 1px solid var(--border_base);
-    border-radius: var(--shape_sm);
-    background: var(--bg_base);
-}
-
-QTableView::indicator {
-    border: 1px solid var(--border_base);
-    border-radius: var(--shape_sm);
-    background: var(--bg_base);
-}
-
-QGroupBox::indicator:hover,
-QTableView::indicator:hover {
-    border-color: var(--primary);
-    background: var(--bg_hover);
-}
-
-QGroupBox::indicator:checked {
-    background: var(--primary);
-    border-color: var(--primary);
-    image: var(--icon_check);
-}
-
-QGroupBox::indicator:disabled {
-    border-color: var(--button_bg_disabled);
-    background: var(--button_bg_disabled);
-}
-
-QTableView::indicator:checked {
-    background: var(--primary);
-    border-color: var(--primary);
-    image: var(--icon_check);
-}
-
-QTableView::indicator:disabled {
-    border-color: var(--button_bg_disabled);
-    background: var(--button_bg_disabled);
-}
 
 /* Icon Checkboxes */
 .checkbox-icon {
@@ -2787,6 +2605,30 @@ QSlider::handle:vertical:pressed {
     background: var(--primary);
 }
 
+QSlider::sub-page:horizontal:disabled {
+    background-color: var(--grey4);
+    border-radius: var(--slider_groove_radius);
+}
+
+QSlider::add-page:horizontal:disabled {
+    background-color: var(--grey7);
+    border-radius: var(--slider_groove_radius);
+}
+
+QSlider::add-page:vertical:disabled {
+    background-color: var(--grey4);
+    border-radius: var(--slider_groove_radius);
+}
+
+QSlider::sub-page:vertical:disabled {
+    background-color: var(--grey7);
+    border-radius: var(--slider_groove_radius);
+}
+
+QSlider::handle:disabled {
+    background-color: var(--white5);
+}
+
 /* Vertical sliders */
 QSlider::groove:vertical {
     background: var(--button_bg);
@@ -2855,6 +2697,7 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {
     border-color: var(--button_bg_disabled);
     background: var(--button_bg_disabled);
 }
+
 
 /* Icon-based checkboxes mapping */
 QCheckBox[themeID="visibilityCheckBox"]::indicator:unchecked { 
