@@ -3,6 +3,7 @@
 !icons/
 !patterns/
 !src/
+!test/
 !public/
 .vercel
-
+*.bak

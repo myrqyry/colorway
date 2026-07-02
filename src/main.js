@@ -48,37 +48,21 @@ function renderApp() {
   app.innerHTML = `
     <div class="obs-app-shell">
       <header class="obs-titlebar">
-        <div class="window-title">Colorway OBS Theme Preview</div>
+        <div class="obs-caption-row">
+          <div class="window-title">Colorway OBS Theme Preview</div>
+          <div class="theme-picker">
+            <label for="theme-select">Theme</label>
+            <select id="theme-select">${renderThemeOptions()}</select>
+          </div>
+        </div>
         <nav class="obs-menubar" aria-label="OBS menu preview">
           <span>File</span><span>Edit</span><span>View</span><span>Docks</span>
           <span>Profile</span><span>Scene Collection</span><span>Tools</span><span>Help</span>
         </nav>
-        <div class="theme-picker">
-          <label for="theme-select">Theme</label>
-          <select id="theme-select">${renderThemeOptions()}</select>
-        </div>
       </header>
 
       <main class="obs-workspace">
-        <section class="preview-stage" aria-label="OBS preview canvas">
-          <div class="preview-canvas">
-            <div class="canvas-source camera-source">Camera</div>
-            <div class="canvas-source alert-source">Follower alert</div>
-            <div class="canvas-hud">
-              <strong>1920 × 1080</strong>
-            </div>
-            <div id="canvas-palette" class="canvas-palette">
-              <div class="canvas-palette-header">Palette <span class="inspector-badge">${PALETTE_VARS.length} vars</span></div>
-              <div id="palette-grid" class="palette-grid"></div>
-            </div>
-            <div class="canvas-theme-info">
-              <div id="active-theme-name" class="canvas-theme-name">Loading...</div>
-              <div id="theme-status" class="canvas-theme-status">Fetching theme variables</div>
-            </div>
-          </div>
-        </section>
-
-        <aside class="right-panel">
+        <aside class="left-panel">
           <section class="dock-panel scenes-dock">
             <div class="dock-header">Scenes</div>
             <div class="dock-scrollable">
@@ -101,6 +85,40 @@ function renderApp() {
             </div>
           </section>
 
+          <section class="dock-panel transitions-dock">
+            <div class="dock-header">Scene Transitions</div>
+            <div class="dock-transitions">
+              <select class="obs-select" aria-label="Scene transition">
+                <option>Fade</option>
+                <option>Cut</option>
+                <option>Swipe</option>
+                <option>Slide</option>
+              </select>
+              <input class="obs-input" type="number" value="300" min="0" max="10000" aria-label="Duration ms" />
+              <span class="dock-label">ms</span>
+            </div>
+          </section>
+        </aside>
+
+        <section class="preview-stage" aria-label="OBS preview canvas">
+          <div class="preview-canvas">
+            <div class="canvas-source camera-source">Camera</div>
+            <div class="canvas-source alert-source">Follower alert</div>
+            <div class="canvas-hud">
+              <strong>1920 × 1080</strong>
+            </div>
+            <div id="canvas-palette" class="canvas-palette">
+              <div class="canvas-palette-header">Palette <span class="inspector-badge">${PALETTE_VARS.length} vars</span></div>
+              <div id="palette-grid" class="palette-grid"></div>
+            </div>
+            <div class="canvas-theme-info">
+              <div id="active-theme-name" class="canvas-theme-name">Loading...</div>
+              <div id="theme-status" class="canvas-theme-status">Fetching theme variables</div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="right-panel">
           <section class="dock-panel mixer-dock">
             <div class="dock-header">Audio Mixer</div>
             ${renderMixerStrip('Desktop Audio', 72)}
@@ -147,7 +165,6 @@ async function setTheme(file) {
     name.textContent = theme._name || file;
     status.textContent = theme._dark === false ? 'Light variant' : 'Dark variant';
     document.querySelector('#palette-grid').innerHTML = renderPalette();
-    updateStatusDemo();
   } catch (error) {
     status.textContent = error.message;
   }
@@ -177,8 +194,16 @@ document.querySelectorAll('.dock-row').forEach((row) => {
   });
 });
 
+document.querySelectorAll('.mixer-slider').forEach((slider) => {
+  slider.addEventListener('input', () => {
+    slider.style.setProperty('--slider-pct', `${slider.value}%`);
+  });
+});
+
 document.querySelector('#record-toggle').addEventListener('click', (event) => {
   event.currentTarget.classList.toggle('recording');
 });
 
+updateStatusDemo();
+setInterval(updateStatusDemo, 2000);
 setTheme(themeSelect.value);

@@ -27,6 +27,7 @@
     --primary_darker: #585b70;
     --warning: #fab387;
     --danger: #f38ba8;
+    --success: #a6e3a1;
     --text: #cdd6f4;
     --text_light: #f5f5f5;
     --text_bright: var(--text_light);
@@ -43,6 +44,7 @@
     --meter_fg_nom: var(--primary);
     --meter_fg_war: var(--warning);
     --meter_fg_err: var(--danger);
+    --overlay-bg: rgba(24, 24, 37, 0.88);
   }
 
   * {
@@ -105,11 +107,19 @@
   /* ---- Titlebar ---- */
   .obs-titlebar {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    flex-direction: column;
     border-bottom: 1px solid var(--border_color);
-    padding: 6px 12px;
     background: var(--bg_window);
+  }
+
+  .obs-caption-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 28px;
+    width: 100%;
+    padding: 5px 12px;
   }
 
   .window-title {
@@ -123,9 +133,11 @@
     display: flex;
     align-items: center;
     gap: 2px;
+    width: 100%;
+    padding: 2px 6px;
     font-size: 11px;
     color: var(--text_muted);
-    flex: 1;
+    border-top: 1px solid var(--border_color);
   }
 
   .obs-menubar span {
@@ -171,7 +183,7 @@
   /* ---- Workspace (main area) ---- */
   .obs-workspace {
     display: grid;
-    grid-template-columns: 1fr 260px;
+    grid-template-columns: 200px 1fr 260px;
     gap: 0;
     min-height: 0;
     background: var(--bg_base);
@@ -209,7 +221,7 @@
     border: 1px solid var(--border_color);
     padding: 8px 10px;
     font-size: 11px;
-    background: rgba(24, 24, 37, 0.85);
+    background: var(--overlay-bg);
     color: var(--text);
   }
 
@@ -241,7 +253,7 @@
     gap: 8px;
     padding: 6px 8px;
     font-size: 11px;
-    background: rgba(24, 24, 37, 0.85);
+    background: var(--overlay-bg);
     color: var(--text_muted);
   }
 
@@ -260,7 +272,7 @@
     overflow-y: auto;
     border-radius: 6px;
     border: 1px solid var(--border_color);
-    background: rgba(24, 24, 37, 0.92);
+    background: var(--overlay-bg);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(6px);
     z-index: 10;
@@ -319,7 +331,7 @@
     padding: 8px 12px;
     border-radius: 6px;
     border: 1px solid var(--border_color);
-    background: rgba(24, 24, 37, 0.92);
+    background: var(--overlay-bg);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(6px);
     z-index: 10;
@@ -338,7 +350,8 @@
     margin-top: 2px;
   }
 
-  /* ---- Right panel ---- */
+  /* ---- Dock columns ---- */
+  .left-panel,
   .right-panel {
     display: flex;
     flex-direction: column;
@@ -346,6 +359,15 @@
     border-left: 1px solid var(--border_color);
     background: var(--bg_dock);
     overflow-y: auto;
+  }
+
+  .left-panel {
+    border-left: none;
+    border-right: 1px solid var(--border_color);
+  }
+
+  .right-panel {
+    border-right: none;
   }
 
   /* ---- Docks ---- */
@@ -414,6 +436,50 @@
 
   .dock-row.inactive {
     color: var(--text_inactive);
+  }
+
+  .dock-transitions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+  }
+
+  .obs-select,
+  .obs-input {
+    border-radius: 3px;
+    border: 1px solid var(--input_border);
+    padding: 3px 6px;
+    min-width: 0;
+    font-size: 11px;
+    background: var(--input_bg);
+    color: var(--text);
+    outline: none;
+  }
+
+  .obs-select {
+    flex: 1;
+  }
+
+  .obs-input {
+    width: 56px;
+  }
+
+  .obs-select:hover,
+  .obs-input:hover {
+    background: var(--input_bg_hover);
+    border-color: var(--input_border_hover);
+  }
+
+  .obs-select:focus,
+  .obs-input:focus {
+    border-color: var(--primary);
+    background: var(--input_bg_focus);
+  }
+
+  .dock-label {
+    font-size: 11px;
+    color: var(--text_muted);
   }
 
   /* ---- Mixer ---- */
@@ -664,7 +730,7 @@
   }
 
   .status-dot.live {
-    background: var(--danger);
+    background: var(--success, #4caf50);
   }
 
   .recording-indicator .status-dot {
@@ -687,13 +753,9 @@
       border-top: 1px solid var(--border_color);
     }
 
-    .obs-titlebar {
-      flex-wrap: wrap;
-    }
-
-    .obs-menubar {
-      order: 2;
-      flex-basis: 100%;
+    .left-panel {
+      border-right: none;
+      border-bottom: 1px solid var(--border_color);
     }
 
     .obs-statusbar {

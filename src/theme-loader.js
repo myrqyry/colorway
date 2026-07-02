@@ -63,6 +63,7 @@ const PALETTE_GROUPS = [
       ['--accent_bg_end', 'Accent end'],
       ['--warning', 'Warning'],
       ['--danger', 'Danger'],
+      ['--success', 'Success'],
       ['--meter_bg_nom', 'Meter bg norm'],
       ['--meter_bg_war', 'Meter bg warn'],
       ['--meter_bg_err', 'Meter bg error'],
