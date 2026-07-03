@@ -9,20 +9,20 @@ importers:
   .:
     dependencies:
       autoprefixer:
-        specifier: latest
+        specifier: ^10.5.2
         version: 10.5.2(postcss@8.5.16)
       postcss:
-        specifier: latest
+        specifier: ^8.5.16
         version: 8.5.16
       tailwindcss:
-        specifier: latest
+        specifier: ^4.3.2
         version: 4.3.2
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.3.2
         version: 4.3.2
       vite:
-        specifier: latest
+        specifier: ^8.1.2
         version: 8.1.2(jiti@2.7.0)(terser@5.48.0)
 
 packages:
