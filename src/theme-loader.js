@@ -86,7 +86,10 @@ export function parseOVT(text) {
   vars._dark = darkMatch ? darkMatch[1].toLowerCase() === 'true' : true;
 
   const blockMatch = text.match(/@OBSThemeVars\s*\{([\s\S]*?)\}/);
-  if (!blockMatch) return vars;
+  if (!blockMatch) {
+    console.warn('[parseOVT] @OBSThemeVars block not found in theme:', vars._name || '(unknown)');
+    return vars;
+  }
 
   for (const line of blockMatch[1].split('\n')) {
     const match = line.match(/^\s*(--[\w-]+)\s*:\s*(.+?);/);
@@ -111,6 +114,12 @@ export async function loadTheme(file) {
 
 export function applyTheme(vars) {
   const root = document.documentElement;
+
+  // Remove all previously-set inline theme vars before applying new ones
+  // so no ghost values from the prior theme persist.
+  for (const [key] of PALETTE_VARS) {
+    root.style.removeProperty(key);
+  }
 
   for (const [key, value] of Object.entries(vars)) {
     if (key.startsWith('--')) root.style.setProperty(key, value);

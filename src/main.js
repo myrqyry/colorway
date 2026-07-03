@@ -1,5 +1,5 @@
 import './styles.css';
-import { THEMES } from './theme-catalog.js';
+import { THEMES, DEFAULT_THEME } from './theme-catalog.js';
 import { PALETTE_VARS, PALETTE_GROUPS, applyTheme, loadTheme } from './theme-loader.js';
 
 const app = document.querySelector('#app');
@@ -28,7 +28,7 @@ function renderPalette() {
 
 function renderThemeOptions() {
   return THEMES.map((theme) => {
-    const selected = theme.file === 'Colorway-CatppuccinMocha.ovt' ? 'selected' : '';
+    const selected = theme.file === DEFAULT_THEME ? 'selected' : '';
     return `<option value="${theme.file}" ${selected}>${theme.name}</option>`;
   }).join('');
 }
@@ -167,6 +167,8 @@ async function setTheme(file) {
     document.querySelector('#palette-grid').innerHTML = renderPalette();
   } catch (error) {
     status.textContent = error.message;
+    const grid = document.querySelector('#palette-grid');
+    if (grid) grid.innerHTML = `<div style="padding:8px;color:var(--danger);font-size:10px">${error.message}</div>`;
   }
 }
 
@@ -205,5 +207,6 @@ document.querySelector('#record-toggle').addEventListener('click', (event) => {
 });
 
 updateStatusDemo();
-setInterval(updateStatusDemo, 2000);
+const statusInterval = setInterval(updateStatusDemo, 2000);
+// If teardown is ever needed: clearInterval(statusInterval);
 setTheme(themeSelect.value);

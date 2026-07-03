@@ -1,3 +1,5 @@
+export const DEFAULT_THEME = 'Colorway-CatppuccinMocha.ovt';
+
 export const THEMES = [
   { file: 'Colorway-90sAnime.ovt', name: '90s Anime' },
   { file: 'Colorway-AMOLED.ovt', name: 'AMOLED' },
@@ -118,13 +120,13 @@ export const THEMES = [
   { file: 'Colorway-RosePineDawn-Iris.ovt', name: 'Rose Pine Dawn — Iris' },
   { file: 'Colorway-RosePineDawn-Love.ovt', name: 'Rose Pine Dawn — Love' },
   { file: 'Colorway-RosePineDawn-Pine.ovt', name: 'Rose Pine Dawn — Pine' },
-  { file: 'Colorway-RosePineDawn-Rose.ovt', name: 'Rose Pine Dawn — Rose' },
-  { file: 'Colorway-RosePineMoon-Foam.ovt', name: 'Rose Pine Moon — Foam' },
-  { file: 'Colorway-RosePineMoon-Gold.ovt', name: 'Rose Pine Moon — Gold' },
-  { file: 'Colorway-RosePineMoon-Iris.ovt', name: 'Rose Pine Moon — Iris' },
-  { file: 'Colorway-RosePineMoon-Love.ovt', name: 'Rose Pine Moon — Love' },
-  { file: 'Colorway-RosePineMoon-Pine.ovt', name: 'Rose Pine Moon — Pine' },
-  { file: 'Colorway-RosePineMoon-Rose.ovt', name: 'Rose Pine Moon — Rose' },
+  { file: 'Colorway-RosePineDawn-Rose.ovt', name: 'Rosé Pine Dawn — Rose' },
+  { file: 'Colorway-RosePineMoon-Foam.ovt', name: 'Rosé Pine Moon — Foam' },
+  { file: 'Colorway-RosePineMoon-Gold.ovt', name: 'Rosé Pine Moon — Gold' },
+  { file: 'Colorway-RosePineMoon-Iris.ovt', name: 'Rosé Pine Moon — Iris' },
+  { file: 'Colorway-RosePineMoon-Love.ovt', name: 'Rosé Pine Moon — Love' },
+  { file: 'Colorway-RosePineMoon-Pine.ovt', name: 'Rosé Pine Moon — Pine' },
+  { file: 'Colorway-RosePineMoon-Rose.ovt', name: 'Rosé Pine Moon — Rose' },
   { file: 'Colorway-ShadesofPurple.ovt', name: 'Shades of Purple' },
   { file: 'Colorway-SolarizedDark.ovt', name: 'Solarized Dark+' },
   { file: 'Colorway-SolarizedLight.ovt', name: 'Solarized Light+' },
