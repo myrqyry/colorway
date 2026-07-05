@@ -187,17 +187,16 @@ async function setTheme(file) {
 function applyCurrentPattern() {
   const select = document.querySelector('#pattern-select');
   if (!select) return;
-  const root = document.documentElement;
   const patternFile = select.value;
   const canvas = document.querySelector('.preview-canvas');
   if (!canvas) return;
 
   if (patternFile) {
     const patternUrl = `/patterns/${patternFile}`;
-    root.style.setProperty('--pattern_eyes', `url(${patternUrl})`);
-    canvas.style.backgroundImage = `var(--pattern_eyes)`;
+    document.documentElement.style.setProperty('--pattern_eyes', `url(${patternUrl})`);
+    canvas.style.backgroundImage = `url(${patternUrl})`;
   } else {
-    root.style.removeProperty('--pattern_eyes');
+    document.documentElement.style.removeProperty('--pattern_eyes');
     canvas.style.backgroundImage = `
       linear-gradient(45deg, rgba(255,255,255,0.035) 25%, transparent 25%),
       linear-gradient(-45deg, rgba(255,255,255,0.035) 25%, transparent 25%),
