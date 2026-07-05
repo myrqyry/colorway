@@ -17,7 +17,7 @@ test('workspace has OBS-like left docks and right controls', () => {
   assert.match(main, /<aside class="left-panel">/);
   assert.match(main, /class="dock-panel transitions-dock"/);
   assert.match(main, /<aside class="right-panel">/);
-  assert.match(styles, /grid-template-columns:\s*200px 1fr 260px/);
+  assert.match(styles, /grid-template-columns:\s*220px 1fr 230px/);
 });
 
 test('canvas overlays use theme-driven overlay background', () => {
@@ -30,7 +30,7 @@ test('canvas overlays use theme-driven overlay background', () => {
 
 test('live status uses success color and exposes it in palette', () => {
   assert.match(styles, /--success:\s*#/);
-  assert.match(styles, /\.status-dot\.live\s*\{[^}]*background:\s*var\(--success/s);
+  assert.match(styles, /\.status-dot\.live\s*\{[^}]*background:\s*var\(--live/s);
   assert.match(themeLoader, /\['--success', 'Success'\]/);
 });
 

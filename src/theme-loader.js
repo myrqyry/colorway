@@ -51,6 +51,7 @@ const PALETTE_GROUPS = [
       ['--button_bg_hover', 'Button hover'],
       ['--button_bg_disabled', 'Button disabled'],
       ['--list_item_bg_hover', 'List hover'],
+      ['--list_item_bg_selected', 'List selected'],
     ],
   },
   {
@@ -78,28 +79,29 @@ export const PALETTE_VARS = PALETTE_GROUPS.flatMap((g) => g.vars);
 export { PALETTE_GROUPS };
 
 export function parseOVT(text) {
+  const meta = {};
   const vars = {};
+
   const nameMatch = text.match(/name:\s*'([^']+)'/);
   const darkMatch = text.match(/dark:\s*'([^']+)'/);
+  const extendsMatch = text.match(/extends:\s*'([^']+)'/);
 
-  if (nameMatch) vars._name = nameMatch[1];
-  vars._dark = darkMatch ? darkMatch[1].toLowerCase() === 'true' : true;
+  if (nameMatch) meta._name = nameMatch[1];
+  meta._dark = darkMatch ? darkMatch[1].toLowerCase() === 'true' : true;
+  if (extendsMatch) meta._extends = extendsMatch[1];
 
   const blockMatch = text.match(/@OBSThemeVars\s*\{([\s\S]*?)\}/);
-  if (!blockMatch) {
-    console.warn('[parseOVT] @OBSThemeVars block not found in theme:', vars._name || '(unknown)');
-    return vars;
+  if (blockMatch) {
+    for (const line of blockMatch[1].split('\n')) {
+      const match = line.match(/^\s*(--[\w-]+)\s*:\s*(.+?);/);
+      if (match) vars[match[1]] = match[2].trim();
+    }
   }
 
-  for (const line of blockMatch[1].split('\n')) {
-    const match = line.match(/^\s*(--[\w-]+)\s*:\s*(.+?);/);
-    if (match) vars[match[1]] = match[2].trim();
-  }
-
-  return vars;
+  return { meta, vars };
 }
 
-export async function loadTheme(file) {
+async function loadRaw(file) {
   if (cache.has(file)) return cache.get(file);
 
   const response = await fetch(`${LOCAL_THEMES}${encodeURIComponent(file)}`);
@@ -107,20 +109,59 @@ export async function loadTheme(file) {
     throw new Error(`Failed to load ${file}: HTTP ${response.status}`);
   }
 
-  const theme = parseOVT(await response.text());
-  cache.set(file, theme);
-  return theme;
+  const parsed = parseOVT(await response.text());
+  cache.set(file, parsed);
+  return parsed;
 }
+
+async function resolveTheme(file) {
+  const parsed = await loadRaw(file);
+
+  if (parsed.meta._extends) {
+    const baseId = parsed.meta._extends;
+    const parentFile = file.endsWith('.ovt')
+      ? findThemeFile(baseId)
+      : null;
+
+    if (parentFile) {
+      const parentParsed = await resolveTheme(parentFile);
+      return { ...parentParsed, ...parsed.vars, _name: parsed.meta._name, _dark: parsed.meta._dark };
+    }
+  }
+
+  return { ...parsed.vars, _name: parsed.meta._name, _dark: parsed.meta._dark };
+}
+
+function findThemeFile(baseId) {
+  if (baseId === 'com.myrqyry.Colorway' || baseId.endsWith('.Colorway')) {
+    return 'Colorway.obt';
+  }
+  return 'Colorway.obt';
+}
+
+export async function loadTheme(file) {
+  const cachedKey = `resolved:${file}`;
+  if (cache.has(cachedKey)) return cache.get(cachedKey);
+
+  const vars = await resolveTheme(file);
+  cache.set(cachedKey, vars);
+  return vars;
+}
+
+let _appliedVars = new Set();
 
 export function applyTheme(vars) {
   const root = document.documentElement;
 
-  for (const [key] of PALETTE_VARS) {
+  for (const key of _appliedVars) {
     root.style.removeProperty(key);
   }
-  root.style.removeProperty('--pattern_eyes');
+  _appliedVars = new Set();
 
   for (const [key, value] of Object.entries(vars)) {
-    if (key.startsWith('--')) root.style.setProperty(key, value);
+    if (key.startsWith('--')) {
+      root.style.setProperty(key, value);
+      _appliedVars.add(key);
+    }
   }
 }

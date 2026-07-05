@@ -88,11 +88,31 @@ function renderApp() {
           <section class="dock-panel sources-dock">
             <div class="dock-header">Sources</div>
             <div class="dock-scrollable">
-              <button class="dock-row" type="button">Game Capture</button>
-              <button class="dock-row selected" type="button">Camera</button>
-              <button class="dock-row inactive" type="button">Chat overlay</button>
-              <button class="dock-row inactive" type="button">Alert box</button>
-              <button class="dock-row" type="button">Browser Source</button>
+              <button class="dock-row" type="button">
+                <span class="dock-row-icon">🎮</span>
+                <span class="dock-row-label">Game Capture</span>
+                <span class="dock-row-actions"><span class="dock-action eye">👁</span><span class="dock-action lock">🔒</span></span>
+              </button>
+              <button class="dock-row selected" type="button">
+                <span class="dock-row-icon">📷</span>
+                <span class="dock-row-label">Camera</span>
+                <span class="dock-row-actions"><span class="dock-action eye">👁</span><span class="dock-action lock">🔒</span></span>
+              </button>
+              <button class="dock-row inactive" type="button">
+                <span class="dock-row-icon">💬</span>
+                <span class="dock-row-label">Chat overlay</span>
+                <span class="dock-row-actions"><span class="dock-action eye">👁</span></span>
+              </button>
+              <button class="dock-row inactive" type="button">
+                <span class="dock-row-icon">🔔</span>
+                <span class="dock-row-label">Alert box</span>
+                <span class="dock-row-actions"><span class="dock-action eye">👁</span></span>
+              </button>
+              <button class="dock-row" type="button">
+                <span class="dock-row-icon">🌐</span>
+                <span class="dock-row-label">Browser Source</span>
+                <span class="dock-row-actions"><span class="dock-action eye">👁</span><span class="dock-action lock">🔒</span></span>
+              </button>
             </div>
           </section>
 
@@ -111,23 +131,24 @@ function renderApp() {
           </section>
         </aside>
 
-        <section class="preview-stage" aria-label="OBS preview canvas">
-          <div class="preview-canvas">
-            <div class="canvas-source camera-source">Camera</div>
-            <div class="canvas-source alert-source">Follower alert</div>
-            <div class="canvas-hud">
-              <strong>1920 × 1080</strong>
-            </div>
+         <section class="preview-stage" aria-label="OBS preview canvas">
+           <div class="preview-canvas">
+             <div class="canvas-source camera-source">Camera</div>
+             <div class="canvas-source alert-source">Follower alert</div>
+             <div class="canvas-hud">
+               <strong>1920 × 1080</strong>
+               <span class="canvas-scale">125%</span>
+             </div>
             <div id="canvas-palette" class="canvas-palette">
               <div class="canvas-palette-header">Palette <span class="inspector-badge">${PALETTE_VARS.length} vars</span></div>
               <div id="palette-grid" class="palette-grid"></div>
             </div>
-            <div class="canvas-theme-info">
-              <div id="active-theme-name" class="canvas-theme-name">Loading...</div>
-              <div id="theme-status" class="canvas-theme-status">Fetching theme variables</div>
+              <div class="canvas-theme-info">
+                <div id="active-theme-name" class="canvas-theme-name">Loading...</div>
+                <div id="theme-status" class="canvas-theme-status">Fetching theme variables</div>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
         <aside class="right-panel">
           <section class="dock-panel mixer-dock">
@@ -161,6 +182,7 @@ function renderApp() {
         <span>Dropped: <span id="dropped-value">0.3%</span></span>
         <span><span id="bitrate-value">3820</span> kb/s</span>
       </footer>
+
     </div>
   `;
 }

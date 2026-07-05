@@ -4,47 +4,54 @@
 
 @layer base {
   :root {
-    --accent_bg_start: rgba(203, 166, 247, 0.3);
-    --accent_bg_end: rgba(203, 166, 247, 0.1);
-    --bg_window: #181825;
-    --bg_base: #1e1e2e;
-    --bg_preview: #11111b;
-    --bg_dock: #181825;
-    --bg_hover: #313244;
-    --button_bg: #181825;
-    --button_bg_hover: #313244;
-    --button_bg_disabled: #1e1e2e;
-    --input_bg: #313244;
-    --input_bg_hover: #45475a;
-    --input_bg_focus: #383652;
-    --input_border: #555875;
-    --input_border_hover: #686d8d;
-    --list_item_bg_hover: #3a3955;
-    --primary: #cba6f7;
-    --primary_light: #b4befe;
-    --primary_lighter: #f5c2e7;
-    --primary_dark: #89b4fa;
-    --primary_darker: #585b70;
-    --warning: #fab387;
-    --danger: #f38ba8;
-    --success: #a6e3a1;
-    --text: #cdd6f4;
-    --text_light: #f8f8fb;
+    --accent_bg_start: rgba(196, 167, 231, 0.3);
+    --accent_bg_end: rgba(196, 167, 231, 0.1);
+    --bg_window: #191724;
+    --bg_base: #191724;
+    --bg_preview: #26233a;
+    --bg_dock: #1f1d2e;
+    --bg_hover: #26233a;
+    --button_bg: #1f1d2e;
+    --button_bg_hover: #26233a;
+    --button_bg_disabled: #21202e;
+    --input_bg: #26233a;
+    --input_bg_hover: #403d52;
+    --input_bg_focus: #2d2a42;
+    --input_border: #403d52;
+    --input_border_hover: #524f67;
+    --list_item_bg_hover: #332f4a;
+    --list_item_bg_selected: var(--primary);
+    --primary: #c4a7e7;
+    --primary_light: #e0def4;
+    --primary_lighter: #f0ebff;
+    --primary_dark: #907aa9;
+    --primary_darker: #524f67;
+    --warning: #f6c177;
+    --danger: #eb6f92;
+    --success: #25A231;
+    --text: #e0def4;
+    --text_light: #ffffff;
     --text_bright: var(--text_light);
-    --text_muted: #8a90aa;
-    --text_disabled: #a6adc8;
-    --text_inactive: #a6adc8;
-    --text_inverse: #1e1e2e;
-    --border_color: #40445d;
+    --text_muted: #908caa;
+    --text_disabled: #6e6a86;
+    --text_inactive: #6e6a86;
+    --text_inverse: #191724;
+    --border_color: #403d52;
     --ico: #f5f5f5;
-    --ico_selected: #1e1e2e;
+    --ico_selected: #191724;
+    --live: #38bdf8;
+    --recording: #fb4d5d;
+    --live_bg_start: rgba(56, 189, 248, 0.3);
+    --live_bg_end: rgba(56, 189, 248, 0.1);
+    --recording_bg_start: rgba(251, 77, 93, 0.3);
+    --recording_bg_end: rgba(251, 77, 93, 0.1);
     --meter_bg_nom: var(--bg_hover);
     --meter_bg_war: var(--warning);
     --meter_bg_err: var(--danger);
     --meter_fg_nom: var(--primary);
     --meter_fg_war: var(--warning);
     --meter_fg_err: var(--danger);
-    --overlay-bg: rgba(24, 24, 37, 0.92);
+    --overlay-bg: rgba(25, 23, 36, 0.92);
   }
 
   * {
@@ -102,6 +109,34 @@
     min-height: 100vh;
     background: var(--bg_window);
     color: var(--text);
+    position: relative;
+  }
+
+  .obs-app-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--pattern_eyes);
+    background-repeat: repeat;
+    opacity: 0.06;
+    z-index: 0;
+  }
+
+  .obs-workspace::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--pattern_eyes);
+    background-repeat: repeat;
+    opacity: 0.045;
+    z-index: 0;
+  }
+
+  .obs-app-shell > * {
+    position: relative;
+    z-index: 1;
   }
 
   /* ---- Titlebar ---- */
@@ -231,10 +266,16 @@
   /* ---- Workspace (main area) ---- */
   .obs-workspace {
     display: grid;
-    grid-template-columns: 200px 1fr 260px;
+    grid-template-columns: 220px 1fr 230px;
     gap: 0;
     min-height: 0;
     background: var(--bg_base);
+    position: relative;
+  }
+
+  .obs-workspace > * {
+    position: relative;
+    z-index: 1;
   }
 
   /* ---- Preview canvas ---- */
@@ -293,14 +334,20 @@
     left: 10px;
     display: flex;
     gap: 8px;
-    padding: 7px 10px;
-    font-size: 11px;
+    padding: 5px 8px;
+    font-size: 10px;
     background: var(--overlay-bg);
     color: var(--text_muted);
+    border-radius: 3px;
   }
 
   .canvas-hud strong {
     color: var(--text);
+    font-weight: 600;
+  }
+
+  .canvas-scale {
+    color: var(--primary);
     font-weight: 600;
   }
 
@@ -432,7 +479,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 7px 12px;
+    padding: 5px 10px;
     font-size: 10px;
     font-weight: 600;
     background: var(--bg_window);
@@ -460,12 +507,13 @@
   }
 
   .dock-row {
-    display: flex;
-    width: 100%;
+    display: grid;
+    grid-template-columns: 20px 1fr auto;
     align-items: center;
-    gap: 8px;
+    width: 100%;
+    padding: 5px 10px;
+    min-height: 26px;
     border: 0;
-    padding: 7px 12px;
     font-size: 11px;
     text-align: left;
     background: transparent;
@@ -477,19 +525,49 @@
       box-shadow 0.15s ease;
   }
 
+  .dock-row-icon {
+    font-size: 12px;
+    line-height: 1;
+    opacity: 0.65;
+  }
+
+  .dock-row-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 4px;
+  }
+
+  .dock-row-actions {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .dock-action {
+    font-size: 10px;
+    line-height: 1;
+    opacity: 0.55;
+    transition: opacity 0.15s;
+  }
+
+  .dock-row:hover .dock-action {
+    opacity: 0.8;
+  }
+
   .dock-row:hover {
     background: var(--list_item_bg_hover);
   }
 
   .dock-row.selected {
-    background: var(--primary);
-    color: var(--text_inverse);
-    box-shadow: inset 2px 0 0 color-mix(in srgb, var(--primary_light) 70%, white 30%);
+    background: color-mix(in srgb, var(--primary) 15%, transparent);
+    color: var(--text_light);
+    box-shadow: inset 3px 0 0 var(--primary);
   }
 
   .dock-row.inactive {
     color: var(--text_inactive);
-    opacity: 0.78;
+    opacity: 0.75;
   }
 
   .dock-transitions {
@@ -542,11 +620,11 @@
   /* ---- Mixer ---- */
   .mixer-strip {
     display: grid;
-    grid-template-columns: 1fr 1fr 60px 30px;
+    grid-template-columns: 1fr 30px 40px 28px;
     align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    font-size: 11px;
+    gap: 5px;
+    padding: 4px 10px;
+    font-size: 10px;
     border-bottom: 1px solid var(--border_color);
   }
 
@@ -559,13 +637,14 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     color: var(--text);
-    font-size: 11px;
+    font-size: 10px;
+    padding-right: 4px;
   }
 
   .meter-track {
-    height: 6px;
+    height: 4px;
     overflow: hidden;
-    border-radius: 3px;
+    border-radius: 2px;
     background: var(--meter_bg_nom);
   }
 
@@ -654,9 +733,9 @@
   /* ---- Buttons ---- */
   .obs-button {
     border-radius: 4px;
-    border: 1px solid var(--border_color);
-    padding: 7px 10px;
-    font-size: 12px;
+    border: 1px solid transparent;
+    padding: 5px 8px;
+    font-size: 11px;
     background: var(--button_bg);
     color: var(--text);
     cursor: default;
@@ -665,26 +744,37 @@
     transition:
       background-color 0.15s ease,
       border-color 0.15s ease,
-      color 0.15s ease,
-      transform 0.15s ease;
+      color 0.15s ease;
+    font-weight: 500;
   }
 
   .obs-button:hover {
     background: var(--button_bg_hover);
-    border-color: var(--primary);
-    transform: translateY(-1px);
+    border-color: var(--border_color);
   }
 
   .obs-button.primary {
-    background: var(--primary);
+    background: var(--primary_dark);
     border-color: var(--primary);
-    color: var(--text_inverse);
+    color: var(--text_light);
+    font-weight: 600;
+  }
+
+  .obs-button.primary:hover {
+    background: var(--primary);
+    border-color: var(--primary_light);
   }
 
   .obs-button.recording {
-    background: var(--danger);
+    background: var(--recording_bg_start);
+    border-color: var(--recording);
+    color: var(--recording);
+    font-weight: 600;
+  }
+
+  .obs-button.recording:hover {
+    background: var(--recording_bg_end);
     border-color: var(--danger);
-    color: var(--text_inverse);
   }
 
   .controls-dock {
@@ -797,7 +887,7 @@
   }
 
   .status-dot.live {
-    background: var(--success, #4caf50);
+    background: var(--live, #38bdf8);
   }
 
   .status-indicator.recording-indicator {
