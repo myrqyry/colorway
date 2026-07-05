@@ -89,29 +89,42 @@ function renderApp() {
             <div class="dock-header">Sources</div>
             <div class="dock-scrollable">
               <button class="dock-row" type="button">
-                <span class="dock-row-icon">🎮</span>
+                <img class="dock-row-icon" src="/icons/colorway/iconamoon/normal/display.svg" alt="" />
                 <span class="dock-row-label">Game Capture</span>
-                <span class="dock-row-actions"><span class="dock-action eye">👁</span><span class="dock-action lock">🔒</span></span>
+                <span class="dock-row-actions">
+                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="visible" />
+                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="locked" />
+                </span>
               </button>
               <button class="dock-row selected" type="button">
-                <span class="dock-row-icon">📷</span>
+                <img class="dock-row-icon" src="/icons/colorway/iconamoon/normal/default.svg" alt="" />
                 <span class="dock-row-label">Camera</span>
-                <span class="dock-row-actions"><span class="dock-action eye">👁</span><span class="dock-action lock">🔒</span></span>
+                <span class="dock-row-actions">
+                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="visible" />
+                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="locked" />
+                </span>
               </button>
               <button class="dock-row inactive" type="button">
-                <span class="dock-row-icon">💬</span>
+                <img class="dock-row-icon" src="/icons/colorway/iconamoon/normal/group.svg" alt="" />
                 <span class="dock-row-label">Chat overlay</span>
-                <span class="dock-row-actions"><span class="dock-action eye">👁</span></span>
+                <span class="dock-row-actions">
+                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="visible" />
+                </span>
               </button>
               <button class="dock-row inactive" type="button">
-                <span class="dock-row-icon">🔔</span>
+                <img class="dock-row-icon" src="/icons/colorway/iconamoon/normal/brush.svg" alt="" />
                 <span class="dock-row-label">Alert box</span>
-                <span class="dock-row-actions"><span class="dock-action eye">👁</span></span>
+                <span class="dock-row-actions">
+                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="visible" />
+                </span>
               </button>
               <button class="dock-row" type="button">
-                <span class="dock-row-icon">🌐</span>
+                <img class="dock-row-icon" src="/icons/colorway/iconamoon/normal/globe.svg" alt="" />
                 <span class="dock-row-label">Browser Source</span>
-                <span class="dock-row-actions"><span class="dock-action eye">👁</span><span class="dock-action lock">🔒</span></span>
+                <span class="dock-row-actions">
+                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="visible" />
+                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="locked" />
+                </span>
               </button>
             </div>
           </section>
