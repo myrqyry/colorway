@@ -34,6 +34,13 @@ test('live status uses success color and exposes it in palette', () => {
   assert.match(themeLoader, /\['--success', 'Success'\]/);
 });
 
+test('refinements keep a visible frame and keyboard focus', () => {
+  assert.match(styles, /\.canvas-palette\s*\{[^}]*width:\s*270px/s);
+  assert.match(styles, /\.canvas-palette \.palette-group-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s);
+  assert.match(styles, /\.theme-picker select:focus-visible,/);
+  assert.match(styles, /\.dock-row\.selected\s*\{[^}]*box-shadow:/s);
+});
+
 test('mixer slider updates its filled range while dragged', () => {
   assert.match(main, /\.mixer-slider/);
   assert.match(main, /addEventListener\('input'/);

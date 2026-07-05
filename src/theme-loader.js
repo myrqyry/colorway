@@ -115,11 +115,10 @@ export async function loadTheme(file) {
 export function applyTheme(vars) {
   const root = document.documentElement;
 
-  // Remove all previously-set inline theme vars before applying new ones
-  // so no ghost values from the prior theme persist.
   for (const [key] of PALETTE_VARS) {
     root.style.removeProperty(key);
   }
+  root.style.removeProperty('--pattern_eyes');
 
   for (const [key, value] of Object.entries(vars)) {
     if (key.startsWith('--')) root.style.setProperty(key, value);

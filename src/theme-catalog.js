@@ -140,3 +140,22 @@ export const THEMES = [
   { file: 'Colorway-ZombieThreed.ovt', name: 'Zombie Threed' },
   { file: 'Colorway-matchalk.ovt', name: 'matchalk' },
 ];
+
+export const PATTERNS = [
+  { file: 'pattern.svg', name: 'Diagonal' },
+  { file: 'bamboo.svg', name: 'Bamboo' },
+  { file: 'bank-note.svg', name: 'Bank Note' },
+  { file: 'charlie-brown.svg', name: 'Charlie Brown' },
+  { file: 'diagonal-lines.svg', name: 'Diagonal Lines' },
+  { file: 'formal-invitation.svg', name: 'Formal Invitation' },
+  { file: 'heavy-rain.svg', name: 'Heavy Rain' },
+  { file: 'morphing-diamonds.svg', name: 'Morphing Diamonds' },
+  { file: 'parkay-floor.svg', name: 'Parkay Floor' },
+  { file: 'pixel-dots.svg', name: 'Pixel Dots' },
+  { file: 'rails.svg', name: 'Rails' },
+  { file: 'rain.svg', name: 'Rain' },
+  { file: 'tiny-checkers.svg', name: 'Tiny Checkers' },
+  { file: 'zig-zag.svg', name: 'Zig Zag' },
+];
+
+export const DEFAULT_PATTERN = 'pattern.svg';

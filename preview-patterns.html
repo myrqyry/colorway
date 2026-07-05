@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colorway Pattern Preview</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #191724;
+    color: #e0def4;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 2rem;
+  }
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  p.subtitle {
+    color: #908caa;
+    margin-bottom: 2rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  .card {
+    border: 1px solid #403d52;
+    border-radius: 9px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .card:hover { border-color: #c4a7e7; }
+  .card.selected { border-color: #c4a7e7; box-shadow: 0 0 0 2px rgba(196,167,231,0.3); }
+  .preview {
+    height: 140px;
+    background-color: #191724;
+    background-repeat: repeat;
+    position: relative;
+  }
+  .label {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    background: #1f1d2e;
+    color: #e0def4;
+  }
+  .label span {
+    color: #908caa;
+    font-size: 0.7rem;
+    margin-left: 0.25rem;
+  }
+  .selected-badge {
+    display: none;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: rgba(196,167,231,0.2);
+    border: 1px solid #c4a7e7;
+    color: #c4a7e7;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+  }
+  .card.selected .selected-badge { display: block; }
+  .info {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #1f1d2e;
+    border: 1px solid #403d52;
+    border-radius: 9px;
+    font-size: 0.85rem;
+    color: #908caa;
+  }
+  .info code {
+    background: #26233a;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    color: #c4a7e7;
+  }
+</style>
+</head>
+<body>
+  <h1>Colorway Pattern Preview</h1>
+  <p class="subtitle">Click a pattern to copy its theme URL. Pattern opacity is rendered at 12% (matching OBS).</p>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="info">
+    <strong>How to use in OBS:</strong> Add <code>--pattern_eyes: url(theme:patterns/[name].svg);</code> to your <code>@OBSThemeVars</code> block, then reference it with <code>background-image: var(--pattern_eyes);</code> on any widget.
+  </div>
+
+<script>
+  const patterns = [
+    'pattern', 'bamboo', 'bank-note', 'charlie-brown', 'diagonal-lines',
+    'formal-invitation', 'heavy-rain', 'morphing-diamonds', 'parkay-floor',
+    'pixel-dots', 'rails', 'rain', 'tiny-checkers', 'zig-zag'
+  ];
+  const grid = document.getElementById('grid');
+  let selected = 'pattern';
+
+  patterns.forEach(name => {
+    const card = document.createElement('div');
+    card.className = 'card' + (name === selected ? ' selected' : '');
+    card.innerHTML = `
+      <div class="preview" style="background-image: url('patterns/${name}.svg');">
+        <div class="selected-badge">ACTIVE</div>
+      </div>
+      <div class="label">${name} <span>.svg</span></div>
+    `;
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selected = name;
+      navigator.clipboard?.writeText(`--pattern_eyes: url(theme:patterns/${name}.svg);`);
+    });
+    grid.appendChild(card);
+  });
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 import './styles.css';
-import { THEMES, DEFAULT_THEME } from './theme-catalog.js';
+import { THEMES, DEFAULT_THEME, PATTERNS, DEFAULT_PATTERN } from './theme-catalog.js';
 import { PALETTE_VARS, PALETTE_GROUPS, applyTheme, loadTheme } from './theme-loader.js';
 
 const app = document.querySelector('#app');
@@ -33,6 +33,13 @@ function renderThemeOptions() {
   }).join('');
 }
 
+function renderPatternOptions() {
+  return PATTERNS.map((pattern) => {
+    const selected = pattern.file === DEFAULT_PATTERN ? 'selected' : '';
+    return `<option value="${pattern.file}" ${selected}>${pattern.name}</option>`;
+  }).join('');
+}
+
 function renderMixerStrip(label, level) {
   return `
     <div class="mixer-strip">
@@ -53,6 +60,10 @@ function renderApp() {
           <div class="theme-picker">
             <label for="theme-select">Theme</label>
             <select id="theme-select">${renderThemeOptions()}</select>
+          </div>
+          <div class="pattern-picker">
+            <label for="pattern-select">Pattern</label>
+            <select id="pattern-select">${renderPatternOptions()}</select>
           </div>
         </div>
         <nav class="obs-menubar" aria-label="OBS menu preview">
@@ -165,10 +176,36 @@ async function setTheme(file) {
     name.textContent = theme._name || file;
     status.textContent = theme._dark === false ? 'Light variant' : 'Dark variant';
     document.querySelector('#palette-grid').innerHTML = renderPalette();
+    applyCurrentPattern();
   } catch (error) {
     status.textContent = error.message;
     const grid = document.querySelector('#palette-grid');
     if (grid) grid.innerHTML = `<div style="padding:8px;color:var(--danger);font-size:10px">${error.message}</div>`;
+  }
+}
+
+function applyCurrentPattern() {
+  const select = document.querySelector('#pattern-select');
+  if (!select) return;
+  const root = document.documentElement;
+  const patternFile = select.value;
+  const canvas = document.querySelector('.preview-canvas');
+  if (!canvas) return;
+
+  if (patternFile) {
+    const patternUrl = `/patterns/${patternFile}`;
+    root.style.setProperty('--pattern_eyes', `url(${patternUrl})`);
+    canvas.style.backgroundImage = `var(--pattern_eyes)`;
+  } else {
+    root.style.removeProperty('--pattern_eyes');
+    canvas.style.backgroundImage = `
+      linear-gradient(45deg, rgba(255,255,255,0.035) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(255,255,255,0.035) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.035) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.035) 75%)
+    `;
+    canvas.style.backgroundPosition = '0 0, 0 8px, 8px -8px, -8px 0';
+    canvas.style.backgroundSize = '16px 16px';
   }
 }
 
@@ -187,6 +224,9 @@ renderApp();
 
 const themeSelect = document.querySelector('#theme-select');
 themeSelect.addEventListener('change', () => setTheme(themeSelect.value));
+
+const patternSelect = document.querySelector('#pattern-select');
+patternSelect.addEventListener('change', () => applyCurrentPattern());
 
 document.querySelectorAll('.dock-row').forEach((row) => {
   row.addEventListener('click', () => {
