@@ -36,7 +36,7 @@ async function preloadAllThemes() {
       console.warn(`Failed to load theme ${theme.file}:`, error);
       themeData[theme.file] = {
         name: theme.name,
-        palette: Array(6).fill('#808080') // Placeholder for failed load
+        palette: Array(6).fill('#808080') // Fallback swatches for failed load
       };
     }
   });

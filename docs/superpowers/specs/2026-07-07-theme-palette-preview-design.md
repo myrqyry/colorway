@@ -89,7 +89,7 @@ function extractPalettePreview(vars) {
 - **Rendering**: 138 rows with 6 swatches each — virtualization not needed (only ~138 DOM nodes)
 
 ### 5. Error Handling
-- If a theme fails to load, render its row with placeholder swatches (`#808080`) and a warning icon
+- If a theme fails to load, render its row with fallback swatches (`#808080`) and a warning icon
 - Show error message in the existing `#theme-status` element
 
 ### 6. Accessibility
@@ -98,7 +98,7 @@ function extractPalettePreview(vars) {
 - Focus styles: visible outline on focused rows
 
 ### 7. Testing
-- **Unit**: `extractPalettePreview()` with mock vars
+- **Unit**: `extractPalettePreview()` with sample vars
 - **Integration**: Theme selection updates active row and applies theme
 - **Visual**: All palette swatches render correct colors
 - **Performance**: Preload completes within 2 seconds on slow networks
