@@ -9,8 +9,9 @@ const themeLoader = readFileSync(new URL('../src/theme-loader.js', import.meta.u
 test('showcase has header with title and theme picker', () => {
   assert.match(main, /class="showcase-header"/);
   assert.match(styles, /\.showcase-header\s*\{/);
-  assert.match(main, /id="theme-select"/);
+  assert.match(main, /class="theme-list-container"/);
   assert.match(main, /id="pattern-select"/);
+  assert.doesNotMatch(main, /id="theme-select"/);
 });
 
 test('showcase has card-based grid layout', () => {
@@ -48,8 +49,36 @@ test('slider updates its filled range on input', () => {
   assert.match(main, /slider\.value/);
 });
 
+test('showcase has theme picker with palette previews', () => {
+  assert.match(main, /class="theme-list-container"/);
+  assert.match(main, /class="theme-row"/);
+  assert.match(main, /class="theme-palette"/);
+  assert.match(main, /class="palette-swatch"/);
+  assert.doesNotMatch(main, /id="theme-select"/);
+});
+
 test('theme pipeline loads and applies theme on change', () => {
-  assert.match(main, /setTheme\(themeSelect\.value\)/);
-  assert.match(main, /loadTheme\(file\)/);
-  assert.match(main, /applyTheme\(theme\)/);
+  assert.match(main, /setTheme\(/);
+  assert.match(main, /loadTheme\(/);
+  assert.match(main, /applyTheme\(/);
+});
+
+// Test palette preview extraction
+const { extractPalettePreview } = require('../src/main.js');
+
+test('extractPalettePreview extracts correct variables', () => {
+  const mockVars = {
+    '--bg_base': '#1e1e2e',
+    '--primary': '#cba6f7',
+    '--warning': '#fab387',
+    '--danger': '#f38ba8',
+    '--text': '#cdd6f4',
+    '--border_color': '#313244',
+    '--other': '#ffffff'
+  };
+  const palette = extractPalettePreview(mockVars);
+  assert.deepEqual(palette, [
+    '#1e1e2e', '#cba6f7', '#fab387', 
+    '#f38ba8', '#cdd6f4', '#313244'
+  ]);
 });
