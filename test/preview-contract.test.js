@@ -28,7 +28,7 @@ test('showcase renders demo widgets for OBS styling', () => {
 });
 
 test('palette still renders CSS variable swatches', () => {
-  assert.match(styles, /\.theme-list-container\s*\{/);
+  assert.match(styles, /\.showcase-card > summary/);
   assert.match(main, /class="palette-grid"/);
   assert.match(main, /class="palette-chip"/);
   assert.match(themeLoader, /\['--success', 'Success'\]/);
@@ -39,6 +39,8 @@ test('showcase has theme picker with palette previews', () => {
   assert.match(main, /class="theme-row \$\{active\}"/);
   assert.match(main, /class="theme-palette"/);
   assert.match(main, /class="palette-swatch"/);
+  assert.match(main, /<details class="showcase-card card-palette">/);
+  assert.match(main, /<summary class="card-header">/);
   assert.doesNotMatch(main, /id="theme-select"/);
 });
 

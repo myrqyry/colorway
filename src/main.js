@@ -127,10 +127,13 @@ function renderApp() {
       </header>
 
       <div class="showcase-grid">
-        <section class="showcase-card card-palette">
-          <div class="card-header">Palette <span class="var-count">${PALETTE_VARS.length} vars</span></div>
+        <details class="showcase-card card-palette">
+          <summary class="card-header">
+            <span>Advanced palette details</span>
+            <span class="var-count">${PALETTE_VARS.length} vars</span>
+          </summary>
           <div id="palette-grid" class="palette-grid">${renderPalette()}</div>
-        </section>
+        </details>
 
         <section class="showcase-card">
           <div class="card-header">Buttons</div>

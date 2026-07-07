@@ -168,6 +168,33 @@
   display: flex; flex-direction: column;
 }
 
+.showcase-card > summary {
+  list-style: none;
+}
+
+.showcase-card > summary::-webkit-details-marker {
+  display: none;
+}
+
+.showcase-card > summary::marker {
+  content: '';
+}
+
+.showcase-card.card-palette > summary {
+  cursor: pointer;
+}
+
+.showcase-card.card-palette > summary .var-count::after {
+  content: ' (collapsed)';
+  font-size: 8px;
+  color: var(--text_disabled);
+  font-weight: 500;
+}
+
+.showcase-card.card-palette[open] > summary .var-count::after {
+  content: ' (expanded)';
+}
+
 .card-header {
   padding: 6px 10px;
   font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
