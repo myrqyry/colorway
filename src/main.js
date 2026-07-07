@@ -282,5 +282,4 @@ document.querySelector('#record-toggle').addEventListener('click', (event) => {
 
 updateStatusDemo();
 const statusInterval = setInterval(updateStatusDemo, 2000);
-// If teardown is ever needed: clearInterval(statusInterval);
 setTheme(themeSelect.value);
