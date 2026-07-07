@@ -742,10 +742,6 @@ QMainWindow,
 QMessageBox,
 QStatusBar,
 QMenuBar,
-QMenu {
-    background-color: var(--bg_window);
-    color: var(--text_base);
-}
 
 OBSBasic,
 QDialog {
@@ -763,9 +759,6 @@ OBSBasic > QWidget {
 
 QLabel,
 QGroupBox,
-QCheckBox {
-    background: transparent;
-}
 
 QListView QWidget,
 QListWidget QWidget {
@@ -785,9 +778,6 @@ QListWidget QWidget {
 QCheckBox,
 QGroupBox,
 QMenuBar,
-QRadioButton {
-    spacing: var(--spacing_small);
-}
 
 /* Misc */
 
@@ -799,11 +789,6 @@ QAbstractItemView {
 
 QListWidget,
 SceneTree,
-SourceTree {
-    background-color: var(--bg_base);
-    background-image: var(--pattern_eyes);
-    background-repeat: repeat;
-}
 
 /* Context Menu */
 
@@ -1025,20 +1010,10 @@ StatusBarWidget > QFrame {
 QScrollBar::up-arrow:vertical,
 QScrollBar::down-arrow:vertical,
 QScrollBar::add-page:vertical,
-QScrollBar::sub-page:vertical {
-    border: none;
-    background: none;
-    color: transparent;
-}
 
 QScrollBar::left-arrow:horizontal,
 QScrollBar::right-arrow:horizontal,
 QScrollBar::add-page:horizontal,
-QScrollBar::sub-page:horizontal {
-    border: none;
-    background: none;
-    color: transparent;
-}
 
 QScrollBar::handle:pressed {
     background-color: var(--scrollbar_down);
@@ -1168,10 +1143,6 @@ QDateTimeEdit::drop-down {
 }
 
 QComboBox::down-arrow,
-QDateTimeEdit::down-arrow {
-    image: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
-    width: 100%;
-}
 
 QListView::item:selected:hover QComboBox::down-arrow,
 QListWidget::item:selected:hover QComboBox::down-arrow,
@@ -2902,13 +2873,14 @@ QScrollBar::handle:vertical {
     margin: 1px;
 }
 
-QScrollBar::handle:vertical:hover {
-    background: var(--primary);
-}
+ QScrollBar::handle:vertical:hover {
+     background: var(--scrollbar_hover);
+ }
 
-QScrollBar::handle:vertical:pressed {
-    background: var(--primary_dark);
-}
+ QScrollBar::handle:vertical:pressed {
+     background: var(--scrollbar_down);
+ }
+
 
 QScrollBar::handle:vertical:disabled {
     background: transparent;
@@ -2936,13 +2908,13 @@ QScrollBar::handle:horizontal {
     margin: 1px;
 }
 
-QScrollBar::handle:horizontal:hover {
-    background: var(--primary);
-}
+ QScrollBar::handle:horizontal:hover {
+     background: var(--scrollbar_hover);
+ }
 
-QScrollBar::handle:horizontal:pressed {
-    background: var(--primary_dark);
-}
+ QScrollBar::handle:horizontal:pressed {
+     background: var(--scrollbar_down);
+ }
 
 QScrollBar::handle:horizontal:disabled {
     background: transparent;
