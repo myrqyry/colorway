@@ -2181,12 +2181,26 @@ QRadioButton::indicator {
     border-radius: var(--shape_full);
 }
 
-QCheckBox::indicator:hover, QRadioButton::indicator:hover {
-    border-color: var(--primary);
-    background: var(--bg_hover);
-}
+ QCheckBox::indicator:hover, QRadioButton::indicator:hover {
+     border-color: var(--primary);
+     background: var(--bg_hover);
+ }
 
- QCheckBox::indicator:checked {
+ QCheckBox::indicator:unchecked:hover, QRadioButton::indicator:unchecked:hover {
+     border-color: var(--primary);
+     background: var(--bg_hover);
+ }
+
+ QCheckBox::indicator:unchecked {
+     image: none;
+ }
+
+ QCheckBox::indicator:unchecked:disabled, QRadioButton::indicator:unchecked:disabled {
+     border-color: var(--button_bg_disabled);
+     background: var(--button_bg_disabled);
+ }
+
+  QCheckBox::indicator:checked {
      background: var(--primary);
      border-color: var(--primary);
      image: var(--icon_check);
@@ -2514,6 +2528,30 @@ QGroupBox::title {
     color: var(--primary);
     font-weight: bold;
     font-size: var(--font_small);
+}
+
+QGroupBox::indicator {
+    width: var(--icon_base);
+    height: var(--icon_base);
+    margin-right: var(--spacing_large);
+}
+
+QGroupBox::indicator:unchecked {
+    image: url(theme:icons/colorway/iconamoon/normal/checkbox_line.svg);
+}
+
+QGroupBox::indicator:unchecked:hover {
+    image: url(theme:icons/colorway/iconamoon/normal/checkbox_line.svg);
+    border: 1px solid var(--primary);
+}
+
+QGroupBox::indicator:checked {
+    image: url(theme:icons/colorway/iconamoon/normal/checkbox_fill.svg);
+}
+
+QGroupBox::indicator:checked:hover {
+    image: url(theme:icons/colorway/iconamoon/normal/checkbox_fill.svg);
+    background: var(--primary_light);
 }
 
 QToolTip {
