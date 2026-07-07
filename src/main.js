@@ -308,16 +308,16 @@ function applyCurrentPattern() {
   const select = document.querySelector('#pattern-select');
   if (!select) return;
   const patternFile = select.value;
-  const shell = document.querySelector('.showcase-shell');
+  const grid = document.querySelector('.showcase-grid');
 
-  if (shell) {
+  if (grid) {
     if (patternFile) {
       const patternUrl = `/patterns/${patternFile}`;
       document.documentElement.style.setProperty('--pattern_eyes', `url(${patternUrl})`);
-      shell.style.backgroundImage = `url(${patternUrl})`;
+      grid.style.backgroundImage = `url(${patternUrl})`;
     } else {
       document.documentElement.style.removeProperty('--pattern_eyes');
-      shell.style.backgroundImage = 'none';
+      grid.style.backgroundImage = 'none';
     }
   }
 }
