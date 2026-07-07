@@ -6,6 +6,7 @@
 }
 
 @OBSThemeVars {
+
     /* OBS Color Palette */
     --blue1: #718CDC;
     --blue2: #476BD7;
@@ -296,6 +297,8 @@
     --meter_fg_nom: var(--primary);
     --meter_fg_war: var(--warning);
     --meter_fg_err: var(--danger);
+
+    /* Icon Paths */
 
     --icon_add: url(theme:icons/colorway/iconamoon/normal/plus.svg);
     --icon_remove: url(theme:icons/colorway/iconamoon/normal/minus.svg);
@@ -1101,7 +1104,6 @@ QToolBarExtension {
 
 }
 
-
 /* Tab Widget */
 
 QTabBar {
@@ -1201,8 +1203,6 @@ QDateTimeEdit::down-arrow:editable {
     width: 100%;
 }
 
-
-
 QListView::item:selected:hover QSpinBox::up-arrow,
 QListWidget::item:selected:hover QSpinBox::up-arrow,
 QTreeView::item:selected:hover QSpinBox::up-arrow,
@@ -1299,7 +1299,6 @@ QTreeView::item:selected:hover QDoubleSpinBox::down-arrow {
     color: var(--text_inverse);
 }
 
-
 QPushButton:focus {
     background: qradialgradient(
         cx:0.5, cy:0.5, radius: 0.9, fx:0.5, fy:0.5,
@@ -1309,10 +1308,7 @@ QPushButton:focus {
     );
 }
 
-
-
 /* Sliders */
-
 
 #stackedMixerArea {
     border: none;
@@ -1643,7 +1639,6 @@ OBSBasicFilters #widget_2 QPushButton {
 
 /* Checkboxes */
 
-
 /* Icon Checkboxes */
 .checkbox-icon {
     outline: none;
@@ -1731,7 +1726,6 @@ OBSHotkeyWidget QPushButton {
     margin-top: 0px;
     margin-left: var(--spacing_base);
 }
-
 
 /* Sources List Group Collapse Checkbox */
 
@@ -2397,7 +2391,7 @@ AlignmentSelector:checked:hover {
 
 AlignmentSelector::indicator {
     margin: 0px;
-    background: transparent;    
+    background: transparent;
 }
 
 AlignmentSelector::indicator:checked {
@@ -2419,19 +2413,6 @@ AlignmentSelector::indicator:disabled {
 AlignmentSelector::indicator:checked:disabled {
     background: var(--grey3);
 }
-
-/* ==================================================================================
-   MAT COMPACT MATERIAL OPINIONATED BASE LAYER
-   This layer extends the base rules using Yami's variables to preserve scaling.
-   ================================================================================== */
-
-/* ==================================================================================
-   GLOBAL FONTS (font-family set globally on QWidget above; nothing to override here)
-   ================================================================================== */
-
-/* ==================================================================================
-   BUTTONS - Rounded Material Design with Smooth Transitions
-   ================================================================================== */
 
 QPushButton {
     background-color: var(--button_bg);
@@ -2475,10 +2456,6 @@ QPushButton[themeID="replayIconSmall"] {
     padding: var(--padding_small) var(--padding_large);
     font-size: var(--font_small);
 }
-
-/* ==================================================================================
-   INPUTS - Dropdowns, Spinners, Line Edits
-   ================================================================================== */
 
 QComboBox, QSpinBox, QDoubleSpinBox, QLineEdit, QPlainTextEdit, QTextEdit {
     min-height: calc(2.0pt * var(--font_base_value));
@@ -2555,9 +2532,7 @@ QDoubleSpinBox::down-arrow {
     width: 100%;
     padding: 2px;
 }
-/* ==================================================================================
-   SLIDERS - Dynamic Volume Sliders (Tactile Circle Markers for Easy Targeting)
-   ================================================================================== */
+
 QSlider {
     background: transparent;
     /* Allocates room at the edges so the handle does not get clipped at 0% or 100% */
@@ -2656,9 +2631,6 @@ QSlider::handle:vertical {
     border-radius: var(--slider_handle_radius);
 }
 
-/* ==================================================================================
-   CHECKBOXES & RADIO BUTTONS
-   ================================================================================== */
 QCheckBox, QRadioButton {
     spacing: var(--spacing_large);
     padding: var(--padding_small);
@@ -2698,34 +2670,33 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {
     background: var(--button_bg_disabled);
 }
 
-
 /* Icon-based checkboxes mapping */
-QCheckBox[themeID="visibilityCheckBox"]::indicator:unchecked { 
+QCheckBox[themeID="visibilityCheckBox"]::indicator:unchecked {
     image: var(--icon_eye);
     border: none;
     background: transparent;
 }
-QCheckBox[themeID="visibilityCheckBox"]::indicator:checked { 
+QCheckBox[themeID="visibilityCheckBox"]::indicator:checked {
     image: var(--icon_eye_off);
     border: none;
     background: transparent;
 }
-QCheckBox[themeID="lockCheckBox"]::indicator:unchecked { 
+QCheckBox[themeID="lockCheckBox"]::indicator:unchecked {
     image: var(--icon_unlock);
     border: none;
     background: transparent;
 }
-QCheckBox[themeID="lockCheckBox"]::indicator:checked { 
+QCheckBox[themeID="lockCheckBox"]::indicator:checked {
     image: var(--icon_lock);
     border: none;
     background: transparent;
 }
-QCheckBox[themeID="muteCheckBox"]::indicator:unchecked { 
+QCheckBox[themeID="muteCheckBox"]::indicator:unchecked {
     image: var(--icon_vol_high);
     border: none;
     background: transparent;
 }
-QCheckBox[themeID="muteCheckBox"]::indicator:checked { 
+QCheckBox[themeID="muteCheckBox"]::indicator:checked {
     image: var(--icon_vol_mute);
     border: none;
     background: transparent;
@@ -2736,19 +2707,16 @@ OBSBasicStats, OBSBasicFilters, OBSBasicSettings {
     color: var(--text_base);
 }
 
-OBSBasicStats QLabel { 
+OBSBasicStats QLabel {
     background: transparent;
     color: var(--text_bright);
     font-weight: 600;
 }
 
-QScrollArea, QScrollArea > QWidget, QScrollArea > QWidget > QWidget { 
+QScrollArea, QScrollArea > QWidget, QScrollArea > QWidget > QWidget {
     background: transparent;
 }
 
-/* ==================================================================================
-   MENUS & CONTEXT MENUS
-   ================================================================================== */
 QMenu {
     background-color: var(--bg_dock);
     border: 1px solid var(--border_base);
@@ -2782,9 +2750,6 @@ QMenu::icon {
     padding-left: var(--padding_large);
 }
 
-/* ==================================================================================
-   DOCK WIDGETS
-   ================================================================================== */
 QDockWidget {
     titlebar-close-icon: var(--icon_dock_close);
     titlebar-normal-icon: var(--icon_dock_popout);
@@ -2811,9 +2776,6 @@ QDockWidget::close-button:hover, QDockWidget::float-button:hover {
     background: var(--primary);
 }
 
-/* ==================================================================================
-   LIST & TREE WIDGETS - Ultra Compact
-   ================================================================================== */
 QListWidget, QTreeView, QTableView {
     background-color: var(--bg_base);
     background-image: var(--pattern_eyes);
@@ -2878,9 +2840,6 @@ QHeaderView::section:hover {
     color: var(--text_bright);
 }
 
-/* ==================================================================================
-   SCROLLBARS - Slim & Rounded
-   ================================================================================== */
 QScrollBar:vertical {
     background: var(--bg_base);
     width: var(--scrollbar_size);
@@ -2949,9 +2908,6 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
     background: transparent;
 }
 
-/* ==================================================================================
-   TABS (Settings & Filters)
-   ================================================================================== */
 QTabWidget::pane {
     border: 1px solid var(--border_base);
     background: var(--surface1);
@@ -2998,9 +2954,6 @@ QTabBar QToolButton {
     padding: 0px;
 }
 
-/* ==================================================================================
-   GROUP BOXES
-   ================================================================================== */
 QGroupBox {
     background: var(--surface1);
     border: 1px solid var(--border_base);
@@ -3020,9 +2973,6 @@ QGroupBox::title {
     font-size: var(--font_small);
 }
 
-/* ==================================================================================
-   TOOLTIPS
-   ================================================================================== */
 QToolTip {
     background-color: var(--surface2);
     color: var(--text_bright);
@@ -3032,9 +2982,6 @@ QToolTip {
     font-size: var(--font_small);
 }
 
-/* ==================================================================================
-   STATUS BAR
-   ================================================================================== */
 QStatusBar {
     background: var(--bg_dock);
     border-top: 1px solid var(--border_base);
@@ -3046,9 +2993,6 @@ QStatusBar::item {
     border: none;
 }
 
-/* ==================================================================================
-   SPLITTERS
-   ================================================================================== */
 QMainWindow::separator {
     background: var(--border_base);
     width: 3px;
@@ -3067,9 +3011,6 @@ QSplitter::handle:hover {
     background: var(--primary);
 }
 
-/* ==================================================================================
-   TOOLBAR
-   ================================================================================== */
 QToolBar {
     border: none;
     spacing: var(--spacing_small);
@@ -3093,9 +3034,6 @@ QToolBar QToolButton:pressed {
     background: var(--primary);
 }
 
-/* ==================================================================================
-   PROPERTIES VIEW - Compact Layout Scaling
-   ================================================================================== */
 OBSPropertiesView {
     min-height: calc(2.0pt * var(--font_base_value));
 }
@@ -3129,9 +3067,6 @@ OBSPropertiesView QSlider:horizontal {
     padding-bottom: var(--slider_handle_radius);
 }
 
-/* ==================================================================================
-   SETTINGS DIALOG - SIDEBAR
-   ================================================================================== */
 OBSBasicSettings QListWidget {
     background-color: var(--bg_dock);
     background-image: var(--pattern_eyes);
@@ -3186,9 +3121,6 @@ QLabel[openExternalLinks="true"] {
     color: var(--palette_link);
 }
 
-/* ==================================================================================
-   FILTERS WINDOW
-   ================================================================================== */
 OBSBasicFilters QListWidget {
     background-color: var(--bg_dock);
     background-image: var(--pattern_eyes);
@@ -3208,9 +3140,6 @@ OBSBasicFilters QListWidget::item:selected {
     color: var(--text_inverse);
 }
 
-/* ==================================================================================
-   LOG VIEWER
-   ================================================================================== */
 OBSLogViewer {
     background: var(--bg_base);
 }
@@ -3226,9 +3155,6 @@ OBSLogViewer QTextEdit, OBSLogViewer QPlainTextEdit {
     margin: var(--padding_xlarge);
 }
 
-/* ==================================================================================
-   AUDIO METER
-   ================================================================================== */
 VolumeMeter {
     qproperty-backgroundNominalColor: var(--meter_bg_nom);
     qproperty-backgroundWarningColor: var(--meter_bg_war);
@@ -3241,9 +3167,6 @@ VolumeMeter {
     qproperty-minorTickColor: var(--text_disabled);
 }
 
-/* ==================================================================================
-   PROGRESS BARS
-   ================================================================================== */
 QProgressBar {
     border: 1px solid var(--border_base);
     border-radius: var(--shape_full);
@@ -3258,9 +3181,6 @@ QProgressBar::chunk {
     border-radius: var(--shape_full);
 }
 
-/* ==================================================================================
-   ICON BUTTONS (Small Action Buttons)
-   ================================================================================== */
 *[themeID="propertiesIconSmall"], *[themeID="configIconSmall"] { qproperty-icon: url(theme:icons/colorway/iconamoon/normal/cogs.svg); }
 
 /* Dark icon swaps for icon buttons on light backgrounds */
@@ -3302,9 +3222,6 @@ QTreeView::item:selected:hover *[themeID="refreshIconSmall"] {
     qproperty-icon: url(theme:icons/colorway/iconamoon/selected/refresh.svg);
 }
 
-/* ==================================================================================
-   TEXT BROWSER (About Dialog)
-   ================================================================================== */
 QTextBrowser {
     background-color: var(--bg_dock);
     color: var(--text_base);
