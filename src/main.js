@@ -1,6 +1,6 @@
 import './styles.css';
 import { THEMES, DEFAULT_THEME, PATTERNS, DEFAULT_PATTERN } from './theme-catalog.js';
-import { PALETTE_VARS, PALETTE_GROUPS, applyTheme, loadTheme, loadRaw } from './theme-loader.js';
+import { PALETTE_VARS, PALETTE_GROUPS, applyTheme, loadTheme } from './theme-loader.js';
 
 // Fixed set of variables for palette preview
 const PALETTE_PREVIEW_VARS = [
@@ -29,9 +29,9 @@ async function preloadAllThemes() {
   const themeData = {};
   const themePromises = THEMES.map(async (theme) => {
     try {
-      const parsed = await loadRaw(theme.file);
-      const palette = extractPalettePreview(parsed.vars);
-      themeData[theme.file] = { name: theme.name, palette };
+      const resolved = await loadTheme(theme.file);
+      const palette = extractPalettePreview(resolved);
+      themeData[theme.file] = { name: resolved._name || theme.name, palette };
     } catch (error) {
       console.warn(`Failed to load theme ${theme.file}:`, error);
       themeData[theme.file] = {
