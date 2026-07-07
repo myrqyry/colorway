@@ -6,49 +6,50 @@ const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const styles = readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8');
 const themeLoader = readFileSync(new URL('../src/theme-loader.js', import.meta.url), 'utf8');
 
-test('titlebar renders caption row separately from menubar', () => {
-  assert.match(main, /class="obs-caption-row"/);
-  assert.match(styles, /\.obs-titlebar\s*\{[^}]*flex-direction:\s*column/s);
-  assert.match(styles, /\.obs-caption-row\s*\{/);
-  assert.doesNotMatch(styles, /\.obs-menubar\s*\{[^}]*flex:\s*1/s);
+test('showcase has header with title and theme picker', () => {
+  assert.match(main, /class="showcase-header"/);
+  assert.match(styles, /\.showcase-header\s*\{/);
+  assert.match(main, /id="theme-select"/);
+  assert.match(main, /id="pattern-select"/);
 });
 
-test('workspace has OBS-like left docks and right controls', () => {
-  assert.match(main, /<aside class="left-panel">/);
-  assert.match(main, /class="dock-panel transitions-dock"/);
-  assert.match(main, /<aside class="right-panel">/);
-  assert.match(styles, /grid-template-columns:\s*220px 1fr 230px/);
+test('showcase has card-based grid layout', () => {
+  assert.match(styles, /grid-template-columns:\s*repeat\(auto-fill/);
+  assert.match(main, /class="showcase-card"/);
+  assert.match(main, /class="card-header"/);
+  assert.match(main, /class="showcase-card"/);
 });
 
-test('canvas overlays use theme-driven overlay background', () => {
+test('showcase renders demo widgets for OBS styling', () => {
+  assert.match(main, /class="demo-button"/);
+  assert.match(main, /class="demo-input"/);
+  assert.match(main, /class="demo-slider"/);
+  assert.match(main, /class="demo-list-item"/);
+  assert.match(main, /class="demo-tab"/);
+  assert.match(main, /class="demo-progress"/);
+});
+
+test('palette still renders CSS variable swatches', () => {
   assert.match(styles, /--overlay-bg:/);
-  assert.match(styles, /\.canvas-source\s*\{[^}]*background:\s*var\(--overlay-bg\)/s);
-  assert.match(styles, /\.canvas-hud\s*\{[^}]*background:\s*var\(--overlay-bg\)/s);
-  assert.match(styles, /\.canvas-palette\s*\{[^}]*background:\s*var\(--overlay-bg\)/s);
-  assert.match(styles, /\.canvas-theme-info\s*\{[^}]*background:\s*var\(--overlay-bg\)/s);
-});
-
-test('live status uses success color and exposes it in palette', () => {
-  assert.match(styles, /--success:\s*#/);
-  assert.match(styles, /\.status-dot\.live\s*\{[^}]*background:\s*var\(--live/s);
+  assert.match(main, /class="palette-grid"/);
+  assert.match(main, /class="palette-chip"/);
   assert.match(themeLoader, /\['--success', 'Success'\]/);
 });
 
-test('refinements keep a visible frame and keyboard focus', () => {
-  assert.match(styles, /\.canvas-palette\s*\{[^}]*width:\s*270px/s);
-  assert.match(styles, /\.canvas-palette \.palette-group-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s);
-  assert.match(styles, /\.theme-picker select:focus-visible,/);
-  assert.match(styles, /\.dock-row\.selected\s*\{[^}]*box-shadow:/s);
+test('live status uses theme live color', () => {
+  assert.match(styles, /--live:\s*#38bdf8/);
+  assert.match(styles, /\.status-dot\.live\s*\{[^}]*background:\s*var\(--live/s);
 });
 
-test('mixer slider updates its filled range while dragged', () => {
-  assert.match(main, /\.mixer-slider/);
+test('slider updates its filled range on input', () => {
+  assert.match(main, /\.demo-slider/);
   assert.match(main, /addEventListener\('input'/);
   assert.match(main, /--slider-pct/);
   assert.match(main, /slider\.value/);
 });
 
-test('status metrics refresh independently of theme changes', () => {
-  assert.match(main, /setInterval\(updateStatusDemo,\s*2000\)/);
-  assert.doesNotMatch(main, /applyTheme\(theme\);[\s\S]*?updateStatusDemo\(\);[\s\S]*?\} catch/);
+test('theme pipeline loads and applies theme on change', () => {
+  assert.match(main, /setTheme\(themeSelect\.value\)/);
+  assert.match(main, /loadTheme\(file\)/);
+  assert.match(main, /applyTheme\(theme\)/);
 });

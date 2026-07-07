@@ -40,162 +40,176 @@ function renderPatternOptions() {
   }).join('');
 }
 
-function renderMixerStrip(label, level) {
-  return `
-    <div class="mixer-strip">
-      <div class="mixer-name">${label}</div>
-      <div class="meter-track"><span style="width:${level}%"></span></div>
-      <input class="mixer-slider" type="range" value="${level}" aria-label="${label} volume" style="--slider-pct:${level}%" />
-      <button class="mixer-mute" type="button">M</button>
-    </div>
-  `;
-}
-
 function renderApp() {
   app.innerHTML = `
-    <div class="obs-app-shell">
-      <header class="obs-titlebar">
-        <div class="obs-caption-row">
-          <div class="window-title">Colorway OBS Theme Preview</div>
-          <div class="theme-picker">
+    <div class="showcase-shell">
+      <header class="showcase-header">
+        <div class="showcase-title">Colorway OBS Theme Preview</div>
+        <div class="showcase-controls">
+          <div class="showcase-picker">
             <label for="theme-select">Theme</label>
             <select id="theme-select">${renderThemeOptions()}</select>
           </div>
-          <div class="pattern-picker">
+          <div class="showcase-picker">
             <label for="pattern-select">Pattern</label>
             <select id="pattern-select">${renderPatternOptions()}</select>
           </div>
+          <div class="showcase-info" id="theme-info">
+            <span id="active-theme-name">Loading...</span>
+            <span id="theme-status">Fetching theme variables</span>
+          </div>
         </div>
-        <nav class="obs-menubar" aria-label="OBS menu preview">
-          <span>File</span><span>Edit</span><span>View</span><span>Docks</span>
-          <span>Profile</span><span>Scene Collection</span><span>Tools</span><span>Help</span>
-        </nav>
       </header>
 
-      <main class="obs-workspace">
-        <aside class="left-panel">
-          <section class="dock-panel scenes-dock">
-            <div class="dock-header">Scenes</div>
-            <div class="dock-scrollable">
-              <button class="dock-row" type="button">Gaming</button>
-              <button class="dock-row selected" type="button">Just Chatting</button>
-              <button class="dock-row inactive" type="button">BRB Screen</button>
-              <button class="dock-row" type="button">Starting Soon</button>
-              <button class="dock-row inactive" type="button">Stream Ending</button>
+      <div class="showcase-grid">
+        <section class="showcase-card card-palette">
+          <div class="card-header">Palette <span class="var-count">${PALETTE_VARS.length} vars</span></div>
+          <div id="palette-grid" class="palette-grid">${renderPalette()}</div>
+        </section>
+
+        <section class="showcase-card">
+          <div class="card-header">Buttons</div>
+          <div class="card-body buttons-demo">
+            <button class="demo-button" type="button">Default</button>
+            <button class="demo-button primary" type="button">Primary</button>
+            <button class="demo-button recording" type="button">Recording</button>
+            <button class="demo-button" type="button" disabled>Disabled</button>
+            <button class="demo-button" type="button" style="background:var(--button_bg);border-color:transparent">Flat</button>
+          </div>
+        </section>
+
+        <section class="showcase-card">
+          <div class="card-header">Text Inputs</div>
+          <div class="card-body inputs-demo">
+            <input class="demo-input" type="text" value="Normal text" aria-label="Normal input" />
+            <input class="demo-input" type="text" value="Focused" aria-label="Focused input" />
+            <input class="demo-input" type="text" value="Disabled" disabled aria-label="Disabled input" />
+            <select class="demo-select" aria-label="Demo select">
+              <option>Option A</option>
+              <option>Option B</option>
+              <option>Option C</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="showcase-card">
+          <div class="card-header">Sliders</div>
+          <div class="card-body sliders-demo">
+            <input class="demo-slider" type="range" min="0" max="100" value="65" style="--slider-pct:65%" />
+            <input class="demo-slider" type="range" min="0" max="100" value="35" style="--slider-pct:35%" />
+            <input class="demo-slider" type="range" min="0" max="100" value="80" style="--slider-pct:80%" />
+          </div>
+        </section>
+
+        <section class="showcase-card">
+          <div class="card-header">Checkboxes</div>
+          <div class="card-body checkboxes-demo">
+            <label class="demo-check"><input type="checkbox" checked /> Checked</label>
+            <label class="demo-check"><input type="checkbox" /> Unchecked</label>
+            <label class="demo-check"><input type="checkbox" disabled checked /> Disabled checked</label>
+            <label class="demo-check"><input type="checkbox" disabled /> Disabled unchecked</label>
+          </div>
+        </section>
+
+        <section class="showcase-card">
+          <div class="card-header">Radio Buttons</div>
+          <div class="card-body radios-demo">
+            <label class="demo-radio"><input type="radio" name="rg" checked /> Selected</label>
+            <label class="demo-radio"><input type="radio" name="rg" /> Unselected</label>
+            <label class="demo-radio"><input type="radio" disabled checked /> Disabled selected</label>
+            <label class="demo-radio"><input type="radio" disabled /> Disabled unselected</label>
+          </div>
+        </section>
+
+        <section class="showcase-card">
+          <div class="card-header">List Items</div>
+          <div class="card-body lists-demo">
+            <div class="demo-list-item">
+              <img class="list-icon" src="/icons/colorway/iconamoon/normal/display.svg" alt="" />
+              <span class="list-label">Normal item</span>
+              <span class="list-actions">
+                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" />
+                <img class="list-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="" />
+              </span>
             </div>
-          </section>
-
-          <section class="dock-panel sources-dock">
-            <div class="dock-header">Sources</div>
-            <div class="dock-scrollable">
-              <button class="dock-row" type="button">
-                <img class="dock-row-icon" src="/icons/colorway/iconamoon/normal/display.svg" alt="" />
-                <span class="dock-row-label">Game Capture</span>
-                <span class="dock-row-actions">
-                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="visible" />
-                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="locked" />
-                </span>
-              </button>
-              <button class="dock-row selected" type="button">
-                <img class="dock-row-icon" src="/icons/colorway/iconamoon/normal/default.svg" alt="" />
-                <span class="dock-row-label">Camera</span>
-                <span class="dock-row-actions">
-                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="visible" />
-                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="locked" />
-                </span>
-              </button>
-              <button class="dock-row inactive" type="button">
-                <img class="dock-row-icon" src="/icons/colorway/iconamoon/normal/group.svg" alt="" />
-                <span class="dock-row-label">Chat overlay</span>
-                <span class="dock-row-actions">
-                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="visible" />
-                </span>
-              </button>
-              <button class="dock-row inactive" type="button">
-                <img class="dock-row-icon" src="/icons/colorway/iconamoon/normal/brush.svg" alt="" />
-                <span class="dock-row-label">Alert box</span>
-                <span class="dock-row-actions">
-                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="visible" />
-                </span>
-              </button>
-              <button class="dock-row" type="button">
-                <img class="dock-row-icon" src="/icons/colorway/iconamoon/normal/globe.svg" alt="" />
-                <span class="dock-row-label">Browser Source</span>
-                <span class="dock-row-actions">
-                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="visible" />
-                  <img class="dock-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="locked" />
-                </span>
-              </button>
+            <div class="demo-list-item selected">
+              <img class="list-icon" src="/icons/colorway/iconamoon/normal/default.svg" alt="" />
+              <span class="list-label">Selected item</span>
+              <span class="list-actions">
+                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" />
+                <img class="list-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="" />
+              </span>
             </div>
-          </section>
-
-          <section class="dock-panel transitions-dock">
-            <div class="dock-header">Scene Transitions</div>
-            <div class="dock-transitions">
-              <select class="obs-select" aria-label="Scene transition">
-                <option>Fade</option>
-                <option>Cut</option>
-                <option>Swipe</option>
-                <option>Slide</option>
-              </select>
-              <input class="obs-input" type="number" value="300" min="0" max="10000" aria-label="Duration ms" />
-              <span class="dock-label">ms</span>
+            <div class="demo-list-item inactive">
+              <img class="list-icon" src="/icons/colorway/iconamoon/normal/group.svg" alt="" />
+              <span class="list-label">Inactive item</span>
+              <span class="list-actions">
+                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" />
+              </span>
             </div>
-          </section>
-        </aside>
-
-         <section class="preview-stage" aria-label="OBS preview canvas">
-           <div class="preview-canvas">
-             <div class="canvas-source camera-source">Camera</div>
-             <div class="canvas-source alert-source">Follower alert</div>
-             <div class="canvas-hud">
-               <strong>1920 × 1080</strong>
-               <span class="canvas-scale">125%</span>
-             </div>
-            <div id="canvas-palette" class="canvas-palette">
-              <div class="canvas-palette-header">Palette <span class="inspector-badge">${PALETTE_VARS.length} vars</span></div>
-              <div id="palette-grid" class="palette-grid"></div>
+            <div class="demo-list-item">
+              <img class="list-icon" src="/icons/colorway/iconamoon/normal/globe.svg" alt="" />
+              <span class="list-label">Hover me</span>
+              <span class="list-actions">
+                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" />
+              </span>
             </div>
-              <div class="canvas-theme-info">
-                <div id="active-theme-name" class="canvas-theme-name">Loading...</div>
-                <div id="theme-status" class="canvas-theme-status">Fetching theme variables</div>
-              </div>
+          </div>
+        </section>
+
+        <section class="showcase-card">
+          <div class="card-header">Tabs</div>
+          <div class="card-body tabs-demo">
+            <div class="demo-tabs">
+              <div class="demo-tab">General</div>
+              <div class="demo-tab active">Appearance</div>
+              <div class="demo-tab">Stream</div>
+              <div class="demo-tab">Output</div>
             </div>
-          </section>
+          </div>
+        </section>
 
-        <aside class="right-panel">
-          <section class="dock-panel mixer-dock">
-            <div class="dock-header">Audio Mixer</div>
-            ${renderMixerStrip('Desktop Audio', 72)}
-            ${renderMixerStrip('Mic/Aux', 48)}
-            ${renderMixerStrip('Music', 35)}
-          </section>
+        <section class="showcase-card">
+          <div class="card-header">Audio Mixer</div>
+          <div class="card-body mixer-demo">
+            <div class="mixer-row">
+              <div class="mixer-name">Desktop Audio</div>
+              <div class="mixer-meter"><span style="width:72%"></span></div>
+              <input class="mixer-slider-mini" type="range" value="72" style="--slider-pct:72%" />
+              <button class="mixer-mute" type="button">M</button>
+            </div>
+            <div class="mixer-row">
+              <div class="mixer-name">Mic/Aux</div>
+              <div class="mixer-meter"><span style="width:48%"></span></div>
+              <input class="mixer-slider-mini" type="range" value="48" style="--slider-pct:48%" />
+              <button class="mixer-mute" type="button">M</button>
+            </div>
+          </div>
+        </section>
 
-          <section class="dock-panel controls-dock">
-            <div class="dock-header">Controls</div>
-            <button class="obs-button primary" type="button">Start Streaming</button>
-            <button id="record-toggle" class="obs-button recording" type="button">Stop Recording</button>
-            <button class="obs-button" type="button">Start Virtual Camera</button>
-            <button class="obs-button" type="button">Settings</button>
-          </section>
-        </aside>
-      </main>
+        <section class="showcase-card">
+          <div class="card-header">Status Indicators</div>
+          <div class="card-body status-demo">
+            <div class="status-row">
+              <span class="status-badge"><span class="status-dot live"></span> LIVE</span>
+              <span class="status-badge recording"><span class="status-dot"></span> REC</span>
+            </div>
+            <div class="status-stats">
+              <span>CPU: <strong id="cpu-value">4.2%</strong></span>
+              <span><strong id="fps-value">60.00</strong> fps</span>
+              <span>Dropped: <strong id="dropped-value">0.3%</strong></span>
+              <span><strong id="bitrate-value">3820</strong> kb/s</span>
+            </div>
+          </div>
+        </section>
 
-      <footer class="obs-statusbar">
-        <span class="status-indicator" aria-label="Live is active">
-          <span class="status-dot live"></span>
-          LIVE
-        </span>
-        <span class="status-indicator recording-indicator" aria-label="Recording is active">
-          <span class="status-dot"></span>
-          REC
-        </span>
-        <span>CPU: <span id="cpu-value">4.2%</span></span>
-        <span><span id="fps-value">60.00</span> fps</span>
-        <span>Dropped: <span id="dropped-value">0.3%</span></span>
-        <span><span id="bitrate-value">3820</span> kb/s</span>
-      </footer>
-
+        <section class="showcase-card">
+          <div class="card-header">Progress Bar</div>
+          <div class="card-body progress-demo">
+            <div class="demo-progress"><div class="demo-progress-fill" style="width:57%"></div></div>
+          </div>
+        </section>
+      </div>
     </div>
   `;
 }
@@ -223,23 +237,17 @@ function applyCurrentPattern() {
   const select = document.querySelector('#pattern-select');
   if (!select) return;
   const patternFile = select.value;
-  const canvas = document.querySelector('.preview-canvas');
-  if (!canvas) return;
+  const shell = document.querySelector('.showcase-shell');
 
-  if (patternFile) {
-    const patternUrl = `/patterns/${patternFile}`;
-    document.documentElement.style.setProperty('--pattern_eyes', `url(${patternUrl})`);
-    canvas.style.backgroundImage = `url(${patternUrl})`;
-  } else {
-    document.documentElement.style.removeProperty('--pattern_eyes');
-    canvas.style.backgroundImage = `
-      linear-gradient(45deg, rgba(255,255,255,0.035) 25%, transparent 25%),
-      linear-gradient(-45deg, rgba(255,255,255,0.035) 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.035) 75%),
-      linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.035) 75%)
-    `;
-    canvas.style.backgroundPosition = '0 0, 0 8px, 8px -8px, -8px 0';
-    canvas.style.backgroundSize = '16px 16px';
+  if (shell) {
+    if (patternFile) {
+      const patternUrl = `/patterns/${patternFile}`;
+      document.documentElement.style.setProperty('--pattern_eyes', `url(${patternUrl})`);
+      shell.style.backgroundImage = `url(${patternUrl})`;
+    } else {
+      document.documentElement.style.removeProperty('--pattern_eyes');
+      shell.style.backgroundImage = 'none';
+    }
   }
 }
 
@@ -262,22 +270,23 @@ themeSelect.addEventListener('change', () => setTheme(themeSelect.value));
 const patternSelect = document.querySelector('#pattern-select');
 patternSelect.addEventListener('change', () => applyCurrentPattern());
 
-document.querySelectorAll('.dock-row').forEach((row) => {
-  row.addEventListener('click', () => {
-    const dock = row.closest('.dock-panel');
-    dock.querySelectorAll('.dock-row').forEach((item) => item.classList.remove('selected'));
-    row.classList.add('selected');
-  });
-});
-
-document.querySelectorAll('.mixer-slider').forEach((slider) => {
+document.querySelectorAll('.demo-slider').forEach((slider) => {
   slider.addEventListener('input', () => {
     slider.style.setProperty('--slider-pct', `${slider.value}%`);
   });
 });
 
-document.querySelector('#record-toggle').addEventListener('click', (event) => {
-  event.currentTarget.classList.toggle('recording');
+document.querySelectorAll('.mixer-slider-mini').forEach((slider) => {
+  slider.addEventListener('input', () => {
+    slider.style.setProperty('--slider-pct', `${slider.value}%`);
+  });
+});
+
+document.querySelectorAll('.demo-list-item').forEach((item) => {
+  item.addEventListener('click', () => {
+    item.closest('.lists-demo').querySelectorAll('.demo-list-item').forEach((i) => i.classList.remove('selected'));
+    item.classList.add('selected');
+  });
 });
 
 updateStatusDemo();
