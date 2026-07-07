@@ -21,6 +21,29 @@ function extractPalettePreview(vars) {
   return PALETTE_PREVIEW_VARS.map(varName => vars[varName] || '#000000');
 }
 
+/**
+ * Preloads all theme files and extracts palette previews
+ * @returns {Promise<Object>} Map of theme file to { name, palette }
+ */
+async function preloadAllThemes() {
+  const themeData = {};
+  const themePromises = THEMES.map(async (theme) => {
+    try {
+      const parsed = await loadRaw(theme.file);
+      const palette = extractPalettePreview(parsed.vars);
+      themeData[theme.file] = { name: theme.name, palette };
+    } catch (error) {
+      console.warn(`Failed to load theme ${theme.file}:`, error);
+      themeData[theme.file] = {
+        name: theme.name,
+        palette: Array(6).fill('#808080') // Placeholder for failed load
+      };
+    }
+  });
+  await Promise.all(themePromises);
+  return themeData;
+}
+
 const app = document.querySelector('#app');
 
 function renderPalette() {
