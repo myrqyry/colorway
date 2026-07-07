@@ -1,6 +1,25 @@
 import './styles.css';
 import { THEMES, DEFAULT_THEME, PATTERNS, DEFAULT_PATTERN } from './theme-catalog.js';
-import { PALETTE_VARS, PALETTE_GROUPS, applyTheme, loadTheme } from './theme-loader.js';
+import { PALETTE_VARS, PALETTE_GROUPS, applyTheme, loadTheme, loadRaw } from './theme-loader.js';
+
+// Fixed set of variables for palette preview
+const PALETTE_PREVIEW_VARS = [
+  '--bg_base',
+  '--primary',
+  '--warning',
+  '--danger',
+  '--text',
+  '--border_color'
+];
+
+/**
+ * Extracts a fixed set of 6 palette variables for preview
+ * @param {Object} vars - Theme variables object
+ * @returns {string[]} Array of 6 hex color strings
+ */
+function extractPalettePreview(vars) {
+  return PALETTE_PREVIEW_VARS.map(varName => vars[varName] || '#000000');
+}
 
 const app = document.querySelector('#app');
 
