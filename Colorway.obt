@@ -6,6 +6,7 @@
 }
 
 @OBSThemeVars {
+
     /* OBS Color Palette */
     --blue1: #718CDC;
     --blue2: #476BD7;
@@ -297,6 +298,8 @@
     --meter_fg_war: var(--warning);
     --meter_fg_err: var(--danger);
 
+    /* Icon Paths */
+
     --icon_add: url(theme:icons/colorway/iconamoon/normal/plus.svg);
     --icon_remove: url(theme:icons/colorway/iconamoon/normal/minus.svg);
     --icon_settings: url(theme:icons/colorway/iconamoon/normal/settings.svg);
@@ -354,6 +357,7 @@
     --font_title_weight: 600;
     --font_headline_size: var(--font_heading);
     --font_headline_weight: 700;
+
 
 }
 
@@ -2397,7 +2401,7 @@ AlignmentSelector:checked:hover {
 
 AlignmentSelector::indicator {
     margin: 0px;
-    background: transparent;    
+    background: transparent;
 }
 
 AlignmentSelector::indicator:checked {
@@ -2700,32 +2704,32 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {
 
 
 /* Icon-based checkboxes mapping */
-QCheckBox[themeID="visibilityCheckBox"]::indicator:unchecked { 
+QCheckBox[themeID="visibilityCheckBox"]::indicator:unchecked {
     image: var(--icon_eye);
     border: none;
     background: transparent;
 }
-QCheckBox[themeID="visibilityCheckBox"]::indicator:checked { 
+QCheckBox[themeID="visibilityCheckBox"]::indicator:checked {
     image: var(--icon_eye_off);
     border: none;
     background: transparent;
 }
-QCheckBox[themeID="lockCheckBox"]::indicator:unchecked { 
+QCheckBox[themeID="lockCheckBox"]::indicator:unchecked {
     image: var(--icon_unlock);
     border: none;
     background: transparent;
 }
-QCheckBox[themeID="lockCheckBox"]::indicator:checked { 
+QCheckBox[themeID="lockCheckBox"]::indicator:checked {
     image: var(--icon_lock);
     border: none;
     background: transparent;
 }
-QCheckBox[themeID="muteCheckBox"]::indicator:unchecked { 
+QCheckBox[themeID="muteCheckBox"]::indicator:unchecked {
     image: var(--icon_vol_high);
     border: none;
     background: transparent;
 }
-QCheckBox[themeID="muteCheckBox"]::indicator:checked { 
+QCheckBox[themeID="muteCheckBox"]::indicator:checked {
     image: var(--icon_vol_mute);
     border: none;
     background: transparent;
@@ -2736,13 +2740,13 @@ OBSBasicStats, OBSBasicFilters, OBSBasicSettings {
     color: var(--text_base);
 }
 
-OBSBasicStats QLabel { 
+OBSBasicStats QLabel {
     background: transparent;
     color: var(--text_bright);
     font-weight: 600;
 }
 
-QScrollArea, QScrollArea > QWidget, QScrollArea > QWidget > QWidget { 
+QScrollArea, QScrollArea > QWidget, QScrollArea > QWidget > QWidget {
     background: transparent;
 }
 
