@@ -44,6 +44,30 @@ async function preloadAllThemes() {
   return themeData;
 }
 
+/**
+ * Renders the theme list with palette previews
+ * @param {Object} themeData - Preloaded theme data
+ * @param {string} activeTheme - Currently active theme file
+ * @returns {string} HTML string for the theme list
+ */
+function renderThemeList(themeData, activeTheme) {
+  return THEMES.map((theme) => {
+    const { name, palette } = themeData[theme.file];
+    const active = theme.file === activeTheme ? 'active' : '';
+    const swatches = palette.map(color => `
+      <span class="palette-swatch" style="background:${color}"></span>
+    `).join('');
+    return `
+      <div class="theme-row ${active}" data-file="${theme.file}" tabindex="0" role="option" aria-selected="${active === 'active'}">
+        <span class="theme-name">${name}</span>
+        <div class="theme-palette">
+          ${swatches}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
 const app = document.querySelector('#app');
 
 function renderPalette() {
@@ -68,12 +92,7 @@ function renderPalette() {
   }).join('');
 }
 
-function renderThemeOptions() {
-  return THEMES.map((theme) => {
-    const selected = theme.file === DEFAULT_THEME ? 'selected' : '';
-    return `<option value="${theme.file}" ${selected}>${theme.name}</option>`;
-  }).join('');
-}
+
 
 function renderPatternOptions() {
   return PATTERNS.map((pattern) => {
@@ -89,8 +108,12 @@ function renderApp() {
         <div class="showcase-title">Colorway OBS Theme Preview</div>
         <div class="showcase-controls">
           <div class="showcase-picker">
-            <label for="theme-select">Theme</label>
-            <select id="theme-select">${renderThemeOptions()}</select>
+            <label for="theme-list">Theme</label>
+            <div class="theme-list-container">
+              <div id="theme-list" class="theme-list" role="listbox">
+                <!-- Theme list will be rendered here -->
+              </div>
+            </div>
           </div>
           <div class="showcase-picker">
             <label for="pattern-select">Pattern</label>
@@ -268,6 +291,12 @@ async function setTheme(file) {
     status.textContent = theme._dark === false ? 'Light variant' : 'Dark variant';
     document.querySelector('#palette-grid').innerHTML = renderPalette();
     applyCurrentPattern();
+    
+    // Update active row
+    document.querySelectorAll('.theme-row').forEach(row => {
+      row.classList.toggle('active', row.dataset.file === file);
+      row.setAttribute('aria-selected', row.dataset.file === file);
+    });
   } catch (error) {
     status.textContent = error.message;
     const grid = document.querySelector('#palette-grid');
@@ -305,12 +334,44 @@ function updateStatusDemo() {
 }
 
 renderApp();
-
-const themeSelect = document.querySelector('#theme-select');
-themeSelect.addEventListener('change', () => setTheme(themeSelect.value));
-
+const themeList = document.querySelector('#theme-list');
 const patternSelect = document.querySelector('#pattern-select');
 patternSelect.addEventListener('change', () => applyCurrentPattern());
+
+// Theme list event listeners
+document.addEventListener('click', (e) => {
+  const row = e.target.closest('.theme-row');
+  if (row) {
+    setTheme(row.dataset.file);
+  }
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  const activeRow = document.querySelector('.theme-row.active');
+  if (!activeRow) return;
+  
+  let nextRow;
+  if (e.key === 'ArrowDown') {
+    nextRow = activeRow.nextElementSibling;
+  } else if (e.key === 'ArrowUp') {
+    nextRow = activeRow.previousElementSibling;
+  } else if (e.key === 'Enter') {
+    setTheme(activeRow.dataset.file);
+    e.preventDefault();
+  }
+  
+  if (nextRow) {
+    nextRow.focus();
+    e.preventDefault();
+  }
+});
+
+// Preload themes and render list
+preloadAllThemes().then((themeData) => {
+  themeList.innerHTML = renderThemeList(themeData, DEFAULT_THEME);
+  setTheme(DEFAULT_THEME);
+});
 
 document.querySelectorAll('.demo-slider').forEach((slider) => {
   slider.addEventListener('input', () => {
@@ -333,4 +394,3 @@ document.querySelectorAll('.demo-list-item').forEach((item) => {
 
 updateStatusDemo();
 const statusInterval = setInterval(updateStatusDemo, 2000);
-setTheme(themeSelect.value);
