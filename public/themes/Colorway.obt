@@ -2414,39 +2414,64 @@ AlignmentSelector::indicator:checked:disabled {
     background: var(--grey3);
 }
 
-QPushButton {
-    background-color: var(--button_bg);
-    color: var(--text);
-    border: 2px solid var(--button_bg);
-    border-radius: var(--border_radius); /* Propagates 9px rounding globally */
-    min-height: calc(1.8pt * var(--font_base_value));
-    padding: var(--padding_small) var(--padding_wide);
-    margin: var(--spacing_small);
-    font-weight: 500;
-}
+ QPushButton {
+     background-color: var(--button_bg);
+     color: var(--text);
+     border: 2px solid var(--button_bg);
+     border-radius: var(--border_radius); /* Propagates 9px rounding globally */
+     min-height: calc(1.8pt * var(--font_base_value));
+     padding: var(--padding_small) var(--padding_wide);
+     margin: var(--spacing_small);
+     font-weight: 500;
+ }
 
-QPushButton:hover {
-    color: var(--text_bright);
-    border-color: var(--primary);
-    background: qradialgradient(
-        cx:0.5, cy:0.5, radius: 0.9, fx:0.5, fy:0.5,
-        stop:0    var(--button_bg),
-        stop:0.5  var(--button_bg),
-        stop:1    var(--primary)
-    );
-}
+ QPushButton::flat {
+     background: transparent;
+     border-color: transparent;
+ }
 
-QPushButton:pressed {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: var(--text_inverse);
-}
+ QPushButton:hover {
+     color: var(--text_bright);
+     border-color: var(--primary);
+     background: qradialgradient(
+         cx:0.5, cy:0.5, radius: 0.9, fx:0.5, fy:0.5,
+         stop:0    var(--button_bg),
+         stop:0.5  var(--button_bg),
+         stop:1    var(--primary)
+     );
+ }
 
-QPushButton:disabled {
-    background-color: var(--button_bg_disabled);
-    border-color: var(--button_bg_disabled);
-    color: var(--text_disabled);
-}
+ QPushButton:checked {
+     background: var(--primary);
+     border-color: var(--primary_light);
+     color: var(--text_inverse);
+ }
+
+ QPushButton:checked:hover {
+     background: var(--primary_light);
+     border-color: var(--primary_lighter);
+     color: var(--text_inverse);
+ }
+
+ QPushButton:pressed {
+     background: var(--primary);
+     border-color: var(--primary);
+     color: var(--text_inverse);
+ }
+
+ QPushButton:disabled {
+     background-color: var(--button_bg_disabled);
+     border-color: var(--button_bg_disabled);
+     color: var(--text_disabled);
+ }
+
+ QPushButton::menu-indicator {
+     image: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
+     subcontrol-position: right center;
+     subcontrol-origin: content;
+     padding-left: var(--spacing_large);
+     padding-right: var(--spacing_large);
+ }
 
 /* Small Property Icon Buttons override */
 QPushButton[themeID="settingsIconSmall"],
@@ -2483,10 +2508,22 @@ QTreeView:focus, QListWidget:focus, QTableView:focus {
     border: 2px solid var(--border_focus);
 }
 
-QComboBox:hover, QSpinBox:hover, QDoubleSpinBox:hover, QLineEdit:hover {
-    background: var(--input_bg_hover);
-    border-color: var(--input_border_hover);
-}
+ QComboBox:hover, QSpinBox:hover, QDoubleSpinBox:hover, QLineEdit:hover {
+     background: var(--input_bg_hover);
+     border-color: var(--input_border_hover);
+ }
+
+ QLineEdit:read-only, QTextEdit:read-only, QPlainTextEdit:read-only {
+     background: var(--bg_base);
+     border-color: var(--border_base);
+     color: var(--text_muted);
+ }
+
+ QTextEdit:!editable, QPlainTextEdit:!editable {
+     background: var(--bg_base);
+     border-color: var(--border_base);
+     color: var(--text_disabled);
+ }
 
 /* Dropdown Arrow Area */
 QComboBox::drop-down {
@@ -2654,21 +2691,32 @@ QCheckBox::indicator:hover, QRadioButton::indicator:hover {
     background: var(--bg_hover);
 }
 
-QCheckBox::indicator:checked {
-    background: var(--primary);
-    border-color: var(--primary);
-    image: var(--icon_check);
-}
+ QCheckBox::indicator:checked {
+     background: var(--primary);
+     border-color: var(--primary);
+     image: var(--icon_check);
+ }
 
-QRadioButton::indicator:checked {
-    background: var(--primary);
-    border: 3px solid var(--bg_base);
-}
+ QCheckBox::indicator:checked:hover, QRadioButton::indicator:checked:hover {
+     background: var(--primary_light);
+     border-color: var(--primary_light);
+ }
 
-QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {
-    border-color: var(--button_bg_disabled);
-    background: var(--button_bg_disabled);
-}
+ QRadioButton::indicator:checked {
+     background: var(--primary);
+     border: 3px solid var(--bg_base);
+ }
+
+ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {
+     border-color: var(--button_bg_disabled);
+     background: var(--button_bg_disabled);
+ }
+
+ QCheckBox::indicator:checked:disabled, QRadioButton::indicator:checked:disabled {
+     background: var(--button_bg_disabled);
+     border-color: var(--button_bg_disabled);
+     color: var(--text_disabled);
+ }
 
 /* Icon-based checkboxes mapping */
 QCheckBox[themeID="visibilityCheckBox"]::indicator:unchecked {

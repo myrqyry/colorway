@@ -358,7 +358,6 @@
     --font_headline_size: var(--font_heading);
     --font_headline_weight: 700;
 
-
 }
 
 /* --------------------- */
@@ -1105,7 +1104,6 @@ QToolBarExtension {
 
 }
 
-
 /* Tab Widget */
 
 QTabBar {
@@ -1205,8 +1203,6 @@ QDateTimeEdit::down-arrow:editable {
     width: 100%;
 }
 
-
-
 QListView::item:selected:hover QSpinBox::up-arrow,
 QListWidget::item:selected:hover QSpinBox::up-arrow,
 QTreeView::item:selected:hover QSpinBox::up-arrow,
@@ -1303,7 +1299,6 @@ QTreeView::item:selected:hover QDoubleSpinBox::down-arrow {
     color: var(--text_inverse);
 }
 
-
 QPushButton:focus {
     background: qradialgradient(
         cx:0.5, cy:0.5, radius: 0.9, fx:0.5, fy:0.5,
@@ -1313,10 +1308,7 @@ QPushButton:focus {
     );
 }
 
-
-
 /* Sliders */
-
 
 #stackedMixerArea {
     border: none;
@@ -1647,7 +1639,6 @@ OBSBasicFilters #widget_2 QPushButton {
 
 /* Checkboxes */
 
-
 /* Icon Checkboxes */
 .checkbox-icon {
     outline: none;
@@ -1735,7 +1726,6 @@ OBSHotkeyWidget QPushButton {
     margin-top: 0px;
     margin-left: var(--spacing_base);
 }
-
 
 /* Sources List Group Collapse Checkbox */
 
@@ -2424,52 +2414,64 @@ AlignmentSelector::indicator:checked:disabled {
     background: var(--grey3);
 }
 
-/* ==================================================================================
-   MAT COMPACT MATERIAL OPINIONATED BASE LAYER
-   This layer extends the base rules using Yami's variables to preserve scaling.
-   ================================================================================== */
+ QPushButton {
+     background-color: var(--button_bg);
+     color: var(--text);
+     border: 2px solid var(--button_bg);
+     border-radius: var(--border_radius); /* Propagates 9px rounding globally */
+     min-height: calc(1.8pt * var(--font_base_value));
+     padding: var(--padding_small) var(--padding_wide);
+     margin: var(--spacing_small);
+     font-weight: 500;
+ }
 
-/* ==================================================================================
-   GLOBAL FONTS (font-family set globally on QWidget above; nothing to override here)
-   ================================================================================== */
+ QPushButton::flat {
+     background: transparent;
+     border-color: transparent;
+ }
 
-/* ==================================================================================
-   BUTTONS - Rounded Material Design with Smooth Transitions
-   ================================================================================== */
+ QPushButton:hover {
+     color: var(--text_bright);
+     border-color: var(--primary);
+     background: qradialgradient(
+         cx:0.5, cy:0.5, radius: 0.9, fx:0.5, fy:0.5,
+         stop:0    var(--button_bg),
+         stop:0.5  var(--button_bg),
+         stop:1    var(--primary)
+     );
+ }
 
-QPushButton {
-    background-color: var(--button_bg);
-    color: var(--text);
-    border: 2px solid var(--button_bg);
-    border-radius: var(--border_radius); /* Propagates 9px rounding globally */
-    min-height: calc(1.8pt * var(--font_base_value));
-    padding: var(--padding_small) var(--padding_wide);
-    margin: var(--spacing_small);
-    font-weight: 500;
-}
+ QPushButton:checked {
+     background: var(--primary);
+     border-color: var(--primary_light);
+     color: var(--text_inverse);
+ }
 
-QPushButton:hover {
-    color: var(--text_bright);
-    border-color: var(--primary);
-    background: qradialgradient(
-        cx:0.5, cy:0.5, radius: 0.9, fx:0.5, fy:0.5,
-        stop:0    var(--button_bg),
-        stop:0.5  var(--button_bg),
-        stop:1    var(--primary)
-    );
-}
+ QPushButton:checked:hover {
+     background: var(--primary_light);
+     border-color: var(--primary_lighter);
+     color: var(--text_inverse);
+ }
 
-QPushButton:pressed {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: var(--text_inverse);
-}
+ QPushButton:pressed {
+     background: var(--primary);
+     border-color: var(--primary);
+     color: var(--text_inverse);
+ }
 
-QPushButton:disabled {
-    background-color: var(--button_bg_disabled);
-    border-color: var(--button_bg_disabled);
-    color: var(--text_disabled);
-}
+ QPushButton:disabled {
+     background-color: var(--button_bg_disabled);
+     border-color: var(--button_bg_disabled);
+     color: var(--text_disabled);
+ }
+
+ QPushButton::menu-indicator {
+     image: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
+     subcontrol-position: right center;
+     subcontrol-origin: content;
+     padding-left: var(--spacing_large);
+     padding-right: var(--spacing_large);
+ }
 
 /* Small Property Icon Buttons override */
 QPushButton[themeID="settingsIconSmall"],
@@ -2479,10 +2481,6 @@ QPushButton[themeID="replayIconSmall"] {
     padding: var(--padding_small) var(--padding_large);
     font-size: var(--font_small);
 }
-
-/* ==================================================================================
-   INPUTS - Dropdowns, Spinners, Line Edits
-   ================================================================================== */
 
 QComboBox, QSpinBox, QDoubleSpinBox, QLineEdit, QPlainTextEdit, QTextEdit {
     min-height: calc(2.0pt * var(--font_base_value));
@@ -2510,10 +2508,22 @@ QTreeView:focus, QListWidget:focus, QTableView:focus {
     border: 2px solid var(--border_focus);
 }
 
-QComboBox:hover, QSpinBox:hover, QDoubleSpinBox:hover, QLineEdit:hover {
-    background: var(--input_bg_hover);
-    border-color: var(--input_border_hover);
-}
+ QComboBox:hover, QSpinBox:hover, QDoubleSpinBox:hover, QLineEdit:hover {
+     background: var(--input_bg_hover);
+     border-color: var(--input_border_hover);
+ }
+
+ QLineEdit:read-only, QTextEdit:read-only, QPlainTextEdit:read-only {
+     background: var(--bg_base);
+     border-color: var(--border_base);
+     color: var(--text_muted);
+ }
+
+ QTextEdit:!editable, QPlainTextEdit:!editable {
+     background: var(--bg_base);
+     border-color: var(--border_base);
+     color: var(--text_disabled);
+ }
 
 /* Dropdown Arrow Area */
 QComboBox::drop-down {
@@ -2559,9 +2569,7 @@ QDoubleSpinBox::down-arrow {
     width: 100%;
     padding: 2px;
 }
-/* ==================================================================================
-   SLIDERS - Dynamic Volume Sliders (Tactile Circle Markers for Easy Targeting)
-   ================================================================================== */
+
 QSlider {
     background: transparent;
     /* Allocates room at the edges so the handle does not get clipped at 0% or 100% */
@@ -2660,9 +2668,6 @@ QSlider::handle:vertical {
     border-radius: var(--slider_handle_radius);
 }
 
-/* ==================================================================================
-   CHECKBOXES & RADIO BUTTONS
-   ================================================================================== */
 QCheckBox, QRadioButton {
     spacing: var(--spacing_large);
     padding: var(--padding_small);
@@ -2686,22 +2691,32 @@ QCheckBox::indicator:hover, QRadioButton::indicator:hover {
     background: var(--bg_hover);
 }
 
-QCheckBox::indicator:checked {
-    background: var(--primary);
-    border-color: var(--primary);
-    image: var(--icon_check);
-}
+ QCheckBox::indicator:checked {
+     background: var(--primary);
+     border-color: var(--primary);
+     image: var(--icon_check);
+ }
 
-QRadioButton::indicator:checked {
-    background: var(--primary);
-    border: 3px solid var(--bg_base);
-}
+ QCheckBox::indicator:checked:hover, QRadioButton::indicator:checked:hover {
+     background: var(--primary_light);
+     border-color: var(--primary_light);
+ }
 
-QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {
-    border-color: var(--button_bg_disabled);
-    background: var(--button_bg_disabled);
-}
+ QRadioButton::indicator:checked {
+     background: var(--primary);
+     border: 3px solid var(--bg_base);
+ }
 
+ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {
+     border-color: var(--button_bg_disabled);
+     background: var(--button_bg_disabled);
+ }
+
+ QCheckBox::indicator:checked:disabled, QRadioButton::indicator:checked:disabled {
+     background: var(--button_bg_disabled);
+     border-color: var(--button_bg_disabled);
+     color: var(--text_disabled);
+ }
 
 /* Icon-based checkboxes mapping */
 QCheckBox[themeID="visibilityCheckBox"]::indicator:unchecked {
@@ -2750,9 +2765,6 @@ QScrollArea, QScrollArea > QWidget, QScrollArea > QWidget > QWidget {
     background: transparent;
 }
 
-/* ==================================================================================
-   MENUS & CONTEXT MENUS
-   ================================================================================== */
 QMenu {
     background-color: var(--bg_dock);
     border: 1px solid var(--border_base);
@@ -2786,9 +2798,6 @@ QMenu::icon {
     padding-left: var(--padding_large);
 }
 
-/* ==================================================================================
-   DOCK WIDGETS
-   ================================================================================== */
 QDockWidget {
     titlebar-close-icon: var(--icon_dock_close);
     titlebar-normal-icon: var(--icon_dock_popout);
@@ -2815,9 +2824,6 @@ QDockWidget::close-button:hover, QDockWidget::float-button:hover {
     background: var(--primary);
 }
 
-/* ==================================================================================
-   LIST & TREE WIDGETS - Ultra Compact
-   ================================================================================== */
 QListWidget, QTreeView, QTableView {
     background-color: var(--bg_base);
     background-image: var(--pattern_eyes);
@@ -2882,9 +2888,6 @@ QHeaderView::section:hover {
     color: var(--text_bright);
 }
 
-/* ==================================================================================
-   SCROLLBARS - Slim & Rounded
-   ================================================================================== */
 QScrollBar:vertical {
     background: var(--bg_base);
     width: var(--scrollbar_size);
@@ -2953,9 +2956,6 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
     background: transparent;
 }
 
-/* ==================================================================================
-   TABS (Settings & Filters)
-   ================================================================================== */
 QTabWidget::pane {
     border: 1px solid var(--border_base);
     background: var(--surface1);
@@ -3002,9 +3002,6 @@ QTabBar QToolButton {
     padding: 0px;
 }
 
-/* ==================================================================================
-   GROUP BOXES
-   ================================================================================== */
 QGroupBox {
     background: var(--surface1);
     border: 1px solid var(--border_base);
@@ -3024,9 +3021,6 @@ QGroupBox::title {
     font-size: var(--font_small);
 }
 
-/* ==================================================================================
-   TOOLTIPS
-   ================================================================================== */
 QToolTip {
     background-color: var(--surface2);
     color: var(--text_bright);
@@ -3036,9 +3030,6 @@ QToolTip {
     font-size: var(--font_small);
 }
 
-/* ==================================================================================
-   STATUS BAR
-   ================================================================================== */
 QStatusBar {
     background: var(--bg_dock);
     border-top: 1px solid var(--border_base);
@@ -3050,9 +3041,6 @@ QStatusBar::item {
     border: none;
 }
 
-/* ==================================================================================
-   SPLITTERS
-   ================================================================================== */
 QMainWindow::separator {
     background: var(--border_base);
     width: 3px;
@@ -3071,9 +3059,6 @@ QSplitter::handle:hover {
     background: var(--primary);
 }
 
-/* ==================================================================================
-   TOOLBAR
-   ================================================================================== */
 QToolBar {
     border: none;
     spacing: var(--spacing_small);
@@ -3097,9 +3082,6 @@ QToolBar QToolButton:pressed {
     background: var(--primary);
 }
 
-/* ==================================================================================
-   PROPERTIES VIEW - Compact Layout Scaling
-   ================================================================================== */
 OBSPropertiesView {
     min-height: calc(2.0pt * var(--font_base_value));
 }
@@ -3133,9 +3115,6 @@ OBSPropertiesView QSlider:horizontal {
     padding-bottom: var(--slider_handle_radius);
 }
 
-/* ==================================================================================
-   SETTINGS DIALOG - SIDEBAR
-   ================================================================================== */
 OBSBasicSettings QListWidget {
     background-color: var(--bg_dock);
     background-image: var(--pattern_eyes);
@@ -3190,9 +3169,6 @@ QLabel[openExternalLinks="true"] {
     color: var(--palette_link);
 }
 
-/* ==================================================================================
-   FILTERS WINDOW
-   ================================================================================== */
 OBSBasicFilters QListWidget {
     background-color: var(--bg_dock);
     background-image: var(--pattern_eyes);
@@ -3212,9 +3188,6 @@ OBSBasicFilters QListWidget::item:selected {
     color: var(--text_inverse);
 }
 
-/* ==================================================================================
-   LOG VIEWER
-   ================================================================================== */
 OBSLogViewer {
     background: var(--bg_base);
 }
@@ -3230,9 +3203,6 @@ OBSLogViewer QTextEdit, OBSLogViewer QPlainTextEdit {
     margin: var(--padding_xlarge);
 }
 
-/* ==================================================================================
-   AUDIO METER
-   ================================================================================== */
 VolumeMeter {
     qproperty-backgroundNominalColor: var(--meter_bg_nom);
     qproperty-backgroundWarningColor: var(--meter_bg_war);
@@ -3245,9 +3215,6 @@ VolumeMeter {
     qproperty-minorTickColor: var(--text_disabled);
 }
 
-/* ==================================================================================
-   PROGRESS BARS
-   ================================================================================== */
 QProgressBar {
     border: 1px solid var(--border_base);
     border-radius: var(--shape_full);
@@ -3262,9 +3229,6 @@ QProgressBar::chunk {
     border-radius: var(--shape_full);
 }
 
-/* ==================================================================================
-   ICON BUTTONS (Small Action Buttons)
-   ================================================================================== */
 *[themeID="propertiesIconSmall"], *[themeID="configIconSmall"] { qproperty-icon: url(theme:icons/colorway/iconamoon/normal/cogs.svg); }
 
 /* Dark icon swaps for icon buttons on light backgrounds */
@@ -3306,9 +3270,6 @@ QTreeView::item:selected:hover *[themeID="refreshIconSmall"] {
     qproperty-icon: url(theme:icons/colorway/iconamoon/selected/refresh.svg);
 }
 
-/* ==================================================================================
-   TEXT BROWSER (About Dialog)
-   ================================================================================== */
 QTextBrowser {
     background-color: var(--bg_dock);
     color: var(--text_base);
