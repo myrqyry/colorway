@@ -317,10 +317,10 @@ function applyCurrentPattern() {
     if (patternFile) {
       const patternUrl = `/patterns/${patternFile}`;
       document.documentElement.style.setProperty('--pattern_eyes', `url(${patternUrl})`);
-      grid.style.backgroundImage = `url(${patternUrl})`;
+      grid.style.setProperty('--preview-pattern', `url(${patternUrl})`);
     } else {
       document.documentElement.style.removeProperty('--pattern_eyes');
-      grid.style.backgroundImage = 'none';
+      grid.style.removeProperty('--preview-pattern');
     }
   }
 }

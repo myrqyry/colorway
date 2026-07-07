@@ -152,12 +152,29 @@
 
 /* Grid */
 .showcase-grid {
+  position: relative;
+  isolation: isolate;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 12px;
   padding: 16px;
+}
+
+.showcase-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--preview-pattern);
   background-repeat: repeat;
   background-size: auto;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.showcase-grid > * {
+  position: relative;
+  z-index: 1;
 }
 
 .showcase-card {
@@ -325,13 +342,17 @@
 }
 
 .demo-button {
-  border-radius: 4px; border: 1px solid var(--border_color);
-  padding: 5px 10px; font-size: 11px; font-weight: 500;
+  min-height: calc(1.8 * var(--font_base));
+  border-radius: var(--border_radius);
+  border: 2px solid var(--button_bg);
+  padding: var(--padding_small) var(--padding_large);
+  font-size: var(--font_small);
+  font-weight: 500;
   background: var(--button_bg); color: var(--text);
   cursor: default; transition: background-color 0.15s, border-color 0.15s, color 0.15s;
 }
 
-.demo-button:hover { background: var(--button_bg_hover); border-color: var(--border_color); }
+.demo-button:hover { background: var(--button_bg_hover); border-color: var(--primary); color: var(--text_light); }
 .demo-button.primary { background: var(--primary_dark); border-color: var(--primary); color: var(--text_light); }
 .demo-button.primary:hover { background: var(--primary); border-color: var(--primary_light); }
 .demo-button.recording { background: var(--recording_bg_start); border-color: var(--recording); color: var(--recording); }
@@ -390,7 +411,62 @@
 }
 
 .demo-check input, .demo-radio input {
-  accent-color: var(--primary); width: 14px; height: 14px;
+  -webkit-appearance: none; appearance: none;
+  width: 14px; height: 14px; margin: 0;
+  border: 1px solid var(--border_color);
+  background: var(--bg_base);
+  display: inline-grid; place-content: center;
+  flex: 0 0 auto;
+}
+
+.demo-check input {
+  border-radius: 3px;
+}
+
+.demo-radio input {
+  border-radius: 999px;
+}
+
+.demo-check input::after {
+  content: '';
+  width: 8px; height: 5px;
+  border-left: 2px solid var(--text_inverse);
+  border-bottom: 2px solid var(--text_inverse);
+  transform: rotate(-45deg) scale(0);
+  transform-origin: center;
+  transition: transform 0.12s ease;
+}
+
+.demo-radio input::after {
+  content: '';
+  width: 6px; height: 6px; border-radius: 999px;
+  background: var(--text_inverse);
+  transform: scale(0);
+  transition: transform 0.12s ease;
+}
+
+.demo-check input:checked,
+.demo-radio input:checked {
+  background: var(--primary);
+  border-color: var(--primary_light);
+}
+
+.demo-check input:checked::after,
+.demo-radio input:checked::after {
+  transform: scale(1);
+}
+
+.demo-check input:disabled,
+.demo-radio input:disabled {
+  background: var(--button_bg_disabled);
+  border-color: var(--button_bg_disabled);
+  opacity: 0.65;
+}
+
+.demo-check input:disabled:checked,
+.demo-radio input:disabled:checked {
+  background: var(--text_disabled);
+  border-color: var(--text_disabled);
 }
 
 /* List items demo */
