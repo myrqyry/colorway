@@ -52,6 +52,36 @@
     --meter_fg_war: var(--warning);
     --meter_fg_err: var(--danger);
     --overlay-bg: rgba(25, 23, 36, 0.92);
+
+    /* Geometry & Layout — from Colorway.obt @OBSThemeVars */
+    --obsFontScale: 10;
+    --obsPadding: 4;
+    --font_base: calc(1pt * var(--obsFontScale));
+    --font_small: max(7pt, calc(0.8pt * var(--obsFontScale)));
+    --font_xsmall: max(6.75pt, calc(0.65pt * var(--obsFontScale)));
+    --font_large: calc(1.1pt * var(--obsFontScale));
+    --font_xlarge: calc(1.5pt * var(--obsFontScale));
+    --font_heading: calc(2.5pt * var(--obsFontScale));
+    --border_radius: 9px;
+    --border_radius_small: 5px;
+    --border_radius_large: 12px;
+    --shape_xs: 3px;
+    --shape_sm: 5px;
+    --shape_md: 9px;
+    --shape_lg: 16px;
+    --shape_xl: 24px;
+    --shape_full: 999px;
+    --padding_base: calc(0.5px * var(--obsPadding));
+    --padding_large: min(max(1px, calc(1px * var(--obsPadding))), 5px);
+    --padding_xlarge: min(max(2px, calc(1.75px * var(--obsPadding))), 10px);
+    --spacing_base: min(max(1px, calc(0.4 * calc(2 + calc(var(--obsPadding) / 2)))), 2px);
+    --spacing_large: min(max(2px, calc(1px * calc(2 + calc(var(--obsPadding) / 2)))), 4px);
+
+    /* Slider sizing — from Colorway.obt */
+    --slider_groove_thickness: 14px;
+    --slider_groove_radius: 7px;
+    --slider_handle_size: 14px;
+    --slider_handle_radius: 7px;
   }
 
   * {
@@ -359,7 +389,7 @@
     width: 270px;
     max-height: calc(100% - 20px);
     overflow-y: auto;
-    border-radius: 6px;
+    border-radius: var(--border_radius_small);
     border: 1px solid var(--border_color);
     background: var(--overlay-bg);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
@@ -389,7 +419,7 @@
   }
 
   .canvas-palette .palette-group {
-    border-radius: 3px;
+    border-radius: var(--shape_xs);
   }
 
   .canvas-palette .palette-group-label {
@@ -422,7 +452,7 @@
     top: 10px;
     left: 10px;
     padding: 9px 12px;
-    border-radius: 6px;
+    border-radius: var(--border_radius_small);
     border: 1px solid var(--border_color);
     background: var(--overlay-bg);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
@@ -432,13 +462,13 @@
   }
 
   .canvas-theme-name {
-    font-size: 11px;
+    font-size: var(--font_base);
     font-weight: 600;
     color: var(--text_light);
   }
 
   .canvas-theme-status {
-    font-size: 9px;
+    font-size: var(--font_xsmall);
     color: var(--text_muted);
     margin-top: 2px;
   }
@@ -493,8 +523,8 @@
     display: inline-flex;
     align-items: center;
     padding: 1px 5px;
-    border-radius: 9999px;
-    font-size: 9px;
+    border-radius: var(--shape_full);
+    font-size: var(--font_xsmall);
     font-weight: 600;
     background: var(--bg_hover);
     color: var(--text_muted);
@@ -620,7 +650,7 @@
   }
 
   .dock-label {
-    font-size: 11px;
+    font-size: var(--font_base);
     color: var(--text_muted);
   }
 
@@ -667,8 +697,8 @@
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 14px;
-    border-radius: 7px;
+    height: var(--slider_groove_thickness);
+    border-radius: var(--slider_groove_radius);
     background: linear-gradient(to right, var(--primary) 0%, var(--primary) var(--slider-pct, 50%), var(--button_bg) var(--slider-pct, 50%), var(--button_bg) 100%);
     outline: none;
     cursor: default;
@@ -839,7 +869,7 @@
   .palette-swatch {
     height: 11px;
     width: 11px;
-    border-radius: 3px;
+    border-radius: var(--shape_xs);
     flex-shrink: 0;
     border: 1px solid rgba(205, 214, 244, 0.2);
   }
@@ -888,7 +918,7 @@
   .status-dot {
     height: 6px;
     width: 6px;
-    border-radius: 9999px;
+    border-radius: var(--shape_full);
     background: var(--danger);
     display: inline-block;
   }
