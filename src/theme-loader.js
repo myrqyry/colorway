@@ -121,14 +121,11 @@ async function resolveTheme(file) {
   }
   const parentFile = file.endsWith('.ovt') ? findThemeFile(parsed.meta._extends) : null;
   return parentFile
-    ? { ...(await resolveTheme(parentFile)), ...parsed.vars, _name: parsed.meta._name, _dark: parsed.meta._dark }
+    ? { ...await resolveTheme(parentFile), ...parsed.vars, _name: parsed.meta._name, _dark: parsed.meta._dark }
     : { ...parsed.vars, _name: parsed.meta._name, _dark: parsed.meta._dark };
 }
 
-function findThemeFile(baseId) {
-  if (baseId === 'com.myrqyry.Colorway' || baseId.endsWith('.Colorway')) {
-    return 'Colorway.obt';
-  }
+function findThemeFile(_baseId) {
   return 'Colorway.obt';
 }
 
@@ -145,16 +142,11 @@ let _appliedVars = new Set();
 
 export function applyTheme(vars) {
   const root = document.documentElement;
-
-  for (const key of _appliedVars) {
-    root.style.removeProperty(key);
-  }
-  _appliedVars = new Set();
-
-  for (const [key, value] of Object.entries(vars)) {
+  _appliedVars.forEach(key => root.style.removeProperty(key));
+  Object.entries(vars).forEach(([key, value]) => {
     if (key.startsWith('--')) {
       root.style.setProperty(key, value);
       _appliedVars.add(key);
     }
-  }
+  });
 }
