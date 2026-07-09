@@ -306,20 +306,11 @@ async function setTheme(file) {
 
 function applyCurrentPattern() {
   const select = document.querySelector('#pattern-select');
-  if (!select) return;
+  if (!select || !document.querySelector('.showcase-grid')) return;
   const patternFile = select.value;
-  const grid = document.querySelector('.showcase-grid');
-
-  if (grid) {
-    if (patternFile) {
-      const patternUrl = `/patterns/${patternFile}`;
-      document.documentElement.style.setProperty('--pattern_eyes', `url(${patternUrl})`);
-      grid.style.setProperty('--preview-pattern', `url(${patternUrl})`);
-    } else {
-      document.documentElement.style.removeProperty('--pattern_eyes');
-      grid.style.removeProperty('--preview-pattern');
-    }
-  }
+  const patternUrl = patternFile ? `url(/patterns/${patternFile})` : '';
+  document.documentElement.style.setProperty('--pattern_eyes', patternUrl);
+  document.querySelector('.showcase-grid').style.setProperty('--preview-pattern', patternUrl);
 }
 
 function updateStatusDemo() {
@@ -348,21 +339,21 @@ document.addEventListener('click', (e) => {
 
 // Keyboard navigation
 document.addEventListener('keydown', (e) => {
+  if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(e.key)) return;
   const activeRow = document.querySelector('.theme-row.active');
   if (!activeRow) return;
-  
-  let nextRow;
-  if (e.key === 'ArrowDown') {
-    nextRow = activeRow.nextElementSibling;
-  } else if (e.key === 'ArrowUp') {
-    nextRow = activeRow.previousElementSibling;
+
+  const row = e.key === 'ArrowDown'
+    ? activeRow.nextElementSibling
+    : e.key === 'ArrowUp'
+      ? activeRow.previousElementSibling
+      : null;
+
+  if (row) {
+    row.focus();
+    e.preventDefault();
   } else if (e.key === 'Enter') {
     setTheme(activeRow.dataset.file);
-    e.preventDefault();
-  }
-  
-  if (nextRow) {
-    nextRow.focus();
     e.preventDefault();
   }
 });
@@ -379,7 +370,8 @@ document.querySelectorAll('.demo-slider, .mixer-slider-mini').forEach((slider) =
 
 document.querySelectorAll('.demo-list-item').forEach((item) => {
   item.addEventListener('click', () => {
-    item.closest('.lists-demo').querySelectorAll('.demo-list-item').forEach((i) => i.classList.remove('selected'));
+    const container = item.closest('.lists-demo');
+    container?.querySelectorAll('.demo-list-item').forEach(i => i.classList.remove('selected'));
     item.classList.add('selected');
   });
 });
