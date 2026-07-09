@@ -116,20 +116,13 @@ async function loadRaw(file) {
 
 async function resolveTheme(file) {
   const parsed = await loadRaw(file);
-
-  if (parsed.meta._extends) {
-    const baseId = parsed.meta._extends;
-    const parentFile = file.endsWith('.ovt')
-      ? findThemeFile(baseId)
-      : null;
-
-    if (parentFile) {
-      const parentParsed = await resolveTheme(parentFile);
-      return { ...parentParsed, ...parsed.vars, _name: parsed.meta._name, _dark: parsed.meta._dark };
-    }
+  if (!parsed.meta._extends) {
+    return { ...parsed.vars, _name: parsed.meta._name, _dark: parsed.meta._dark };
   }
-
-  return { ...parsed.vars, _name: parsed.meta._name, _dark: parsed.meta._dark };
+  const parentFile = file.endsWith('.ovt') ? findThemeFile(parsed.meta._extends) : null;
+  return parentFile
+    ? { ...(await resolveTheme(parentFile)), ...parsed.vars, _name: parsed.meta._name, _dark: parsed.meta._dark }
+    : { ...parsed.vars, _name: parsed.meta._name, _dark: parsed.meta._dark };
 }
 
 function findThemeFile(baseId) {

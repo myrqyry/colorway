@@ -95,10 +95,7 @@ function renderPalette() {
 
 
 function renderPatternOptions() {
-  return PATTERNS.map((pattern) => {
-    const selected = pattern.file === DEFAULT_PATTERN ? 'selected' : '';
-    return `<option value="${pattern.file}" ${selected}>${pattern.name}</option>`;
-  }).join('');
+  return PATTERNS.map(p => `<option value="${p.file}" ${p.file === DEFAULT_PATTERN ? 'selected' : ''}>${p.name}</option>`).join('');
 }
 
 function renderApp() {
@@ -331,9 +328,9 @@ function updateStatusDemo() {
   const dropped = document.querySelector('#dropped-value');
   const bitrate = document.querySelector('#bitrate-value');
   if (cpu) cpu.textContent = `${(Math.random() * 15 + 2).toFixed(1)}%`;
-  if (fps) fps.textContent = `${(Math.random() * 10 + 55).toFixed(2)}`;
+  if (fps) fps.textContent = (55 + Math.random() * 10).toFixed(2);
   if (dropped) dropped.textContent = `${(Math.random() * 2).toFixed(1)}%`;
-  if (bitrate) bitrate.textContent = `${Math.floor(Math.random() * 3000 + 2000)}`;
+  if (bitrate) bitrate.textContent = `${Math.floor(Math.random() * 3000) + 2000}`;
 }
 
 renderApp();
@@ -376,16 +373,8 @@ preloadAllThemes().then((themeData) => {
   setTheme(DEFAULT_THEME);
 });
 
-document.querySelectorAll('.demo-slider').forEach((slider) => {
-  slider.addEventListener('input', () => {
-    slider.style.setProperty('--slider-pct', `${slider.value}%`);
-  });
-});
-
-document.querySelectorAll('.mixer-slider-mini').forEach((slider) => {
-  slider.addEventListener('input', () => {
-    slider.style.setProperty('--slider-pct', `${slider.value}%`);
-  });
+document.querySelectorAll('.demo-slider, .mixer-slider-mini').forEach((slider) => {
+  slider.addEventListener('input', () => slider.style.setProperty('--slider-pct', `${slider.value}%`));
 });
 
 document.querySelectorAll('.demo-list-item').forEach((item) => {
