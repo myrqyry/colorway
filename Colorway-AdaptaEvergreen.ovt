@@ -26,7 +26,8 @@
 
     --text: #d4d4d4;
     --text_light: #d4d4d4;
-    --text_muted: #cccccc;
+    --text_muted: #7c8d96;
+    --text_inverse: #222d32;
 
     --text_disabled: #858585;
     --text_inactive: #858585;
