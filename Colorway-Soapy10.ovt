@@ -11,6 +11,7 @@
     --bg_base: #0d2147;
     --bg_preview: #054b84;
     --bg_dock: #0c6987;
+    --bg_hover: #0d2147;
 
     --primary: #54cea7;
     --primary_light: #2ba4a6;
@@ -33,12 +34,21 @@
     --input_bg_hover: #054b84;
     --input_bg_focus: #0c6987;
     --list_item_bg_hover: #0d2147;
+    --list_item_bg_selected: #54cea7;
     --input_border: #054b84;
     --input_border_hover: #54cea7;
 
     --button_bg: #0c6987;
     --button_bg_hover: #54cea7;
     --button_bg_disabled: #0d2147;
+
+    --success: #54cea7;
+    --meter_bg_nom: #0d2147;
+    --meter_bg_war: #ff82bd;
+    --meter_bg_err: #d74ac7;
+    --meter_fg_nom: #54cea7;
+    --meter_fg_war: #ff82bd;
+    --meter_fg_err: #d74ac7;
 
     --accent_bg_start: rgba(84, 206, 167, 0.3);
     --accent_bg_end: rgba(84, 206, 167, 0.1);
