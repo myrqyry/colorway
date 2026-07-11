@@ -1,0 +1,47 @@
+@OBSThemeMeta {
+    name: 'soapy 10';
+    id: 'com.myrqyry.Colorway.Soapy10';
+    extends: 'com.myrqyry.Colorway';
+    author: 'green guy / myrqyry';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --bg_window: #0d2147;
+    --bg_base: #0d2147;
+    --bg_preview: #054b84;
+    --bg_dock: #0c6987;
+
+    --primary: #54cea7;
+    --primary_light: #2ba4a6;
+    --primary_lighter: #ffb0bf;
+    --primary_dark: #0c6987;
+    --primary_darker: #054b84;
+
+    --warning: #ff82bd;
+    --danger: #d74ac7;
+
+    --text: #ffb0bf;
+    --text_light: #ffffff;
+    --text_muted: #2ba4a6;
+    --text_disabled: #054b84;
+    --text_inactive: #054b84;
+
+    --border_color: #054b84;
+
+    --input_bg: #054b84;
+    --input_bg_hover: #054b84;
+    --input_bg_focus: #0c6987;
+    --list_item_bg_hover: #0d2147;
+    --input_border: #054b84;
+    --input_border_hover: #54cea7;
+
+    --button_bg: #0c6987;
+    --button_bg_hover: #54cea7;
+    --button_bg_disabled: #0d2147;
+
+    --accent_bg_start: rgba(84, 206, 167, 0.3);
+    --accent_bg_end: rgba(84, 206, 167, 0.1);
+
+    --text_inverse: #0d2147;
+}

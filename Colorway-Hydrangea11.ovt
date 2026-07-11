@@ -1,0 +1,47 @@
+@OBSThemeMeta {
+    name: 'Hydrangea 11';
+    id: 'com.myrqyry.Colorway.Hydrangea11';
+    extends: 'com.myrqyry.Colorway';
+    author: 'Dinchenix / myrqyry';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    --bg_window: #413652;
+    --bg_base: #413652;
+    --bg_preview: #575f7e;
+    --bg_dock: #6f577e;
+
+    --primary: #c090a7;
+    --primary_light: #d4beb8;
+    --primary_lighter: #eae4dd;
+    --primary_dark: #986f9c;
+    --primary_darker: #6f577e;
+
+    --warning: #f1eab6;
+    --danger: #c090a7;
+
+    --text: #eae4dd;
+    --text_light: #ffffff;
+    --text_muted: #62778c;
+    --text_disabled: #575f7e;
+    --text_inactive: #575f7e;
+
+    --border_color: #575f7e;
+
+    --input_bg: #575f7e;
+    --input_bg_hover: #575f7e;
+    --input_bg_focus: #6f577e;
+    --list_item_bg_hover: #413652;
+    --input_border: #575f7e;
+    --input_border_hover: #c090a7;
+
+    --button_bg: #6f577e;
+    --button_bg_hover: #c090a7;
+    --button_bg_disabled: #413652;
+
+    --accent_bg_start: rgba(192, 144, 167, 0.3);
+    --accent_bg_end: rgba(192, 144, 167, 0.1);
+
+    --text_inverse: #413652;
+}
