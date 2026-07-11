@@ -1,0 +1,54 @@
+@OBSThemeMeta {
+    name: 'YouTube Dark';
+    id: 'com.myrqyry.Colorway.YouTubeDark';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Background Elements (Ambient Cinematic Gray) */
+    --bg_window: #0f0f0f;
+    --bg_base: #0f0f0f;
+    --bg_preview: #1c1c1c;
+    --bg_dock: #0f0f0f;
+
+    /* Primary Accent (YouTube Crimson Red) */
+    --primary: #ff0000;
+    --primary_light: #ff4e45;
+    --primary_lighter: #ffb3b0;
+    --primary_dark: #cc0000;
+    --primary_darker: #990000;
+
+    --warning: #f6c177;
+    --danger: #ff0000;
+
+    /* Text Colors */
+    --text: #f1f1f1;
+    --text_light: #ffffff;
+    --text_muted: #aaaaaa;
+    --text_disabled: #717171;
+    --text_inactive: #717171;
+
+    /* Borders */
+    --border_color: #272727;
+
+    /* Input & Button Layouts */
+    --input_bg: #212121;
+    --input_bg_hover: #212121;
+    --input_bg_focus: #2d2d2d;
+    --list_item_bg_hover: #0f0f0f;
+    --input_border: #272727;
+    --input_border_hover: #ff0000;
+
+    --button_bg: #272727;
+    --button_bg_hover: #3f3f3f;
+    --button_bg_disabled: #0f0f0f;
+
+    /* Replay/VirtualCam active state overlays */
+    --accent_bg_start: rgba(255, 0, 0, 0.3);
+    --accent_bg_end: rgba(255, 0, 0, 0.1);
+
+    /* Text color for crimson red components */
+    --text_inverse: #ffffff;
+}

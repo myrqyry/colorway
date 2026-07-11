@@ -1,0 +1,54 @@
+@OBSThemeMeta {
+    name: 'Twitch Dark';
+    id: 'com.myrqyry.Colorway.TwitchDark';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Background Elements (Obsidian Black & Deep Gray-Purple) */
+    --bg_window: #0e0e10;
+    --bg_base: #0e0e10;
+    --bg_preview: #1f1f23;
+    --bg_dock: #18181b;
+
+    /* Primary Accent (Twitch Electric Violet) */
+    --primary: #9146ff;
+    --primary_light: #af7eff;
+    --primary_lighter: #e3d1ff;
+    --primary_dark: #772ce8;
+    --primary_darker: #5c16c5;
+
+    --warning: #ffb000;
+    --danger: #eb6f92;
+
+    /* Text Colors */
+    --text: #efeff1;
+    --text_light: #ffffff;
+    --text_muted: #adadb8;
+    --text_disabled: #53535f;
+    --text_inactive: #53535f;
+
+    /* Borders */
+    --border_color: #1f1f23;
+
+    /* Input & Button Layouts */
+    --input_bg: #1f1f23;
+    --input_bg_hover: #1f1f23;
+    --input_bg_focus: #2d2d34;
+    --list_item_bg_hover: #0e0e10;
+    --input_border: #1f1f23;
+    --input_border_hover: #9146ff;
+
+    --button_bg: #1f1f23;
+    --button_bg_hover: #9146ff;
+    --button_bg_disabled: #0e0e10;
+
+    /* Replay/VirtualCam active state overlays */
+    --accent_bg_start: rgba(145, 70, 255, 0.3);
+    --accent_bg_end: rgba(145, 70, 255, 0.1);
+
+    /* Text contrast for electric purple components */
+    --text_inverse: #ffffff;
+}
