@@ -54,6 +54,7 @@ export const THEMES = [
   { file: 'Colorway-ClaudeCodeWarm.ovt', name: 'Claude Code Warm' },
   { file: 'Colorway-ClaudeDark.ovt', name: 'Claude Dark' },
   { file: 'Colorway-Cobalt2.ovt', name: 'Cobalt2' },
+  { file: 'Colorway-Cyclope6.ovt', name: 'Cyclope6' },
   { file: 'Colorway-Cursor.ovt', name: 'Cursor' },
   { file: 'Colorway-DarkHorizon.ovt', name: 'Dark Horizon' },
   { file: 'Colorway-DarkMagic.ovt', name: 'Dark Magic' },
