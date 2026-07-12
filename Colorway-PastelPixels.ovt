@@ -7,48 +7,44 @@
 }
 
 @OBSThemeVars {
-    /* Background Elements (Dusty Charcoal Purple / Soft Plum) */
     --bg_window: #2d2a32;
     --bg_base: #2d2a32;
     --bg_preview: #242229;
     --bg_dock: #35313a;
-
-    /* Primary Accent (Soft Lilac / Lavender Pastel) */
-    --primary: #e4c1f9;
-    --primary_light: #fde2e4;
-    --primary_lighter: #fff1e6;
-    --primary_dark: #a9def9;
-    --primary_darker: #1d1b21;
-
-    --warning: #ffe599;
-    --danger: #fde2e4;
-
-    /* Text Colors */
+    --bg_hover: #26233a;
     --text: #fff1e6;
     --text_light: #ffffff;
     --text_muted: #a9def9;
     --text_disabled: #6c6675;
     --text_inactive: #6c6675;
-
-    /* Borders */
-    --border_color: #242229;
-
-    /* Input & Button Layouts */
+    --text_inverse: #000000;
+    --primary: #e4c1f9;
+    --primary_light: #fde2e4;
+    --primary_lighter: #fff1e6;
+    --primary_dark: #a9def9;
+    --primary_darker: #1d1b21;
     --input_bg: #242229;
     --input_bg_hover: #242229;
     --input_bg_focus: #35313a;
-    --list_item_bg_hover: #2d2a32;
     --input_border: #242229;
     --input_border_hover: #e4c1f9;
-
     --button_bg: #35313a;
     --button_bg_hover: #e4c1f9;
     --button_bg_disabled: #2d2a32;
-
-    /* Replay/VirtualCam active state overlays */
+    --list_item_bg_hover: #2d2a32;
+    --list_item_bg_selected: #c4a7e7;
+    --border_color: #242229;
     --accent_bg_start: rgba(228, 193, 249, 0.3);
     --accent_bg_end: rgba(228, 193, 249, 0.1);
-
-    /* Text contrast for bright pastel components */
-    --text_inverse: #000000;
+    --warning: #ffe599;
+    --danger: #fde2e4;
+    --success: #37d247;
+    --meter_bg_nom: #26233a;
+    --meter_bg_war: #f6c177;
+    --meter_bg_err: #eb6f92;
+    --meter_fg_nom: #c4a7e7;
+    --meter_fg_war: #f6c177;
+    --meter_fg_err: #eb6f92;
+    --ico: undefined;
+    --ico_selected: undefined;
 }

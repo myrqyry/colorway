@@ -7,55 +7,44 @@
 }
 
 @OBSThemeVars {
-    /* Base Theme Colors (Soft Charcoal) */
     --bg_window: #212121;
     --bg_base: #212121;
-    --bg_preview: #1a1a1a; /* Slightly darker for the canvas area */
-
-    /* Fluffy Pink Accents */
-    --primary: #F48FB1;        /* Fluffy Pink Accent */
-    --primary_light: #F8BBD0;  /* Lighter Pink for contrast highlights */
+    --bg_preview: #26233a;
+    --bg_dock: #252525;
+    --bg_hover: #3A3D41;
+    --text: #e0def4;
+    --text_light: #FFFFFF;
+    --text_muted: #908caa;
+    --text_disabled: #6e6a86;
+    --text_inactive: #6B6B6B;
+    --text_inverse: #FFFFFF;
+    --primary: #c4a7e7;
+    --primary_light: #e0def4;
     --primary_lighter: #FCE4EC;
     --primary_dark: #C2185B;
     --primary_darker: #880E4F;
-
-    --warning: #DCDCAA; /* Pale Yellow */
-    --danger: #CE9178;  /* Soft Coral / Terracotta */
-
-    /* Typography */
-    --text: #D4D4D4;        /* Soft White */
-    --text_light: #FFFFFF;
-    --text_muted: #8c8c8c;  /* Muted Grey */
-
-    --text_disabled: #6B6B6B; /* Disabled Grey */
-    --text_inactive: #6B6B6B;
-    --text_inverse: #FFFFFF;
-
-    --border_color: #3A3D41;
-
-    /* Inputs and Buttons */
     --input_bg: #252525;
     --input_bg_hover: #3A3D41;
     --input_bg_focus: #353535;
-
-    --list_item_bg_hover: #3A3D41;
-
     --input_border: #3A3D41;
     --input_border_hover: #F48FB1;
-
     --button_bg: #252525;
     --button_bg_hover: #3A3D41;
     --button_bg_disabled: #212121;
-
-    /* Theme Aliases */
-    /* Replay/VirtualCam active state — derived from --primary */
+    --list_item_bg_hover: #3A3D41;
+    --list_item_bg_selected: #c4a7e7;
+    --border_color: #3A3D41;
     --accent_bg_start: rgba(244, 143, 177, 0.3);
     --accent_bg_end: rgba(244, 143, 177, 0.1);
-
-    --bg_dock: #252525;
-    --bg_hover: #3A3D41;
-
-    /* Icon colors (currentColor SVGs, controlled via CSS color) */
-    --ico: var(--text);
+    --warning: #f6c177;
+    --danger: #eb6f92;
+    --success: #37d247;
+    --meter_bg_nom: #26233a;
+    --meter_bg_war: #f6c177;
+    --meter_bg_err: #eb6f92;
+    --meter_fg_nom: #c4a7e7;
+    --meter_fg_war: #f6c177;
+    --meter_fg_err: #eb6f92;
+    --ico: #e0def4;
     --ico_selected: #212121;
 }

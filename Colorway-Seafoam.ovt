@@ -7,48 +7,44 @@
 }
 
 @OBSThemeVars {
-    /* Background Elements (Muted Ocean Depths) */
     --bg_window: #37364e;
     --bg_base: #37364e;
     --bg_preview: #355d69;
     --bg_dock: #5b4a68;
-
-    /* Primary Accent (Sea Green → Foam) */
-    --primary: #6aae9d;
-    --primary_light: #b9d4b4;
-    --primary_lighter: #f4e9d4;
-    --primary_dark: #9e8e91;
-    --primary_darker: #d0baa9;
-
-    --warning: #d0baa9;
-    --danger: #6aae9d;
-
-    /* Text Colors (Foam highlight on deep) */
+    --bg_hover: #26233a;
     --text: #e2f0e9;
     --text_light: #ffffff;
     --text_muted: #9e8e91;
     --text_disabled: #5b4a68;
     --text_inactive: #5b4a68;
-
-    /* Borders (Subtle teal dividers) */
-    --border_color: #355d69;
-
-    /* Input & Button Layouts */
+    --text_inverse: #000000;
+    --primary: #6aae9d;
+    --primary_light: #b9d4b4;
+    --primary_lighter: #f4e9d4;
+    --primary_dark: #9e8e91;
+    --primary_darker: #d0baa9;
     --input_bg: #355d69;
     --input_bg_hover: #355d69;
     --input_bg_focus: #5b4a68;
-    --list_item_bg_hover: #37364e;
     --input_border: #355d69;
     --input_border_hover: #6aae9d;
-
     --button_bg: #5b4a68;
     --button_bg_hover: #6aae9d;
     --button_bg_disabled: #37364e;
-
-    /* Replay/VirtualCam active state overlays */
+    --list_item_bg_hover: #37364e;
+    --list_item_bg_selected: #c4a7e7;
+    --border_color: #355d69;
     --accent_bg_start: rgba(106, 174, 157, 0.3);
     --accent_bg_end: rgba(106, 174, 157, 0.1);
-
-    /* Text contrast for sea green */
-    --text_inverse: #000000;
+    --warning: #d0baa9;
+    --danger: #6aae9d;
+    --success: #37d247;
+    --meter_bg_nom: #26233a;
+    --meter_bg_war: #f6c177;
+    --meter_bg_err: #eb6f92;
+    --meter_fg_nom: #c4a7e7;
+    --meter_fg_war: #f6c177;
+    --meter_fg_err: #eb6f92;
+    --ico: undefined;
+    --ico_selected: undefined;
 }

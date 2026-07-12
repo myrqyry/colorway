@@ -7,7 +7,9 @@
     "dev": "vite --host 0.0.0.0",
     "test": "node --test",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "normalize:themes": "node scripts/normalize-theme-overrides.mjs",
+    "normalize:themes:check": "node scripts/normalize-theme-overrides.mjs --check"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.2",

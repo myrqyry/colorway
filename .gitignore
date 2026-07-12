@@ -5,6 +5,7 @@
 !src/
 !test/
 !public/
+!scripts/
 docs/superpowers/
 .vercel
 *.bak

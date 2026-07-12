@@ -12,36 +12,32 @@
     --bg_preview: #575f7e;
     --bg_dock: #6f577e;
     --bg_hover: #6f577e;
-
-    --primary: #c090a7;
-    --primary_light: #d4beb8;
-    --primary_lighter: #eae4dd;
-    --primary_dark: #986f9c;
-    --primary_darker: #6f577e;
-
-    --warning: #f1eab6;
-    --danger: #c090a7;
-
     --text: #eae4dd;
     --text_light: #ffffff;
     --text_muted: #62778c;
     --text_disabled: #575f7e;
     --text_inactive: #575f7e;
-
-    --border_color: #575f7e;
-
+    --text_inverse: #000000;
+    --primary: #c090a7;
+    --primary_light: #d4beb8;
+    --primary_lighter: #eae4dd;
+    --primary_dark: #986f9c;
+    --primary_darker: #6f577e;
     --input_bg: #575f7e;
     --input_bg_hover: #575f7e;
     --input_bg_focus: #6f577e;
-    --list_item_bg_hover: #413652;
-    --list_item_bg_selected: #d4beb8;
     --input_border: #575f7e;
     --input_border_hover: #c090a7;
-
     --button_bg: #6f577e;
     --button_bg_hover: #eae4dd;
     --button_bg_disabled: #413652;
-
+    --list_item_bg_hover: #413652;
+    --list_item_bg_selected: #d4beb8;
+    --border_color: #575f7e;
+    --accent_bg_start: rgba(192, 144, 167, 0.3);
+    --accent_bg_end: rgba(192, 144, 167, 0.1);
+    --warning: #f1eab6;
+    --danger: #c090a7;
     --success: #90c0a0;
     --meter_bg_nom: #575f7e;
     --meter_bg_war: #c090a7;
@@ -49,9 +45,6 @@
     --meter_fg_nom: #90c0a0;
     --meter_fg_war: #f1eab6;
     --meter_fg_err: #c090a7;
-
-    --accent_bg_start: rgba(192, 144, 167, 0.3);
-    --accent_bg_end: rgba(192, 144, 167, 0.1);
-
-    --text_inverse: #000000;
+    --ico: undefined;
+    --ico_selected: undefined;
 }
