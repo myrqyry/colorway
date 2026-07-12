@@ -7,44 +7,20 @@
 }
 
 @OBSThemeVars {
-    --bg_window: #191724;
-    --bg_base: #191724;
-    --bg_preview: #26233a;
-    --bg_dock: #1f1d2e;
-    --bg_hover: #26233a;
-    --text: #e0def4;
-    --text_light: #ffffff;
-    --text_muted: #908caa;
-    --text_disabled: #6e6a86;
-    --text_inactive: #6e6a86;
+    /* Light theme: selected-item text stays dark */
     --text_inverse: #FFFFFF;
+
+    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --accent_bg_start: rgba(40, 105, 131, 0.3);
+    --accent_bg_end: rgba(40, 105, 131, 0.1);
+
     --primary: #286983;
     --primary_light: #56949f;
     --primary_lighter: #907aa9;
     --primary_dark: #b4637a;
     --primary_darker: #cecacd;
-    --input_bg: #26233a;
-    --input_bg_hover: #403d52;
-    --input_bg_focus: #2d2a42;
-    --input_border: #403d52;
-    --input_border_hover: #524f67;
-    --button_bg: #1f1d2e;
-    --button_bg_hover: #26233a;
-    --button_bg_disabled: #21202e;
-    --list_item_bg_hover: #332f4a;
-    --list_item_bg_selected: #c4a7e7;
-    --border_color: #403d52;
-    --accent_bg_start: rgba(40, 105, 131, 0.3);
-    --accent_bg_end: rgba(40, 105, 131, 0.1);
-    --warning: #f6c177;
-    --danger: #eb6f92;
-    --success: #37d247;
-    --meter_bg_nom: #26233a;
-    --meter_bg_war: #f6c177;
-    --meter_bg_err: #eb6f92;
-    --meter_fg_nom: #c4a7e7;
-    --meter_fg_war: #f6c177;
-    --meter_fg_err: #eb6f92;
-    --ico: #e0def4;
+
+    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    --ico: var(--text);
     --ico_selected: #faf4ed;
 }

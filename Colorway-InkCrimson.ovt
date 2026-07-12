@@ -7,44 +7,48 @@
 }
 
 @OBSThemeVars {
+    /* Background Elements (Crimson King's Court) */
     --bg_window: #09010d;
     --bg_base: #09010d;
     --bg_preview: #17001d;
     --bg_dock: #270022;
-    --bg_hover: #26233a;
-    --text: #ffd9e8;
-    --text_light: #ffffff;
-    --text_muted: #9c173b;
-    --text_disabled: #270022;
-    --text_inactive: #270022;
-    --text_inverse: #000000;
+
+    /* Primary Accent (Blood Red Cyberpunk) */
     --primary: #ff0546;
     --primary_light: #9c173b;
     --primary_lighter: #660f31;
     --primary_dark: #0ce6f2;
     --primary_darker: #0098db;
+
+    --warning: #1e579c;
+    --danger: #ff0546;
+
+    /* Text Colors (Crimson Glow) */
+    --text: #ffd9e8;
+    --text_light: #ffffff;
+    --text_muted: #9c173b;
+    --text_disabled: #270022;
+    --text_inactive: #270022;
+
+    /* Borders (Deep red dividers) */
+    --border_color: #17001d;
+
+    /* Input & Button Layouts */
     --input_bg: #17001d;
     --input_bg_hover: #17001d;
     --input_bg_focus: #270022;
+    --list_item_bg_hover: #09010d;
     --input_border: #17001d;
     --input_border_hover: #ff0546;
+
     --button_bg: #270022;
     --button_bg_hover: #ff0546;
     --button_bg_disabled: #09010d;
-    --list_item_bg_hover: #09010d;
-    --list_item_bg_selected: #c4a7e7;
-    --border_color: #17001d;
+
+    /* Replay/VirtualCam active state overlays */
     --accent_bg_start: rgba(255, 5, 70, 0.3);
     --accent_bg_end: rgba(255, 5, 70, 0.1);
-    --warning: #1e579c;
-    --danger: #ff0546;
-    --success: #37d247;
-    --meter_bg_nom: #26233a;
-    --meter_bg_war: #f6c177;
-    --meter_bg_err: #eb6f92;
-    --meter_fg_nom: #c4a7e7;
-    --meter_fg_war: #f6c177;
-    --meter_fg_err: #eb6f92;
-    --ico: undefined;
-    --ico_selected: undefined;
+
+    /* Text contrast for crimson */
+    --text_inverse: #000000;
 }

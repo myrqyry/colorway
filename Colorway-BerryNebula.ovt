@@ -7,44 +7,48 @@
 }
 
 @OBSThemeVars {
+    /* Background Elements (Deep Nebula Purple) */
     --bg_window: #0d001a;
     --bg_base: #0d001a;
     --bg_preview: #2e0a30;
     --bg_dock: #4f1446;
-    --bg_hover: #26233a;
-    --text: #6ceded;
-    --text_light: #ffffff;
-    --text_muted: #6d85a5;
-    --text_disabled: #2e0a30;
-    --text_inactive: #2e0a30;
-    --text_inverse: #FFFFFF;
+
+    /* Primary Accent (Neon Blue Raspberry to Grape) */
     --primary: #6f1d5c;
     --primary_light: #6e5181;
     --primary_lighter: #6d85a5;
     --primary_dark: #6cb9c9;
     --primary_darker: #6ceded;
+
+    --warning: #6ceded;
+    --danger: #6f1d5c;
+
+    /* Text Colors (Cool Glow) */
+    --text: #6ceded;
+    --text_light: #ffffff;
+    --text_muted: #6d85a5;
+    --text_disabled: #2e0a30;
+    --text_inactive: #2e0a30;
+
+    /* Borders (Subtle purple dividers) */
+    --border_color: #2e0a30;
+
+    /* Input & Button Layouts */
     --input_bg: #2e0a30;
     --input_bg_hover: #2e0a30;
     --input_bg_focus: #4f1446;
+    --list_item_bg_hover: #0d001a;
     --input_border: #2e0a30;
     --input_border_hover: #6ceded;
+
     --button_bg: #4f1446;
     --button_bg_hover: #6f1d5c;
     --button_bg_disabled: #0d001a;
-    --list_item_bg_hover: #0d001a;
-    --list_item_bg_selected: #c4a7e7;
-    --border_color: #2e0a30;
+
+    /* Replay/VirtualCam active state overlays */
     --accent_bg_start: rgba(108, 190, 237, 0.3);
     --accent_bg_end: rgba(108, 190, 237, 0.1);
-    --warning: #6ceded;
-    --danger: #6f1d5c;
-    --success: #37d247;
-    --meter_bg_nom: #26233a;
-    --meter_bg_war: #f6c177;
-    --meter_bg_err: #eb6f92;
-    --meter_fg_nom: #c4a7e7;
-    --meter_fg_war: #f6c177;
-    --meter_fg_err: #eb6f92;
-    --ico: undefined;
-    --ico_selected: undefined;
+
+    /* Text contrast for neon blue components */
+    --text_inverse: #FFFFFF;
 }
