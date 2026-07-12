@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "test": "node --test",
+    "sync:themes": "node scripts/sync-theme-mirrors.mjs",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0"
   },

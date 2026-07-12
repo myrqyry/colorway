@@ -7,6 +7,50 @@
 }
 
 @OBSThemeVars {
+    /* Official palette reference: Spirited Away
+       Hex colors:
+       --bg_window: #1a1d1c;
+       --bg_base: #1a1d1c;
+       --bg_preview: #121615;
+       --bg_dock: #1f2322;
+       --bg_hover: #2E3A38;
+       --text: #E6E6E6;
+       --text_light: #FFFFFF;
+       --text_muted: #7A9A9E;
+       --text_inactive: #506E68;
+       --text_inverse: #FFFFFF;
+       --text_disabled: #506E68;
+       --primary: #F3B1B3;
+       --primary_light: #B0D9DE;
+       --primary_lighter: #D4EDF0;
+       --primary_dark: #6B5D7E;
+       --primary_darker: #4E6D66;
+       --input_bg: #222726;
+       --input_bg_hover: #2E3A38;
+       --input_bg_focus: #303835;
+       --input_border: #2E3A38;
+       --input_border_hover: #5EB1BF;
+       --button_bg: #222726;
+       --button_bg_hover: #2E3A38;
+       --button_bg_disabled: #1a1d1c;
+       --list_item_bg_hover: #2E3A38;
+       --list_item_bg_selected: #c4a7e7;
+       --border_color: #2E3A38;
+       --ico: #E6E6E6;
+       --ico_selected: #1a1d1c;
+       --warning: #C0A878;
+       --danger: #8D635B;
+       --success: #37d247;
+       --meter_bg_nom: #26233a;
+       --meter_bg_war: #f6c177;
+       --meter_bg_err: #eb6f92;
+       --meter_fg_nom: #c4a7e7;
+       --meter_fg_war: #f6c177;
+       --meter_fg_err: #eb6f92;
+       Derived colors:
+       --accent_bg_start: rgba(243, 177, 179, 0.3);
+       --accent_bg_end: rgba(243, 177, 179, 0.1);
+    */
     --bg_window: #1a1d1c;
     --bg_base: #1a1d1c;
     --bg_preview: #121615;

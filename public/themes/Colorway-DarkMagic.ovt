@@ -7,7 +7,50 @@
 }
 
 @OBSThemeVars {
-    /* Base Theme Colors (Deep Navy/Black) */
+    /* Official palette reference: Dark Magic
+       Hex colors:
+       --bg_window: #0f0f17;
+       --bg_base: #0f0f17;
+       --bg_preview: #17171f;
+       --bg_dock: #17171f;
+       --bg_hover: #2f2f40;
+       --text: #e0def4;
+       --text_light: #fafffe;
+       --text_muted: #908caa;
+       --text_inactive: #5B606C;
+       --text_inverse: #FFFFFF;
+       --text_disabled: #6e6a86;
+       --primary: #c4a7e7;
+       --primary_light: #e0def4;
+       --primary_lighter: #bfffa8;
+       --primary_dark: #907aa9;
+       --primary_darker: #524f67;
+       --input_bg: #17171f;
+       --input_bg_hover: #2f2f40;
+       --input_bg_focus: #272733;
+       --input_border: #2f2f40;
+       --input_border_hover: #5a66ee;
+       --button_bg: #17171f;
+       --button_bg_hover: #2f2f40;
+       --button_bg_disabled: #0f0f17;
+       --list_item_bg_hover: #2f2f40;
+       --list_item_bg_selected: #c4a7e7;
+       --border_color: #2f2f40;
+       --ico: #e0def4;
+       --ico_selected: #0f0f17;
+       --warning: #f6c177;
+       --danger: #eb6f92;
+       --success: #37d247;
+       --meter_bg_nom: #26233a;
+       --meter_bg_war: #f6c177;
+       --meter_bg_err: #eb6f92;
+       --meter_fg_nom: #c4a7e7;
+       --meter_fg_war: #f6c177;
+       --meter_fg_err: #eb6f92;
+       Derived colors:
+       --accent_bg_start: rgba(102, 238, 170, 0.3);
+       --accent_bg_end: rgba(102, 238, 170, 0.1);
+    */
     --bg_window: #0f0f17;
     --bg_base: #0f0f17;
     --bg_preview: #17171f;
@@ -29,6 +72,7 @@
 
     --text_disabled: #5B606C; /* Disabled Grey-Blue */
     --text_inactive: #5B606C;
+    --text_inverse: #FFFFFF;
 
     --border_color: #2f2f40;
 

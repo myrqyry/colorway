@@ -1,10 +1,16 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const styles = readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8');
 const themeLoader = readFileSync(new URL('../src/theme-loader.js', import.meta.url), 'utf8');
+const rootThemesDir = new URL('../', import.meta.url);
+const publicThemesDir = new URL('../public/themes/', import.meta.url);
+
+function readTheme(dir, file) {
+  return readFileSync(new URL(file, dir), 'utf8');
+}
 
 test('showcase has header with title and theme picker', () => {
   assert.match(main, /class="showcase-header"/);
@@ -55,4 +61,27 @@ test('extractPalettePreview extracts correct variables', () => {
   assert.match(main, /PALETTE_PREVIEW_VARS\.map\(varName => vars\[varName\] \|\| '#000000'\)/);
   assert.match(main, /'--bg_base'/);
   assert.match(main, /'--border_color'/);
+});
+
+test('public themes mirror the root themes and keep palette comments', () => {
+  const rootFiles = readdirSync(rootThemesDir, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && /^Colorway-.*\.ovt$/.test(entry.name))
+    .map((entry) => entry.name)
+    .sort();
+  const publicFiles = new Set(
+    readdirSync(publicThemesDir, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && /^Colorway-.*\.ovt$/.test(entry.name))
+      .map((entry) => entry.name),
+  );
+
+  assert.equal(publicFiles.size, rootFiles.length, 'public themes count mismatch');
+
+  for (const file of rootFiles) {
+    assert.ok(publicFiles.has(file), `${file} missing from public/themes`);
+    const rootText = readTheme(rootThemesDir, file);
+    const publicText = readTheme(publicThemesDir, file);
+
+    assert.equal(publicText, rootText, `${file} is out of sync with public/themes`);
+    assert.match(rootText, /Official palette reference:/, `${file} is missing a palette comment`);
+  }
 });

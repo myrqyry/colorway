@@ -7,7 +7,50 @@
 }
 
 @OBSThemeVars {
-    /* Replay/VirtualCam active state accent (derived from --primary) */
+    /* Official palette reference: Carbonfox
+       Hex colors:
+       --bg_window: #393939;
+       --bg_base: #393939;
+       --bg_preview: #4d4d4d;
+       --bg_dock: #363636;
+       --bg_hover: #565656;
+       --text: #f2f4f8;
+       --text_light: #ffffff;
+       --text_muted: #6f6f6f;
+       --text_inactive: #5e5e5e;
+       --text_inverse: #FFFFFF;
+       --text_disabled: #5e5e5e;
+       --primary: #33b1ff;
+       --primary_light: #78a9ff;
+       --primary_lighter: #ff8389;
+       --primary_dark: #42be65;
+       --primary_darker: #6f6f6f;
+       --input_bg: #4d4d4d;
+       --input_bg_hover: #565656;
+       --input_bg_focus: #565656;
+       --input_border: #494949;
+       --input_border_hover: #33b1ff;
+       --button_bg: #363636;
+       --button_bg_hover: #565656;
+       --button_bg_disabled: #393939;
+       --list_item_bg_hover: #565656;
+       --list_item_bg_selected: #c4a7e7;
+       --border_color: #494949;
+       --ico: #f2f4f8;
+       --ico_selected: #393939;
+       --warning: #f1c21b;
+       --danger: #ff8389;
+       --success: #37d247;
+       --meter_bg_nom: #26233a;
+       --meter_bg_war: #f6c177;
+       --meter_bg_err: #eb6f92;
+       --meter_fg_nom: #c4a7e7;
+       --meter_fg_war: #f6c177;
+       --meter_fg_err: #eb6f92;
+       Derived colors:
+       --accent_bg_start: rgba(51, 177, 255, 0.3);
+       --accent_bg_end: rgba(51, 177, 255, 0.1);
+    */
     --accent_bg_start: rgba(51, 177, 255, 0.3);
     --accent_bg_end: rgba(51, 177, 255, 0.1);
 
@@ -31,6 +74,7 @@
 
     --text_disabled: #5e5e5e;
     --text_inactive: #5e5e5e;
+    --text_inverse: #FFFFFF;
 
     --border_color: #494949;
 

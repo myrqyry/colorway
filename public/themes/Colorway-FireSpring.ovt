@@ -7,7 +7,50 @@
 }
 
 @OBSThemeVars {
-    /* Replay/VirtualCam active state accent (derived from --primary) */
+    /* Official palette reference: Fire Spring
+       Hex colors:
+       --bg_window: #181020;
+       --bg_base: #181020;
+       --bg_preview: #100a16;
+       --bg_dock: #1e1228;
+       --bg_hover: #2e1e40;
+       --text: #ffffca;
+       --text_light: #ffffff;
+       --text_muted: #ffff00;
+       --text_inactive: #5a4070;
+       --text_inverse: #000000;
+       --text_disabled: #5a4070;
+       --primary: #d992ff;
+       --primary_light: #a99ade;
+       --primary_lighter: #c4b0f0;
+       --primary_dark: #9b4de0;
+       --primary_darker: #6a20a8;
+       --input_bg: #22142e;
+       --input_bg_hover: #2e1e40;
+       --input_bg_focus: #2e1e40;
+       --input_border: #2a1a3a;
+       --input_border_hover: #d992ff;
+       --button_bg: #9766B2;
+       --button_bg_hover: #e4aaff;
+       --button_bg_disabled: #181020;
+       --list_item_bg_hover: #2e1e40;
+       --list_item_bg_selected: #c4a7e7;
+       --border_color: #2a1a3a;
+       --ico: #ffffca;
+       --ico_selected: #181020;
+       --warning: #f0e500;
+       --danger: #ff6b6b;
+       --success: #37d247;
+       --meter_bg_nom: #26233a;
+       --meter_bg_war: #f6c177;
+       --meter_bg_err: #eb6f92;
+       --meter_fg_nom: #c4a7e7;
+       --meter_fg_war: #f6c177;
+       --meter_fg_err: #eb6f92;
+       Derived colors:
+       --accent_bg_start: rgba(217, 146, 255, 0.3);
+       --accent_bg_end: rgba(217, 146, 255, 0.1);
+    */
     --accent_bg_start: rgba(217, 146, 255, 0.3);
     --accent_bg_end: rgba(217, 146, 255, 0.1);
 
@@ -30,6 +73,7 @@
 
     --text_disabled: #5a4070;
     --text_inactive: #5a4070;
+    --text_inverse: #000000;
 
     --border_color: #2a1a3a;
 

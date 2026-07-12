@@ -7,7 +7,50 @@
 }
 
 @OBSThemeVars {
-    /* Base Theme Colors (Deep Berry/Black) */
+    /* Official palette reference: Pink Glaze Macaroon
+       Hex colors:
+       --bg_window: #1a1416;
+       --bg_base: #1a1416;
+       --bg_preview: #1e181a;
+       --bg_dock: #1e181a;
+       --bg_hover: #4a2b35;
+       --text: #e0def4;
+       --text_light: #ede9dc;
+       --text_muted: #908caa;
+       --text_inactive: #745D65;
+       --text_inverse: #FFFFFF;
+       --text_disabled: #6e6a86;
+       --primary: #c4a7e7;
+       --primary_light: #e0def4;
+       --primary_lighter: #fadadd;
+       --primary_dark: #d9719a;
+       --primary_darker: #b75e7e;
+       --input_bg: #1e181a;
+       --input_bg_hover: #4a2b35;
+       --input_bg_focus: #2e2830;
+       --input_border: #4a2b35;
+       --input_border_hover: #b75e7e;
+       --button_bg: #1e181a;
+       --button_bg_hover: #4a2b35;
+       --button_bg_disabled: #1a1416;
+       --list_item_bg_hover: #4a2b35;
+       --list_item_bg_selected: #c4a7e7;
+       --border_color: #4a2b35;
+       --ico: #e0def4;
+       --ico_selected: #1a1416;
+       --warning: #f6c177;
+       --danger: #eb6f92;
+       --success: #37d247;
+       --meter_bg_nom: #26233a;
+       --meter_bg_war: #f6c177;
+       --meter_bg_err: #eb6f92;
+       --meter_fg_nom: #c4a7e7;
+       --meter_fg_war: #f6c177;
+       --meter_fg_err: #eb6f92;
+       Derived colors:
+       --accent_bg_start: rgba(244, 83, 120, 0.3);
+       --accent_bg_end: rgba(244, 83, 120, 0.1);
+    */
     --bg_window: #1a1416;
     --bg_base: #1a1416;
     --bg_preview: #1e181a;
