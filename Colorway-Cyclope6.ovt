@@ -50,5 +50,5 @@
     --accent_bg_end: rgba(48, 225, 185, 0.1);
 
     /* Text contrast for teal */
-    --text_inverse: #411d31;
+    --text_inverse: #000000;
 }

@@ -50,5 +50,5 @@
     --accent_bg_end: rgba(208, 129, 89, 0.1);
 
     /* Text contrast for warm earth tones */
-    --text_inverse: #0d2b45;
+    --text_inverse: #000000;
 }

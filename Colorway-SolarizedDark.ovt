@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    --text_inverse: #00222B;
+    --text_inverse: #FFFFFF;
     --bg_window: #002b36;
     --bg_base: #002b36;
     --bg_preview: #001f26;

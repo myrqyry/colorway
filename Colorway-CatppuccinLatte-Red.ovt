@@ -25,7 +25,7 @@
     --text_muted: #9ca0b0;
     --text_disabled: #bcc0cc;
     --text_inactive: #bcc0cc;
-    --text_inverse: #191724;
+    --text_inverse: #000000;
 
     --border_color: #ccd0da;
 

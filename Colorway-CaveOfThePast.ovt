@@ -47,7 +47,7 @@
     --button_bg_disabled: #b0d0b8;
 
     /* Light theme: selected-item text stays dark */
-    --text_inverse: #191724;
+    --text_inverse: #FFFFFF;
 
     --bg_dock: #c0dcc8;
     --bg_hover: #d8ecd8;

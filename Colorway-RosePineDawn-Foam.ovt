@@ -8,7 +8,7 @@
 
 @OBSThemeVars {
     /* Light theme: selected-item text stays dark */
-    --text_inverse: #191724;
+    --text_inverse: #FFFFFF;
 
     /* Replay/VirtualCam active state accent (derived from --primary) */
     --accent_bg_start: rgba(86, 148, 159, 0.3);

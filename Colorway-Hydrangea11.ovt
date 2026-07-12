@@ -53,5 +53,5 @@
     --accent_bg_start: rgba(192, 144, 167, 0.3);
     --accent_bg_end: rgba(192, 144, 167, 0.1);
 
-    --text_inverse: #413652;
+    --text_inverse: #000000;
 }

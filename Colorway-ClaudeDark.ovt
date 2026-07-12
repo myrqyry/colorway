@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    --text_inverse: #101010;
+    --text_inverse: #FFFFFF;
     /* Base Theme Colors (Warm Charcoal) */
     --bg_window: #1B1B1A;
     --bg_base: #1B1B1A;

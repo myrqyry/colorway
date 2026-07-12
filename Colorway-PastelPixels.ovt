@@ -50,5 +50,5 @@
     --accent_bg_end: rgba(228, 193, 249, 0.1);
 
     /* Text contrast for bright pastel components */
-    --text_inverse: #2d2a32;
+    --text_inverse: #000000;
 }

@@ -24,7 +24,7 @@
     --danger: #cca3a3;
 
     /* Text Colors (Soft Cream to Gray) */
-    --text: #ffeced;
+    --text: #000000;
     --text_light: #ffffff;
     --text_muted: #a8b5ae;
     --text_disabled: #92929c;
@@ -50,5 +50,5 @@
     --accent_bg_end: rgba(204, 163, 163, 0.1);
 
     /* Text contrast for cactus pink */
-    --text_inverse: #3a2a2a;
+    --text_inverse: #000000;
 }

@@ -91,6 +91,7 @@
 
     --warning: #f6c177;
     --danger: #eb6f92;
+    --success: #37d247;
 
     --text: #e0def4;
     --text_light: #ffffff;
@@ -287,7 +288,7 @@
     --border_focus: var(--primary);
     --text_base: var(--text);
     --text_bright: var(--text_light);
-    --text_inverse: var(--bg_base);
+    --text_inverse: #e0def4;
     --primary_hover: var(--primary_light);
     --primary_dark_alias: var(--primary_dark);
 

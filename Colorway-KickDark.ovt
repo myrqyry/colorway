@@ -50,5 +50,5 @@
     --accent_bg_end: rgba(83, 252, 24, 0.1);
 
     /* Dark text contrast for bright green elements */
-    --text_inverse: #0e1113;
+    --text_inverse: #000000;
 }

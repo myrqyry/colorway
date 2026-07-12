@@ -26,6 +26,7 @@
 
     --text_disabled: #506E68;
     --text_inactive: #506E68;
+    --text_inverse: #FFFFFF;
 
     --border_color: #2E3A38;
 

@@ -30,6 +30,7 @@
 
     --text_disabled: #304e37;
     --text_inactive: #304e37;
+    --text_inverse: #000000;
 
     --border_color: #323e45;
 

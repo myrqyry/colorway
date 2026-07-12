@@ -50,5 +50,5 @@
     --accent_bg_end: rgba(106, 174, 157, 0.1);
 
     /* Text contrast for sea green */
-    --text_inverse: #1a1c24;
+    --text_inverse: #000000;
 }

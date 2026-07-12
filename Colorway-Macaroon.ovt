@@ -29,6 +29,7 @@
 
     --text_disabled: #745D65; /* Muted Mauve */
     --text_inactive: #745D65;
+    --text_inverse: #FFFFFF;
 
     --border_color: #4a2b35;
 

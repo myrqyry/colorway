@@ -22,6 +22,7 @@
     --text_muted: #8087a2;
     --text_disabled: #a5adcb;
     --text_inactive: #a5adcb;
+    --text_inverse: #FFFFFF;
     --border_color: #363a4f;
     --input_bg: #363a4f;
     --input_bg_hover: #494d64;

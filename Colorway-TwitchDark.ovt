@@ -50,5 +50,5 @@
     --accent_bg_end: rgba(145, 70, 255, 0.1);
 
     /* Text contrast for electric purple components */
-    --text_inverse: #ffffff;
+    --text_inverse: #FFFFFF;
 }

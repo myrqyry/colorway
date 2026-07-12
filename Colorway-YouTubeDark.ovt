@@ -50,5 +50,5 @@
     --accent_bg_end: rgba(255, 0, 0, 0.1);
 
     /* Text color for crimson red components */
-    --text_inverse: #ffffff;
+    --text_inverse: #FFFFFF;
 }

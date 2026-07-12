@@ -50,5 +50,5 @@
     --accent_bg_end: rgba(108, 190, 237, 0.1);
 
     /* Text contrast for neon blue components */
-    --text_inverse: #0d001a;
+    --text_inverse: #FFFFFF;
 }

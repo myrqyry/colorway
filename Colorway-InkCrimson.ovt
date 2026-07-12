@@ -50,5 +50,5 @@
     --accent_bg_end: rgba(255, 5, 70, 0.1);
 
     /* Text contrast for crimson */
-    --text_inverse: #09010d;
+    --text_inverse: #000000;
 }

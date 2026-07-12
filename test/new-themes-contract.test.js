@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
@@ -43,11 +43,13 @@ const REQUIRED_VARS = [
   '--meter_fg_err',
 ];
 
-const THEMES = [
-  'Colorway-Hydrangea11.ovt',
-  'Colorway-Soapy10.ovt',
-  'Colorway-SailorMoonBackground.ovt',
-];
+const ROOT = new URL('../', import.meta.url);
+const BASE_THEME_FILE = 'Colorway.obt';
+
+const THEME_FILES = readdirSync(ROOT, { withFileTypes: true })
+  .filter((entry) => entry.isFile() && /^Colorway-.*\.ovt$/.test(entry.name))
+  .map((entry) => entry.name)
+  .sort();
 
 function readTheme(file) {
   return readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
@@ -63,6 +65,60 @@ function parseVars(text) {
     if (parsed) vars.set(parsed[1], parsed[2].trim());
   }
   return vars;
+}
+
+function parseMeta(text) {
+  const meta = {};
+  const nameMatch = text.match(/name:\s*'([^']+)'/);
+  const darkMatch = text.match(/dark:\s*'([^']+)'/);
+  const extendsMatch = text.match(/extends:\s*'([^']+)'/);
+
+  if (nameMatch) meta.name = nameMatch[1];
+  if (darkMatch) meta.dark = darkMatch[1] === 'true';
+  if (extendsMatch) meta.extends = extendsMatch[1];
+  return meta;
+}
+
+const fileByThemeId = new Map([[ 'com.myrqyry.Colorway', BASE_THEME_FILE ]]);
+const parsedThemes = new Map();
+
+for (const file of [BASE_THEME_FILE, ...THEME_FILES]) {
+  const text = readTheme(file);
+  const meta = parseMeta(text);
+  parsedThemes.set(file, { meta, vars: parseVars(text) });
+  if (meta.extends && file !== BASE_THEME_FILE) {
+    const idMatch = text.match(/id:\s*'([^']+)'/);
+    if (idMatch) fileByThemeId.set(idMatch[1], file);
+  }
+}
+
+function resolveTheme(file, seen = new Set()) {
+  if (seen.has(file)) {
+    throw new Error(`cyclic theme inheritance detected for ${file}`);
+  }
+  seen.add(file);
+
+  if (file === BASE_THEME_FILE) {
+    return new Map(parsedThemes.get(file).vars);
+  }
+
+  const parsed = parsedThemes.get(file);
+  assert.ok(parsed, `theme file missing from parsed map: ${file}`);
+
+  const resolved = new Map();
+  if (parsed.meta.extends) {
+    const parentFile = fileByThemeId.get(parsed.meta.extends);
+    assert.ok(parentFile, `${file} extends unknown theme id ${parsed.meta.extends}`);
+    for (const [key, value] of resolveTheme(parentFile, seen)) {
+      resolved.set(key, value);
+    }
+  }
+
+  for (const [key, value] of parsed.vars) {
+    resolved.set(key, value);
+  }
+
+  return resolved;
 }
 
 function hexToRgb(hex) {
@@ -86,9 +142,8 @@ function contrastRatio(foreground, background) {
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 }
 
-for (const file of THEMES) {
-  const theme = readTheme(file);
-  const vars = parseVars(theme);
+for (const file of THEME_FILES) {
+  const vars = resolveTheme(file);
 
   test(`${file} overrides required palette vars`, () => {
     for (const key of REQUIRED_VARS) {

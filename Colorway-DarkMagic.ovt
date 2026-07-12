@@ -29,6 +29,7 @@
 
     --text_disabled: #5B606C; /* Disabled Grey-Blue */
     --text_inactive: #5B606C;
+    --text_inverse: #FFFFFF;
 
     --border_color: #2f2f40;
 

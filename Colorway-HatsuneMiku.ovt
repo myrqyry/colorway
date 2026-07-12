@@ -28,6 +28,7 @@
 
     --text_disabled: #666666;
     --text_inactive: #666666;
+    --text_inverse: #FFFFFF;
 
     --border_color: #4d4d4d;
 
