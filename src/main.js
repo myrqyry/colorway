@@ -63,12 +63,12 @@ function renderThemeList(themeData, activeTheme) {
       <span class="palette-swatch" style="background:${color}"></span>
     `).join('');
     return `
-      <div class="theme-row ${active}" data-file="${escapeHtml(theme.file)}" tabindex="0" role="option" aria-selected="${active === 'active'}">
+      <button type="button" class="theme-row ${active}" data-file="${escapeHtml(theme.file)}" role="option" aria-selected="${active === 'active'}">
         <span class="theme-name">${escapeHtml(name)}</span>
-        <div class="theme-palette">
+        <span class="theme-palette">
           ${swatches}
-        </div>
-      </div>
+        </span>
+      </button>
     `;
   }).join('');
 }
@@ -122,8 +122,8 @@ function renderApp() {
             <select id="pattern-select">${renderPatternOptions()}</select>
           </div>
           <div class="showcase-info" id="theme-info">
-            <span id="active-theme-name">Loading...</span>
-            <span id="theme-status">Fetching theme variables</span>
+            <span id="active-theme-name">Loading…</span>
+            <span id="theme-status" aria-live="polite">Fetching theme variables</span>
           </div>
         </div>
       </header>
@@ -151,9 +151,9 @@ function renderApp() {
         <section class="showcase-card">
           <div class="card-header">Text Inputs</div>
           <div class="card-body inputs-demo">
-            <input class="demo-input" type="text" value="Normal text" aria-label="Normal input" />
-            <input class="demo-input" type="text" value="Focused" aria-label="Focused input" />
-            <input class="demo-input" type="text" value="Disabled" disabled aria-label="Disabled input" />
+            <input class="demo-input" type="text" value="Normal text" aria-label="Normal input" autocomplete="off" name="normal-input" />
+            <input class="demo-input" type="text" value="Focused" aria-label="Focused input" autocomplete="off" name="focused-input" />
+            <input class="demo-input" type="text" value="Disabled" disabled aria-label="Disabled input" autocomplete="off" name="disabled-input" />
             <select class="demo-select" aria-label="Demo select">
               <option>Option A</option>
               <option>Option B</option>
@@ -165,9 +165,9 @@ function renderApp() {
         <section class="showcase-card">
           <div class="card-header">Sliders</div>
           <div class="card-body sliders-demo">
-            <input class="demo-slider" type="range" min="0" max="100" value="65" style="--slider-pct:65%" />
-            <input class="demo-slider" type="range" min="0" max="100" value="35" style="--slider-pct:35%" />
-            <input class="demo-slider" type="range" min="0" max="100" value="80" style="--slider-pct:80%" />
+            <input class="demo-slider" type="range" min="0" max="100" value="65" style="--slider-pct:65%" name="slider-1" aria-label="Slider 1" />
+            <input class="demo-slider" type="range" min="0" max="100" value="35" style="--slider-pct:35%" name="slider-2" aria-label="Slider 2" />
+            <input class="demo-slider" type="range" min="0" max="100" value="80" style="--slider-pct:80%" name="slider-3" aria-label="Slider 3" />
           </div>
         </section>
 
@@ -194,34 +194,34 @@ function renderApp() {
         <section class="showcase-card">
           <div class="card-header">List Items</div>
           <div class="card-body lists-demo">
-            <div class="demo-list-item">
-              <img class="list-icon" src="/icons/colorway/iconamoon/normal/display.svg" alt="" />
+            <div class="demo-list-item" role="option" tabindex="0" aria-selected="false">
+              <img class="list-icon" src="/icons/colorway/iconamoon/normal/display.svg" alt="" aria-hidden="true" />
               <span class="list-label">Normal item</span>
               <span class="list-actions">
-                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" />
-                <img class="list-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="" />
+                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" aria-hidden="true" />
+                <img class="list-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="" aria-hidden="true" />
               </span>
             </div>
-            <div class="demo-list-item selected">
-              <img class="list-icon" src="/icons/colorway/iconamoon/normal/default.svg" alt="" />
+            <div class="demo-list-item selected" role="option" tabindex="0" aria-selected="true">
+              <img class="list-icon" src="/icons/colorway/iconamoon/normal/default.svg" alt="" aria-hidden="true" />
               <span class="list-label">Selected item</span>
               <span class="list-actions">
-                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" />
-                <img class="list-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="" />
+                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" aria-hidden="true" />
+                <img class="list-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="" aria-hidden="true" />
               </span>
             </div>
-            <div class="demo-list-item inactive">
-              <img class="list-icon" src="/icons/colorway/iconamoon/normal/group.svg" alt="" />
+            <div class="demo-list-item inactive" role="option" tabindex="0" aria-selected="false">
+              <img class="list-icon" src="/icons/colorway/iconamoon/normal/group.svg" alt="" aria-hidden="true" />
               <span class="list-label">Inactive item</span>
               <span class="list-actions">
-                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" />
+                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" aria-hidden="true" />
               </span>
             </div>
-            <div class="demo-list-item">
-              <img class="list-icon" src="/icons/colorway/iconamoon/normal/globe.svg" alt="" />
+            <div class="demo-list-item" role="option" tabindex="0" aria-selected="false">
+              <img class="list-icon" src="/icons/colorway/iconamoon/normal/globe.svg" alt="" aria-hidden="true" />
               <span class="list-label">Hover me</span>
               <span class="list-actions">
-                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" />
+                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" aria-hidden="true" />
               </span>
             </div>
           </div>
@@ -230,11 +230,11 @@ function renderApp() {
         <section class="showcase-card">
           <div class="card-header">Tabs</div>
           <div class="card-body tabs-demo">
-            <div class="demo-tabs">
-              <div class="demo-tab">General</div>
-              <div class="demo-tab active">Appearance</div>
-              <div class="demo-tab">Stream</div>
-              <div class="demo-tab">Output</div>
+            <div class="demo-tabs" role="tablist">
+              <button type="button" class="demo-tab" role="tab" aria-selected="false">General</button>
+              <button type="button" class="demo-tab active" role="tab" aria-selected="true">Appearance</button>
+              <button type="button" class="demo-tab" role="tab" aria-selected="false">Stream</button>
+              <button type="button" class="demo-tab" role="tab" aria-selected="false">Output</button>
             </div>
           </div>
         </section>
@@ -245,14 +245,14 @@ function renderApp() {
             <div class="mixer-row">
               <div class="mixer-name">Desktop Audio</div>
               <div class="mixer-meter"><span style="width:72%"></span></div>
-              <input class="mixer-slider-mini" type="range" value="72" style="--slider-pct:72%" />
-              <button class="mixer-mute" type="button">M</button>
+              <input class="mixer-slider-mini" type="range" value="72" style="--slider-pct:72%" name="mixer-desktop" aria-label="Desktop Audio volume" />
+              <button class="mixer-mute" type="button" aria-label="Mute Desktop Audio">M</button>
             </div>
             <div class="mixer-row">
               <div class="mixer-name">Mic/Aux</div>
               <div class="mixer-meter"><span style="width:48%"></span></div>
-              <input class="mixer-slider-mini" type="range" value="48" style="--slider-pct:48%" />
-              <button class="mixer-mute" type="button">M</button>
+              <input class="mixer-slider-mini" type="range" value="48" style="--slider-pct:48%" name="mixer-mic" aria-label="Mic/Aux volume" />
+              <button class="mixer-mute" type="button" aria-label="Mute Mic/Aux">M</button>
             </div>
           </div>
         </section>
@@ -276,7 +276,7 @@ function renderApp() {
         <section class="showcase-card">
           <div class="card-header">Progress Bar</div>
           <div class="card-body progress-demo">
-            <div class="demo-progress"><div class="demo-progress-fill" style="width:57%"></div></div>
+            <div class="demo-progress" role="progressbar" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100" aria-label="Progress: 57%"><div class="demo-progress-fill" style="width:57%"></div></div>
           </div>
         </section>
       </div>
@@ -375,13 +375,42 @@ document.querySelectorAll('.demo-slider, .mixer-slider-mini').forEach((slider) =
 });
 
 document.querySelectorAll('.demo-list-item').forEach((item) => {
-  item.addEventListener('click', () => {
-    const container = item.closest('.lists-demo');
-    container?.querySelectorAll('.demo-list-item').forEach(i => i.classList.remove('selected'));
-    item.classList.add('selected');
+  item.addEventListener('click', () => selectListItem(item));
+  item.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      selectListItem(item);
+    }
   });
 });
+
+function selectListItem(item) {
+  const container = item.closest('.lists-demo');
+  container?.querySelectorAll('.demo-list-item').forEach(i => {
+    i.classList.remove('selected');
+    i.setAttribute('aria-selected', 'false');
+  });
+  item.classList.add('selected');
+  item.setAttribute('aria-selected', 'true');
+}
 
 updateStatusDemo();
 const statusInterval = setInterval(updateStatusDemo, 2000);
 window.addEventListener('beforeunload', () => clearInterval(statusInterval));
+
+document.querySelectorAll('.demo-tab').forEach((tab) => {
+  tab.addEventListener('click', () => {
+    tab.closest('.demo-tabs')?.querySelectorAll('.demo-tab').forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+  });
+  tab.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      tab.click();
+    }
+  });
+});
