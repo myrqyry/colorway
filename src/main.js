@@ -2,6 +2,10 @@ import './styles.css';
 import { THEMES, DEFAULT_THEME, PATTERNS, DEFAULT_PATTERN } from './theme-catalog.js';
 import { PALETTE_VARS, PALETTE_GROUPS, applyTheme, loadTheme } from './theme-loader.js';
 
+function escapeHtml(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 // Fixed set of variables for palette preview
 const PALETTE_PREVIEW_VARS = [
   '--bg_base',
@@ -27,20 +31,21 @@ function extractPalettePreview(vars) {
  */
 async function preloadAllThemes() {
   const themeData = {};
-  const themePromises = THEMES.map(async (theme) => {
-    try {
-      const resolved = await loadTheme(theme.file);
-      const palette = extractPalettePreview(resolved);
-      themeData[theme.file] = { name: resolved._name || theme.name, palette };
-    } catch (error) {
-      console.warn(`Failed to load theme ${theme.file}:`, error);
-      themeData[theme.file] = {
-        name: theme.name,
-        palette: Array(6).fill('#808080') // Fallback swatches for failed load
-      };
-    }
-  });
-  await Promise.all(themePromises);
+  const CHUNK = 10;
+  for (let i = 0; i < THEMES.length; i += CHUNK) {
+    await Promise.all(THEMES.slice(i, i + CHUNK).map(async (theme) => {
+      try {
+        const resolved = await loadTheme(theme.file);
+        themeData[theme.file] = { name: resolved._name || theme.name, palette: extractPalettePreview(resolved) };
+      } catch (error) {
+        console.warn(`Failed to load theme ${theme.file}:`, error);
+        themeData[theme.file] = {
+          name: theme.name,
+          palette: Array(6).fill('#808080')
+        };
+      }
+    }));
+  }
   return themeData;
 }
 
@@ -58,8 +63,8 @@ function renderThemeList(themeData, activeTheme) {
       <span class="palette-swatch" style="background:${color}"></span>
     `).join('');
     return `
-      <div class="theme-row ${active}" data-file="${theme.file}" tabindex="0" role="option" aria-selected="${active === 'active'}">
-        <span class="theme-name">${name}</span>
+      <div class="theme-row ${active}" data-file="${escapeHtml(theme.file)}" tabindex="0" role="option" aria-selected="${active === 'active'}">
+        <span class="theme-name">${escapeHtml(name)}</span>
         <div class="theme-palette">
           ${swatches}
         </div>
@@ -353,7 +358,8 @@ document.addEventListener('keydown', (e) => {
     row.focus();
     e.preventDefault();
   } else if (e.key === 'Enter') {
-    setTheme(activeRow.dataset.file);
+    const focused = document.activeElement?.closest('.theme-row');
+    setTheme((focused || activeRow).dataset.file);
     e.preventDefault();
   }
 });
@@ -378,3 +384,4 @@ document.querySelectorAll('.demo-list-item').forEach((item) => {
 
 updateStatusDemo();
 const statusInterval = setInterval(updateStatusDemo, 2000);
+window.addEventListener('beforeunload', () => clearInterval(statusInterval));

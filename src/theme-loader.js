@@ -1,3 +1,5 @@
+import { THEMES } from './theme-catalog.js';
+
 const LOCAL_THEMES = '/themes/';
 
 const cache = new Map();
@@ -82,9 +84,9 @@ export function parseOVT(text) {
   const meta = {};
   const vars = {};
 
-  const nameMatch = text.match(/name:\s*'([^']+)'/);
-  const darkMatch = text.match(/dark:\s*'([^']+)'/);
-  const extendsMatch = text.match(/extends:\s*'([^']+)'/);
+  const nameMatch = text.match(/name:\s*['"]([^'"]+)['"]/);
+  const darkMatch = text.match(/dark:\s*['"]([^'"]+)['"]/);
+  const extendsMatch = text.match(/extends:\s*['"]([^'"]+)['"]/);
 
   if (nameMatch) meta._name = nameMatch[1];
   meta._dark = darkMatch ? darkMatch[1].toLowerCase() === 'true' : true;
@@ -125,7 +127,13 @@ async function resolveTheme(file) {
     : { ...parsed.vars, _name: parsed.meta._name, _dark: parsed.meta._dark };
 }
 
-function findThemeFile(_baseId) {
+function findThemeFile(baseId) {
+  if (!baseId) return 'Colorway.obt';
+  const exactMatch = THEMES.find(t => t.file === baseId);
+  if (exactMatch) return exactMatch.file;
+  const nameMatch = THEMES.find(t => t.name.toLowerCase() === baseId.toLowerCase());
+  if (nameMatch) return nameMatch.file;
+  console.warn(`[colorway] Could not resolve extends: '${baseId}', falling back to Colorway.obt`);
   return 'Colorway.obt';
 }
 
