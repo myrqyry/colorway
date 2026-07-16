@@ -1,6 +1,7 @@
 import './styles.css';
 import { THEMES, DEFAULT_THEME, PATTERNS, DEFAULT_PATTERN } from './theme-catalog.js';
 import { PALETTE_VARS, PALETTE_GROUPS, applyTheme, loadTheme } from './theme-loader.js';
+import { toNormalizedTheme, serializeOVT, toYamiOVT, downloadThemeText, importThemeFile, fromLospecPalette, lospecSlugFromUrl } from './theme-workbench.js';
 
 function escapeHtml(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -68,6 +69,9 @@ function renderThemeList(themeData, activeTheme) {
         <span class="theme-palette">
           ${swatches}
         </span>
+        <a class="theme-download" href="/themes/${encodeURIComponent(theme.file)}" download="${escapeHtml(theme.file)}" title="Download .ovt" aria-label="Download ${escapeHtml(name)}">
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 1.5a.75.75 0 0 1 .75.75v6.69l1.97-1.97a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 8.03a.75.75 0 0 1 1.06-1.06l1.97 1.97V2.25A.75.75 0 0 1 8 1.5Zm-5.5 11a.75.75 0 0 1 .75.75v.5h9.5v-.5a.75.75 0 0 1 1.5 0v.5A1.5 1.5 0 0 1 12.75 15H3.25A1.5 1.5 0 0 1 1.75 13.75v-.5a.75.75 0 0 1 .75-.75Z"/></svg>
+        </a>
       </button>
     `;
   }).join('');
@@ -127,6 +131,58 @@ function renderApp() {
           </div>
         </div>
       </header>
+
+      <nav class="workbench-tabs" role="tablist" aria-label="Theme workbench">
+        <button type="button" class="workbench-tab active" role="tab" aria-selected="true" data-tab="themes">Browse</button>
+        <button type="button" class="workbench-tab" role="tab" aria-selected="false" data-tab="import">Import</button>
+        <button type="button" class="workbench-tab" role="tab" aria-selected="false" data-tab="export">Export</button>
+      </nav>
+
+      <section id="panel-themes" class="workbench-panel" role="tabpanel" data-panel="themes">
+        <div class="workbench-active-bar">
+          <span class="workbench-active-label">Active theme: <strong id="workbench-active-name">—</strong></span>
+          <button type="button" class="workbench-btn" id="workbench-download-yami">Download Yami variant</button>
+        </div>
+      </section>
+
+      <section id="panel-import" class="workbench-panel" role="tabpanel" data-panel="import" hidden>
+        <details class="workbench-import-section" open>
+          <summary class="workbench-section-label">Upload an .ovt file</summary>
+          <div class="workbench-drop" id="workbench-drop" tabindex="0" aria-label="Drop a .ovt file or click to browse">
+            <p>Drop a <code>.ovt</code> file here, or <label class="workbench-file-label" for="workbench-file">choose a file</label>.</p>
+            <input type="file" id="workbench-file" accept=".ovt,text/plain" hidden />
+            <pre class="workbench-preview" id="workbench-preview" aria-live="polite">No file imported yet.</pre>
+            <div class="workbench-import-actions">
+              <button type="button" class="workbench-btn" id="workbench-apply" disabled>Apply imported theme</button>
+              <button type="button" class="workbench-btn" id="workbench-download-import" disabled>Download as Colorway .ovt</button>
+              <button type="button" class="workbench-btn" id="workbench-download-import-yami" disabled>Download as Yami .ovt</button>
+            </div>
+            <p class="workbench-error" id="workbench-error" role="alert" hidden></p>
+          </div>
+        </details>
+        <details class="workbench-import-section">
+          <summary class="workbench-section-label">Generate from Lospec palette</summary>
+          <div class="workbench-lospec">
+            <p class="workbench-help">Paste a Lospec palette URL or slug. The palette colors will be algorithmically assigned to OBS UI roles (background, text, accent) by perceptual lightness and contrast.</p>
+            <div class="workbench-lospec-row">
+              <input type="text" id="workbench-lospec-input" class="workbench-lospec-input" placeholder="e.g. moonside-8 or https://lospec.com/palette-list/moonside-8" spellcheck="false" />
+              <button type="button" class="workbench-btn" id="workbench-lospec-fetch">Generate theme</button>
+            </div>
+            <pre class="workbench-preview" id="workbench-lospec-preview" aria-live="polite" hidden></pre>
+            <div class="workbench-import-actions" id="workbench-lospec-actions" hidden>
+              <button type="button" class="workbench-btn" id="workbench-lospec-apply" disabled>Apply generated theme</button>
+              <button type="button" class="workbench-btn" id="workbench-lospec-download" disabled>Download as Colorway .ovt</button>
+              <button type="button" class="workbench-btn" id="workbench-lospec-download-yami" disabled>Download as Yami .ovt</button>
+            </div>
+            <p class="workbench-error" id="workbench-lospec-error" role="alert" hidden></p>
+          </div>
+        </details>
+      </section>
+
+      <section id="panel-export" class="workbench-panel" role="tabpanel" data-panel="export" hidden>
+        <p class="workbench-help">The active Colorway theme can be downloaded as a native <code>.ovt</code> or as a Yami-compatible variant. Yami output forces <code>extends: 'com.myrqyry.Colorway'</code> so it layers on top of your installed Colorway base.</p>
+        <div class="workbench-export-list" id="workbench-export-list"></div>
+      </section>
 
       <div class="showcase-grid">
         <details class="showcase-card card-palette">
@@ -296,6 +352,7 @@ async function setTheme(file) {
     status.textContent = theme._dark === false ? 'Light variant' : 'Dark variant';
     document.querySelector('#palette-grid').innerHTML = renderPalette();
     applyCurrentPattern();
+    setActiveWorkbenchTheme(file);
     
     // Update active row
     document.querySelectorAll('.theme-row').forEach(row => {
@@ -368,6 +425,7 @@ document.addEventListener('keydown', (e) => {
 preloadAllThemes().then((themeData) => {
   themeList.innerHTML = renderThemeList(themeData, DEFAULT_THEME);
   setTheme(DEFAULT_THEME);
+  initWorkbench();
 });
 
 document.querySelectorAll('.demo-slider, .mixer-slider-mini').forEach((slider) => {
@@ -383,6 +441,201 @@ document.querySelectorAll('.demo-list-item').forEach((item) => {
     }
   });
 });
+
+let activeWorkbenchTheme = null;
+let importedTheme = null;
+let lospecTheme = null;
+
+function setActiveWorkbenchTheme(file) {
+  const meta = THEMES.find((t) => t.file === file);
+  if (!meta) return;
+  activeWorkbenchTheme = { file, name: meta.name };
+  const nameEl = document.querySelector('#workbench-active-name');
+  if (nameEl) nameEl.textContent = meta.name;
+  const exportList = document.querySelector('#workbench-export-list');
+  if (exportList) {
+    exportList.innerHTML = `
+      <a class="workbench-btn" href="/themes/${encodeURIComponent(file)}" download="${escapeHtml(file)}">Download Colorway .ovt</a>
+      <button type="button" class="workbench-btn" data-yami-for="${escapeHtml(file)}">Download Yami-compatible .ovt</button>
+    `;
+  }
+}
+
+function switchWorkbenchTab(name) {
+  document.querySelectorAll('.workbench-tab').forEach((tab) => {
+    const isActive = tab.dataset.tab === name;
+    tab.classList.toggle('active', isActive);
+    tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+  document.querySelectorAll('.workbench-panel').forEach((panel) => {
+    const isActive = panel.dataset.panel === name;
+    panel.hidden = !isActive;
+  });
+}
+
+function showWorkbenchError(message) {
+  const el = document.querySelector('#workbench-error');
+  if (!el) return;
+  if (!message) {
+    el.hidden = true;
+    el.textContent = '';
+  } else {
+    el.hidden = false;
+    el.textContent = message;
+  }
+}
+
+async function handleImportedFile(file) {
+  showWorkbenchError('');
+  if (!file) return;
+  if (!/\.ovt$|text\/plain/.test(file.name + file.type)) {
+    showWorkbenchError('Only .ovt variant files are supported right now.');
+    return;
+  }
+  try {
+    const theme = await importThemeFile(file);
+    importedTheme = theme;
+    const previewEl = document.querySelector('#workbench-preview');
+    if (previewEl) {
+      const varCount = Object.keys(theme.tokens).length;
+      previewEl.textContent = `name: ${theme.name}\nid: ${theme.id}\nextends: ${theme.extendsId ?? '(none)'}\nauthor: ${theme.author ?? '(unknown)'}\ndark: ${theme.dark}\ntokens: ${varCount} variable(s)`;
+    }
+    document.querySelector('#workbench-apply').disabled = false;
+    document.querySelector('#workbench-download-import').disabled = false;
+    document.querySelector('#workbench-download-import-yami').disabled = false;
+  } catch (error) {
+    showWorkbenchError(error.message || String(error));
+  }
+}
+
+function initWorkbench() {
+  setActiveWorkbenchTheme(DEFAULT_THEME);
+
+  document.querySelectorAll('.workbench-tab').forEach((tab) => {
+    tab.addEventListener('click', () => switchWorkbenchTab(tab.dataset.tab));
+  });
+
+  const drop = document.querySelector('#workbench-drop');
+  const fileInput = document.querySelector('#workbench-file');
+  if (drop && fileInput) {
+    drop.addEventListener('click', (e) => {
+      if (e.target.tagName === 'LABEL' || e.target === fileInput) return;
+      fileInput.click();
+    });
+    drop.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        fileInput.click();
+      }
+    });
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files?.[0]) handleImportedFile(fileInput.files[0]);
+    });
+    ['dragenter', 'dragover'].forEach((evt) => {
+      drop.addEventListener(evt, (e) => {
+        e.preventDefault();
+        drop.classList.add('dragging');
+      });
+    });
+    ['dragleave', 'drop'].forEach((evt) => {
+      drop.addEventListener(evt, (e) => {
+        e.preventDefault();
+        drop.classList.remove('dragging');
+      });
+    });
+    drop.addEventListener('drop', (e) => {
+      const file = e.dataTransfer?.files?.[0];
+      if (file) handleImportedFile(file);
+    });
+  }
+
+  document.querySelector('#workbench-apply')?.addEventListener('click', () => {
+    if (!importedTheme) return;
+    applyTheme({ ...importedTheme.tokens, _name: importedTheme.name, _dark: importedTheme.dark });
+    const name = document.querySelector('#active-theme-name');
+    if (name) name.textContent = importedTheme.name;
+    const status = document.querySelector('#theme-status');
+    if (status) status.textContent = `Imported — ${Object.keys(importedTheme.tokens).length} vars`;
+  });
+
+  const downloadImported = (kind) => {
+    if (!importedTheme) return;
+    const text = kind === 'yami' ? toYamiOVT(importedTheme) : serializeOVT(importedTheme);
+    const base = importedTheme.id || 'imported';
+    const filename = kind === 'yami' ? `${base}-yami.ovt` : `${base}.ovt`;
+    downloadThemeText(text, filename);
+  };
+  document.querySelector('#workbench-download-import')?.addEventListener('click', () => downloadImported('colorway'));
+  document.querySelector('#workbench-download-import-yami')?.addEventListener('click', () => downloadImported('yami'));
+
+  document.querySelector('#workbench-download-yami')?.addEventListener('click', async () => {
+    if (!activeWorkbenchTheme) return;
+    const text = await fetch(`/themes/${encodeURIComponent(activeWorkbenchTheme.file)}`)
+      .then((r) => r.text())
+      .then((text) => toYamiOVT(toNormalizedTheme(text)));
+    downloadThemeText(text, `${activeWorkbenchTheme.file.replace(/\.ovt$/, '')}-yami.ovt`);
+  });
+
+  document.addEventListener('click', (e) => {
+    const yamiBtn = e.target.closest('[data-yami-for]');
+    if (!yamiBtn) return;
+    const file = yamiBtn.dataset.yamiFor;
+    fetch(`/themes/${encodeURIComponent(file)}`)
+      .then((r) => r.text())
+      .then((text) => toYamiOVT(toNormalizedTheme(text)))
+      .then((text) => downloadThemeText(text, file.replace(/\.ovt$/, '') + '-yami.ovt'));
+  });
+
+  // ---- Lospec palette import ----
+  const lospecInput = document.querySelector('#workbench-lospec-input');
+  const lospecFetch = document.querySelector('#workbench-lospec-fetch');
+
+  async function fetchLospecPalette() {
+    const el = document.querySelector('#workbench-lospec-error');
+    if (!lospecInput) return;
+    const raw = lospecInput.value.trim();
+    if (!raw) return;
+    const slug = lospecSlugFromUrl(raw);
+    if (!slug) { showWorkbenchError('Could not extract a Lospec palette slug from that input.'); return; }
+    try {
+      const theme = await fromLospecPalette(slug);
+      lospecTheme = theme;
+      const preview = document.querySelector('#workbench-lospec-preview');
+      if (preview) {
+        preview.hidden = false;
+        preview.textContent = `Palette: ${theme.name}\nColors: ${Object.keys(theme.tokens).length} OBS variables assigned\nDark mode: ${theme.dark}\n\n${Object.entries(theme.tokens).map(([k, v]) => `  ${k}: ${v}`).join('\n')}`;
+      }
+      document.querySelector('#workbench-lospec-actions').hidden = false;
+      document.querySelector('#workbench-lospec-apply').disabled = false;
+      document.querySelector('#workbench-lospec-download').disabled = false;
+      document.querySelector('#workbench-lospec-download-yami').disabled = false;
+      if (el) el.hidden = true;
+    } catch (error) {
+      if (el) { el.hidden = false; el.textContent = error.message || String(error); }
+    }
+  }
+
+  lospecFetch?.addEventListener('click', fetchLospecPalette);
+  lospecInput?.addEventListener('keydown', (e) => { if (e.key === 'Enter') fetchLospecPalette(); });
+
+  document.querySelector('#workbench-lospec-apply')?.addEventListener('click', () => {
+    if (!lospecTheme) return;
+    applyTheme({ ...lospecTheme.tokens, _name: lospecTheme.name, _dark: lospecTheme.dark });
+    const name = document.querySelector('#active-theme-name');
+    if (name) name.textContent = `Lospec: ${lospecTheme.name}`;
+    const status = document.querySelector('#theme-status');
+    if (status) status.textContent = 'Generated — ' + Object.keys(lospecTheme.tokens).length + ' vars';
+  });
+
+  const downloadLospec = (kind) => {
+    if (!lospecTheme) return;
+    const text = kind === 'yami' ? toYamiOVT(lospecTheme) : serializeOVT(lospecTheme);
+    const filename = kind === 'yami' ? `${lospecTheme.id}-yami.ovt` : `${lospecTheme.id}.ovt`;
+    downloadThemeText(text, filename);
+  };
+  document.querySelector('#workbench-lospec-download')?.addEventListener('click', () => downloadLospec('colorway'));
+  document.querySelector('#workbench-lospec-download-yami')?.addEventListener('click', () => downloadLospec('yami'));
+}
 
 function selectListItem(item) {
   const container = item.closest('.lists-demo');
