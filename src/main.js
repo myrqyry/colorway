@@ -111,7 +111,7 @@ function renderApp() {
   app.innerHTML = `
     <div class="showcase-shell">
       <header class="showcase-header">
-        <div class="showcase-title">Colorway OBS Theme Preview</div>
+        <div class="showcase-title">Colorway <span style="font-weight:400;color:var(--text_muted)">OBS Theme Preview</span></div>
         <div class="showcase-controls">
           <div class="showcase-picker">
             <label for="theme-list">Theme</label>
@@ -141,7 +141,7 @@ function renderApp() {
       <section id="panel-themes" class="workbench-panel" role="tabpanel" data-panel="themes">
         <div class="workbench-active-bar">
           <span class="workbench-active-label">Active theme: <strong id="workbench-active-name">—</strong></span>
-          <button type="button" class="workbench-btn" id="workbench-download-yami">Download Yami variant</button>
+          <button type="button" class="workbench-btn" id="workbench-download-yami">Yami variant</button>
         </div>
       </section>
 
@@ -187,7 +187,7 @@ function renderApp() {
       <div class="showcase-grid">
         <details class="showcase-card card-palette">
           <summary class="card-header">
-            <span>Advanced palette details</span>
+            <span>Palette</span>
             <span class="var-count">${PALETTE_VARS.length} vars</span>
           </summary>
           <div id="palette-grid" class="palette-grid">${renderPalette()}</div>
