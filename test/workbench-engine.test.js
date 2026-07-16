@@ -74,10 +74,10 @@ describe('serializeOVT round-trips', () => {
 });
 
 describe('toYamiOVT', () => {
-  test('forces extends to Colorway base id', () => {
+  test('forces extends to Yami base id', () => {
     const t = toNormalizedTheme(FIXTURE_TEXT);
     const out = toYamiOVT(t);
-    assert.match(out, /extends:\s*'com\.myrqyry\.Colorway'/);
+    assert.match(out, /extends:\s*'com\.obsproject\.Yami'/);
   });
 
   test('preserves original tokens and name', () => {
@@ -97,7 +97,7 @@ describe('toYamiOVT', () => {
       const out = toYamiOVT(t);
       const reparsed = parseOVT(out);
       assert.equal(reparsed.meta._name, t.name, file);
-      assert.equal(reparsed.meta._extends, 'com.myrqyry.Colorway', file);
+      assert.equal(reparsed.meta._extends, 'com.obsproject.Yami', file);
       // verify every original non-var() token appears in the yami output
       for (const [k, v] of Object.entries(t.tokens)) {
         if (!v.startsWith('var(')) {

@@ -63,8 +63,8 @@ export function toYamiOVT(theme) {
     name: theme.name,
     author: theme.author,
     dark: theme.dark,
-    extendsId: 'com.myrqyry.Colorway',
-    id: theme.id,
+    extendsId: 'com.obsproject.Yami',
+    id: theme.id ? theme.id.replace(/^com\.myrqyry\./, 'com.yami.') : undefined,
     tokens,
   };
   return serializeOVT(yami);
