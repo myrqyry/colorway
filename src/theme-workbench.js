@@ -56,8 +56,18 @@ export function serializeOVT(theme) {
   return [formatMeta(theme), '', formatVars(theme.tokens), ''].join('\n');
 }
 
+const YAMI_EXCLUDED = new Set([
+  '--accent_bg_start', '--accent_bg_end',
+  '--bg_dock', '--bg_hover',
+  '--ico', '--ico_selected',
+  '--meter_bg_nom', '--meter_bg_war', '--meter_bg_err',
+  '--meter_fg_nom', '--meter_fg_war', '--meter_fg_err',
+  '--success', '--text_inverse',
+]);
+
 export function toYamiOVT(theme) {
   const tokens = { ...theme.tokens };
+  for (const k of YAMI_EXCLUDED) delete tokens[k];
   const yami = {
     ...theme,
     name: theme.name,

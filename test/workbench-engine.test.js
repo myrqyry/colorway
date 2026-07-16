@@ -91,6 +91,14 @@ describe('toYamiOVT', () => {
   test('round-trips for every built-in theme', () => {
     const files = readdirSync(ROOT)
       .filter((n) => /^Colorway-.*\.ovt$/.test(n));
+    const excluded = new Set([
+      '--accent_bg_start', '--accent_bg_end',
+      '--bg_dock', '--bg_hover',
+      '--ico', '--ico_selected',
+      '--meter_bg_nom', '--meter_bg_war', '--meter_bg_err',
+      '--meter_fg_nom', '--meter_fg_war', '--meter_fg_err',
+      '--success', '--text_inverse',
+    ]);
     for (const file of files) {
       const text = read(file);
       const t = toNormalizedTheme(text);
@@ -98,9 +106,10 @@ describe('toYamiOVT', () => {
       const reparsed = parseOVT(out);
       assert.equal(reparsed.meta._name, t.name, file);
       assert.equal(reparsed.meta._extends, 'com.obsproject.Yami', file);
-      // verify every original non-var() token appears in the yami output
       for (const [k, v] of Object.entries(t.tokens)) {
-        if (!v.startsWith('var(')) {
+        if (excluded.has(k)) {
+          assert.equal(reparsed.vars[k], undefined, `${file} should NOT have ${k} in Yami output`);
+        } else if (!v.startsWith('var(')) {
           assert.equal(reparsed.vars[k], v, `${file} token ${k}`);
         }
       }
