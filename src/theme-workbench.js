@@ -193,7 +193,8 @@ const SEMANTIC_ROLES = [
 ];
 
 export function assignRoles(hexes, paletteName) {
-  const parsed = hexes.filter((h) => /^#[0-9a-f]{6}$/i.test(h)).map((hex) => ({ hex, ...hexToOklch(hex) }));
+  const normalizedHexes = hexes.map((h) => h.startsWith('#') ? h : `#${h}`);
+  const parsed = normalizedHexes.filter((h) => /^#[0-9a-f]{6}$/i.test(h)).map((hex) => ({ hex, ...hexToOklch(hex) }));
   if (parsed.length < 2) return null;
 
   const byLightness = [...parsed].sort((a, b) => a.L - b.L);

@@ -25,8 +25,9 @@ function parseVars(text) {
     throw new Error('theme vars block missing');
   }
 
+  const cleanBody = match[1].replace(/\/\*[\s\S]*?\*\//g, '');
   const vars = new Map();
-  for (const line of match[1].split('\n')) {
+  for (const line of cleanBody.split('\n')) {
     const parsed = line.match(/^\s*(--[\w-]+)\s*:\s*(.+?);\s*$/);
     if (parsed) vars.set(parsed[1], parsed[2].trim());
   }
@@ -143,10 +144,8 @@ function buildPaletteComment(themeName, resolvedVars) {
 
 function injectCommentBlock(text, commentBlock) {
   return text.replace(/(@OBSThemeVars\s*\{)([\s\S]*?)(\n\})/, (_match, open, body, close) => {
-    const lines = body.split('\n');
-    const firstVarIndex = lines.findIndex((line) => /^\s*--[\w-]+\s*:/.test(line));
-    const preserved = firstVarIndex === -1 ? body.trimStart() : lines.slice(firstVarIndex).join('\n');
-    return `${open}\n${commentBlock}\n${preserved}${close}`;
+    const cleanBody = body.replace(/\/\*[\s\S]*?\*\//g, '').trim();
+    return `${open}\n${commentBlock}\n\n    ${cleanBody}\n${close}`;
   });
 }
 

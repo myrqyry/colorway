@@ -129,10 +129,28 @@ async function resolveTheme(file) {
 
 function findThemeFile(baseId) {
   if (!baseId) return 'Colorway.obt';
+
   const exactMatch = THEMES.find(t => t.file === baseId);
   if (exactMatch) return exactMatch.file;
+
   const nameMatch = THEMES.find(t => t.name.toLowerCase() === baseId.toLowerCase());
   if (nameMatch) return nameMatch.file;
+
+  if (baseId.startsWith('com.myrqyry.Colorway.')) {
+    const relativePart = baseId.substring('com.myrqyry.Colorway.'.length);
+    const convertedFileName = `Colorway-${relativePart.replace(/\./g, '-')}.ovt`;
+    const idMatch = THEMES.find(t => t.file.toLowerCase() === convertedFileName.toLowerCase());
+    if (idMatch) return idMatch.file;
+  }
+
+  const parts = baseId.split('.');
+  if (parts.length > 2) {
+    const suffix = parts.slice(2).join('-');
+    const convertedFileName = `Colorway-${suffix}.ovt`;
+    const suffixMatch = THEMES.find(t => t.file.toLowerCase() === convertedFileName.toLowerCase());
+    if (suffixMatch) return suffixMatch.file;
+  }
+
   console.warn(`[colorway] Could not resolve extends: '${baseId}', falling back to Colorway.obt`);
   return 'Colorway.obt';
 }

@@ -429,7 +429,48 @@ preloadAllThemes().then((themeData) => {
 });
 
 document.querySelectorAll('.demo-slider, .mixer-slider-mini').forEach((slider) => {
-  slider.addEventListener('input', () => slider.style.setProperty('--slider-pct', `${slider.value}%`));
+  slider.addEventListener('input', () => {
+    slider.style.setProperty('--slider-pct', `${slider.value}%`);
+    if (slider.classList.contains('mixer-slider-mini')) {
+      const row = slider.closest('.mixer-row');
+      const meter = row?.querySelector('.mixer-meter span');
+      const muteBtn = row?.querySelector('.mixer-mute');
+      if (meter) {
+        meter.style.width = `${slider.value}%`;
+      }
+      if (slider.value > 0 && muteBtn?.classList.contains('muted')) {
+        muteBtn.click();
+      }
+    }
+  });
+});
+
+document.querySelectorAll('.mixer-mute').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('muted');
+    const row = btn.closest('.mixer-row');
+    const meter = row?.querySelector('.mixer-meter span');
+    const slider = row?.querySelector('.mixer-slider-mini');
+    if (btn.classList.contains('muted')) {
+      btn.style.setProperty('background', 'var(--danger)');
+      btn.style.setProperty('color', 'var(--text_light)');
+      if (meter) meter.style.width = '0%';
+      if (slider) {
+        slider.dataset.prevVal = slider.value;
+        slider.value = 0;
+        slider.style.setProperty('--slider-pct', '0%');
+      }
+    } else {
+      btn.style.removeProperty('background');
+      btn.style.removeProperty('color');
+      if (slider) {
+        const prev = slider.dataset.prevVal || '72';
+        slider.value = prev;
+        slider.style.setProperty('--slider-pct', `${prev}%`);
+        if (meter) meter.style.width = `${prev}%`;
+      }
+    }
+  });
 });
 
 document.querySelectorAll('.demo-list-item').forEach((item) => {
@@ -556,6 +597,8 @@ function initWorkbench() {
     if (name) name.textContent = importedTheme.name;
     const status = document.querySelector('#theme-status');
     if (status) status.textContent = `Imported — ${Object.keys(importedTheme.tokens).length} vars`;
+    const grid = document.querySelector('#palette-grid');
+    if (grid) grid.innerHTML = renderPalette();
   });
 
   const downloadImported = (kind) => {
@@ -625,6 +668,8 @@ function initWorkbench() {
     if (name) name.textContent = `Lospec: ${lospecTheme.name}`;
     const status = document.querySelector('#theme-status');
     if (status) status.textContent = 'Generated — ' + Object.keys(lospecTheme.tokens).length + ' vars';
+    const grid = document.querySelector('#palette-grid');
+    if (grid) grid.innerHTML = renderPalette();
   });
 
   const downloadLospec = (kind) => {
