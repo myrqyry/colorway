@@ -1099,7 +1099,7 @@ QTableView QPushButton,
 QTableView QToolButton {
     padding: 0px;
     margin: -1px;
-    border-radius: 0px;
+    border-radius: var(--shape_xs);
 }
 
 /* Canvas / Preview background color */
@@ -1512,7 +1512,7 @@ OBSBasicAdvAudio #scrollAreaWidgetContents {
 #previewYScrollBar {
     background: transparent;
     border: 1px solid var(--grey6);
-    border-radius: 0;
+    border-radius: var(--border_radius_small);
 }
 
 #previewXScrollBar {
@@ -1531,13 +1531,13 @@ OBSBasicAdvAudio #scrollAreaWidgetContents {
 
 #previewZoomInButton {
     border: none;
-    border-radius: 0px;
+    border-radius: var(--border_radius_small);
     outline: none;
 }
 
 #previewZoomOutButton {
     border: none;
-    border-radius: 0px;
+    border-radius: var(--border_radius_small);
     outline: none;
 }
 
@@ -1809,9 +1809,18 @@ idian--CollapsibleRow idian--PropertiesList idian--Row {
     padding-left: var(--action_row_padding_nested);
 }
 
-idian--CollapsibleRow idian--Row.first,
+idian--CollapsibleRow idian--Row.first {
+    border-top-left-radius: var(--border_radius);
+    border-top-right-radius: var(--border_radius);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
 idian--CollapsibleRow idian--Row.last {
-    border-radius: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: var(--border_radius);
+    border-bottom-right-radius: var(--border_radius);
 }
 
 idian--CollapsibleRow idian--PropertiesList idian--ToggleSwitch {
@@ -1873,7 +1882,7 @@ idian--RowFrame.hover idian--ExpandButton::indicator {
 AlignmentSelector {
     border: 1px solid var(--input_border);
     margin: 0px;
-    border-radius: 2px;
+    border-radius: var(--shape_xs);
 }
 
 AlignmentSelector:focus,
@@ -2086,7 +2095,7 @@ QSlider::groove:horizontal {
 
 QSlider::sub-page:horizontal {
     background: var(--primary);
-    border-radius: 8px;
+    border-radius: var(--slider_groove_radius);
 }
 
 QSlider::add-page:horizontal {
