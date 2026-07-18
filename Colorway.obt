@@ -1122,6 +1122,7 @@ OBSBasicFilters #widget_2 QPushButton {
     min-width: 16px;
     padding: var(--padding_base) var(--padding_large);
     margin-top: 0px;
+    border-radius: var(--border_radius_small);
 }
 
 /* Preview/Program labels */
@@ -1221,6 +1222,7 @@ OBSHotkeyWidget QPushButton {
     padding: var(--padding_base);
     margin-top: 0px;
     margin-left: var(--spacing_base);
+    border-radius: var(--border_radius_small);
 }
 
 /* Sources List Group Collapse Checkbox */
