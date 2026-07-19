@@ -362,7 +362,12 @@ async function setTheme(file) {
   } catch (error) {
     status.textContent = error.message;
     const grid = document.querySelector('#palette-grid');
-    if (grid) grid.innerHTML = `<div style="padding:8px;color:var(--danger);font-size:10px">${error.message}</div>`;
+    if (grid) {
+      const errorElement = document.createElement('div');
+      errorElement.style.cssText = 'padding:8px;color:var(--danger);font-size:10px';
+      errorElement.textContent = error.message;
+      grid.replaceChildren(errorElement);
+    }
   }
 }
 

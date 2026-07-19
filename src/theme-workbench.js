@@ -194,15 +194,15 @@ const SEMANTIC_ROLES = [
 
 export function assignRoles(hexes, paletteName) {
   const normalizedHexes = hexes.map((h) => h.startsWith('#') ? h : `#${h}`);
-  const parsed = normalizedHexes.filter((h) => /^#[0-9a-f]{6}$/i.test(h)).map((hex) => ({ hex, ...hexToOklch(hex) }));
+  const parsed = normalizedHexes.flatMap((hex) => /^#[0-9a-f]{6}$/i.test(hex) ? [{ hex, ...hexToOklch(hex) }] : []);
   if (parsed.length < 2) return null;
 
-  const byLightness = [...parsed].sort((a, b) => a.L - b.L);
+  const byLightness = parsed.toSorted((a, b) => a.L - b.L);
   const darkest = byLightness[0];
   const secondDarkest = byLightness[1];
   const lightest = byLightness[byLightness.length - 1];
   const secondLightest = byLightness[byLightness.length - 1];
-  const byChroma = [...parsed].sort((a, b) => b.C - a.C);
+  const byChroma = parsed.toSorted((a, b) => b.C - a.C);
   const mostChroma = byChroma[0];
 
   const isDark = darkest.L < 0.55;
@@ -265,5 +265,4 @@ export async function fromLospecPalette(slug) {
   if (!theme) throw new Error(`Palette "${slug}" has fewer than 2 colors`);
   return theme;
 }
-
 
