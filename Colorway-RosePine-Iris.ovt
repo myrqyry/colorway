@@ -51,6 +51,7 @@
        --accent_bg_start: rgba(196, 167, 231, 0.3);
        --accent_bg_end: rgba(196, 167, 231, 0.1);
     */
+
     --bg_window: #191724;
     --bg_base: #191724;
     --bg_preview: #26233a;
@@ -81,4 +82,5 @@
     --bg_hover: #26233a;
     --ico: var(--text);
     --ico_selected: #191724;
+
 }

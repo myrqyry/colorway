@@ -51,6 +51,7 @@
        --accent_bg_start: rgba(255, 199, 153, 0.3);
        --accent_bg_end: rgba(255, 199, 153, 0.1);
     */
+
     --accent_bg_start: rgba(255, 199, 153, 0.3);
     --accent_bg_end: rgba(255, 199, 153, 0.1);
 
@@ -93,7 +94,8 @@
     --bg_dock: #101010;
     --bg_hover: #282828;
 
-    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    
     --ico: var(--text);
     --ico_selected: #101010;
+
 }

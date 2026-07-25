@@ -49,12 +49,13 @@
        --accent_bg_start: rgba(83, 252, 24, 0.3);
        --accent_bg_end: rgba(83, 252, 24, 0.1);
     */
+
     --bg_window: #0e1113;
     --bg_base: #0e1113;
     --bg_preview: #191b1f;
     --bg_dock: #14171a;
 
-    /* Primary Accent (Vibrant Kick Lime-Green) */
+    
     --primary: #53fc18;
     --primary_light: #80ff52;
     --primary_lighter: #dcfcd4;
@@ -64,17 +65,17 @@
     --warning: #ffb000;
     --danger: #fb4d5d;
 
-    /* Text Colors */
+    
     --text: #e1e7e9;
     --text_light: #ffffff;
     --text_muted: #78868c;
     --text_disabled: #4e5558;
     --text_inactive: #4e5558;
 
-    /* Borders & Spacing */
+    
     --border_color: #191b1f;
 
-    /* Input & Button Layouts */
+    
     --input_bg: #191b1f;
     --input_bg_hover: #191b1f;
     --input_bg_focus: #262c33;
@@ -86,10 +87,11 @@
     --button_bg_hover: #53fc18;
     --button_bg_disabled: #0e1113;
 
-    /* Replay/VirtualCam active state overlays */
+    
     --accent_bg_start: rgba(83, 252, 24, 0.3);
     --accent_bg_end: rgba(83, 252, 24, 0.1);
 
-    /* Dark text contrast for bright green elements */
+    
     --text_inverse: #000000;
+
 }

@@ -49,12 +49,13 @@
        --accent_bg_start: rgba(208, 129, 89, 0.3);
        --accent_bg_end: rgba(208, 129, 89, 0.1);
     */
+
     --bg_window: #0d2b45;
     --bg_base: #0d2b45;
     --bg_preview: #203c56;
     --bg_dock: #544e68;
 
-    /* Primary Accent (Terracotta → Peach Gradient) */
+    
     --primary: #d08159;
     --primary_light: #ffaa5e;
     --primary_lighter: #ffd4a3;
@@ -64,17 +65,17 @@
     --warning: #ffecd6;
     --danger: #ffaa5e;
 
-    /* Text Colors (Peach → Cool Gray) */
+    
     --text: #ffecd6;
     --text_light: #ffffff;
     --text_muted: #8d697a;
     --text_disabled: #544e68;
     --text_inactive: #544e68;
 
-    /* Borders (Subtle dock dividers) */
+    
     --border_color: #203c56;
 
-    /* Input & Button Layouts */
+    
     --input_bg: #203c56;
     --input_bg_hover: #203c56;
     --input_bg_focus: #544e68;
@@ -86,10 +87,11 @@
     --button_bg_hover: #d08159;
     --button_bg_disabled: #0d2b45;
 
-    /* Replay/VirtualCam active state overlays */
+    
     --accent_bg_start: rgba(208, 129, 89, 0.3);
     --accent_bg_end: rgba(208, 129, 89, 0.1);
 
-    /* Text contrast for warm earth tones */
+    
     --text_inverse: #000000;
+
 }

@@ -11,16 +11,16 @@
        Hex colors:
        --bg_window: #1B1B1A;
        --bg_base: #1B1B1A;
-       --bg_preview: #26233a;
+       --bg_preview: #151514;
        --bg_dock: #242423;
        --bg_hover: #3d3c3a;
-       --text: #e0def4;
+       --text: #F4F3EE;
        --text_light: #F4F3EE;
-       --text_muted: #908caa;
+       --text_muted: #B1ADA1;
        --text_inactive: #696661;
        --text_inverse: #FFFFFF;
        --text_disabled: #696661;
-       --primary: #c4a7e7;
+       --primary: #C15F3C;
        --primary_light: #d67a58;
        --primary_lighter: #e89576;
        --primary_dark: #9e4b2d;
@@ -36,10 +36,10 @@
        --list_item_bg_hover: #3d3c3a;
        --list_item_bg_selected: #c4a7e7;
        --border_color: #3d3c3a;
-       --ico: #e0def4;
+       --ico: #F4F3EE;
        --ico_selected: #1B1B1A;
-       --warning: #f6c177;
-       --danger: #eb6f92;
+       --warning: #dbbc7f;
+       --danger: #b75e7e;
        --success: #37d247;
        --meter_bg_nom: #26233a;
        --meter_bg_war: #f6c177;
@@ -51,33 +51,34 @@
        --accent_bg_start: rgba(193, 95, 60, 0.3);
        --accent_bg_end: rgba(193, 95, 60, 0.1);
     */
+
     --text_inverse: #FFFFFF;
-    /* Base Theme Colors (Warm Charcoal) */
+    
     --bg_window: #1B1B1A;
     --bg_base: #1B1B1A;
-    --bg_preview: #151514; /* Slightly darker for canvas */
+    --bg_preview: #151514; 
 
-    /* Claude Orange Accents */
-    --primary: #C15F3C;        /* Signature Claude Orange */
+    
+    --primary: #C15F3C;        
     --primary_light: #d67a58;
     --primary_lighter: #e89576;
     --primary_dark: #9e4b2d;
     --primary_darker: #7a3820;
 
-    --warning: #dbbc7f; /* Warm Yellow */
-    --danger: #b75e7e;  /* Muted Red/Purple */
+    --warning: #dbbc7f; 
+    --danger: #b75e7e;  
 
-    /* Typography */
-    --text: #F4F3EE;        /* Pampas Off-white */
+    
+    --text: #F4F3EE;        
     --text_light: #F4F3EE;
-    --text_muted: #B1ADA1;  /* Cloudy Gray */
+    --text_muted: #B1ADA1;  
 
     --text_disabled: #696661;
     --text_inactive: #696661;
 
     --border_color: #3d3c3a;
 
-    /* Inputs and Buttons */
+    
     --input_bg: #242423;
     --input_bg_hover: #3d3c3a;
     --input_bg_focus: #353532;
@@ -91,15 +92,16 @@
     --button_bg_hover: #3d3c3a;
     --button_bg_disabled: #1B1B1A;
 
-    /* Theme Aliases */
-    /* Replay/VirtualCam active state — derived from --primary */
+    
+    
     --accent_bg_start: rgba(193, 95, 60, 0.3);
     --accent_bg_end: rgba(193, 95, 60, 0.1);
 
     --bg_dock: #242423;
     --bg_hover: #3d3c3a;
 
-    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    
     --ico: var(--text);
     --ico_selected: #1B1B1A;
+
 }

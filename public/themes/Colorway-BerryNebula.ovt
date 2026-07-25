@@ -49,12 +49,13 @@
        --accent_bg_start: rgba(108, 190, 237, 0.3);
        --accent_bg_end: rgba(108, 190, 237, 0.1);
     */
+
     --bg_window: #0d001a;
     --bg_base: #0d001a;
     --bg_preview: #2e0a30;
     --bg_dock: #4f1446;
 
-    /* Primary Accent (Neon Blue Raspberry to Grape) */
+    
     --primary: #6f1d5c;
     --primary_light: #6e5181;
     --primary_lighter: #6d85a5;
@@ -64,17 +65,17 @@
     --warning: #6ceded;
     --danger: #6f1d5c;
 
-    /* Text Colors (Cool Glow) */
+    
     --text: #6ceded;
     --text_light: #ffffff;
     --text_muted: #6d85a5;
     --text_disabled: #2e0a30;
     --text_inactive: #2e0a30;
 
-    /* Borders (Subtle purple dividers) */
+    
     --border_color: #2e0a30;
 
-    /* Input & Button Layouts */
+    
     --input_bg: #2e0a30;
     --input_bg_hover: #2e0a30;
     --input_bg_focus: #4f1446;
@@ -86,10 +87,11 @@
     --button_bg_hover: #6f1d5c;
     --button_bg_disabled: #0d001a;
 
-    /* Replay/VirtualCam active state overlays */
+    
     --accent_bg_start: rgba(108, 190, 237, 0.3);
     --accent_bg_end: rgba(108, 190, 237, 0.1);
 
-    /* Text contrast for neon blue components */
+    
     --text_inverse: #FFFFFF;
+
 }

@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @layer base {
   :root {
@@ -307,7 +305,7 @@
   font-variant-numeric: tabular-nums;
   color: var(--text_disabled); margin-left: auto;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  max-width: 68px; direction: rtl; text-align: right;
+   max-width: 68px; text-align: right;
 }
 
 .theme-list-container {
@@ -502,7 +500,10 @@
   border-color: var(--primary_light);
 }
 
-.demo-check input:checked::after,
+.demo-check input:checked::after {
+  transform: rotate(-45deg) scale(1);
+}
+
 .demo-radio input:checked::after {
   transform: scale(1);
 }

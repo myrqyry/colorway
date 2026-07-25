@@ -51,6 +51,7 @@
        --accent_bg_start: rgba(138, 173, 244, 0.3);
        --accent_bg_end: rgba(138, 173, 244, 0.1);
     */
+
     --bg_window: #1e2030;
     --bg_base: #24273a;
     --bg_preview: #181926;
@@ -82,7 +83,8 @@
     --ico: var(--text);
     --ico_selected: #24273a;
 
-    /* Replay/VirtualCam active state accent (derived from --primary) */
+    
     --accent_bg_start: rgba(138, 173, 244, 0.3);
     --accent_bg_end: rgba(138, 173, 244, 0.1);
+
 }

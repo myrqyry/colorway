@@ -51,10 +51,11 @@
        --accent_bg_start: rgba(0, 136, 255, 0.3);
        --accent_bg_end: rgba(0, 136, 255, 0.1);
     */
+
     --accent_bg_start: rgba(0, 136, 255, 0.3);
     --accent_bg_end: rgba(0, 136, 255, 0.1);
 
-    /* Base Theme Colors */
+    
     --bg_window: #193549;
     --bg_base: #193549;
     --bg_preview: #30495b;
@@ -78,7 +79,7 @@
 
     --border_color: #2b4558;
 
-    /* Inputs and Buttons */
+    
     --input_bg: #30495b;
     --input_bg_hover: #3a5263;
     --input_bg_focus: var(--input_bg_hover);
@@ -92,11 +93,12 @@
     --button_bg_hover: #3a5263;
     --button_bg_disabled: #193549;
 
-    /* Theme Aliases */
+    
     --bg_dock: #183245;
     --bg_hover: #3a5263;
 
-    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    
     --ico: var(--text);
     --ico_selected: #193549;
+
 }

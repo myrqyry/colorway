@@ -288,7 +288,7 @@
     --border_focus: var(--primary);
     --text_base: var(--text);
     --text_bright: var(--text_light);
-    --text_inverse: #e0def4;
+    --text_inverse: var(--bg_base);
     --primary_hover: var(--primary_light);
     --primary_dark_alias: var(--primary_dark);
 

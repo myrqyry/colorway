@@ -14,17 +14,17 @@
        --bg_preview: #17171f;
        --bg_dock: #17171f;
        --bg_hover: #2f2f40;
-       --text: #e0def4;
+       --text: #e7eeec;
        --text_light: #fafffe;
-       --text_muted: #908caa;
+       --text_muted: #828b9c;
        --text_inactive: #5B606C;
        --text_inverse: #FFFFFF;
-       --text_disabled: #6e6a86;
-       --primary: #c4a7e7;
-       --primary_light: #e0def4;
+       --text_disabled: #5B606C;
+       --primary: #66eeaa;
+       --primary_light: #b4f09e;
        --primary_lighter: #bfffa8;
-       --primary_dark: #907aa9;
-       --primary_darker: #524f67;
+       --primary_dark: #2f2f40;
+       --primary_darker: #17171f;
        --input_bg: #17171f;
        --input_bg_hover: #2f2f40;
        --input_bg_focus: #272733;
@@ -36,10 +36,10 @@
        --list_item_bg_hover: #2f2f40;
        --list_item_bg_selected: #c4a7e7;
        --border_color: #2f2f40;
-       --ico: #e0def4;
+       --ico: #e7eeec;
        --ico_selected: #0f0f17;
-       --warning: #f6c177;
-       --danger: #eb6f92;
+       --warning: #c7c56c;
+       --danger: #db6797;
        --success: #37d247;
        --meter_bg_nom: #26233a;
        --meter_bg_war: #f6c177;
@@ -51,32 +51,33 @@
        --accent_bg_start: rgba(102, 238, 170, 0.3);
        --accent_bg_end: rgba(102, 238, 170, 0.1);
     */
+
     --bg_window: #0f0f17;
     --bg_base: #0f0f17;
     --bg_preview: #17171f;
 
-    /* Dark Magic Accents (Teal) */
-    --primary: #66eeaa;        /* Teal Accent */
-    --primary_light: #b4f09e;  /* Bright Green for contrast highlights */
+    
+    --primary: #66eeaa;        
+    --primary_light: #b4f09e;  
     --primary_lighter: #bfffa8;
-    --primary_dark: #2f2f40;   /* Bright Black / Dark Muted */
-    --primary_darker: #17171f; /* Normal Black */
+    --primary_dark: #2f2f40;   
+    --primary_darker: #17171f; 
 
-    --warning: #c7c56c; /* Dark Magic Yellow */
-    --danger: #db6797;  /* Dark Magic Red */
+    --warning: #c7c56c; 
+    --danger: #db6797;  
 
-    /* Typography */
-    --text: #e7eeec;        /* Dark Magic White */
+    
+    --text: #e7eeec;        
     --text_light: #fafffe;
-    --text_muted: #828b9c;  /* Muted Grey-Blue */
+    --text_muted: #828b9c;  
 
-    --text_disabled: #5B606C; /* Disabled Grey-Blue */
+    --text_disabled: #5B606C; 
     --text_inactive: #5B606C;
     --text_inverse: #FFFFFF;
 
     --border_color: #2f2f40;
 
-    /* Inputs and Buttons */
+    
     --input_bg: #17171f;
     --input_bg_hover: #2f2f40;
     --input_bg_focus: #272733;
@@ -90,15 +91,16 @@
     --button_bg_hover: #2f2f40;
     --button_bg_disabled: #0f0f17;
 
-    /* Theme Aliases */
-    /* Replay/VirtualCam active state — derived from --primary */
+    
+    
     --accent_bg_start: rgba(102, 238, 170, 0.3);
     --accent_bg_end: rgba(102, 238, 170, 0.1);
 
     --bg_dock: #17171f;
     --bg_hover: #2f2f40;
 
-    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    
     --ico: var(--text);
     --ico_selected: #0f0f17;
+
 }

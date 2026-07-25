@@ -9,51 +9,89 @@
 @OBSThemeVars {
     /* Official palette reference: Rose Pine Dawn — Gold
        Hex colors:
-       --bg_window: #191724;
-       --bg_base: #191724;
-       --bg_preview: #26233a;
-       --bg_dock: #1f1d2e;
-       --bg_hover: #26233a;
-       --text: #e0def4;
+       --bg_window: #faf4ed;
+       --bg_base: #faf4ed;
+       --bg_preview: #fffaf3;
+       --bg_dock: #f2e9e1;
+       --bg_hover: #f4ede8;
+       --text: #575279;
        --text_light: #ffffff;
-       --text_muted: #908caa;
-       --text_inactive: #6e6a86;
-       --text_inverse: #FFFFFF;
-       --text_disabled: #6e6a86;
+       --text_muted: #9893a5;
+       --text_inactive: #9893a5;
+       --text_inverse: #faf4ed;
+       --text_disabled: #9893a5;
        --primary: #ea9d34;
        --primary_light: #d7827e;
        --primary_lighter: #907aa9;
        --primary_dark: #b4637a;
-       --primary_darker: #cecacd;
-       --input_bg: #26233a;
-       --input_bg_hover: #403d52;
-       --input_bg_focus: #2d2a42;
-       --input_border: #403d52;
-       --input_border_hover: #524f67;
-       --button_bg: #1f1d2e;
-       --button_bg_hover: #26233a;
-       --button_bg_disabled: #21202e;
-       --list_item_bg_hover: #332f4a;
-       --list_item_bg_selected: #c4a7e7;
-       --border_color: #403d52;
-       --ico: #e0def4;
+       --primary_darker: #56949f;
+       --input_bg: #fffaf3;
+       --input_bg_hover: #f4ede8;
+       --input_bg_focus: #f2e9e1;
+       --input_border: #cecacd;
+       --input_border_hover: #dfdad9;
+       --button_bg: #f2e9e1;
+       --button_bg_hover: #f4ede8;
+       --button_bg_disabled: #faf4ed;
+       --list_item_bg_hover: #f4ede8;
+       --list_item_bg_selected: #faf4ed;
+       --border_color: #dfdad9;
+       --ico: #575279;
        --ico_selected: #faf4ed;
-       --warning: #f6c177;
-       --danger: #eb6f92;
+       --warning: #ea9d34;
+       --danger: #b4637a;
        --success: #37d247;
-       --meter_bg_nom: #26233a;
-       --meter_bg_war: #f6c177;
-       --meter_bg_err: #eb6f92;
-       --meter_fg_nom: #c4a7e7;
-       --meter_fg_war: #f6c177;
-       --meter_fg_err: #eb6f92;
+       --meter_bg_nom: #fffaf3;
+       --meter_bg_war: #ea9d34;
+       --meter_bg_err: #b4637a;
+       --meter_fg_nom: #ea9d34;
+       --meter_fg_war: #ea9d34;
+       --meter_fg_err: #b4637a;
        Derived colors:
        --accent_bg_start: rgba(234, 157, 52, 0.3);
        --accent_bg_end: rgba(234, 157, 52, 0.1);
     */
-    --text_inverse: #FFFFFF;
 
-    /* Replay/VirtualCam active state accent (derived from --primary) */
+    --bg_window: #faf4ed;
+    --bg_base: #faf4ed;
+    --bg_preview: #fffaf3;
+    --bg_dock: #f2e9e1;
+    --bg_hover: #f4ede8;
+
+    --text: #575279;
+    --text_light: #ffffff;
+    --text_muted: #9893a5;
+    --text_inactive: #9893a5;
+    --text_inverse: #faf4ed;
+    --text_disabled: #9893a5;
+
+    --border_color: #dfdad9;
+
+    --input_bg: #fffaf3;
+    --input_bg_hover: #f4ede8;
+    --input_bg_focus: #f2e9e1;
+    --input_border: #cecacd;
+    --input_border_hover: #dfdad9;
+
+    --button_bg: #f2e9e1;
+    --button_bg_hover: #f4ede8;
+    --button_bg_disabled: #faf4ed;
+
+    --list_item_bg_hover: #f4ede8;
+    --list_item_bg_selected: #faf4ed;
+
+    --warning: #ea9d34;
+    --danger: #b4637a;
+    --success: #37d247;
+
+    --meter_bg_nom: #fffaf3;
+    --meter_bg_war: #ea9d34;
+    --meter_bg_err: #b4637a;
+    --meter_fg_nom: #ea9d34;
+    --meter_fg_war: #ea9d34;
+    --meter_fg_err: #b4637a;
+
+    
     --accent_bg_start: rgba(234, 157, 52, 0.3);
     --accent_bg_end: rgba(234, 157, 52, 0.1);
 
@@ -61,9 +99,10 @@
     --primary_light: #d7827e;
     --primary_lighter: #907aa9;
     --primary_dark: #b4637a;
-    --primary_darker: #cecacd;
+    --primary_darker: #56949f;
 
-    /* Icon colors (currentColor SVGs, controlled via CSS color) */
-    --ico: var(--text);
+    
+    --ico: #575279;
     --ico_selected: #faf4ed;
+
 }

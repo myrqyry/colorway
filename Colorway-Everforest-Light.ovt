@@ -51,6 +51,7 @@
        --accent_bg_start: rgba(141, 161, 1, 0.3);
        --accent_bg_end: rgba(141, 161, 1, 0.1);
     */
+
     --accent_bg_start: rgba(141, 161, 1, 0.3);
     --accent_bg_end: rgba(141, 161, 1, 0.1);
 
@@ -89,13 +90,14 @@
     --button_bg_hover: #E6E2CC;
     --button_bg_disabled: #FDF6E3;
 
-    /* Light theme: selected-item text stays dark */
+    
     --text_inverse: #000000;
 
     --bg_dock: #F4F0D9;
     --bg_hover: #E6E2CC;
 
-    /* Icon colors (currentColor SVGs, controlled via CSS color) */
+    
     --ico: var(--text);
     --ico_selected: #FDF6E3;
+
 }

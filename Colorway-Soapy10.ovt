@@ -49,6 +49,7 @@
        --accent_bg_start: rgba(84, 206, 167, 0.3);
        --accent_bg_end: rgba(84, 206, 167, 0.1);
     */
+
     --bg_window: #0d2147;
     --bg_base: #0d2147;
     --bg_preview: #054b84;
@@ -96,4 +97,5 @@
     --accent_bg_end: rgba(84, 206, 167, 0.1);
 
     --text_inverse: #000000;
+
 }
