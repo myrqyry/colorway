@@ -1,0 +1,133 @@
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("../BricolageGrotesqueVariable.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* The OBS Appearance dialog is the primary preview controller now. */
+.showcase-header,
+.obs-preview-heading-row {
+  display: none !important;
+}
+
+.showcase-shell,
+.showcase-shell button,
+.showcase-shell input,
+.showcase-shell select,
+.showcase-shell textarea {
+  font-family: "Bricolage Grotesque", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.obs-real-preview {
+  margin-top: 12px;
+}
+
+.obs-sim-window,
+.obs-sim-window button,
+.obs-sim-window input,
+.obs-sim-window select {
+  font-family: "Bricolage Grotesque", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* A Colorway pattern is OBS chrome, not content in the user's scene. */
+.obs-sim-canvas-content {
+  background-image: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 3%) 0 18%,
+    transparent 18% 36%,
+    rgb(255 255 255 / 4%) 36% 54%,
+    transparent 54% 72%,
+    rgb(255 255 255 / 3%) 72% 90%,
+    transparent 90%
+  ) !important;
+  background-color: var(--bg_base) !important;
+  background-size: auto !important;
+}
+
+.obs-sim-canvas-frame.program .obs-sim-canvas-content {
+  background-image: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--primary) 18%, transparent),
+    transparent 58%
+  ) !important;
+}
+
+/* The settings window now lives over the OBS preview canvas, matching real OBS. */
+.obs-sim-preview-area > .obs-sim-dialog-backdrop {
+  position: absolute;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 10px 18px 28px;
+  background: rgb(0 0 0 / 8%);
+}
+
+.obs-sim-preview-area > .obs-sim-dialog-backdrop[hidden] {
+  display: none !important;
+}
+
+.obs-sim-preview-area > .obs-sim-dialog-backdrop .obs-sim-dialog {
+  width: min(96%, 860px);
+  height: calc(100% - 4px);
+  min-width: 0;
+  min-height: 0;
+  grid-template-rows: 31px minmax(0, 1fr) 38px;
+}
+
+/* Let each SVG repeat at its authored tile size. The old 180/200px scaling
+   stretched tiny pattern tiles into giant wallpaper. */
+.obs-sim-dialog-content {
+  background-color: var(--bg_window) !important;
+  background-image: var(--pattern_eyes, none) !important;
+  background-repeat: repeat !important;
+  background-size: auto !important;
+  background-position: 0 0 !important;
+}
+
+.obs-sim-settings-panel {
+  overflow: auto;
+}
+
+.obs-sim-appearance-card {
+  background: color-mix(in srgb, var(--bg_dock) 90%, transparent);
+}
+
+.obs-sim-pattern-row {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+  margin: 6px 0;
+}
+
+.obs-sim-pattern-row > label {
+  justify-self: end;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.obs-sim-pattern-row .obs-sim-select {
+  width: 100%;
+}
+
+/* Keep the website workbench useful, just stop letting it dominate the page. */
+.workbench-tabs {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .obs-sim-preview-area > .obs-sim-dialog-backdrop {
+    padding-inline: 8px;
+  }
+
+  .obs-sim-preview-area > .obs-sim-dialog-backdrop .obs-sim-dialog {
+    width: 100%;
+  }
+
+  .obs-sim-dialog-content {
+    grid-template-columns: 142px minmax(0, 1fr);
+  }
+}
