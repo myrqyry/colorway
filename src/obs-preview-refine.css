@@ -1,0 +1,429 @@
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("../BricolageGrotesqueVariable.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* The OBS Appearance window is the primary preview controller. The old site
+   header remains in the DOM only as the data/interaction source. */
+.showcase-header,
+.obs-preview-heading-row {
+  display: none !important;
+}
+
+#workbench-download-yami {
+  display: none !important;
+}
+
+.showcase-shell,
+.showcase-shell button,
+.showcase-shell input,
+.showcase-shell select,
+.showcase-shell textarea,
+.obs-sim-window,
+.obs-sim-window button,
+.obs-sim-window input,
+.obs-sim-window select {
+  font-family: "Bricolage Grotesque", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.obs-real-preview {
+  margin-top: 12px;
+}
+
+/* OBS chrome follows the active Colorway variables. Scene content itself is
+   deliberately not painted with the UI pattern. */
+.obs-sim-preview-area {
+  background: var(--bg_preview, var(--bg_base)) !important;
+}
+
+.obs-sim-canvas-content {
+  background-image: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 3%) 0 18%,
+    transparent 18% 36%,
+    rgb(255 255 255 / 4%) 36% 54%,
+    transparent 54% 72%,
+    rgb(255 255 255 / 3%) 72% 90%,
+    transparent 90%
+  ) !important;
+  background-color: var(--bg_base) !important;
+  background-size: auto !important;
+}
+
+.obs-sim-canvas-frame.program .obs-sim-canvas-content {
+  background-image: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--primary) 18%, transparent),
+    transparent 58%
+  ) !important;
+}
+
+/* Permanent Settings controller, positioned over only the fake OBS preview. */
+.obs-sim-preview-area > .obs-sim-dialog-backdrop {
+  position: absolute;
+  z-index: 100;
+  inset: 0;
+  display: grid !important;
+  place-items: center;
+  padding: 8px 14px 26px;
+  background: color-mix(in srgb, var(--bg_preview, var(--bg_base)) 84%, transparent);
+}
+
+.obs-sim-preview-area > .obs-sim-dialog-backdrop[data-permanent][hidden] {
+  display: grid !important;
+}
+
+.obs-sim-preview-area > .obs-sim-dialog-backdrop .obs-sim-dialog {
+  width: min(96%, 860px);
+  height: calc(100% - 2px);
+  min-width: 0;
+  min-height: 0;
+  grid-template-rows: 28px minmax(0, 1fr);
+}
+
+.obs-sim-preview-area .obs-sim-dialog-titlebar {
+  font-size: 12px;
+}
+
+.obs-sim-dialog-close,
+.obs-sim-dialog-actions {
+  display: none !important;
+}
+
+.obs-sim-preview-area .obs-sim-dialog-content {
+  grid-template-columns: 142px minmax(0, 1fr);
+  gap: 6px;
+  padding: 6px;
+}
+
+.obs-sim-preview-area .obs-sim-settings-nav {
+  gap: 1px;
+  padding: 4px;
+}
+
+.obs-sim-preview-area .obs-sim-settings-nav button {
+  min-height: 22px;
+  grid-template-columns: 18px 1fr;
+  padding: 2px 5px;
+}
+
+.obs-sim-preview-area .obs-sim-settings-panel {
+  position: relative;
+  overflow: visible;
+  padding: 3px;
+}
+
+/* Each SVG is a tile, not a full-window wallpaper. */
+.obs-sim-dialog-content {
+  background-color: var(--bg_window) !important;
+  background-image: var(--pattern_eyes, none) !important;
+  background-repeat: repeat !important;
+  background-size: auto !important;
+  background-position: 0 0 !important;
+}
+
+.obs-sim-appearance-card {
+  overflow: visible;
+  background: color-mix(in srgb, var(--bg_dock) 90%, transparent);
+}
+
+/* Keep the native Style select as hidden plumbing for obs-preview.js, while
+   presenting the palette-aware Colorway picker to the user. */
+.colorway-style-row {
+  position: relative;
+  grid-template-columns: 84px minmax(0, 1fr) !important;
+}
+
+.colorway-native-style-select {
+  display: none !important;
+}
+
+.colorway-theme-picker {
+  position: relative;
+  min-width: 0;
+}
+
+.colorway-theme-trigger {
+  display: flex;
+  width: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid var(--input_border, var(--border_color));
+  border-radius: var(--border_radius_small, 5px);
+  padding: 3px 7px;
+  background: var(--input_bg, var(--bg_base));
+  color: var(--text);
+  text-align: left;
+}
+
+.colorway-theme-trigger:hover,
+.colorway-theme-trigger[aria-expanded="true"] {
+  border-color: var(--input_border_hover, var(--primary));
+  background: var(--input_bg_hover, var(--input_bg));
+}
+
+.colorway-theme-trigger-main {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.colorway-theme-trigger-name,
+.colorway-theme-option-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.colorway-theme-trigger-palette,
+.colorway-theme-option .theme-palette {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 2px;
+}
+
+.colorway-theme-trigger-palette .palette-swatch,
+.colorway-theme-option .palette-swatch {
+  display: block;
+  width: 11px;
+  height: 11px;
+  border: 1px solid color-mix(in srgb, var(--border_color) 70%, transparent);
+  border-radius: 3px;
+}
+
+.colorway-theme-trigger-palette .palette-swatch {
+  width: 10px;
+  height: 10px;
+}
+
+.colorway-theme-chevron {
+  flex: 0 0 auto;
+  color: var(--text_muted);
+}
+
+.colorway-theme-options {
+  position: absolute;
+  z-index: 500;
+  top: calc(100% + 3px);
+  right: 0;
+  left: 0;
+  max-height: 214px;
+  overflow-y: auto;
+  border: 1px solid var(--input_border_hover, var(--border_color));
+  border-radius: var(--border_radius_small, 5px);
+  padding: 3px;
+  background: var(--bg_window);
+  box-shadow: 0 10px 24px var(--elevation_2, rgb(0 0 0 / 30%));
+}
+
+.colorway-theme-options[hidden] {
+  display: none !important;
+}
+
+.colorway-theme-option {
+  display: flex;
+  width: 100%;
+  min-height: 27px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 0;
+  border-radius: var(--shape_xs, 3px);
+  padding: 4px 6px;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+}
+
+.colorway-theme-option:hover {
+  background: var(--list_item_bg_hover, var(--bg_hover));
+}
+
+.colorway-theme-option.selected {
+  background: var(--list_item_bg_selected, var(--primary));
+  color: var(--text_inverse, var(--bg_base));
+}
+
+.colorway-theme-option.selected .palette-swatch {
+  border-color: color-mix(in srgb, currentColor 34%, transparent);
+}
+
+.obs-sim-pattern-row {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+  margin: 6px 0;
+}
+
+.obs-sim-pattern-row > label {
+  justify-self: end;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.obs-sim-pattern-row .obs-sim-select {
+  width: 100%;
+}
+
+/* Horizontal QSlider approximation. This mirrors Colorway's own slider vars
+   instead of leaving the browser's platform slider visible. */
+.obs-sim-font-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: var(--slider_groove_thickness, 14px);
+  margin: 4px 0;
+  border: 0;
+  border-radius: var(--slider_groove_radius, 7px);
+  outline: 0;
+  background: linear-gradient(
+    to right,
+    var(--primary) 0 var(--slider-pct, 33.333%),
+    var(--button_bg) var(--slider-pct, 33.333%) 100%
+  );
+}
+
+.obs-sim-font-slider::-webkit-slider-runnable-track {
+  height: var(--slider_groove_thickness, 14px);
+  border: 0;
+  background: transparent;
+}
+
+.obs-sim-font-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--slider_handle_size, 14px);
+  height: var(--slider_handle_size, 14px);
+  margin: 0;
+  border: 0;
+  border-radius: var(--slider_handle_radius, 7px);
+  background: var(--text_bright, var(--text_light));
+  box-shadow: 0 1px 3px var(--elevation_2, rgb(0 0 0 / 30%));
+}
+
+.obs-sim-font-slider::-moz-range-track {
+  height: var(--slider_groove_thickness, 14px);
+  border: 0;
+  border-radius: var(--slider_groove_radius, 7px);
+  background: var(--button_bg);
+}
+
+.obs-sim-font-slider::-moz-range-progress {
+  height: var(--slider_groove_thickness, 14px);
+  border-radius: var(--slider_groove_radius, 7px);
+  background: var(--primary);
+}
+
+.obs-sim-font-slider::-moz-range-thumb {
+  width: var(--slider_handle_size, 14px);
+  height: var(--slider_handle_size, 14px);
+  border: 0;
+  border-radius: var(--slider_handle_radius, 7px);
+  background: var(--text_bright, var(--text_light));
+  box-shadow: 0 1px 3px var(--elevation_2, rgb(0 0 0 / 30%));
+}
+
+.obs-sim-font-slider:focus-visible,
+.obs-sim-vfader:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* OBS mixer faders are vertical. The old implementation rotated a native
+   browser slider, so its groove/handle never matched Colorway. */
+.obs-sim-vfader {
+  -webkit-appearance: none;
+  appearance: none;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: var(--slider_groove_thickness, 14px);
+  height: 100%;
+  min-height: 92px;
+  align-self: stretch;
+  justify-self: center;
+  margin: 0;
+  border: 0;
+  border-radius: var(--slider_groove_radius, 7px);
+  outline: 0;
+  background: linear-gradient(
+    to top,
+    var(--primary) 0 var(--slider-pct, 50%),
+    var(--button_bg) var(--slider-pct, 50%) 100%
+  );
+  transform: none;
+}
+
+.obs-sim-vfader::-webkit-slider-runnable-track {
+  width: var(--slider_groove_thickness, 14px);
+  height: 100%;
+  border: 0;
+  background: transparent;
+}
+
+.obs-sim-vfader::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--slider_handle_size, 14px);
+  height: var(--slider_handle_size, 14px);
+  border: 0;
+  border-radius: var(--slider_handle_radius, 7px);
+  background: var(--text_bright, var(--text_light));
+  box-shadow: 0 1px 3px var(--elevation_2, rgb(0 0 0 / 30%));
+}
+
+.obs-sim-vfader::-moz-range-track {
+  width: var(--slider_groove_thickness, 14px);
+  border: 0;
+  border-radius: var(--slider_groove_radius, 7px);
+  background: var(--button_bg);
+}
+
+.obs-sim-vfader::-moz-range-progress {
+  width: var(--slider_groove_thickness, 14px);
+  border-radius: var(--slider_groove_radius, 7px);
+  background: var(--primary);
+}
+
+.obs-sim-vfader::-moz-range-thumb {
+  width: var(--slider_handle_size, 14px);
+  height: var(--slider_handle_size, 14px);
+  border: 0;
+  border-radius: var(--slider_handle_radius, 7px);
+  background: var(--text_bright, var(--text_light));
+  box-shadow: 0 1px 3px var(--elevation_2, rgb(0 0 0 / 30%));
+}
+
+/* Keep the website workbench useful without putting Yami ahead of Colorway. */
+.workbench-tabs {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .obs-sim-preview-area > .obs-sim-dialog-backdrop {
+    padding-inline: 6px;
+  }
+
+  .obs-sim-preview-area > .obs-sim-dialog-backdrop .obs-sim-dialog {
+    width: 100%;
+  }
+
+  .obs-sim-preview-area .obs-sim-dialog-content {
+    grid-template-columns: 126px minmax(0, 1fr);
+  }
+
+  .colorway-theme-trigger-palette .palette-swatch {
+    width: 8px;
+    height: 8px;
+  }
+}
