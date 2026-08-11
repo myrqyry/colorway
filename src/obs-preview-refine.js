@@ -10,6 +10,7 @@ function activeThemeName() {
 }
 
 function selectTheme(file) {
+  if (!file || file === '__current__') return;
   const row = Array.from(document.querySelectorAll('.theme-row'))
     .find((item) => item.dataset.file === file);
   row?.click();
@@ -26,17 +27,30 @@ function applyPattern(file) {
   document.documentElement.style.setProperty('--pattern_eyes', url);
 }
 
+function hasFullThemeList(select) {
+  if (select.options.length < THEMES.length) return false;
+  return THEMES.every((theme) => Array.from(select.options).some((option) => option.value === theme.file));
+}
+
 function populateStyleSelect(root) {
   const select = root.querySelector('[data-style-select]');
-  if (!select || select.dataset.colorwayWired === 'true') return;
+  if (!select || select.dataset.colorwayPopulating === 'true') return;
 
-  select.dataset.colorwayWired = 'true';
-  select.replaceChildren(...THEMES.map((theme) => new Option(theme.name, theme.file)));
+  if (!hasFullThemeList(select)) {
+    select.dataset.colorwayPopulating = 'true';
+    select.replaceChildren(...THEMES.map((theme) => new Option(theme.name, theme.file)));
+    delete select.dataset.colorwayPopulating;
+  }
+
+  if (select.dataset.colorwayWired !== 'true') {
+    select.dataset.colorwayWired = 'true';
+    select.addEventListener('change', () => selectTheme(select.value));
+  }
 
   const current = activeThemeFile();
-  if (current) select.value = current;
-
-  select.addEventListener('change', () => selectTheme(select.value));
+  if (current && Array.from(select.options).some((option) => option.value === current)) {
+    select.value = current;
+  }
 }
 
 function populatePatternSelect(root) {
@@ -61,6 +75,8 @@ function populatePatternSelect(root) {
 }
 
 function syncVisibleControls(root) {
+  populateStyleSelect(root);
+
   const styleSelect = root.querySelector('[data-style-select]');
   const file = activeThemeFile();
   const name = activeThemeName();
@@ -68,11 +84,12 @@ function syncVisibleControls(root) {
   if (styleSelect) {
     if (file && Array.from(styleSelect.options).some((option) => option.value === file)) {
       styleSelect.value = file;
-    } else if (!Array.from(styleSelect.options).some((option) => option.value === '__current__')) {
-      styleSelect.add(new Option(name, '__current__'));
-      styleSelect.value = '__current__';
     } else {
-      const current = Array.from(styleSelect.options).find((option) => option.value === '__current__');
+      let current = Array.from(styleSelect.options).find((option) => option.value === '__current__');
+      if (!current) {
+        current = new Option(name, '__current__');
+        styleSelect.add(current, 0);
+      }
       current.textContent = name;
       styleSelect.value = '__current__';
     }
@@ -108,8 +125,15 @@ function wireRoot(root) {
 
   const panel = root.querySelector('[data-settings-panel]');
   if (panel) {
-    new MutationObserver(() => ensureAppearanceControls(root))
-      .observe(panel, { childList: true, subtree: true });
+    let queued = false;
+    new MutationObserver(() => {
+      if (queued) return;
+      queued = true;
+      queueMicrotask(() => {
+        queued = false;
+        ensureAppearanceControls(root);
+      });
+    }).observe(panel, { childList: true, subtree: true });
   }
 
   const themeName = document.querySelector('#active-theme-name');
