@@ -44,6 +44,7 @@ function populateStyleSelect(root) {
 
   if (select.dataset.colorwayWired !== 'true') {
     select.dataset.colorwayWired = 'true';
+    select.setAttribute('aria-label', 'Colorway style');
     select.addEventListener('change', () => selectTheme(select.value));
   }
 
@@ -61,7 +62,7 @@ function populatePatternSelect(root) {
   row.className = 'obs-sim-pattern-row';
   row.innerHTML = `
     <label for="obs-pattern-select">Pattern</label>
-    <select id="obs-pattern-select" class="obs-sim-select" data-obs-pattern-select></select>
+    <select id="obs-pattern-select" class="obs-sim-select" data-obs-pattern-select aria-label="Colorway pattern"></select>
   `;
 
   const styleRow = root.querySelector('[data-style-select]')?.closest('.obs-sim-settings-row');
