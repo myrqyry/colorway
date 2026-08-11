@@ -30,8 +30,9 @@ function selectTheme(file) {
 function applyPattern(file) {
   const sourceSelect = document.querySelector('#pattern-select');
   if (sourceSelect) {
+    const changed = sourceSelect.value !== file;
     sourceSelect.value = file;
-    sourceSelect.dispatchEvent(new Event('change', { bubbles: true }));
+    if (changed) sourceSelect.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
   // Browser previews cannot resolve OBS's theme: URL scheme, so always restore
