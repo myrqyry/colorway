@@ -308,9 +308,9 @@ function toggleControl(button, active, activeText, idleText) {
 
 function syncStyleName(root) {
   const source = document.querySelector('#active-theme-name');
-  const target = root.querySelector('[data-style-select]');
-  if (!target) return;
   const update = () => {
+    const target = root.querySelector('[data-style-select]');
+    if (!target) return;
     const name = source?.textContent?.trim() || 'Current Colorway variant';
     target.replaceChildren(new Option(name, name));
   };
@@ -452,11 +452,11 @@ function wirePreview(root) {
     });
   });
 
-  const fontSlider = root.querySelector('.obs-sim-font-slider');
-  const fontInput = root.querySelector('#obs-font-size');
-  fontSlider?.addEventListener('input', () => {
-    if (fontInput) fontInput.value = fontSlider.value;
-    root.querySelector('[data-obs-window]')?.style.setProperty('--obs-sim-font-scale', String(Number(fontSlider.value) / 10));
+  root.addEventListener('input', (event) => {
+    if (!event.target.classList.contains('obs-sim-font-slider')) return;
+    const fontInput = root.querySelector('.obs-sim-number');
+    if (fontInput) fontInput.value = event.target.value;
+    root.querySelector('[data-obs-window]')?.style.setProperty('--obs-sim-font-scale', String(Number(event.target.value) / 10));
   });
 
   wireDensity(root);
@@ -465,6 +465,8 @@ function wirePreview(root) {
 
 function wireDensity(root) {
   root.querySelectorAll('[data-density]').forEach((button) => {
+    if (button.dataset.densityWired === 'true') return;
+    button.dataset.densityWired = 'true';
     button.addEventListener('click', () => {
       const group = button.closest('.obs-sim-density');
       group?.querySelectorAll('[data-density]').forEach((item) => item.classList.toggle('selected', item === button));
