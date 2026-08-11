@@ -318,6 +318,21 @@ function syncStyleName(root) {
   if (source) new MutationObserver(update).observe(source, { childList: true, subtree: true, characterData: true });
 }
 
+function setAppearancePanel(root) {
+  const panel = root.querySelector('[data-settings-panel]');
+  if (!panel) return;
+  panel.innerHTML = `
+    <fieldset class="obs-sim-appearance-card">
+      <legend>Appearance</legend>
+      <div class="obs-sim-settings-row"><label>Theme</label><select class="obs-sim-select"><option>Colorway</option></select></div>
+      <div class="obs-sim-settings-row"><label>Style</label><select class="obs-sim-select" data-style-select><option>${escapeHtml(document.querySelector('#active-theme-name')?.textContent?.trim() || 'Current Colorway variant')}</option></select></div>
+      <div class="obs-sim-settings-row font-size"><label>Font Size</label><input class="obs-sim-number" value="10"><input class="obs-sim-font-slider" type="range" min="8" max="14" value="10"></div>
+      <div class="obs-sim-settings-row density"><span>Density</span><div class="obs-sim-density"><button class="selected" type="button" data-density="classic">Classic</button><button type="button" data-density="compact">Compact</button><button type="button" data-density="normal">Normal</button><button type="button" data-density="comfortable">Comfortable</button></div></div>
+    </fieldset>`;
+  wireDensity(root);
+  syncStyleName(root);
+}
+
 function wirePreview(root) {
   root.querySelectorAll('[data-scene-row]').forEach((row) => {
     row.addEventListener('click', () => {
@@ -437,15 +452,7 @@ function wirePreview(root) {
       const panel = root.querySelector('[data-settings-panel]');
       if (!panel) return;
       if (page === 'Appearance') {
-        panel.innerHTML = `
-          <fieldset class="obs-sim-appearance-card">
-            <legend>Appearance</legend>
-            <div class="obs-sim-settings-row"><label>Theme</label><select class="obs-sim-select"><option>Colorway</option></select></div>
-            <div class="obs-sim-settings-row"><label>Style</label><select class="obs-sim-select" data-style-select><option>${escapeHtml(document.querySelector('#active-theme-name')?.textContent?.trim() || 'Current Colorway variant')}</option></select></div>
-            <div class="obs-sim-settings-row font-size"><label>Font Size</label><input class="obs-sim-number" value="10"><input class="obs-sim-font-slider" type="range" min="8" max="14" value="10"></div>
-            <div class="obs-sim-settings-row density"><span>Density</span><div class="obs-sim-density"><button class="selected" type="button" data-density="classic">Classic</button><button type="button" data-density="compact">Compact</button><button type="button" data-density="normal">Normal</button><button type="button" data-density="comfortable">Comfortable</button></div></div>
-          </fieldset>`;
-        wireDensity(root);
+        setAppearancePanel(root);
       } else {
         panel.innerHTML = `<div class="obs-sim-settings-placeholder"><h3>${page}</h3><p>This preview keeps the real OBS category geometry visible while Appearance is the Colorway-specific state.</p><label><span>Example option</span><input class="obs-sim-input" value="${page} setting"></label><label class="obs-sim-check"><input type="checkbox" checked> Enabled</label></div>`;
       }
