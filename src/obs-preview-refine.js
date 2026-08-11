@@ -1,19 +1,39 @@
 import './obs-preview-refine.css';
 import { THEMES, PATTERNS, DEFAULT_PATTERN } from './theme-catalog.js';
 
+const PALETTE_PREVIEW_VARS = [
+  '--bg_base',
+  '--primary',
+  '--warning',
+  '--danger',
+  '--text',
+  '--border_color',
+];
+
 function activeThemeRow() {
   return document.querySelector('#theme-list .theme-row.active')
     || document.querySelector('.theme-row.active');
-}
-
-function activeThemeFile() {
-  return activeThemeRow()?.dataset.file || null;
 }
 
 function activeThemeName() {
   return document.querySelector('#active-theme-name')?.textContent?.trim()
     || activeThemeRow()?.querySelector('.theme-name')?.textContent?.trim()
     || 'Current Colorway variant';
+}
+
+function isExternalThemeState() {
+  const status = document.querySelector('#theme-status')?.textContent?.trim() || '';
+  if (/^(Imported|Generated)\b/i.test(status)) return true;
+
+  const row = activeThemeRow();
+  const rowName = row?.querySelector('.theme-name')?.textContent?.trim();
+  const displayedName = document.querySelector('#active-theme-name')?.textContent?.trim();
+  return Boolean(row && rowName && displayedName && rowName !== displayedName);
+}
+
+function activeThemeFile() {
+  if (isExternalThemeState()) return null;
+  return activeThemeRow()?.dataset.file || null;
 }
 
 function sourceThemeRow(file) {
@@ -51,6 +71,34 @@ function paletteClone(row) {
   const clone = palette.cloneNode(true);
   clone.removeAttribute('id');
   return clone;
+}
+
+function appliedPaletteColors() {
+  const styles = getComputedStyle(document.documentElement);
+  return PALETTE_PREVIEW_VARS.map((name) => styles.getPropertyValue(name).trim() || 'transparent');
+}
+
+function rowPaletteColors(row) {
+  if (!row) return appliedPaletteColors();
+  const colors = Array.from(row.querySelectorAll('.palette-swatch'))
+    .map((swatch) => swatch.style.background || swatch.style.backgroundColor)
+    .filter(Boolean);
+  return colors.length ? colors : appliedPaletteColors();
+}
+
+function paintPalette(container, colors) {
+  if (!container) return;
+  const signature = colors.join('|');
+  if (container.dataset.paletteSignature === signature) return;
+
+  container.dataset.paletteSignature = signature;
+  const swatches = colors.map((color) => {
+    const swatch = document.createElement('span');
+    swatch.className = 'palette-swatch';
+    swatch.style.background = color;
+    return swatch;
+  });
+  container.replaceChildren(...swatches);
 }
 
 function makeThemeOption(sourceRow, root) {
@@ -104,19 +152,11 @@ function syncThemePicker(root) {
   const triggerName = picker.querySelector('[data-colorway-theme-name]');
   const triggerPalette = picker.querySelector('[data-colorway-theme-palette]');
 
-  if (triggerName) triggerName.textContent = name;
-  if (triggerPalette) {
-    triggerPalette.replaceChildren();
-    const sourcePalette = row?.querySelector('.theme-palette');
-    if (sourcePalette) {
-      sourcePalette.querySelectorAll('.palette-swatch').forEach((swatch) => {
-        triggerPalette.append(swatch.cloneNode(true));
-      });
-    }
-  }
+  if (triggerName && triggerName.textContent !== name) triggerName.textContent = name;
+  paintPalette(triggerPalette, rowPaletteColors(row));
 
   picker.querySelectorAll('.colorway-theme-option').forEach((option) => {
-    const selected = option.dataset.file === file;
+    const selected = Boolean(file) && option.dataset.file === file;
     option.classList.toggle('selected', selected);
     option.setAttribute('aria-selected', selected ? 'true' : 'false');
   });
@@ -194,6 +234,8 @@ function populateNativeStyleSelect(root) {
   const current = activeThemeFile();
   if (current && Array.from(select.options).some((option) => option.value === current)) {
     select.value = current;
+  } else if (!current) {
+    select.selectedIndex = -1;
   }
 }
 
@@ -306,16 +348,13 @@ function wireRoot(root) {
 
   const panel = root.querySelector('[data-settings-panel]');
   if (panel) {
-    let queued = false;
+    // Only react when obs-preview.js replaces the settings panel itself.
+    // Observing the whole subtree made our own palette synchronization feed
+    // back into this observer forever.
     new MutationObserver(() => {
-      if (queued) return;
-      queued = true;
-      queueMicrotask(() => {
-        queued = false;
-        ensureAppearanceControls(root);
-        makeSettingsPermanent(root);
-      });
-    }).observe(panel, { childList: true, subtree: true });
+      ensureAppearanceControls(root);
+      makeSettingsPermanent(root);
+    }).observe(panel, { childList: true });
   }
 
   const themeName = document.querySelector('#active-theme-name');
@@ -329,7 +368,12 @@ function wireRoot(root) {
     new MutationObserver(() => {
       refreshThemeOptions(root);
       syncThemePicker(root);
-    }).observe(themeList, { childList: true, subtree: true });
+    }).observe(themeList, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'aria-selected'],
+    });
   }
 
   const sourcePatternSelect = document.querySelector('#pattern-select');
