@@ -42,32 +42,32 @@
     radial-gradient(circle at 35% 42%, color-mix(in srgb, var(--ambient-c4) 58%, transparent), transparent 24%),
     radial-gradient(circle at 68% 61%, color-mix(in srgb, var(--ambient-c6) 38%, transparent), transparent 27%);
   filter: blur(18px);
-  animation: colorwayAmbientBreathe calc(var(--ambient-speed-a) * 1.35) ease-in-out infinite alternate;
+  animation: colorwayAmbientBreathe var(--ambient-speed-breathe) ease-in-out infinite alternate;
 }
 
 .colorway-ambient[data-ambient-mode="ribbons"] .colorway-ambient-field {
   background:
-    repeating-linear-gradient(
+    linear-gradient(
       var(--ambient-angle),
-      color-mix(in srgb, var(--ambient-c3) 34%, transparent) 0 calc(var(--ambient-tile) * .32),
-      transparent calc(var(--ambient-tile) * .32) calc(var(--ambient-tile) * .74),
-      color-mix(in srgb, var(--ambient-c5) 22%, transparent) calc(var(--ambient-tile) * .74) var(--ambient-tile)
-    );
+      color-mix(in srgb, var(--ambient-c3) 34%, transparent) 0 32%,
+      transparent 32% 74%,
+      color-mix(in srgb, var(--ambient-c5) 22%, transparent) 74% 100%
+    ) 0 0 / var(--ambient-tile) var(--ambient-tile-secondary);
 }
 
 .colorway-ambient[data-ambient-mode="ribbons"] .colorway-ambient-structure {
   background:
-    repeating-linear-gradient(
-      calc(var(--ambient-angle) + 90deg),
-      transparent 0 calc(var(--ambient-tile-secondary) * .7),
-      color-mix(in srgb, var(--ambient-c4) 26%, transparent) calc(var(--ambient-tile-secondary) * .7) var(--ambient-tile-secondary)
-    );
+    linear-gradient(
+      var(--ambient-angle-cross),
+      transparent 0 70%,
+      color-mix(in srgb, var(--ambient-c4) 26%, transparent) 70% 100%
+    ) 0 0 / var(--ambient-tile-secondary) var(--ambient-tile-secondary);
 }
 
 .colorway-ambient[data-ambient-mode="cells"] .colorway-ambient-field {
   background:
     radial-gradient(circle, color-mix(in srgb, var(--ambient-c3) 38%, transparent) 0 22%, transparent 23%) 0 0 / var(--ambient-tile) var(--ambient-tile),
-    radial-gradient(circle, color-mix(in srgb, var(--ambient-c5) 30%, transparent) 0 18%, transparent 19%) calc(var(--ambient-tile) / 2) calc(var(--ambient-tile) / 2) / var(--ambient-tile) var(--ambient-tile);
+    radial-gradient(circle, color-mix(in srgb, var(--ambient-c5) 30%, transparent) 0 18%, transparent 19%) var(--ambient-half-tile) var(--ambient-half-tile) / var(--ambient-tile) var(--ambient-tile);
 }
 
 .colorway-ambient[data-ambient-mode="cells"] .colorway-ambient-structure {
@@ -78,12 +78,17 @@
 
 .colorway-ambient[data-ambient-mode="orbit"] .colorway-ambient-field {
   background:
-    repeating-radial-gradient(
-      circle at var(--ambient-x) var(--ambient-y),
-      transparent 0 calc(var(--ambient-tile-secondary) * .48),
-      color-mix(in srgb, var(--ambient-c3) 28%, transparent) calc(var(--ambient-tile-secondary) * .5) calc(var(--ambient-tile-secondary) * .57),
-      transparent calc(var(--ambient-tile-secondary) * .59) var(--ambient-tile)
-    );
+    radial-gradient(
+      ellipse at 50% 50%,
+      transparent 0 48%,
+      color-mix(in srgb, var(--ambient-c3) 28%, transparent) 50% 57%,
+      transparent 59% 100%
+    ) 0 0 / var(--ambient-tile) var(--ambient-tile-secondary),
+    radial-gradient(
+      circle at 50% 50%,
+      color-mix(in srgb, var(--ambient-c5) 20%, transparent) 0 16%,
+      transparent 18% 100%
+    ) var(--ambient-half-tile) var(--ambient-half-tile) / var(--ambient-tile) var(--ambient-tile);
 }
 
 .colorway-ambient[data-ambient-mode="orbit"] .colorway-ambient-structure {
@@ -114,22 +119,22 @@
 
 .colorway-ambient[data-ambient-mode="waves"] .colorway-ambient-field {
   background:
-    repeating-radial-gradient(
-      ellipse at var(--ambient-x) var(--ambient-y),
-      transparent 0 calc(var(--ambient-tile-secondary) * .55),
-      color-mix(in srgb, var(--ambient-c3) 30%, transparent) calc(var(--ambient-tile-secondary) * .6) calc(var(--ambient-tile-secondary) * .72),
-      transparent calc(var(--ambient-tile-secondary) * .77) var(--ambient-tile)
-    );
+    radial-gradient(
+      ellipse at 50% 50%,
+      transparent 0 55%,
+      color-mix(in srgb, var(--ambient-c3) 30%, transparent) 60% 72%,
+      transparent 77% 100%
+    ) 0 0 / var(--ambient-tile) var(--ambient-tile-secondary);
 }
 
 .colorway-ambient[data-ambient-mode="waves"] .colorway-ambient-structure {
   background:
-    repeating-linear-gradient(
-      calc(var(--ambient-angle) + 35deg),
-      transparent 0 calc(var(--ambient-tile) * .62),
-      color-mix(in srgb, var(--ambient-c5) 22%, transparent) calc(var(--ambient-tile) * .64) calc(var(--ambient-tile) * .7),
-      transparent calc(var(--ambient-tile) * .72) var(--ambient-tile)
-    );
+    linear-gradient(
+      var(--ambient-angle-wave),
+      transparent 0 62%,
+      color-mix(in srgb, var(--ambient-c5) 22%, transparent) 64% 70%,
+      transparent 72% 100%
+    ) 0 0 / var(--ambient-tile) var(--ambient-tile);
 }
 
 /* Let the procedural source read around the dialog without reducing dialog legibility. */
@@ -145,7 +150,7 @@
 
 @keyframes colorwayAmbientDrift {
   from {
-    transform: translate3d(calc(var(--ambient-drift-x) * -.35), calc(var(--ambient-drift-y) * -.25), 0) scale(1.02);
+    transform: translate3d(var(--ambient-drift-x-start), var(--ambient-drift-y-start), 0) scale(1.02);
   }
   to {
     transform: translate3d(var(--ambient-drift-x), var(--ambient-drift-y), 0) scale(1.08);
@@ -154,12 +159,12 @@
 
 @keyframes colorwayAmbientSlide {
   from { background-position: 0 0, 0 0; }
-  to { background-position: var(--ambient-drift-x) var(--ambient-drift-y), calc(var(--ambient-drift-x) * -.7) calc(var(--ambient-drift-y) * .6); }
+  to { background-position: var(--ambient-drift-x) var(--ambient-drift-y), var(--ambient-drift-x-reverse) var(--ambient-drift-y-soft); }
 }
 
 @keyframes colorwayAmbientSpin {
   from { transform: rotate(0deg) scale(1.06); }
-  to { transform: rotate(calc(360deg * var(--ambient-spin))) scale(1.06); }
+  to { transform: rotate(var(--ambient-spin-angle)) scale(1.06); }
 }
 
 @keyframes colorwayAmbientBreathe {
