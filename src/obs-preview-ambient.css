@@ -1,0 +1,182 @@
+/* Palette-driven ambient source behind the permanent Settings controller. */
+.obs-sim-preview-area {
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.colorway-ambient {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at var(--ambient-x) var(--ambient-y), color-mix(in srgb, var(--ambient-c3) 42%, transparent), transparent 34%),
+    radial-gradient(circle at var(--ambient-x2) var(--ambient-y2), color-mix(in srgb, var(--ambient-c5) 30%, transparent), transparent 38%),
+    linear-gradient(var(--ambient-angle), var(--ambient-c2), var(--ambient-c1));
+}
+
+.colorway-ambient-field,
+.colorway-ambient-structure,
+.colorway-ambient-light {
+  position: absolute;
+  inset: -18%;
+  will-change: transform, background-position, opacity;
+}
+
+.colorway-ambient-field {
+  opacity: .62;
+  filter: saturate(1.12);
+  animation: colorwayAmbientDrift var(--ambient-speed-a) ease-in-out infinite alternate;
+}
+
+.colorway-ambient-structure {
+  opacity: .42;
+  mix-blend-mode: screen;
+  animation: colorwayAmbientSlide var(--ambient-speed-b) linear infinite;
+}
+
+.colorway-ambient-light {
+  opacity: .34;
+  background:
+    radial-gradient(circle at 35% 42%, color-mix(in srgb, var(--ambient-c4) 58%, transparent), transparent 24%),
+    radial-gradient(circle at 68% 61%, color-mix(in srgb, var(--ambient-c6) 38%, transparent), transparent 27%);
+  filter: blur(18px);
+  animation: colorwayAmbientBreathe calc(var(--ambient-speed-a) * 1.35) ease-in-out infinite alternate;
+}
+
+.colorway-ambient[data-ambient-mode="ribbons"] .colorway-ambient-field {
+  background:
+    repeating-linear-gradient(
+      var(--ambient-angle),
+      color-mix(in srgb, var(--ambient-c3) 34%, transparent) 0 calc(var(--ambient-tile) * .32),
+      transparent calc(var(--ambient-tile) * .32) calc(var(--ambient-tile) * .74),
+      color-mix(in srgb, var(--ambient-c5) 22%, transparent) calc(var(--ambient-tile) * .74) var(--ambient-tile)
+    );
+}
+
+.colorway-ambient[data-ambient-mode="ribbons"] .colorway-ambient-structure {
+  background:
+    repeating-linear-gradient(
+      calc(var(--ambient-angle) + 90deg),
+      transparent 0 calc(var(--ambient-tile-secondary) * .7),
+      color-mix(in srgb, var(--ambient-c4) 26%, transparent) calc(var(--ambient-tile-secondary) * .7) var(--ambient-tile-secondary)
+    );
+}
+
+.colorway-ambient[data-ambient-mode="cells"] .colorway-ambient-field {
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--ambient-c3) 38%, transparent) 0 22%, transparent 23%) 0 0 / var(--ambient-tile) var(--ambient-tile),
+    radial-gradient(circle, color-mix(in srgb, var(--ambient-c5) 30%, transparent) 0 18%, transparent 19%) calc(var(--ambient-tile) / 2) calc(var(--ambient-tile) / 2) / var(--ambient-tile) var(--ambient-tile);
+}
+
+.colorway-ambient[data-ambient-mode="cells"] .colorway-ambient-structure {
+  background:
+    linear-gradient(45deg, transparent 47%, color-mix(in srgb, var(--ambient-c4) 26%, transparent) 48% 52%, transparent 53%) 0 0 / var(--ambient-tile-secondary) var(--ambient-tile-secondary),
+    linear-gradient(-45deg, transparent 47%, color-mix(in srgb, var(--ambient-c6) 18%, transparent) 48% 52%, transparent 53%) 0 0 / var(--ambient-tile-secondary) var(--ambient-tile-secondary);
+}
+
+.colorway-ambient[data-ambient-mode="orbit"] .colorway-ambient-field {
+  background:
+    repeating-radial-gradient(
+      circle at var(--ambient-x) var(--ambient-y),
+      transparent 0 calc(var(--ambient-tile-secondary) * .48),
+      color-mix(in srgb, var(--ambient-c3) 28%, transparent) calc(var(--ambient-tile-secondary) * .5) calc(var(--ambient-tile-secondary) * .57),
+      transparent calc(var(--ambient-tile-secondary) * .59) var(--ambient-tile)
+    );
+}
+
+.colorway-ambient[data-ambient-mode="orbit"] .colorway-ambient-structure {
+  background: conic-gradient(
+    from var(--ambient-angle) at var(--ambient-x2) var(--ambient-y2),
+    transparent,
+    color-mix(in srgb, var(--ambient-c5) 36%, transparent),
+    transparent 32%,
+    color-mix(in srgb, var(--ambient-c4) 24%, transparent),
+    transparent 66%,
+    color-mix(in srgb, var(--ambient-c6) 22%, transparent),
+    transparent
+  );
+  animation-name: colorwayAmbientSpin;
+}
+
+.colorway-ambient[data-ambient-mode="lattice"] .colorway-ambient-field {
+  background:
+    linear-gradient(color-mix(in srgb, var(--ambient-c3) 24%, transparent) 1px, transparent 1px) 0 0 / var(--ambient-tile) var(--ambient-tile),
+    linear-gradient(90deg, color-mix(in srgb, var(--ambient-c4) 22%, transparent) 1px, transparent 1px) 0 0 / var(--ambient-tile) var(--ambient-tile),
+    linear-gradient(var(--ambient-angle), transparent 45%, color-mix(in srgb, var(--ambient-c5) 20%, transparent) 50%, transparent 55%);
+}
+
+.colorway-ambient[data-ambient-mode="lattice"] .colorway-ambient-structure {
+  background:
+    radial-gradient(circle at center, color-mix(in srgb, var(--ambient-c6) 26%, transparent) 0 2px, transparent 3px) 0 0 / var(--ambient-tile-secondary) var(--ambient-tile-secondary);
+}
+
+.colorway-ambient[data-ambient-mode="waves"] .colorway-ambient-field {
+  background:
+    repeating-radial-gradient(
+      ellipse at var(--ambient-x) var(--ambient-y),
+      transparent 0 calc(var(--ambient-tile-secondary) * .55),
+      color-mix(in srgb, var(--ambient-c3) 30%, transparent) calc(var(--ambient-tile-secondary) * .6) calc(var(--ambient-tile-secondary) * .72),
+      transparent calc(var(--ambient-tile-secondary) * .77) var(--ambient-tile)
+    );
+}
+
+.colorway-ambient[data-ambient-mode="waves"] .colorway-ambient-structure {
+  background:
+    repeating-linear-gradient(
+      calc(var(--ambient-angle) + 35deg),
+      transparent 0 calc(var(--ambient-tile) * .62),
+      color-mix(in srgb, var(--ambient-c5) 22%, transparent) calc(var(--ambient-tile) * .64) calc(var(--ambient-tile) * .7),
+      transparent calc(var(--ambient-tile) * .72) var(--ambient-tile)
+    );
+}
+
+/* Let the procedural source read around the dialog without reducing dialog legibility. */
+.obs-sim-preview-area > .obs-sim-dialog-backdrop {
+  z-index: 100;
+  background: color-mix(in srgb, var(--bg_preview, var(--bg_base)) 40%, transparent) !important;
+}
+
+.obs-sim-preview-area > .obs-sim-dialog-backdrop .obs-sim-dialog {
+  position: relative;
+  z-index: 101;
+}
+
+@keyframes colorwayAmbientDrift {
+  from {
+    transform: translate3d(calc(var(--ambient-drift-x) * -.35), calc(var(--ambient-drift-y) * -.25), 0) scale(1.02);
+  }
+  to {
+    transform: translate3d(var(--ambient-drift-x), var(--ambient-drift-y), 0) scale(1.08);
+  }
+}
+
+@keyframes colorwayAmbientSlide {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: var(--ambient-drift-x) var(--ambient-drift-y), calc(var(--ambient-drift-x) * -.7) calc(var(--ambient-drift-y) * .6); }
+}
+
+@keyframes colorwayAmbientSpin {
+  from { transform: rotate(0deg) scale(1.06); }
+  to { transform: rotate(calc(360deg * var(--ambient-spin))) scale(1.06); }
+}
+
+@keyframes colorwayAmbientBreathe {
+  from {
+    transform: translate3d(-2%, 1%, 0) scale(.98);
+    opacity: .22;
+  }
+  to {
+    transform: translate3d(2%, -1.5%, 0) scale(1.08);
+    opacity: .44;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .colorway-ambient-field,
+  .colorway-ambient-structure,
+  .colorway-ambient-light {
+    animation: none !important;
+  }
+}
