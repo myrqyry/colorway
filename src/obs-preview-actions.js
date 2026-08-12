@@ -1,4 +1,17 @@
 import './obs-preview-actions.css';
+import { applyTheme } from './theme-loader.js';
+import {
+  downloadThemeText,
+  importThemeFile,
+  serializeOVT,
+  toYamiOVT,
+} from './theme-workbench.js';
+
+let appliedExternalTheme = null;
+let stagedImportedTheme = null;
+let stagedImportedGeneration = 0;
+let stagedGeneratedTheme = null;
+let settingsImportGeneration = 0;
 
 function activeThemeName() {
   return document.querySelector('#active-theme-name')?.textContent?.trim()
@@ -22,11 +35,8 @@ function isGeneratedTheme() {
   return /^Generated\b/i.test(themeStatus());
 }
 
-function clickEnabled(selector) {
-  const control = document.querySelector(selector);
-  if (!control || control.disabled) return false;
-  control.click();
-  return true;
+function externalThemeIsActive() {
+  return isImportedTheme() || isGeneratedTheme();
 }
 
 function downloadBuiltInColorway() {
@@ -60,23 +70,31 @@ function downloadBuiltInYami() {
   return true;
 }
 
+function safeFilenameStem(theme) {
+  return String(theme?.id || theme?.name || 'colorway-theme')
+    .replace(/[^a-z0-9._-]+/gi, '-')
+    .replace(/^-+|-+$/g, '')
+    || 'colorway-theme';
+}
+
+function downloadAppliedExternal(kind = 'colorway') {
+  const theme = appliedExternalTheme?.theme;
+  if (!theme) return false;
+
+  const text = kind === 'yami' ? toYamiOVT(theme) : serializeOVT(theme);
+  const stem = safeFilenameStem(theme);
+  downloadThemeText(text, kind === 'yami' ? `${stem}-yami.ovt` : `${stem}.ovt`);
+  return true;
+}
+
 function downloadCurrent(kind = 'colorway') {
-  if (isImportedTheme()) {
-    return clickEnabled(kind === 'yami'
-      ? '#workbench-download-import-yami'
-      : '#workbench-download-import');
-  }
-
-  if (isGeneratedTheme()) {
-    return clickEnabled(kind === 'yami'
-      ? '#workbench-lospec-download-yami'
-      : '#workbench-lospec-download');
-  }
-
+  if (externalThemeIsActive()) return downloadAppliedExternal(kind);
   return kind === 'yami' ? downloadBuiltInYami() : downloadBuiltInColorway();
 }
 
 function syncBrand(root) {
+  if (!externalThemeIsActive()) appliedExternalTheme = null;
+
   const name = activeThemeName();
   const brandTheme = root.querySelector('[data-colorway-brand-theme]');
   const actionTheme = root.querySelector('[data-colorway-action-theme]');
@@ -119,31 +137,156 @@ function closeDownloadMenu(root) {
   toggle?.setAttribute('aria-expanded', 'false');
 }
 
-function wireImportAutoApply() {
-  const input = document.querySelector('#workbench-file');
-  if (!input || input.dataset.colorwaySettingsWired === 'true') return;
-  input.dataset.colorwaySettingsWired = 'true';
-
-  input.addEventListener('change', () => {
-    if (!input.files?.[0]) return;
-    const apply = document.querySelector('#workbench-apply');
-    if (!apply) return;
-
-    // main.js parses the file asynchronously and enables Apply when it is
-    // ready. Disable the old state now so we never apply a previous import.
-    apply.disabled = true;
-    const observer = new MutationObserver(() => {
-      if (apply.disabled) return;
-      observer.disconnect();
-      apply.click();
-    });
-    observer.observe(apply, { attributes: true, attributeFilter: ['disabled'] });
+function clearCatalogSelection() {
+  document.querySelectorAll('#theme-list .theme-row.active').forEach((row) => {
+    row.classList.remove('active');
+    row.setAttribute('aria-selected', 'false');
   });
 }
 
-function triggerImport() {
-  wireImportAutoApply();
+function refreshPaletteGrid() {
+  const styles = getComputedStyle(document.documentElement);
+  document.querySelectorAll('#palette-grid .palette-chip').forEach((chip) => {
+    const variable = chip.title?.split(':')[0]?.trim();
+    if (!variable?.startsWith('--')) return;
+    const value = styles.getPropertyValue(variable).trim();
+    if (!value) return;
+    const swatch = chip.querySelector('.palette-swatch');
+    const label = chip.querySelector('.palette-hex');
+    if (swatch) swatch.style.background = value;
+    if (label) label.textContent = value;
+    chip.title = `${variable}: ${value}`;
+  });
+}
+
+function applyExternalTheme(theme, kind = 'imported') {
+  applyTheme({ ...theme.tokens, _name: theme.name, _dark: theme.dark });
+  appliedExternalTheme = { kind, theme };
+  clearCatalogSelection();
+
+  const name = document.querySelector('#active-theme-name');
+  const status = document.querySelector('#theme-status');
+  if (name) name.textContent = theme.name;
+  if (status) {
+    const label = kind === 'generated' ? 'Generated' : 'Imported';
+    status.textContent = `${label} — ${Object.keys(theme.tokens).length} vars`;
+  }
+  refreshPaletteGrid();
+}
+
+async function stageImportedFile(file) {
+  if (!file) return;
+  const generation = ++stagedImportedGeneration;
+  try {
+    const theme = await importThemeFile(file);
+    if (generation === stagedImportedGeneration) stagedImportedTheme = theme;
+  } catch {
+    if (generation === stagedImportedGeneration) stagedImportedTheme = null;
+  }
+}
+
+function generatedId(name) {
+  const slug = String(name || 'lospec')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'lospec';
+  return `com.myrqyry.Colorway.${slug}`;
+}
+
+function parseGeneratedPreview() {
+  const preview = document.querySelector('#workbench-lospec-preview');
+  const text = preview?.textContent || '';
+  const name = text.match(/^Palette:\s*(.+)$/m)?.[1]?.trim();
+  const darkRaw = text.match(/^Dark mode:\s*(true|false)$/mi)?.[1];
+  if (!name || darkRaw == null) return null;
+
+  const tokens = {};
+  for (const line of text.split('\n')) {
+    const match = line.match(/^\s*(--[\w-]+):\s*(.+)$/);
+    if (match) tokens[match[1]] = match[2].trim();
+  }
+  if (!Object.keys(tokens).length) return null;
+
+  return {
+    id: generatedId(name),
+    name,
+    author: 'Lospec',
+    dark: darkRaw.toLowerCase() === 'true',
+    extendsId: 'com.myrqyry.Colorway',
+    tokens,
+    sourceFormat: 'external',
+  };
+}
+
+function wireWorkbenchSnapshots() {
   const input = document.querySelector('#workbench-file');
+  if (input && input.dataset.colorwaySnapshotWired !== 'true') {
+    input.dataset.colorwaySnapshotWired = 'true';
+    input.addEventListener('change', () => stageImportedFile(input.files?.[0]));
+  }
+
+  const drop = document.querySelector('#workbench-drop');
+  if (drop && drop.dataset.colorwaySnapshotWired !== 'true') {
+    drop.dataset.colorwaySnapshotWired = 'true';
+    drop.addEventListener('drop', (event) => stageImportedFile(event.dataTransfer?.files?.[0]));
+  }
+
+  const applyImport = document.querySelector('#workbench-apply');
+  if (applyImport && applyImport.dataset.colorwaySnapshotWired !== 'true') {
+    applyImport.dataset.colorwaySnapshotWired = 'true';
+    applyImport.addEventListener('click', () => {
+      if (stagedImportedTheme) appliedExternalTheme = { kind: 'imported', theme: stagedImportedTheme };
+    });
+  }
+
+  const lospecPreview = document.querySelector('#workbench-lospec-preview');
+  if (lospecPreview && lospecPreview.dataset.colorwaySnapshotWired !== 'true') {
+    lospecPreview.dataset.colorwaySnapshotWired = 'true';
+    const update = () => {
+      const parsed = parseGeneratedPreview();
+      if (parsed) stagedGeneratedTheme = parsed;
+    };
+    new MutationObserver(update).observe(lospecPreview, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+    update();
+  }
+
+  const applyGenerated = document.querySelector('#workbench-lospec-apply');
+  if (applyGenerated && applyGenerated.dataset.colorwaySnapshotWired !== 'true') {
+    applyGenerated.dataset.colorwaySnapshotWired = 'true';
+    applyGenerated.addEventListener('click', () => {
+      if (stagedGeneratedTheme) appliedExternalTheme = { kind: 'generated', theme: stagedGeneratedTheme };
+    });
+  }
+}
+
+async function importFromSettings(root, file) {
+  if (!file) return;
+  const generation = ++settingsImportGeneration;
+  const button = root.querySelector('[data-colorway-import]');
+  if (button) {
+    button.disabled = true;
+    button.textContent = 'Importing…';
+  }
+
+  try {
+    const theme = await importThemeFile(file);
+    if (generation !== settingsImportGeneration) return;
+    applyExternalTheme(theme, 'imported');
+    syncBrand(root);
+  } finally {
+    if (generation === settingsImportGeneration && button) {
+      button.disabled = false;
+      button.textContent = 'Import';
+    }
+  }
+}
+
+function triggerImport(root) {
+  const input = root.querySelector('[data-colorway-settings-file]');
   if (!input) return;
   input.value = '';
   input.click();
@@ -164,6 +307,7 @@ function ensureActions(root) {
         <strong data-colorway-action-theme></strong>
       </div>
       <div class="colorway-action-spacer"></div>
+      <input type="file" accept=".ovt,text/plain" data-colorway-settings-file hidden>
       <button type="button" class="colorway-settings-action" data-colorway-import>
         Import
       </button>
@@ -193,7 +337,9 @@ function ensureActions(root) {
     `;
     dialog.append(actions);
 
-    actions.querySelector('[data-colorway-import]')?.addEventListener('click', triggerImport);
+    const settingsFile = actions.querySelector('[data-colorway-settings-file]');
+    settingsFile?.addEventListener('change', () => importFromSettings(root, settingsFile.files?.[0]));
+    actions.querySelector('[data-colorway-import]')?.addEventListener('click', () => triggerImport(root));
     actions.querySelector('[data-colorway-download-main]')?.addEventListener('click', () => {
       downloadCurrent('colorway');
       closeDownloadMenu(root);
@@ -225,16 +371,15 @@ function wireRoot(root) {
 
   ensureBrand(root);
   ensureActions(root);
-  wireImportAutoApply();
+  wireWorkbenchSnapshots();
 
   const dialog = root.querySelector('.obs-sim-dialog');
   if (dialog) {
-    // obs-preview-refine keeps Settings permanent and older code may remove
-    // the stock action row again when switching settings pages. Restore only
-    // our direct child when that happens; do not observe the whole subtree.
+    // Restore our direct product row if older preview code replaces dialog children.
     new MutationObserver(() => {
       ensureBrand(root);
       ensureActions(root);
+      wireWorkbenchSnapshots();
     }).observe(dialog, { childList: true });
   }
 
