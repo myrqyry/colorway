@@ -32,12 +32,29 @@ test('Colorway remains the default download while Yami is an optional compatibil
   assert.match(actions, /kind === 'yami'/);
 });
 
-test('Settings Import reuses the existing importer and auto-applies only after parsing completes', () => {
-  assert.match(actions, /document\.querySelector\('#workbench-file'\)/);
-  assert.match(actions, /document\.querySelector\('#workbench-apply'\)/);
-  assert.match(actions, /apply\.disabled = true/);
-  assert.match(actions, /observer\.observe\(apply, \{ attributes: true, attributeFilter: \['disabled'\] \}\)/);
-  assert.match(actions, /apply\.click\(\)/);
+test('Settings Import parses and applies independently of delayed workbench initialization', () => {
+  assert.match(actions, /data-colorway-settings-file/);
+  assert.match(actions, /await importThemeFile\(file\)/);
+  assert.match(actions, /applyExternalTheme\(theme, 'imported'\)/);
+  assert.match(actions, /settingsImportGeneration/);
+  assert.doesNotMatch(actions, /observer\.observe\(apply/);
+});
+
+test('downloads are bound to the actually applied external theme snapshot', () => {
+  assert.match(actions, /let appliedExternalTheme = null/);
+  assert.match(actions, /const theme = appliedExternalTheme\?\.theme/);
+  assert.match(actions, /serializeOVT\(theme\)/);
+  assert.match(actions, /toYamiOVT\(theme\)/);
+  assert.match(actions, /stagedImportedTheme/);
+  assert.match(actions, /stagedGeneratedTheme/);
+});
+
+test('workbench staging and applied state are tracked separately', () => {
+  assert.match(actions, /stageImportedFile\(input\.files\?\.\[0\]\)/);
+  assert.match(actions, /stageImportedFile\(event\.dataTransfer\?\.files\?\.\[0\]\)/);
+  assert.match(actions, /parseGeneratedPreview\(\)/);
+  assert.match(actions, /appliedExternalTheme = \{ kind: 'imported', theme: stagedImportedTheme \}/);
+  assert.match(actions, /appliedExternalTheme = \{ kind: 'generated', theme: stagedGeneratedTheme \}/);
 });
 
 test('preview polish follows Colorway theme variables rather than fixed product colors', () => {
