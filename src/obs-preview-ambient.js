@@ -94,6 +94,8 @@ function syncAmbient(root) {
   });
 
   const angle = Math.round(random() * 150 + 15);
+  const angleCross = (angle + 90) % 360;
+  const angleWave = (angle + 35) % 360;
   const tile = Math.round(random() * 42 + 34);
   const tileSecondary = Math.round(tile * (0.55 + random() * 0.45));
   const x = Math.round(random() * 70 + 15);
@@ -102,22 +104,30 @@ function syncAmbient(root) {
   const y2 = Math.round(random() * 70 + 15);
   const driftX = Math.round(random() * 70 + 30);
   const driftY = Math.round(random() * 55 + 20);
-  const speedA = (18 + random() * 18).toFixed(2);
-  const speedB = (28 + random() * 26).toFixed(2);
+  const speedA = 18 + random() * 18;
+  const speedB = 28 + random() * 26;
   const spin = random() > 0.5 ? 1 : -1;
 
   layer.style.setProperty('--ambient-angle', `${angle}deg`);
+  layer.style.setProperty('--ambient-angle-cross', `${angleCross}deg`);
+  layer.style.setProperty('--ambient-angle-wave', `${angleWave}deg`);
   layer.style.setProperty('--ambient-tile', `${tile}px`);
   layer.style.setProperty('--ambient-tile-secondary', `${tileSecondary}px`);
+  layer.style.setProperty('--ambient-half-tile', `${Math.round(tile / 2)}px`);
   layer.style.setProperty('--ambient-x', `${x}%`);
   layer.style.setProperty('--ambient-y', `${y}%`);
   layer.style.setProperty('--ambient-x2', `${x2}%`);
   layer.style.setProperty('--ambient-y2', `${y2}%`);
   layer.style.setProperty('--ambient-drift-x', `${driftX}px`);
   layer.style.setProperty('--ambient-drift-y', `${driftY}px`);
-  layer.style.setProperty('--ambient-speed-a', `${speedA}s`);
-  layer.style.setProperty('--ambient-speed-b', `${speedB}s`);
-  layer.style.setProperty('--ambient-spin', spin);
+  layer.style.setProperty('--ambient-drift-x-start', `${Math.round(driftX * -0.35)}px`);
+  layer.style.setProperty('--ambient-drift-y-start', `${Math.round(driftY * -0.25)}px`);
+  layer.style.setProperty('--ambient-drift-x-reverse', `${Math.round(driftX * -0.7)}px`);
+  layer.style.setProperty('--ambient-drift-y-soft', `${Math.round(driftY * 0.6)}px`);
+  layer.style.setProperty('--ambient-speed-a', `${speedA.toFixed(2)}s`);
+  layer.style.setProperty('--ambient-speed-b', `${speedB.toFixed(2)}s`);
+  layer.style.setProperty('--ambient-speed-breathe', `${(speedA * 1.35).toFixed(2)}s`);
+  layer.style.setProperty('--ambient-spin-angle', spin > 0 ? '360deg' : '-360deg');
 }
 
 function wireRoot(root) {
