@@ -1,4 +1,5 @@
 import './styles.css';
+import { gsap } from 'gsap';
 import { THEMES, DEFAULT_THEME, PATTERNS, DEFAULT_PATTERN } from './theme-catalog.js';
 import { PALETTE_VARS, PALETTE_GROUPS, applyTheme, loadTheme } from './theme-loader.js';
 import { toNormalizedTheme, serializeOVT, toYamiOVT, downloadThemeText, importThemeFile, fromLospecPalette, lospecSlugFromUrl } from './theme-workbench.js';
@@ -368,6 +369,19 @@ async function setTheme(file) {
   const name = document.querySelector('#active-theme-name');
   status.textContent = 'Loading theme variables...';
 
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const showcase = document.querySelector('.showcase-grid');
+  const fadeOut = () => {
+    if (!showcase) return;
+    gsap.killTweensOf(showcase);
+    gsap.to(showcase, { autoAlpha: 0, duration: reduceMotion ? 0 : 0.25, ease: 'power1.in' });
+  };
+  const fadeIn = () => {
+    if (!showcase) return;
+    gsap.to(showcase, { autoAlpha: 1, duration: reduceMotion ? 0 : 0.4, ease: 'power2.out', overwrite: true });
+  };
+  fadeOut();
+
   try {
     const theme = await loadTheme(file);
     applyTheme(theme);
@@ -382,8 +396,10 @@ async function setTheme(file) {
       row.classList.toggle('active', row.dataset.file === file);
       row.setAttribute('aria-selected', row.dataset.file === file);
     });
+    fadeIn();
   } catch (error) {
     status.textContent = error.message;
+    fadeIn();
     const grid = document.querySelector('#palette-grid');
     if (grid) {
       const errorElement = document.createElement('div');
