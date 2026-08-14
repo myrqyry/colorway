@@ -9,6 +9,8 @@ const rootThemesDir = new URL('../themes/', import.meta.url);
 const publicThemesDir = new URL('../public/themes/', import.meta.url);
 const rootPatternsDir = new URL('../patterns/', import.meta.url);
 const publicPatternsDir = new URL('../public/patterns/', import.meta.url);
+const rootFontsDir = new URL('../fonts/', import.meta.url);
+const publicFontsDir = new URL('../public/fonts/', import.meta.url);
 
 function readTheme(dir, file) {
   return readFileSync(new URL(file, dir), 'utf8');
@@ -83,6 +85,27 @@ test('public patterns mirror the root patterns', () => {
     const rootText = readTheme(rootPatternsDir, file);
     const publicText = readTheme(publicPatternsDir, file);
     assert.equal(publicText, rootText, `${file} is out of sync with public/patterns`);
+  }
+});
+
+test('public fonts mirror the root fonts', () => {
+  const rootFiles = readdirSync(rootFontsDir, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && /\.(ttf|otf|woff2?)$/.test(entry.name))
+    .map((entry) => entry.name)
+    .sort();
+  const publicFiles = new Set(
+    readdirSync(publicFontsDir, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && /\.(ttf|otf|woff2?)$/.test(entry.name))
+      .map((entry) => entry.name),
+  );
+
+  assert.equal(publicFiles.size, rootFiles.length, 'public fonts count mismatch');
+
+  for (const file of rootFiles) {
+    assert.ok(publicFiles.has(file), `${file} missing from public/fonts`);
+    const rootBuf = readFileSync(new URL(file, rootFontsDir));
+    const publicBuf = readFileSync(new URL(file, publicFontsDir));
+    assert.equal(rootBuf.compare(publicBuf), 0, `${file} is out of sync with public/fonts`);
   }
 });
 

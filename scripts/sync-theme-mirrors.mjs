@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -172,6 +172,14 @@ const publicPatternsDir = path.join(repoRoot, 'public', 'patterns');
 for (const name of readdirSync(patternsDir)) {
   if (!/\.svg$/.test(name)) continue;
   writeFileSync(path.join(publicPatternsDir, name), readFileSync(path.join(patternsDir, name)));
+}
+
+const fontsDir = path.join(repoRoot, 'fonts');
+const publicFontsDir = path.join(repoRoot, 'public', 'fonts');
+mkdirSync(publicFontsDir, { recursive: true });
+for (const name of readdirSync(fontsDir)) {
+  if (!/\.(ttf|otf|woff2?)$/.test(name)) continue;
+  writeFileSync(path.join(publicFontsDir, name), readFileSync(path.join(fontsDir, name)));
 }
 
 console.log(`synced ${graph.themeFiles.length} theme files to public/themes`);

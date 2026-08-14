@@ -326,6 +326,20 @@
   list-style: none;
 }
 
+.theme-group-label {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text_muted);
+  background: color-mix(in srgb, var(--bg_window) 92%, var(--border_color));
+  border-bottom: 1px solid var(--border_color);
+}
+
 .theme-row {
   display: flex;
   align-items: center;
@@ -827,12 +841,91 @@
   color: var(--text_muted);
   transition: opacity 0.12s, color 0.12s;
   line-height: 0;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .theme-row:hover .theme-download,
 .theme-row:focus-within .theme-download { opacity: 1; }
 
 .theme-download:hover { color: var(--primary); }
+
+.theme-download-menu {
+  position: fixed;
+  z-index: 50;
+  width: 220px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--bg_window);
+  border: 1px solid var(--border_color);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.theme-download-menu[hidden] { display: none; }
+
+.theme-download-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+  padding: 4px;
+  user-select: none;
+}
+
+.theme-download-toggle input {
+  accent-color: var(--primary);
+}
+
+.theme-download-go {
+  border: 1px solid var(--border_color);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 12px;
+  background: var(--bg_hover);
+  color: var(--text_light);
+  cursor: pointer;
+  transition: background-color 0.12s, border-color 0.12s;
+}
+
+.theme-download-go:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text_inverse);
+}
+
+.theme-shuffle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.theme-shuffle-ring { transform: rotate(-90deg); }
+
+.theme-shuffle-track {
+  stroke: var(--border_color);
+}
+
+.theme-shuffle-progress {
+  stroke: var(--primary);
+  transition: stroke-dashoffset 0.1s linear;
+}
+
+.theme-shuffle:hover .theme-shuffle-progress,
+.theme-shuffle.paused .theme-shuffle-progress {
+  stroke: var(--warning);
+}
 
 .workbench-import-section {
   margin-bottom: 10px;

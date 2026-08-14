@@ -37,12 +37,13 @@ async function preloadAllThemes() {
     await Promise.all(THEMES.slice(i, i + CHUNK).map(async (theme) => {
       try {
         const resolved = await loadTheme(theme.file);
-        themeData[theme.file] = { name: resolved._name || theme.name, palette: extractPalettePreview(resolved) };
+        themeData[theme.file] = { name: resolved._name || theme.name, palette: extractPalettePreview(resolved), dark: resolved._dark !== false };
       } catch (error) {
         console.warn(`Failed to load theme ${theme.file}:`, error);
         themeData[theme.file] = {
           name: theme.name,
-          palette: Array(6).fill('#808080')
+          palette: Array(6).fill('#808080'),
+          dark: true
         };
       }
     }));
@@ -57,7 +58,7 @@ async function preloadAllThemes() {
  * @returns {string} HTML string for the theme list
  */
 function renderThemeList(themeData, activeTheme) {
-  return THEMES.map((theme) => {
+  const rowFor = (theme) => {
     const { name, palette } = themeData[theme.file];
     const active = theme.file === activeTheme ? 'active' : '';
     const swatches = palette.map(color => `
@@ -69,12 +70,18 @@ function renderThemeList(themeData, activeTheme) {
         <span class="theme-palette">
           ${swatches}
         </span>
-        <a class="theme-download" href="/themes/${encodeURIComponent(theme.file)}" download="${escapeHtml(theme.file)}" title="Download .ovt" aria-label="Download ${escapeHtml(name)}">
+        <a class="theme-download" href="#" data-file="${escapeHtml(theme.file)}" title="Download theme package" aria-label="Download ${escapeHtml(name)}" aria-haspopup="true" aria-expanded="false">
           <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 1.5a.75.75 0 0 1 .75.75v6.69l1.97-1.97a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 8.03a.75.75 0 0 1 1.06-1.06l1.97 1.97V2.25A.75.75 0 0 1 8 1.5Zm-5.5 11a.75.75 0 0 1 .75.75v.5h9.5v-.5a.75.75 0 0 1 1.5 0v.5A1.5 1.5 0 0 1 12.75 15H3.25A1.5 1.5 0 0 1 1.75 13.75v-.5a.75.75 0 0 1 .75-.75Z"/></svg>
         </a>
       </button>
     `;
-  }).join('');
+  };
+  const dark = THEMES.filter((t) => themeData[t.file]?.dark !== false);
+  const light = THEMES.filter((t) => themeData[t.file]?.dark === false);
+  const group = (label, themes) => themes.length
+    ? `<div class="theme-group"><div class="theme-group-label">${label}</div>${themes.map(rowFor).join('')}</div>`
+    : '';
+  return group('Dark', dark) + group('Light', light);
 }
 
 const app = document.querySelector('#app');
@@ -124,6 +131,15 @@ function renderApp() {
           <div class="showcase-picker">
             <label for="pattern-select">Pattern</label>
             <select id="pattern-select">${renderPatternOptions()}</select>
+          </div>
+          <div class="showcase-picker">
+            <label for="theme-shuffle">Shuffle</label>
+            <button type="button" id="theme-shuffle" class="theme-shuffle" title="Next random theme in a few seconds — hover to pause" aria-label="Next random theme in a few seconds — hover to pause">
+              <svg class="theme-shuffle-ring" viewBox="0 0 36 36" width="18" height="18" aria-hidden="true">
+                <circle class="theme-shuffle-track" cx="18" cy="18" r="15.915" fill="none" stroke-width="3.5"></circle>
+                <circle class="theme-shuffle-progress" id="theme-shuffle-progress" cx="18" cy="18" r="15.915" fill="none" stroke-width="3.5"></circle>
+              </svg>
+            </button>
           </div>
           <div class="showcase-info" id="theme-info">
             <span id="active-theme-name">Loading…</span>
@@ -336,6 +352,13 @@ function renderApp() {
           </div>
         </section>
       </div>
+      <div class="theme-download-menu" id="theme-download-menu" hidden role="menu" aria-label="Download options">
+        <label class="theme-download-toggle">
+          <input type="checkbox" id="theme-download-base" checked />
+          <span>Include base theme (.obt)</span>
+        </label>
+        <button type="button" class="theme-download-go" id="theme-download-go">Download .ovt + assets</button>
+      </div>
     </div>
   `;
 }
@@ -397,11 +420,58 @@ const patternSelect = document.querySelector('#pattern-select');
 patternSelect.addEventListener('change', () => applyCurrentPattern());
 
 // Theme list event listeners
+const downloadMenu = document.querySelector('#theme-download-menu');
+const downloadGo = document.querySelector('#theme-download-go');
+const downloadBase = document.querySelector('#theme-download-base');
+let downloadForFile = null;
+
+function positionDownloadMenu(anchor) {
+  const rect = anchor.getBoundingClientRect();
+  const menuWidth = 220;
+  const left = Math.min(rect.right - menuWidth, window.innerWidth - menuWidth - 8);
+  downloadMenu.style.left = `${Math.max(8, left)}px`;
+  downloadMenu.style.top = `${rect.bottom + 6}px`;
+}
+
+function downloadUrl(url, filename) {
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+function downloadThemeBundle(file, includeBase) {
+  downloadUrl(`/themes/${encodeURIComponent(file)}`, file);
+  if (includeBase) downloadUrl('/themes/Colorway.obt', 'Colorway.obt');
+  downloadUrl('/fonts/BricolageGrotesqueVariable.ttf', 'BricolageGrotesqueVariable.ttf');
+  PATTERNS.forEach((p) => downloadUrl(`/patterns/${encodeURIComponent(p.file)}`, p.file));
+}
+
 document.addEventListener('click', (e) => {
+  const dl = e.target.closest('.theme-download');
+  if (dl) {
+    e.preventDefault();
+    e.stopPropagation();
+    downloadForFile = dl.dataset.file;
+    positionDownloadMenu(dl);
+    downloadMenu.hidden = !downloadMenu.hidden;
+    return;
+  }
+  if (!downloadMenu.hidden && !e.target.closest('#theme-download-menu')) {
+    downloadMenu.hidden = true;
+  }
   const row = e.target.closest('.theme-row');
   if (row) {
     setTheme(row.dataset.file);
   }
+});
+
+downloadGo?.addEventListener('click', () => {
+  if (!downloadForFile) return;
+  downloadThemeBundle(downloadForFile, downloadBase.checked);
+  downloadMenu.hidden = true;
 });
 
 // Keyboard navigation
@@ -427,10 +497,60 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Preload themes and render list
+const SHUFFLE_MS = 10000;
+const shuffleButton = document.querySelector('#theme-shuffle');
+const shuffleProgress = document.querySelector('#theme-shuffle-progress');
+const RING_CIRC = 2 * Math.PI * 15.915;
+let shuffleRemaining = SHUFFLE_MS;
+let shufflePaused = false;
+let shuffleTimer = null;
+let darkThemeFiles = null;
+
+function pickRandomTheme() {
+  const current = document.querySelector('.theme-row.active')?.dataset.file;
+  const pool = (darkThemeFiles || THEMES.map((t) => t.file)).filter((f) => f !== current);
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function updateShuffleRing() {
+  if (!shuffleProgress) return;
+  const frac = Math.max(0, shuffleRemaining / SHUFFLE_MS);
+  shuffleProgress.style.strokeDashoffset = String(RING_CIRC * (1 - frac));
+}
+
+function startShuffle() {
+  clearInterval(shuffleTimer);
+  shuffleTimer = setInterval(() => {
+    if (shufflePaused) return;
+    shuffleRemaining -= 100;
+    if (shuffleRemaining <= 0) {
+      shuffleRemaining = SHUFFLE_MS;
+      setTheme(pickRandomTheme());
+    }
+    updateShuffleRing();
+  }, 100);
+}
+
+shuffleButton?.addEventListener('mouseenter', () => {
+  shufflePaused = true;
+  shuffleButton.classList.add('paused');
+});
+shuffleButton?.addEventListener('mouseleave', () => {
+  shufflePaused = false;
+  shuffleButton.classList.remove('paused');
+});
+shuffleButton?.addEventListener('click', () => {
+  shuffleRemaining = 0;
+});
+shuffleProgress?.style.setProperty('stroke-dasharray', String(RING_CIRC));
+
 preloadAllThemes().then((themeData) => {
-  themeList.innerHTML = renderThemeList(themeData, DEFAULT_THEME);
-  setTheme(DEFAULT_THEME);
+  darkThemeFiles = THEMES.filter((t) => themeData[t.file]?.dark !== false).map((t) => t.file);
+  const initialTheme = pickRandomTheme();
+  themeList.innerHTML = renderThemeList(themeData, initialTheme);
+  setTheme(initialTheme);
   initWorkbench();
+  startShuffle();
 });
 
 document.querySelectorAll('.demo-slider, .mixer-slider-mini').forEach((slider) => {
