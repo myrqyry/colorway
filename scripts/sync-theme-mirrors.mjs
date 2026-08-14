@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { PALETTE_VARS } from '../src/theme-loader.js';
 
 const repoRoot = fileURLToPath(new URL('../', import.meta.url));
+const themesDir = path.join(repoRoot, 'themes');
 const publicThemesDir = path.join(repoRoot, 'public', 'themes');
 
 function parseMeta(text) {
@@ -35,8 +36,8 @@ function parseVars(text) {
 }
 
 function buildGraph() {
-  const rootTheme = readFileSync(path.join(repoRoot, 'Colorway.obt'), 'utf8');
-  const themeFiles = readdirSync(repoRoot)
+  const rootTheme = readFileSync(path.join(themesDir, 'Colorway.obt'), 'utf8');
+  const themeFiles = readdirSync(themesDir)
     .filter((name) => /^Colorway-.*\.ovt$/.test(name))
     .sort();
 
@@ -44,7 +45,7 @@ function buildGraph() {
   parsedByFile.set('Colorway.obt', { meta: parseMeta(rootTheme), vars: parseVars(rootTheme) });
 
   for (const file of themeFiles) {
-    const text = readFileSync(path.join(repoRoot, file), 'utf8');
+    const text = readFileSync(path.join(themesDir, file), 'utf8');
     parsedByFile.set(file, { meta: parseMeta(text), vars: parseVars(text) });
   }
 
@@ -150,7 +151,7 @@ function injectCommentBlock(text, commentBlock) {
 }
 
 function syncFile(file, graph) {
-  const sourcePath = path.join(repoRoot, file);
+  const sourcePath = path.join(themesDir, file);
   const publicPath = path.join(publicThemesDir, file);
   const sourceText = readFileSync(sourcePath, 'utf8');
   const resolved = resolveTheme(file, graph);
@@ -164,6 +165,13 @@ function syncFile(file, graph) {
 const graph = buildGraph();
 for (const file of graph.themeFiles) {
   syncFile(file, graph);
+}
+
+const patternsDir = path.join(repoRoot, 'patterns');
+const publicPatternsDir = path.join(repoRoot, 'public', 'patterns');
+for (const name of readdirSync(patternsDir)) {
+  if (!/\.svg$/.test(name)) continue;
+  writeFileSync(path.join(publicPatternsDir, name), readFileSync(path.join(patternsDir, name)));
 }
 
 console.log(`synced ${graph.themeFiles.length} theme files to public/themes`);

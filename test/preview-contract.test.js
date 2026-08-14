@@ -5,8 +5,10 @@ import assert from 'node:assert/strict';
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const styles = readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8');
 const themeLoader = readFileSync(new URL('../src/theme-loader.js', import.meta.url), 'utf8');
-const rootThemesDir = new URL('../', import.meta.url);
+const rootThemesDir = new URL('../themes/', import.meta.url);
 const publicThemesDir = new URL('../public/themes/', import.meta.url);
+const rootPatternsDir = new URL('../patterns/', import.meta.url);
+const publicPatternsDir = new URL('../public/patterns/', import.meta.url);
 
 function readTheme(dir, file) {
   return readFileSync(new URL(file, dir), 'utf8');
@@ -61,6 +63,27 @@ test('extractPalettePreview extracts correct variables', () => {
   assert.match(main, /PALETTE_PREVIEW_VARS\.map\(varName => vars\[varName\] \|\| '#000000'\)/);
   assert.match(main, /'--bg_base'/);
   assert.match(main, /'--border_color'/);
+});
+
+test('public patterns mirror the root patterns', () => {
+  const rootFiles = readdirSync(rootPatternsDir, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.svg'))
+    .map((entry) => entry.name)
+    .sort();
+  const publicFiles = new Set(
+    readdirSync(publicPatternsDir, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && entry.name.endsWith('.svg'))
+      .map((entry) => entry.name),
+  );
+
+  assert.equal(publicFiles.size, rootFiles.length, 'public patterns count mismatch');
+
+  for (const file of rootFiles) {
+    assert.ok(publicFiles.has(file), `${file} missing from public/patterns`);
+    const rootText = readTheme(rootPatternsDir, file);
+    const publicText = readTheme(publicPatternsDir, file);
+    assert.equal(publicText, rootText, `${file} is out of sync with public/patterns`);
+  }
 });
 
 test('public themes mirror the root themes and keep palette comments', () => {

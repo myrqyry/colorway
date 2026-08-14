@@ -125,7 +125,7 @@
     card.setAttribute('role', 'option');
     card.setAttribute('aria-selected', name === selected ? 'true' : 'false');
     card.innerHTML = `
-      <div class="preview" style="background-image: url('patterns/${name}.svg');" aria-hidden="true">
+      <div class="preview" style="background-image: url('../patterns/${name}.svg');" aria-hidden="true">
         <div class="selected-badge">ACTIVE</div>
       </div>
       <div class="label">${name} <span>.svg</span></div>

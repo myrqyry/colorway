@@ -189,13 +189,13 @@ Static catalog containing:
 ### 3.5 `scripts/sync-theme-mirrors.mjs` — Build Pipeline
 
 Node.js script (run via `npm run sync:themes`) that:
-1. Reads all `Colorway-*.ovt` from the repo root
+1. Reads all `Colorway-*.ovt` from `themes/`
 2. Parses each via the same regex parser
 3. Resolves inheritance chains (handles `var()` references, detects cycles)
 4. Injects a palette reference comment block into each source file
 5. Mirrors the augmented file into `public/themes/`
 
-This ensures every theme file in `public/themes/` is identical to the repo root version and includes a human-readable palette reference comment.
+This ensures every theme file in `public/themes/` is identical to the `themes/` version and includes a human-readable palette reference comment.
 
 ---
 
@@ -299,28 +299,33 @@ All matrix values are the standard OKLab constants from Björn Ottosson's 2020 p
 
 ```
 colorway/
-├── Colorway.obt                       # Base theme (~3293 lines, ~150 vars)
-├── Colorway-*.ovt                     # ~150 variant themes (~25 vars each)
+├── themes/
+│   ├── Colorway.obt                       # Base theme (~3293 lines, ~150 vars)
+│   └── Colorway-*.ovt                     # ~150 variant themes (~25 vars each)
+├── patterns/                              # 14 SVG background patterns (source of truth)
+├── fonts/                                 # Bundled font (BricolageGrotesqueVariable.ttf) + OFL.txt
 ├── public/
-│   ├── themes/                        # Mirrored variants (served by Vite)
-│   ├── patterns/                      # 14 SVG background patterns
-│   └── icons/                         # OBS-style SVG icon set
+│   ├── themes/                            # Mirrored variants (served by Vite)
+│   ├── patterns/                          # Mirrored SVG patterns (served by Vite)
+│   └── icons/                             # OBS-style SVG icon set
 ├── src/
-│   ├── main.js                        # UI shell, event wiring
-│   ├── styles.css                     # All preview + workbench CSS
-│   ├── theme-catalog.js               # Static theme/pattern registry
-│   ├── theme-loader.js                # Parser, resolver, applier
-│   └── theme-workbench.js             # Normalizer, serializer, Lospec
+│   ├── main.js                            # UI shell, event wiring
+│   ├── styles.css                         # All preview + workbench CSS
+│   ├── theme-catalog.js                   # Static theme/pattern registry
+│   ├── theme-loader.js                    # Parser, resolver, applier
+│   └── theme-workbench.js                 # Normalizer, serializer, Lospec
 ├── test/
-│   ├── preview-contract.test.js       # 8 UI contract tests
-│   ├── new-themes-contract.test.js    # 461 per-theme validation tests
-│   ├── workbench-engine.test.js       # Serializer round-trip tests
-│   └── lospec-import.test.js          # Color math + role assignment tests
+│   ├── preview-contract.test.js           # 8 UI contract tests
+│   ├── new-themes-contract.test.js        # 461 per-theme validation tests
+│   ├── workbench-engine.test.js           # Serializer round-trip tests
+│   └── lospec-import.test.js              # Color math + role assignment tests
 ├── scripts/
-│   └── sync-theme-mirrors.mjs         # Build-time mirror + palette comments
-├── package.json                       # Vite + Tailwind v4 + autoprefixer
-├── vercel.json                        # pnpm build, dist/ output
-└── vite.config.js                     # Vite config
+│   ├── sync-theme-mirrors.mjs             # Build-time mirror + palette comments
+│   └── copy-themes.sh                     # Install themes into ~/.config/obs-studio/themes
+├── docs/
+│   └── patterns-preview.html              # Standalone pattern picker helper page
+├── package.json                           # Vite + Tailwind v4 + autoprefixer
+└── vercel.json                            # pnpm build, dist/ output
 ```
 
 ### Test coverage (475 tests)
@@ -434,7 +439,7 @@ The `colors` array is hex strings without `#` prefix. The `assignRoles()` functi
 
 ### C. Adding a new built-in theme
 
-1. Create `Colorway-MyTheme.ovt` in the repo root with `@OBSThemeMeta` and `@OBSThemeVars` blocks, extending `com.myrqyry.Colorway`
+1. Create `Colorway-MyTheme.ovt` in `themes/` with `@OBSThemeMeta` and `@OBSThemeVars` blocks, extending `com.myrqyry.Colorway`
 2. Add entry to `THEMES` array in `src/theme-catalog.js`
 3. Run `npm run sync:themes` to mirror to `public/themes/`
 4. Run `npm test` — the per-theme contract tests will validate variable overrides and contrast ratios

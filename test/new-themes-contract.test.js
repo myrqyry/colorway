@@ -43,16 +43,16 @@ const REQUIRED_VARS = [
   '--meter_fg_err',
 ];
 
-const ROOT = new URL('../', import.meta.url);
+const THEMES_DIR = new URL('../themes/', import.meta.url);
 const BASE_THEME_FILE = 'Colorway.obt';
 
-const THEME_FILES = readdirSync(ROOT, { withFileTypes: true })
+const THEME_FILES = readdirSync(THEMES_DIR, { withFileTypes: true })
   .filter((entry) => entry.isFile() && /^Colorway-.*\.ovt$/.test(entry.name))
   .map((entry) => entry.name)
   .sort();
 
 function readTheme(file) {
-  return readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
+  return readFileSync(new URL(`../themes/${file}`, import.meta.url), 'utf8');
 }
 
 function parseVars(text) {

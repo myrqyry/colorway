@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { toNormalizedTheme, serializeOVT, toYamiOVT } from '../src/theme-workbench.js';
 import { parseOVT } from '../src/theme-loader.js';
 
-const ROOT = new URL('../', import.meta.url);
+const ROOT = new URL('../themes/', import.meta.url);
 
 function read(file) {
   return readFileSync(new URL(file, ROOT), 'utf8');

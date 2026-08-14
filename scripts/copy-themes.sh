@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-THEME_FILES=("$SCRIPT_DIR"/*.ovt "$SCRIPT_DIR"/*.obt)
+THEME_FILES=("$SCRIPT_DIR/../themes"/*.ovt "$SCRIPT_DIR/../themes"/*.obt)
 DEST_DIR="${HOME}/.config/obs-studio/themes"
 
 mkdir -p "$DEST_DIR"
