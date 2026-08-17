@@ -8,6 +8,10 @@ function escapeHtml(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+function renderWordChars(text) {
+  return [...text].map((char) => `<span class="colorway-char" aria-hidden="true">${escapeHtml(char)}</span>`).join('');
+}
+
 // Fixed set of variables for palette preview
 const PALETTE_PREVIEW_VARS = [
   '--bg_base',
@@ -118,8 +122,24 @@ function renderPatternOptions() {
 function renderApp() {
   app.innerHTML = `
     <div class="showcase-shell">
+      <div id="colorway-intro" class="colorway-intro" aria-hidden="true">
+        <div class="colorway-intro-backdrop"></div>
+        <div class="colorway-intro-stage">
+          <div class="colorway-intro-tube">
+            <div class="colorway-intro-pass colorway-intro-pass-1" aria-hidden="true">${renderWordChars('Colorway')}</div>
+            <div class="colorway-intro-pass colorway-intro-pass-2" aria-hidden="true">${renderWordChars('Colorway')}</div>
+            <div class="colorway-intro-pass colorway-intro-pass-3" aria-hidden="true">${renderWordChars('Colorway')}</div>
+            <div class="colorway-intro-final" aria-hidden="true">${renderWordChars('Colorway')}</div>
+          </div>
+        </div>
+      </div>
       <header class="showcase-header">
-        <div class="showcase-title">Colorway <span style="font-weight:400;color:var(--text_muted)">OBS Theme Preview</span></div>
+        <div class="showcase-title">
+          <span class="header-colorway" role="heading" aria-level="1" aria-label="Colorway">
+            <span class="header-colorway-chars intro-hidden" aria-hidden="true">${renderWordChars('Colorway')}</span>
+            <span class="showcase-title-subtitle">OBS Theme Preview</span>
+          </span>
+        </div>
         <div class="showcase-controls">
           <div class="showcase-picker">
             <label for="theme-list">Theme</label>
@@ -413,24 +433,33 @@ function applyThemeState(file, theme, patternFile) {
 }
 
 function crossfadeShowcase(commit, reduceMotion) {
-  const showcase = document.querySelector('.showcase-grid');
-  if (!showcase) {
-    commit();
-    return;
-  }
-  gsap.killTweensOf(showcase);
-  gsap.to(showcase, {
-    autoAlpha: 0,
-    duration: reduceMotion ? 0 : 0.25,
-    ease: 'power1.in',
-    onComplete: () => {
+  return new Promise((resolve) => {
+    const showcase = document.querySelector('.showcase-grid');
+    if (!showcase) {
       commit();
-      gsap.to(showcase, { autoAlpha: 1, duration: reduceMotion ? 0 : 0.4, ease: 'power2.out', overwrite: true });
-    },
+      resolve();
+      return;
+    }
+    gsap.killTweensOf(showcase);
+    gsap.to(showcase, {
+      autoAlpha: 0,
+      duration: reduceMotion ? 0 : 0.25,
+      ease: 'power1.in',
+      onComplete: () => {
+        commit();
+        gsap.to(showcase, {
+          autoAlpha: 1,
+          duration: reduceMotion ? 0 : 0.4,
+          ease: 'power2.out',
+          overwrite: true,
+          onComplete: resolve,
+        });
+      },
+    });
   });
 }
 
-async function setTheme(file, { patternFile = null } = {}) {
+async function setTheme(file, { patternFile = null, transition = true, animateTitle = true } = {}) {
   const status = document.querySelector('#theme-status');
   status.textContent = 'Loading theme variables...';
 
@@ -441,12 +470,16 @@ async function setTheme(file, { patternFile = null } = {}) {
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (!reduceMotion && document.startViewTransition) {
+    if (transition === false) {
+      commit();
+    } else if (!reduceMotion && document.startViewTransition) {
       const transition = document.startViewTransition(commit);
       await transition.finished;
     } else {
-      crossfadeShowcase(commit, reduceMotion);
+      await crossfadeShowcase(commit, reduceMotion);
     }
+
+    if (animateTitle) animateHeaderColorway();
   } catch (error) {
     status.textContent = error.message;
     const grid = document.querySelector('#palette-grid');
@@ -466,6 +499,101 @@ function applyCurrentPattern() {
   const patternUrl = patternFile ? `url(/patterns/${patternFile})` : '';
   document.documentElement.style.setProperty('--pattern_eyes', patternUrl);
   document.querySelector('.showcase-grid').style.setProperty('--preview-pattern', patternUrl);
+}
+
+function playColorwayIntroOpening() {
+  return new Promise((resolve) => {
+    const intro = document.querySelector('#colorway-intro');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!intro || reduceMotion) {
+      intro?.remove();
+      resolve();
+      return;
+    }
+    const passes = [...intro.querySelectorAll('.colorway-intro-pass')];
+    const finalWord = intro.querySelector('.colorway-intro-final');
+    const finalChars = finalWord ? [...finalWord.querySelectorAll('.colorway-char')] : [];
+    if (!passes.length || !finalChars.length) {
+      intro.remove();
+      resolve();
+      return;
+    }
+
+    const charSetup = { rotationX: -90, autoAlpha: 0, transformPerspective: 700, transformOrigin: '50% 50% -24px' };
+    gsap.set(passes, { autoAlpha: 0 });
+    gsap.set(passes.map((pass) => [...pass.querySelectorAll('.colorway-char')]).flat(), charSetup);
+    gsap.set(passes[0], { autoAlpha: 1 });
+    gsap.set(finalChars, charSetup);
+
+    const timeline = gsap.timeline({ onComplete: resolve });
+    passes.forEach((pass, index) => {
+      const chars = [...pass.querySelectorAll('.colorway-char')];
+      if (index > 0) timeline.set(pass, { autoAlpha: 1 }, '>');
+      timeline.to(chars, { rotationX: 90, duration: 0.85, ease: 'linear', stagger: 0.07, overwrite: true });
+      timeline.set(pass, { autoAlpha: 0 });
+    });
+    timeline.to(finalChars, {
+      rotationX: 0,
+      autoAlpha: 1,
+      duration: 1.4,
+      ease: 'expo.out',
+      stagger: 0.05,
+      overwrite: true,
+    });
+  });
+}
+
+function animateHeaderColorway() {
+  const chars = document.querySelectorAll('.header-colorway-chars .colorway-char');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion || !chars.length) return;
+  gsap.killTweensOf(chars);
+  gsap.fromTo(
+    chars,
+    { rotationX: -30, y: 2, opacity: 0.55, transformPerspective: 400, transformOrigin: '50% 50% -8px' },
+    { rotationX: 0, y: 0, opacity: 1, duration: 0.65, ease: 'power3.out', stagger: 0.035, overwrite: true }
+  );
+}
+
+function handoffColorway() {
+  const intro = document.querySelector('#colorway-intro');
+  const headerChars = document.querySelector('.header-colorway-chars');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!intro || !headerChars || reduceMotion) {
+    intro?.remove();
+    headerChars?.classList.remove('intro-hidden');
+    return Promise.resolve();
+  }
+  return new Promise((resolve) => {
+    const finalWord = intro.querySelector('.colorway-intro-final');
+    const finalChars = finalWord ? [...finalWord.querySelectorAll('.colorway-char')] : [];
+    if (!finalWord || !finalChars.length) {
+      intro.remove();
+      headerChars.classList.remove('intro-hidden');
+      resolve();
+      return;
+    }
+
+    headerChars.classList.remove('intro-hidden');
+
+    const from = finalWord.getBoundingClientRect();
+    const to = headerChars.getBoundingClientRect();
+    const scale = to.width / from.width;
+    const dx = to.left + to.width / 2 - (from.left + from.width / 2);
+    const dy = to.top + to.height / 2 - (from.top + from.height / 2);
+
+    const timeline = gsap.timeline({
+      onComplete: () => {
+        intro.remove();
+        animateHeaderColorway();
+        resolve();
+      },
+    });
+    timeline
+      .to(finalWord, { x: dx, y: dy, scale, duration: 0.95, ease: 'expo.inOut' }, 0)
+      .to(intro.querySelector('.colorway-intro-backdrop'), { autoAlpha: 0, duration: 0.8, ease: 'power2.out' }, 0)
+      .to(intro, { autoAlpha: 0, duration: 0.4, ease: 'power2.out' }, '-=0.25');
+  });
 }
 
 function updateStatusDemo() {
@@ -660,14 +788,21 @@ shuffleButton?.addEventListener('click', () => {
 });
 shuffleProgress?.style.setProperty('stroke-dasharray', String(RING_CIRC));
 
-preloadAllThemes().then((themeData) => {
-  darkThemeFiles = THEMES.filter((t) => themeData[t.file]?.dark !== false).map((t) => t.file);
-  const initialTheme = pickRandomTheme();
-  themeList.innerHTML = renderThemeList(themeData, initialTheme);
-  setTheme(initialTheme);
-  initWorkbench();
-  startShuffle();
-});
+function runIntro() {
+  const preloadPromise = preloadAllThemes();
+  const introPromise = playColorwayIntroOpening();
+  Promise.all([preloadPromise, introPromise]).then(async ([themeData]) => {
+    darkThemeFiles = THEMES.filter((t) => themeData[t.file]?.dark !== false).map((t) => t.file);
+    const initialTheme = pickRandomTheme();
+    themeList.innerHTML = renderThemeList(themeData, initialTheme);
+    await setTheme(initialTheme, { transition: false, animateTitle: false });
+    initWorkbench();
+    await handoffColorway();
+    startShuffle();
+  });
+}
+
+runIntro();
 
 document.querySelectorAll('.demo-slider, .mixer-slider-mini').forEach((slider) => {
   slider.addEventListener('input', () => {

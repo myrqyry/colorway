@@ -132,6 +132,85 @@
   letter-spacing: -0.01em;
 }
 
+.header-colorway {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.header-colorway-chars {
+  display: inline-flex;
+}
+
+.header-colorway-chars.intro-hidden {
+  visibility: hidden;
+}
+
+.header-colorway-chars .colorway-char {
+  backface-visibility: hidden;
+}
+
+.showcase-title-subtitle {
+  font-weight: 400;
+  color: var(--text_muted);
+}
+
+.colorway-char {
+  display: inline-block;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.colorway-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--colorway-intro-bg, #191724);
+  color: var(--colorway-intro-text, #e0def4);
+  font-family: inherit;
+}
+
+.colorway-intro-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--colorway-intro-bg, #191724);
+}
+
+.colorway-intro-stage {
+  position: relative;
+  perspective: 700px;
+}
+
+.colorway-intro-tube {
+  display: grid;
+  place-items: center;
+}
+
+.colorway-intro-pass,
+.colorway-intro-final {
+  grid-area: 1 / 1;
+  display: flex;
+  justify-content: center;
+  white-space: nowrap;
+  font-size: clamp(64px, 12vw, 180px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.colorway-intro-pass {
+  visibility: hidden;
+}
+
+.colorway-intro-pass-1 {
+  visibility: visible;
+}
+
 .showcase-controls {
   display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
 }

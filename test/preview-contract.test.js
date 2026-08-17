@@ -144,3 +144,59 @@ test('public themes mirror the root themes and keep palette comments', () => {
     assert.match(rootText, /Official palette reference:/, `${file} is missing a palette comment`);
   }
 });
+
+test('intro overlay renders backdrop, three passes, and a final word', () => {
+  assert.match(main, /id="colorway-intro"/);
+  assert.match(main, /class="colorway-intro-backdrop"/);
+  assert.match(main, /class="colorway-intro-pass/);
+  assert.match(main, /class="colorway-intro-final"/);
+});
+
+test('animated words render per-character spans without SplitText', () => {
+  assert.match(main, /function renderWordChars\(text\)/);
+  assert.match(main, /<span class="colorway-char"/);
+  assert.doesNotMatch(main, /SplitText/);
+});
+
+test('header colorway word stays measurable during the intro', () => {
+  assert.match(main, /class="header-colorway"/);
+  assert.match(main, /class="header-colorway-chars intro-hidden"/);
+  assert.match(main, /class="showcase-title-subtitle"/);
+});
+
+test('intro opening and preload run concurrently, never serialized', () => {
+  assert.match(main, /function playColorwayIntroOpening\(\)/);
+  assert.match(main, /function runIntro\(\)/);
+  assert.match(main, /Promise\.all\(\[preloadPromise, introPromise\]\)/);
+});
+
+test('initial theme is set without transition under the intro', () => {
+  assert.match(main, /setTheme\(initialTheme, \{ transition: false, animateTitle: false \}\)/);
+});
+
+test('slideshow starts only after the intro handoff completes', () => {
+  assert.match(main, /function handoffColorway\(/);
+  assert.match(main, /await handoffColorway\([^)]*\)/);
+  assert.match(main, /startShuffle\(\)/);
+});
+
+test('header colorway word animates only when the theme changes', () => {
+  assert.match(main, /function animateHeaderColorway\(\)/);
+  assert.match(main, /if \(animateTitle\) animateHeaderColorway\(\)/);
+  assert.match(main, /setTheme\(file, \{ patternFile = null, transition = true, animateTitle = true \} = \{\}\)/);
+});
+
+test('animated chars respect reduced motion', () => {
+  assert.match(main, /prefers-reduced-motion: reduce/);
+  assert.match(main, /crossfadeShowcase\(commit, reduceMotion\)/);
+});
+
+test('intro styles are fixed, centered, and above the header', () => {
+  assert.match(styles, /\.colorway-intro\s*\{[^}]*position:\s*fixed;[^}]*z-index:\s*100;/s);
+  assert.match(styles, /\.colorway-intro\s*\{[^}]*place-items:\s*center/s);
+});
+
+test('animated chars preserve 3D transforms', () => {
+  assert.match(styles, /\.colorway-char\s*\{[^}]*backface-visibility:\s*hidden/s);
+  assert.match(styles, /\.colorway-intro-stage\s*\{[^}]*perspective:/s);
+});
