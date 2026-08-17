@@ -135,7 +135,7 @@ function renderApp() {
           </div>
           <div class="showcase-picker">
             <label for="theme-shuffle">Shuffle</label>
-            <button type="button" id="theme-shuffle" class="theme-shuffle" title="Next random theme in a few seconds — hover to pause" aria-label="Next random theme in a few seconds — hover to pause">
+            <button type="button" id="theme-shuffle" class="theme-shuffle" title="Skip to next theme" aria-label="Skip to next theme">
               <svg class="theme-shuffle-ring" viewBox="0 0 36 36" width="18" height="18" aria-hidden="true">
                 <circle class="theme-shuffle-track" cx="18" cy="18" r="15.915" fill="none" stroke-width="3.5"></circle>
                 <circle class="theme-shuffle-progress" id="theme-shuffle-progress" cx="18" cy="18" r="15.915" fill="none" stroke-width="3.5"></circle>
@@ -143,7 +143,29 @@ function renderApp() {
             </button>
           </div>
           <div class="showcase-info" id="theme-info">
-            <span id="active-theme-name">Loading…</span>
+            <div class="showcase-now-playing">
+              <span id="active-theme-name">Loading…</span>
+              <button
+                type="button"
+                id="slideshow-pause"
+                class="slideshow-pause"
+                aria-label="Pause slideshow"
+                aria-pressed="false"
+                title="Pause slideshow"
+              >
+                <span class="pause-icon" aria-hidden="true">❚❚</span>
+              </button>
+            </div>
+            <div
+              class="slideshow-progress"
+              role="progressbar"
+              aria-label="Time until next theme"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="100"
+            >
+              <span id="slideshow-progress-fill"></span>
+            </div>
             <span id="theme-status" aria-live="polite">Fetching theme variables</span>
           </div>
         </div>
@@ -540,9 +562,11 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Preload themes and render list
-const SHUFFLE_MS = 10000;
+const SHUFFLE_MS = 12000;
 const shuffleButton = document.querySelector('#theme-shuffle');
 const shuffleProgress = document.querySelector('#theme-shuffle-progress');
+const slideshowPause = document.querySelector('#slideshow-pause');
+const slideshowProgress = document.querySelector('#slideshow-progress-fill');
 const RING_CIRC = 2 * Math.PI * 15.915;
 let shuffleRemaining = SHUFFLE_MS;
 let shufflePaused = false;
@@ -582,10 +606,37 @@ function pickRandomPattern() {
   return nextFromBag(patterns, current, patternShuffleBag);
 }
 
-function updateShuffleRing() {
-  if (!shuffleProgress) return;
-  const frac = Math.max(0, shuffleRemaining / SHUFFLE_MS);
-  shuffleProgress.style.strokeDashoffset = String(RING_CIRC * (1 - frac));
+function updateShuffleProgress() {
+  const frac = Math.max(0, Math.min(1, shuffleRemaining / SHUFFLE_MS));
+
+  if (shuffleProgress) {
+    shuffleProgress.style.strokeDashoffset = String(RING_CIRC * (1 - frac));
+  }
+
+  if (slideshowProgress) {
+    slideshowProgress.style.transform = `scaleX(${frac})`;
+
+    const progress = slideshowProgress.parentElement;
+    progress?.setAttribute('aria-valuenow', String(Math.round(frac * 100)));
+  }
+}
+
+function setShufflePaused(paused) {
+  shufflePaused = paused;
+
+  if (!slideshowPause) return;
+
+  slideshowPause.setAttribute('aria-pressed', String(paused));
+  slideshowPause.setAttribute(
+    'aria-label',
+    paused ? 'Resume slideshow' : 'Pause slideshow'
+  );
+  slideshowPause.title = paused ? 'Resume slideshow' : 'Pause slideshow';
+
+  const icon = slideshowPause.querySelector('.pause-icon');
+  if (icon) {
+    icon.textContent = paused ? '▶' : '❚❚';
+  }
 }
 
 function startShuffle() {
@@ -597,17 +648,12 @@ function startShuffle() {
       shuffleRemaining = SHUFFLE_MS;
       setTheme(pickRandomTheme(), { patternFile: pickRandomPattern() });
     }
-    updateShuffleRing();
+    updateShuffleProgress();
   }, 100);
 }
 
-shuffleButton?.addEventListener('mouseenter', () => {
-  shufflePaused = true;
-  shuffleButton.classList.add('paused');
-});
-shuffleButton?.addEventListener('mouseleave', () => {
-  shufflePaused = false;
-  shuffleButton.classList.remove('paused');
+slideshowPause?.addEventListener('click', () => {
+  setShufflePaused(!shufflePaused);
 });
 shuffleButton?.addEventListener('click', () => {
   shuffleRemaining = 0;
