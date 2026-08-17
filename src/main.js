@@ -547,9 +547,9 @@ function animateHeaderColorway({ settle = false } = {}) {
   gsap.fromTo(
     chars,
     {
-      rotationX: settle ? -36 : -24,
-      y: settle ? 3 : 1,
-      opacity: settle ? 0.45 : 0.7,
+      rotationX: settle ? -45 : -30,
+      y: settle ? 4 : 2,
+      opacity: settle ? 0.4 : 0.65,
 
       transformPerspective: 400,
       transformOrigin: '50% 50% -8px',
@@ -559,10 +559,10 @@ function animateHeaderColorway({ settle = false } = {}) {
       y: 0,
       opacity: 1,
 
-      duration: settle ? 0.75 : 0.58,
+      duration: settle ? 1.15 : 0.85,
       ease: 'power3.out',
 
-      stagger: settle ? 0.045 : 0.032,
+      stagger: settle ? 0.06 : 0.045,
 
       overwrite: true,
     }

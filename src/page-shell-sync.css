@@ -88,8 +88,8 @@
   color: var(--text_light, var(--text));
 
   font-size: clamp(30px, 3vw, 38px);
-  font-variation-settings: "wdth" 90;
-  font-weight: 780;
+  font-variation-settings: "wdth" 100;
+  font-weight: 900;
 
   letter-spacing: -.045em;
   line-height: .92;
