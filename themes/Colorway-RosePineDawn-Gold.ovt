@@ -18,7 +18,7 @@
        --text_light: #ffffff;
        --text_muted: #9893a5;
        --text_inactive: #9893a5;
-       --text_inverse: #faf4ed;
+       --text_inverse: #575279;
        --text_disabled: #9893a5;
        --primary: #ea9d34;
        --primary_light: #d7827e;
@@ -62,7 +62,7 @@
     --text_light: #ffffff;
     --text_muted: #9893a5;
     --text_inactive: #9893a5;
-    --text_inverse: #faf4ed;
+    --text_inverse: #575279;
     --text_disabled: #9893a5;
 
     --border_color: #dfdad9;
