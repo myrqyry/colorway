@@ -54,8 +54,14 @@ function ensurePageHeader(root) {
     </div>
     <div class="colorway-page-current">
       <span class="colorway-page-current-label">Current theme</span>
-      <strong data-colorway-page-theme></strong>
+      <div class="colorway-page-slideshow-row">
+        <strong data-colorway-page-theme></strong>
+        <button type="button" class="colorway-page-pause" aria-label="Pause slideshow" title="Pause slideshow">❚❚</button>
+      </div>
       <span class="colorway-page-palette" data-colorway-page-palette aria-hidden="true"></span>
+      <div class="colorway-page-progress" role="progressbar" aria-label="Time until next theme" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+        <span data-colorway-page-progress></span>
+      </div>
     </div>
   `;
 
@@ -188,11 +194,46 @@ function wireDynamicPanel(root) {
   }).observe(panel, { childList: true });
 }
 
+function wirePageSlideshow(header) {
+  if (!header || header.dataset.colorwaySlideshowWired === 'true') return;
+  header.dataset.colorwaySlideshowWired = 'true';
+
+  const pagePause = header.querySelector('.colorway-page-pause');
+  const pageProgress = header.querySelector('[data-colorway-page-progress]');
+
+  const sourcePause = () => document.querySelector('#slideshow-pause');
+  const sourceProgress = () => document.querySelector('#slideshow-progress-fill');
+
+  const mirror = (paused, frac) => {
+    if (pagePause && sourcePause()) {
+      pagePause.textContent = paused ? '▶' : '❚❚';
+      pagePause.setAttribute('aria-label', paused ? 'Resume slideshow' : 'Pause slideshow');
+      pagePause.title = paused ? 'Resume slideshow' : 'Pause slideshow';
+    }
+    if (pageProgress && sourceProgress()) {
+      pageProgress.style.transform = `scaleX(${frac})`;
+      pageProgress.parentElement?.setAttribute('aria-valuenow', String(Math.round(frac * 100)));
+    }
+  };
+
+  if (pagePause && sourcePause()) {
+    pagePause.addEventListener('click', () => sourcePause()?.click());
+    mirror(sourcePause().getAttribute('aria-pressed') === 'true', 1);
+  }
+
+  document.addEventListener('colorway:shuffle-state', (event) => {
+    const { paused, remaining, total } = event.detail || {};
+    const frac = total ? Math.max(0, Math.min(1, remaining / total)) : 1;
+    mirror(Boolean(paused), frac);
+  });
+}
+
 function wireRoot(root) {
   if (root.dataset.colorwayPageShellWired === 'true') return;
   root.dataset.colorwayPageShellWired = 'true';
 
   syncPageIdentity(root);
+  wirePageSlideshow(ensurePageHeader(root));
   wireMixer(root);
   wireFontSize(root);
   wireDynamicPanel(root);

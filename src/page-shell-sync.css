@@ -88,14 +88,44 @@
   text-transform: uppercase;
 }
 
-.colorway-page-current strong {
+.colorway-page-slideshow-row {
+  display: flex;
   grid-column: 1;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+.colorway-page-current strong {
   overflow: hidden;
   color: var(--primary_light, var(--text));
   font-size: 15px;
   font-weight: 720;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.colorway-page-pause {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--text_muted) 35%, transparent);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--bg_hover) 55%, transparent);
+  color: var(--text_light);
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.colorway-page-pause:hover {
+  color: var(--text_bright, var(--text_light));
+  background: var(--bg_hover);
+  border-color: color-mix(in srgb, var(--text_muted) 60%, transparent);
 }
 
 .colorway-page-palette {
@@ -112,6 +142,24 @@
   height: 30px;
   border: 1px solid color-mix(in srgb, var(--border_color) 72%, transparent);
   border-radius: var(--shape_xs, 3px);
+}
+
+.colorway-page-progress {
+  grid-column: 1 / -1;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text_muted) 18%, transparent);
+}
+
+.colorway-page-progress > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary);
+  transform: scaleX(1);
+  transform-origin: left center;
 }
 
 /* Browse / Import / Export remain mounted as hidden workbench plumbing for
@@ -215,12 +263,20 @@
   }
 
   .colorway-page-current-label,
-  .colorway-page-current strong {
+  .colorway-page-slideshow-row {
     grid-column: 2;
+  }
+
+  .colorway-page-slideshow-row {
+    justify-content: flex-start;
   }
 
   .colorway-page-palette {
     grid-column: 1;
     grid-row: 1 / span 2;
+  }
+
+  .colorway-page-progress {
+    grid-column: 1 / -1;
   }
 }

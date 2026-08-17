@@ -258,25 +258,23 @@
 .slideshow-pause {
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   padding: 0;
-  border: 1px solid color-mix(in srgb, var(--text_muted) 35%, transparent);
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--bg_hover) 55%, transparent);
-  color: var(--text_light);
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text_muted);
   cursor: pointer;
-  flex-shrink: 0;
 }
 
 .slideshow-pause:hover {
-  color: var(--text_bright, var(--text_light));
+  color: var(--text_light);
   background: var(--bg_hover);
-  border-color: color-mix(in srgb, var(--text_muted) 60%, transparent);
 }
 
 .pause-icon {
-  font-size: 12px;
+  font-size: 9px;
   line-height: 1;
 }
 

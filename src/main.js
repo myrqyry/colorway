@@ -740,6 +740,18 @@ function updateShuffleProgress() {
     const progress = slideshowProgress.parentElement;
     progress?.setAttribute('aria-valuenow', String(Math.round(frac * 100)));
   }
+
+  emitShuffleState();
+}
+
+function emitShuffleState() {
+  document.dispatchEvent(new CustomEvent('colorway:shuffle-state', {
+    detail: {
+      paused: shufflePaused,
+      remaining: shuffleRemaining,
+      total: SHUFFLE_MS,
+    },
+  }));
 }
 
 function setShufflePaused(paused) {
@@ -758,6 +770,8 @@ function setShufflePaused(paused) {
   if (icon) {
     icon.textContent = paused ? '▶' : '❚❚';
   }
+
+  emitShuffleState();
 }
 
 function startShuffle() {
