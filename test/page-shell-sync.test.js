@@ -8,10 +8,13 @@ const index = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 
 test('Colorway identity lives in the main page header', () => {
   assert.match(script, /className = 'colorway-page-header'/);
-  assert.match(script, /<h1>Colorway<\/h1>/);
+  assert.match(script, /data-colorway-page-title/);
+  assert.match(script, /data-colorway-page-title-chars/);
+  assert.match(script, /class="colorway-page-title-chars intro-pending"/);
   assert.match(script, /data-colorway-page-theme/);
   assert.match(script, /data-colorway-page-palette/);
   assert.match(styles, /\.colorway-page-title-copy h1/);
+  assert.match(styles, /\.colorway-page-title-chars\.intro-pending\s*\{\s*visibility: hidden;/);
 });
 
 test('legacy Browse Import Export workbench chrome is hidden but remains mounted', () => {

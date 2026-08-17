@@ -48,7 +48,26 @@ function ensurePageHeader(root) {
     <div class="colorway-page-wordmark">
       <span class="colorway-page-mark" aria-hidden="true"><i></i><i></i><i></i></span>
       <div class="colorway-page-title-copy">
-        <h1>Colorway</h1>
+        <h1
+          class="colorway-page-title"
+          data-colorway-page-title
+          aria-label="Colorway"
+        >
+          <span
+            class="colorway-page-title-chars intro-pending"
+            data-colorway-page-title-chars
+            aria-hidden="true"
+          >
+            <span class="colorway-char">C</span>
+            <span class="colorway-char">o</span>
+            <span class="colorway-char">l</span>
+            <span class="colorway-char">o</span>
+            <span class="colorway-char">r</span>
+            <span class="colorway-char">w</span>
+            <span class="colorway-char">a</span>
+            <span class="colorway-char">y</span>
+          </span>
+        </h1>
         <span>OBS theme</span>
       </div>
     </div>

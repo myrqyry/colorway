@@ -135,10 +135,8 @@ function renderApp() {
       </div>
       <header class="showcase-header">
         <div class="showcase-title">
-          <span class="header-colorway" role="heading" aria-level="1" aria-label="Colorway">
-            <span class="header-colorway-chars intro-hidden" aria-hidden="true">${renderWordChars('Colorway')}</span>
-            <span class="showcase-title-subtitle">OBS Theme Preview</span>
-          </span>
+          Colorway
+          <span class="showcase-title-subtitle">OBS Theme Preview</span>
         </div>
         <div class="showcase-controls">
           <div class="showcase-picker">
@@ -541,51 +539,91 @@ function playColorwayIntroOpening() {
   });
 }
 
-function animateHeaderColorway() {
-  const chars = document.querySelectorAll('.header-colorway-chars .colorway-char');
+function animateHeaderColorway({ settle = false } = {}) {
+  const chars = document.querySelectorAll('[data-colorway-page-title-chars] .colorway-char');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduceMotion || !chars.length) return;
   gsap.killTweensOf(chars);
   gsap.fromTo(
     chars,
-    { rotationX: -30, y: 2, opacity: 0.55, transformPerspective: 400, transformOrigin: '50% 50% -8px' },
-    { rotationX: 0, y: 0, opacity: 1, duration: 0.65, ease: 'power3.out', stagger: 0.035, overwrite: true }
+    {
+      rotationX: settle ? -36 : -24,
+      y: settle ? 3 : 1,
+      opacity: settle ? 0.45 : 0.7,
+
+      transformPerspective: 400,
+      transformOrigin: '50% 50% -8px',
+    },
+    {
+      rotationX: 0,
+      y: 0,
+      opacity: 1,
+
+      duration: settle ? 0.75 : 0.58,
+      ease: 'power3.out',
+
+      stagger: settle ? 0.045 : 0.032,
+
+      overwrite: true,
+    }
   );
 }
 
-function handoffColorway() {
-  const intro = document.querySelector('#colorway-intro');
-  const headerChars = document.querySelector('.header-colorway-chars');
-  const finalWord = intro?.querySelector('.colorway-intro-final');
+async function getColorwayHeaderTarget() {
+  let target = document.querySelector('[data-colorway-page-title-chars]');
+  if (target) return target;
+  await new Promise(requestAnimationFrame);
+  return document.querySelector('[data-colorway-page-title-chars]');
+}
 
-  if (!intro || !headerChars || !finalWord) {
-    headerChars?.classList.remove('intro-hidden');
+async function handoffColorway() {
+  const intro = document.querySelector('#colorway-intro');
+  const finalWord = intro?.querySelector('.colorway-intro-final');
+  const headerChars = await getColorwayHeaderTarget();
+
+  if (!intro || !finalWord || !headerChars) {
     intro?.remove();
-    return Promise.resolve();
+    headerChars?.classList.remove('intro-pending');
+    return;
   }
 
   const from = finalWord.getBoundingClientRect();
   const to = headerChars.getBoundingClientRect();
+
   const scale = to.width / from.width;
-  const dx = to.left + to.width / 2 - (from.left + from.width / 2);
-  const dy = to.top + to.height / 2 - (from.top + from.height / 2);
+
+  const dx =
+    to.left + to.width / 2 -
+    (from.left + from.width / 2);
+
+  const dy =
+    to.top + to.height / 2 -
+    (from.top + from.height / 2);
 
   return new Promise((resolve) => {
     const backdrop = intro.querySelector('.colorway-intro-backdrop');
+    const mark = document.querySelector('.colorway-page-mark');
 
     const timeline = gsap.timeline({
       onComplete: () => {
-        headerChars.classList.remove('intro-hidden');
+        headerChars.classList.remove('intro-pending');
         gsap.set(finalWord, { visibility: 'hidden' });
         intro.remove();
-        animateHeaderColorway();
+        animateHeaderColorway({ settle: true });
+        if (mark) {
+          gsap.fromTo(
+            mark,
+            { scale: 0.88, opacity: 0.4 },
+            { scale: 1, opacity: 1, duration: 0.55, ease: 'back.out(1.7)' }
+          );
+        }
         resolve();
       },
     });
 
     timeline
-      .to(finalWord, { x: dx, y: dy, scale, duration: 1.05, ease: 'expo.inOut' }, 0)
-      .to(backdrop, { autoAlpha: 0, duration: 0.9, ease: 'power2.inOut' }, 0.15);
+      .to(finalWord, { x: dx, y: dy, scale, duration: 1.15, ease: 'expo.inOut' }, 0)
+      .to(backdrop, { autoAlpha: 0, duration: 0.95, ease: 'power2.inOut' }, 0.18);
   });
 }
 

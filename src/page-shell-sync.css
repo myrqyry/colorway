@@ -95,6 +95,22 @@
   line-height: .92;
 }
 
+.colorway-page-title-chars {
+  display: inline-flex;
+  perspective: 400px;
+  transform-style: preserve-3d;
+}
+
+.colorway-page-title-chars.intro-pending {
+  visibility: hidden;
+}
+
+.colorway-page-title-chars .colorway-char {
+  display: inline-block;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
 .colorway-page-title-copy > span {
   display: block;
 

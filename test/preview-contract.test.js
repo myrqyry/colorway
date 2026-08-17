@@ -5,6 +5,8 @@ import assert from 'node:assert/strict';
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const styles = readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8');
 const themeLoader = readFileSync(new URL('../src/theme-loader.js', import.meta.url), 'utf8');
+const pageShell = readFileSync(new URL('../src/page-shell-sync.js', import.meta.url), 'utf8');
+const pageShellCss = readFileSync(new URL('../src/page-shell-sync.css', import.meta.url), 'utf8');
 const rootThemesDir = new URL('../themes/', import.meta.url);
 const publicThemesDir = new URL('../public/themes/', import.meta.url);
 const rootPatternsDir = new URL('../patterns/', import.meta.url);
@@ -159,9 +161,10 @@ test('animated words render per-character spans without SplitText', () => {
 });
 
 test('header colorway word stays measurable during the intro', () => {
-  assert.match(main, /class="header-colorway"/);
-  assert.match(main, /class="header-colorway-chars intro-hidden"/);
-  assert.match(main, /class="showcase-title-subtitle"/);
+  assert.match(pageShell, /class="colorway-page-title"/);
+  assert.match(pageShell, /class="colorway-page-title-chars intro-pending"/);
+  assert.match(pageShell, /data-colorway-page-title-chars/);
+  assert.match(pageShell, /<span class="colorway-char">C<\/span>/);
 });
 
 test('intro opening and preload run concurrently, never serialized', () => {
@@ -181,7 +184,8 @@ test('slideshow starts only after the intro handoff completes', () => {
 });
 
 test('header colorway word animates only when the theme changes', () => {
-  assert.match(main, /function animateHeaderColorway\(\)/);
+  assert.match(main, /function animateHeaderColorway\(\{ settle = false \} = \{\}\)/);
+  assert.match(main, /\[data-colorway-page-title-chars\]/);
   assert.match(main, /if \(animateTitle\) animateHeaderColorway\(\)/);
   assert.match(main, /setTheme\(file, \{ patternFile = null, transition = true, animateTitle = true \} = \{\}\)/);
 });
@@ -215,14 +219,14 @@ test('intro passes overlap on the reference timing grid', () => {
 });
 
 test('header word stays hidden until the moving word lands on it', () => {
-  assert.match(main, /const from = finalWord\.getBoundingClientRect\(\);[\s\S]*?headerChars\.classList\.remove\('intro-hidden'\)/);
+  assert.match(main, /const from = finalWord\.getBoundingClientRect\(\);[\s\S]*?headerChars\.classList\.remove\('intro-pending'\)/);
   assert.match(main, /gsap\.set\(finalWord, \{ visibility: 'hidden' \}\)/);
-  assert.doesNotMatch(main, /headerChars\.classList\.remove\('intro-hidden'\);\s*\n\s*const from/s);
+  assert.doesNotMatch(main, /headerChars\.classList\.remove\('intro-pending'\);\s*\n\s*const from/s);
 });
 
 test('handoff never fades the intro wrapper containing the moving word', () => {
   assert.doesNotMatch(main, /\.to\(intro, \{ autoAlpha: 0/);
-  assert.match(main, /\.to\(backdrop, \{ autoAlpha: 0, duration: 0\.9, ease: 'power2\.inOut' \}, 0\.15\)/);
+  assert.match(main, /\.to\(backdrop, \{ autoAlpha: 0, duration: 0\.95, ease: 'power2\.inOut' \}, 0\.18\)/);
 });
 
 test('intro wrapper is transparent so the backdrop fade actually reveals the app', () => {
