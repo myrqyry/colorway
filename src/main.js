@@ -510,36 +510,34 @@ function playColorwayIntroOpening() {
       resolve();
       return;
     }
-    const passes = [...intro.querySelectorAll('.colorway-intro-pass')];
-    const finalWord = intro.querySelector('.colorway-intro-final');
-    const finalChars = finalWord ? [...finalWord.querySelectorAll('.colorway-char')] : [];
-    if (!passes.length || !finalChars.length) {
+    const pass1 = intro.querySelectorAll('.colorway-intro-pass-1 .colorway-char');
+    const pass2 = intro.querySelectorAll('.colorway-intro-pass-2 .colorway-char');
+    const pass3 = intro.querySelectorAll('.colorway-intro-pass-3 .colorway-char');
+    const finalChars = intro.querySelectorAll('.colorway-intro-final .colorway-char');
+    if (!pass1.length || !pass2.length || !pass3.length || !finalChars.length) {
       intro.remove();
       resolve();
       return;
     }
 
-    const charSetup = { rotationX: -90, autoAlpha: 0, transformPerspective: 700, transformOrigin: '50% 50% -24px' };
-    gsap.set(passes, { autoAlpha: 0 });
-    gsap.set(passes.map((pass) => [...pass.querySelectorAll('.colorway-char')]).flat(), charSetup);
-    gsap.set(passes[0], { autoAlpha: 1 });
-    gsap.set(finalChars, charSetup);
+    gsap.set([pass1, pass2, pass3], {
+      rotationX: -90,
+      opacity: 1,
+      transformPerspective: 700,
+      transformOrigin: '50% 50% -40px',
+    });
+    gsap.set(finalChars, {
+      rotationX: -90,
+      opacity: 0,
+      transformPerspective: 700,
+      transformOrigin: '50% 50% -40px',
+    });
 
     const timeline = gsap.timeline({ onComplete: resolve });
-    passes.forEach((pass, index) => {
-      const chars = [...pass.querySelectorAll('.colorway-char')];
-      if (index > 0) timeline.set(pass, { autoAlpha: 1 }, '>');
-      timeline.to(chars, { rotationX: 90, duration: 0.85, ease: 'linear', stagger: 0.07, overwrite: true });
-      timeline.set(pass, { autoAlpha: 0 });
-    });
-    timeline.to(finalChars, {
-      rotationX: 0,
-      autoAlpha: 1,
-      duration: 1.4,
-      ease: 'expo.out',
-      stagger: 0.05,
-      overwrite: true,
-    });
+    timeline.to(pass1, { rotationX: 90, duration: 0.9, ease: 'none', stagger: 0.08 }, 0);
+    timeline.to(pass2, { rotationX: 90, duration: 0.9, ease: 'none', stagger: 0.08 }, 0.45);
+    timeline.to(pass3, { rotationX: 90, duration: 0.9, ease: 'none', stagger: 0.08 }, 0.9);
+    timeline.to(finalChars, { rotationX: 0, opacity: 1, duration: 1.62, ease: 'expo.out', stagger: 0.06 }, 1.6);
   });
 }
 
@@ -558,41 +556,36 @@ function animateHeaderColorway() {
 function handoffColorway() {
   const intro = document.querySelector('#colorway-intro');
   const headerChars = document.querySelector('.header-colorway-chars');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!intro || !headerChars || reduceMotion) {
-    intro?.remove();
+  const finalWord = intro?.querySelector('.colorway-intro-final');
+
+  if (!intro || !headerChars || !finalWord) {
     headerChars?.classList.remove('intro-hidden');
+    intro?.remove();
     return Promise.resolve();
   }
+
+  const from = finalWord.getBoundingClientRect();
+  const to = headerChars.getBoundingClientRect();
+  const scale = to.width / from.width;
+  const dx = to.left + to.width / 2 - (from.left + from.width / 2);
+  const dy = to.top + to.height / 2 - (from.top + from.height / 2);
+
   return new Promise((resolve) => {
-    const finalWord = intro.querySelector('.colorway-intro-final');
-    const finalChars = finalWord ? [...finalWord.querySelectorAll('.colorway-char')] : [];
-    if (!finalWord || !finalChars.length) {
-      intro.remove();
-      headerChars.classList.remove('intro-hidden');
-      resolve();
-      return;
-    }
-
-    headerChars.classList.remove('intro-hidden');
-
-    const from = finalWord.getBoundingClientRect();
-    const to = headerChars.getBoundingClientRect();
-    const scale = to.width / from.width;
-    const dx = to.left + to.width / 2 - (from.left + from.width / 2);
-    const dy = to.top + to.height / 2 - (from.top + from.height / 2);
+    const backdrop = intro.querySelector('.colorway-intro-backdrop');
 
     const timeline = gsap.timeline({
       onComplete: () => {
+        headerChars.classList.remove('intro-hidden');
+        gsap.set(finalWord, { visibility: 'hidden' });
         intro.remove();
         animateHeaderColorway();
         resolve();
       },
     });
+
     timeline
-      .to(finalWord, { x: dx, y: dy, scale, duration: 0.95, ease: 'expo.inOut' }, 0)
-      .to(intro.querySelector('.colorway-intro-backdrop'), { autoAlpha: 0, duration: 0.8, ease: 'power2.out' }, 0)
-      .to(intro, { autoAlpha: 0, duration: 0.4, ease: 'power2.out' }, '-=0.25');
+      .to(finalWord, { x: dx, y: dy, scale, duration: 1.05, ease: 'expo.inOut' }, 0)
+      .to(backdrop, { autoAlpha: 0, duration: 0.9, ease: 'power2.inOut' }, 0.15);
   });
 }
 

@@ -200,3 +200,33 @@ test('animated chars preserve 3D transforms', () => {
   assert.match(styles, /\.colorway-char\s*\{[^}]*backface-visibility:\s*hidden/s);
   assert.match(styles, /\.colorway-intro-stage\s*\{[^}]*perspective:/s);
 });
+
+test('all three rolling passes are visible, not opacity-zero', () => {
+  assert.match(main, /gsap\.set\(\[pass1, pass2, pass3\],/);
+  assert.match(main, /gsap\.set\(\[pass1, pass2, pass3\],\s*\{[\s\S]*?opacity: 1/s);
+  assert.doesNotMatch(main, /gsap\.set\(passes,\s*\{ autoAlpha: 0 \}\)/);
+});
+
+test('intro passes overlap on the reference timing grid', () => {
+  assert.match(main, /timeline\.to\(pass1, \{ rotationX: 90, duration: 0\.9, ease: 'none', stagger: 0\.08 \}, 0\)/);
+  assert.match(main, /timeline\.to\(pass2, \{ rotationX: 90, duration: 0\.9, ease: 'none', stagger: 0\.08 \}, 0\.45\)/);
+  assert.match(main, /timeline\.to\(pass3, \{ rotationX: 90, duration: 0\.9, ease: 'none', stagger: 0\.08 \}, 0\.9\)/);
+  assert.match(main, /timeline\.to\(finalChars, \{ rotationX: 0, opacity: 1, duration: 1\.62, ease: 'expo\.out', stagger: 0\.06 \}, 1\.6\)/);
+});
+
+test('header word stays hidden until the moving word lands on it', () => {
+  assert.match(main, /const from = finalWord\.getBoundingClientRect\(\);[\s\S]*?headerChars\.classList\.remove\('intro-hidden'\)/);
+  assert.match(main, /gsap\.set\(finalWord, \{ visibility: 'hidden' \}\)/);
+  assert.doesNotMatch(main, /headerChars\.classList\.remove\('intro-hidden'\);\s*\n\s*const from/s);
+});
+
+test('handoff never fades the intro wrapper containing the moving word', () => {
+  assert.doesNotMatch(main, /\.to\(intro, \{ autoAlpha: 0/);
+  assert.match(main, /\.to\(backdrop, \{ autoAlpha: 0, duration: 0\.9, ease: 'power2\.inOut' \}, 0\.15\)/);
+});
+
+test('intro wrapper is transparent so the backdrop fade actually reveals the app', () => {
+  assert.match(styles, /\.colorway-intro\s*\{[^}]*background:\s*transparent/s);
+  assert.match(styles, /\.colorway-intro-backdrop\s*\{[^}]*background:\s*var\(--colorway-intro-bg/s);
+  assert.doesNotMatch(styles, /\.colorway-intro-pass\s*\{\s*visibility:\s*hidden/s);
+});

@@ -168,7 +168,7 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: var(--colorway-intro-bg, #191724);
+  background: transparent;
   color: var(--colorway-intro-text, #e0def4);
   font-family: inherit;
 }
@@ -201,13 +201,6 @@
   line-height: 1;
   transform-style: preserve-3d;
   backface-visibility: hidden;
-}
-
-.colorway-intro-pass {
-  visibility: hidden;
-}
-
-.colorway-intro-pass-1 {
   visibility: visible;
 }
 
