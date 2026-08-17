@@ -364,42 +364,69 @@ function renderApp() {
   `;
 }
 
-async function setTheme(file) {
-  const status = document.querySelector('#theme-status');
+function applyThemeState(file, theme, patternFile) {
+  applyTheme(theme);
+
   const name = document.querySelector('#active-theme-name');
+  const status = document.querySelector('#theme-status');
+  name.textContent = theme._name || file;
+  status.textContent = theme._dark === false ? 'Light variant' : 'Dark variant';
+
+  document.querySelector('#palette-grid').innerHTML = renderPalette();
+
+  if (patternFile && patternSelect) {
+    patternSelect.value = patternFile;
+    patternSelect.dispatchEvent(new Event('change', { bubbles: true }));
+  } else {
+    applyCurrentPattern();
+  }
+
+  setActiveWorkbenchTheme(file);
+
+  document.querySelectorAll('.theme-row').forEach((row) => {
+    const active = row.dataset.file === file;
+    row.classList.toggle('active', active);
+    row.setAttribute('aria-selected', String(active));
+  });
+}
+
+function crossfadeShowcase(commit, reduceMotion) {
+  const showcase = document.querySelector('.showcase-grid');
+  if (!showcase) {
+    commit();
+    return;
+  }
+  gsap.killTweensOf(showcase);
+  gsap.to(showcase, {
+    autoAlpha: 0,
+    duration: reduceMotion ? 0 : 0.25,
+    ease: 'power1.in',
+    onComplete: () => {
+      commit();
+      gsap.to(showcase, { autoAlpha: 1, duration: reduceMotion ? 0 : 0.4, ease: 'power2.out', overwrite: true });
+    },
+  });
+}
+
+async function setTheme(file, { patternFile = null } = {}) {
+  const status = document.querySelector('#theme-status');
   status.textContent = 'Loading theme variables...';
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const showcase = document.querySelector('.showcase-grid');
-  const fadeOut = () => {
-    if (!showcase) return;
-    gsap.killTweensOf(showcase);
-    gsap.to(showcase, { autoAlpha: 0, duration: reduceMotion ? 0 : 0.25, ease: 'power1.in' });
-  };
-  const fadeIn = () => {
-    if (!showcase) return;
-    gsap.to(showcase, { autoAlpha: 1, duration: reduceMotion ? 0 : 0.4, ease: 'power2.out', overwrite: true });
-  };
-  fadeOut();
-
   try {
+    // Load before animating so a cache hit never cuts the transition short.
     const theme = await loadTheme(file);
-    applyTheme(theme);
-    name.textContent = theme._name || file;
-    status.textContent = theme._dark === false ? 'Light variant' : 'Dark variant';
-    document.querySelector('#palette-grid').innerHTML = renderPalette();
-    applyCurrentPattern();
-    setActiveWorkbenchTheme(file);
-    
-    // Update active row
-    document.querySelectorAll('.theme-row').forEach(row => {
-      row.classList.toggle('active', row.dataset.file === file);
-      row.setAttribute('aria-selected', row.dataset.file === file);
-    });
-    fadeIn();
+    const commit = () => applyThemeState(file, theme, patternFile);
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!reduceMotion && document.startViewTransition) {
+      const transition = document.startViewTransition(commit);
+      await transition.finished;
+    } else {
+      crossfadeShowcase(commit, reduceMotion);
+    }
   } catch (error) {
     status.textContent = error.message;
-    fadeIn();
     const grid = document.querySelector('#palette-grid');
     if (grid) {
       const errorElement = document.createElement('div');
@@ -522,10 +549,37 @@ let shufflePaused = false;
 let shuffleTimer = null;
 let darkThemeFiles = null;
 
+let themeShuffleBag = [];
+let patternShuffleBag = [];
+
+function shuffled(values) {
+  const result = [...values];
+  for (let index = result.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [result[index], result[swapIndex]] = [result[swapIndex], result[index]];
+  }
+  return result;
+}
+
+function nextFromBag(values, current, bag) {
+  if (!bag.length) {
+    bag.push(...shuffled(values.filter((value) => value !== current)));
+  }
+  return bag.pop();
+}
+
 function pickRandomTheme() {
   const current = document.querySelector('.theme-row.active')?.dataset.file;
-  const pool = (darkThemeFiles || THEMES.map((t) => t.file)).filter((f) => f !== current);
-  return pool[Math.floor(Math.random() * pool.length)];
+  const themes = darkThemeFiles || THEMES.map((theme) => theme.file);
+  return nextFromBag(themes, current, themeShuffleBag);
+}
+
+function pickRandomPattern() {
+  const current = patternSelect?.value;
+  const patterns = PATTERNS
+    .map((pattern) => pattern.file)
+    .filter((file) => file !== 'pattern.svg');
+  return nextFromBag(patterns, current, patternShuffleBag);
 }
 
 function updateShuffleRing() {
@@ -541,7 +595,7 @@ function startShuffle() {
     shuffleRemaining -= 100;
     if (shuffleRemaining <= 0) {
       shuffleRemaining = SHUFFLE_MS;
-      setTheme(pickRandomTheme());
+      setTheme(pickRandomTheme(), { patternFile: pickRandomPattern() });
     }
     updateShuffleRing();
   }, 100);

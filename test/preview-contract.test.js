@@ -60,6 +60,19 @@ test('theme pipeline loads and applies theme on change', () => {
   assert.match(main, /applyTheme\(/);
 });
 
+test('slideshow passes both theme and pattern into the transition', () => {
+  assert.match(main, /setTheme\(pickRandomTheme\(\),\s*\{\s*patternFile:\s*pickRandomPattern\(\)\s*\}\)/);
+  assert.match(main, /function pickRandomPattern\(\)/);
+  assert.match(main, /function applyThemeState\(file, theme, patternFile\)/);
+});
+
+test('shuffle bags refill only when exhausted and skip the current value', () => {
+  assert.match(main, /function shuffled\(values\)/);
+  assert.match(main, /function nextFromBag\(values, current, bag\)/);
+  assert.match(main, /values\.filter\(\(value\) => value !== current\)/);
+  assert.match(main, /\.filter\(\(file\) => file !== 'pattern\.svg'\)/);
+});
+
 test('extractPalettePreview extracts correct variables', () => {
   assert.match(main, /function extractPalettePreview\(vars\)/);
   assert.match(main, /PALETTE_PREVIEW_VARS\.map\(varName => vars\[varName\] \|\| '#000000'\)/);

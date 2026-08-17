@@ -198,6 +198,30 @@
   z-index: 1;
 }
 
+::view-transition-old(root) {
+  animation: colorway-theme-out 360ms ease both;
+}
+
+::view-transition-new(root) {
+  animation: colorway-theme-in 520ms cubic-bezier(.16, 1, .3, 1) both;
+}
+
+@keyframes colorway-theme-out {
+  to {
+    opacity: 0;
+    filter: blur(2px);
+    transform: scale(.997);
+  }
+}
+
+@keyframes colorway-theme-in {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+    transform: scale(1.003);
+  }
+}
+
 .showcase-card {
   background: var(--bg_dock);
   border: 1px solid var(--border_color);
@@ -678,6 +702,10 @@
   .card { transition: none; }
   .showcase-card { transition: none; }
   .theme-row { transition: none; }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0s;
+  }
 }
 
 .status-stats {
