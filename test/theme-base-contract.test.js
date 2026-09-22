@@ -132,7 +132,8 @@ test('QSS asset URLs use the OBS theme search path', () => {
   assert.ok(vars, 'Colorway vars block missing');
   const qss = base.slice(base.indexOf(vars[0]) + vars[0].length);
   const urls = [...qss.matchAll(/url\(([^)]+)\)/g)].map((match) => match[1].trim());
-  for (const url of urls) {
-    assert.ok(url.startsWith('theme:'), `theme asset must use theme: search path: ${url}`);
+  for (const rawUrl of urls) {
+    const url = rawUrl.replace(/^(["'])(.*)\1$/, '$2');
+    assert.ok(url.startsWith('theme:'), `theme asset must use theme: search path: ${rawUrl}`);
   }
 });
