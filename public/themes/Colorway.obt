@@ -788,14 +788,25 @@ QTreeView::item:selected:hover .icon-media-prev {
     color: var(--text_light);
 }
 
-/* Studio Mode Switch Toggled States */
+/* Studio Mode active state.
+   Current OBS toggles .state-active; :checked stays as a legacy fallback. */
+#modeSwitch:!hover:!pressed.state-active,
 #modeSwitch:!hover:!pressed:checked {
     background: var(--primary);
+    border-color: var(--primary_light);
     color: var(--text_inverse);
 }
 
+#modeSwitch:hover:!pressed.state-active,
 #modeSwitch:hover:!pressed:checked {
     background: var(--primary_light);
+    border-color: var(--primary_lighter);
+    color: var(--text_inverse);
+}
+
+#modeSwitch:pressed.state-active {
+    background: var(--primary_dark);
+    border-color: var(--primary);
     color: var(--text_inverse);
 }
 
@@ -2329,6 +2340,32 @@ QSpinBox::down-button, QDoubleSpinBox::down-button {
     border: none;
     background: transparent;
 }
+
+QSpinBox::up-button:hover,
+QSpinBox::down-button:hover,
+QDoubleSpinBox::up-button:hover,
+QDoubleSpinBox::down-button:hover {
+    background: var(--button_bg_hover);
+}
+
+QSpinBox::up-button:pressed,
+QSpinBox::down-button:pressed,
+QDoubleSpinBox::up-button:pressed,
+QDoubleSpinBox::down-button:pressed {
+    background: var(--button_bg_down);
+}
+
+QSpinBox::up-button:disabled,
+QSpinBox::up-button:off,
+QSpinBox::down-button:disabled,
+QSpinBox::down-button:off,
+QDoubleSpinBox::up-button:disabled,
+QDoubleSpinBox::up-button:off,
+QDoubleSpinBox::down-button:disabled,
+QDoubleSpinBox::down-button:off {
+    background: var(--button_bg_disabled);
+}
+
 QSpinBox::up-arrow,
 QDoubleSpinBox::up-arrow {
     image: url(theme:icons/colorway/iconamoon/normal/arrow-up.svg);
@@ -2783,10 +2820,27 @@ QTabBar::tab:selected {
     font-weight: bold;
 }
 
+QTabBar::tab:bottom {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: var(--shape_sm);
+    border-bottom-right-radius: var(--shape_sm);
+}
+
+QTabBar::tab:bottom:selected {
+    border-bottom: 1px solid var(--tab_bg);
+    border-top: 2px solid var(--primary);
+}
+
 QTabBar::tab:hover:!selected {
     background: var(--surface2);
     color: var(--text_bright);
     border-bottom: 2px solid var(--border_base);
+}
+
+QTabBar::tab:bottom:hover:!selected {
+    border-bottom: 1px solid var(--tab_bg);
+    border-top: 2px solid var(--border_base);
 }
 
 QTabBar::tab:pressed {
@@ -2846,6 +2900,17 @@ QGroupBox::indicator:checked {
 QGroupBox::indicator:checked:hover {
     image: url(theme:icons/colorway/iconamoon/normal/checkbox_fill.svg);
     background: var(--primary_light);
+}
+
+QGroupBox::indicator:unchecked:disabled {
+    image: url(theme:icons/colorway/iconamoon/normal/checkbox_line.svg);
+    border: 1px solid var(--button_bg_disabled);
+}
+
+QGroupBox::indicator:checked:disabled {
+    image: url(theme:icons/colorway/iconamoon/normal/checkbox_fill.svg);
+    background: var(--button_bg_disabled);
+    border: 1px solid var(--button_bg_disabled);
 }
 
 QToolTip {

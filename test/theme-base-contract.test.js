@@ -90,3 +90,14 @@ test('widget rules consume semantic tokens instead of raw OBS palette ramps', ()
   assert.match(base, /--palette_dark:\s*var\(--bg_dock\);/);
   assert.match(base, /--surface_dim:\s*var\(--button_bg_disabled\);/);
 });
+
+
+test('current OBS runtime state classes receive visible styling', () => {
+  assert.match(base, /#modeSwitch:!hover:!pressed\.state-active/);
+  assert.match(base, /#modeSwitch:hover:!pressed\.state-active/);
+  assert.match(base, /#modeSwitch:pressed\.state-active/);
+  assert.match(base, /QSpinBox::up-button:hover/);
+  assert.match(base, /QDoubleSpinBox::down-button:disabled/);
+  assert.match(base, /QGroupBox::indicator:checked:disabled/);
+  assert.match(base, /QTabBar::tab:bottom:selected/);
+});
