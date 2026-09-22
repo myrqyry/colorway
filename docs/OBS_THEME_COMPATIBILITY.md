@@ -57,3 +57,17 @@ Colorway follows these constraints:
 - Current OBS source also supports `min()` and `max()` in the variable parser, even though the wiki currently documents only `calc()`.
 
 The wiki explicitly permits a variant to extend another variant as long as the dependency chain ends at a base theme. That makes a future `Yami.obt → Colorway.ovt → Colorway-*.ovt` migration a supported architecture. It still needs OBS runtime testing before replacing Colorway's standalone base because variant QSS is appended after its parent and specificity determines which rule wins.
+
+
+## Automated upstream watch
+
+`pnpm check:obs-upstream` checks the real `obsproject/obs-studio` repository against the reviewed baseline in `scripts/obs-upstream-baseline.json`.
+
+It watches:
+
+- `frontend/data/themes/Yami.obt` for theme-variable and selector drift.
+- `frontend/OBSApp_Themes.cpp` for theme-parser drift.
+
+When an upstream source changes, the command prints the new upstream commit plus structural additions/removals and exits non-zero. It does **not** automatically copy Yami rules into Colorway or advance the baseline. The baseline only moves after a human review determines whether the upstream change matters to Colorway.
+
+`.github/workflows/obs-upstream-watch.yml` runs the same deterministic check weekly and can also be triggered manually.

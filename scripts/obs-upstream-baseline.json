@@ -1,0 +1,20 @@
+{
+  "repository": "obsproject/obs-studio",
+  "reviewed_at": "2026-09-21",
+  "sources": [
+    {
+      "id": "yami",
+      "label": "Yami base theme",
+      "path": "frontend/data/themes/Yami.obt",
+      "commit": "b5bfb79093e26ce4b0e71d999f59b6b22f961121",
+      "kind": "theme"
+    },
+    {
+      "id": "parser",
+      "label": "OBS theme parser",
+      "path": "frontend/OBSApp_Themes.cpp",
+      "commit": "4819d1714b0384b52a3964672c0c3dfbd8a7b2fe",
+      "kind": "parser"
+    }
+  ]
+}

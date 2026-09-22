@@ -7,6 +7,7 @@
     "dev": "vite --host 0.0.0.0",
     "test": "node --test",
     "sync:themes": "node scripts/sync-theme-mirrors.mjs",
+    "check:obs-upstream": "node scripts/check-obs-upstream.mjs",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0"
   },
