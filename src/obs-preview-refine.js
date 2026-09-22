@@ -260,6 +260,55 @@ function populatePatternSelect(root) {
   select.addEventListener('change', () => applyPattern(select.value));
 }
 
+function populateStateLabControl(root) {
+  const appearance = root.querySelector('.obs-sim-appearance-card');
+  const stateLab = root.querySelector('[data-state-lab]');
+  if (!appearance || !stateLab) return;
+
+  let row = appearance.querySelector('[data-state-lab-control]');
+  if (!row) {
+    row = document.createElement('div');
+    row.className = 'obs-sim-state-test-row';
+    row.dataset.stateLabControl = 'true';
+    row.innerHTML = `
+      <span>States</span>
+      <button type="button" class="obs-sim-state-test-button" data-permanent-open-state-lab>
+        <span>Test UI states</span>
+        <span class="obs-sim-state-test-dots" aria-hidden="true">
+          <i class="info"></i><i class="warning"></i><i class="error"></i><i class="success"></i>
+        </span>
+      </button>
+    `;
+
+    const patternRow = appearance.querySelector('.obs-sim-pattern-row');
+    if (patternRow) patternRow.insertAdjacentElement('afterend', row);
+    else appearance.append(row);
+
+    row.querySelector('[data-permanent-open-state-lab]')?.addEventListener('click', () => {
+      stateLab.hidden = false;
+      stateLab.removeAttribute('hidden');
+      stateLab.querySelector('[data-close-state-lab]')?.focus();
+    });
+  }
+
+  if (stateLab.dataset.colorwayReturnFocusWired !== 'true') {
+    stateLab.dataset.colorwayReturnFocusWired = 'true';
+    const returnFocus = () => {
+      queueMicrotask(() => root.querySelector('[data-permanent-open-state-lab]')?.focus());
+    };
+
+    stateLab.querySelectorAll('[data-close-state-lab]').forEach((button) => {
+      button.addEventListener('click', returnFocus);
+    });
+    stateLab.addEventListener('click', (event) => {
+      if (event.target === stateLab) returnFocus();
+    });
+    root.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !stateLab.hidden) returnFocus();
+    }, true);
+  }
+}
+
 function sliderPercent(input) {
   const min = Number(input.min || 0);
   const max = Number(input.max || 100);
@@ -304,6 +353,7 @@ function ensureAppearanceControls(root) {
   populateNativeStyleSelect(root);
   buildThemePicker(root);
   populatePatternSelect(root);
+  populateStateLabControl(root);
   syncVisibleControls(root);
 }
 

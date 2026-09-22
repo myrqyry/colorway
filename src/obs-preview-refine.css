@@ -427,3 +427,70 @@
     height: 8px;
   }
 }
+
+
+/* The generic preview heading is intentionally hidden in this refined view,
+   so the state stress lab must be reachable from the permanent controller. */
+.obs-sim-state-test-row {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+  margin: 6px 0;
+}
+
+.obs-sim-state-test-row > span {
+  justify-self: end;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.obs-sim-state-test-button {
+  display: flex;
+  width: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid var(--button_border, var(--border_color));
+  border-radius: var(--border_radius_small, 5px);
+  padding: 4px 7px;
+  background: var(--button_bg, var(--bg_base));
+  color: var(--text);
+  text-align: left;
+}
+
+.obs-sim-state-test-button:hover,
+.obs-sim-state-test-button:focus-visible {
+  border-color: var(--button_border_hover, var(--primary));
+  background: var(--button_bg_hover, var(--bg_hover));
+}
+
+.obs-sim-state-test-button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.obs-sim-state-test-dots {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 3px;
+}
+
+.obs-sim-state-test-dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--shape_full, 999px);
+}
+
+.obs-sim-state-test-dots .info { background: var(--cw-live-primary, var(--primary)); }
+.obs-sim-state-test-dots .warning { background: var(--cw-live-warning, var(--warning)); }
+.obs-sim-state-test-dots .error { background: var(--cw-live-danger, var(--danger)); }
+.obs-sim-state-test-dots .success { background: var(--cw-live-success, var(--success)); }
+
+/* The permanent Appearance controller is z-index 100. Keep the state lab
+   above it rather than hiding that controller and fighting its permanence observer. */
+.obs-sim-window > .obs-sim-state-lab-backdrop {
+  z-index: 220;
+}

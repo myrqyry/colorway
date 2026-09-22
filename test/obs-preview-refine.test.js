@@ -54,3 +54,15 @@ test('Yami remains an export nicety rather than the Browse-page call to action',
   assert.match(refine, /querySelector\('#workbench-download-yami'\)\?\.remove\(\)/);
   assert.match(refineStyles, /#workbench-download-yami\s*\{\s*display: none !important;/s);
 });
+
+
+test('state stress lab is reachable from the permanent Appearance controller', () => {
+  assert.match(refineStyles, /\.showcase-header,\s*\.obs-preview-heading-row\s*\{\s*display: none !important;/s);
+  assert.match(refine, /function populateStateLabControl\(root\)/);
+  assert.match(refine, /data-permanent-open-state-lab/);
+  assert.match(refine, /populateStateLabControl\(root\)/);
+  assert.match(refine, /stateLab\.hidden = false/);
+  assert.match(refine, /stateLab\.querySelector\('\[data-close-state-lab\]'\)\?\.focus\(\)/);
+  assert.match(refineStyles, /\.obs-sim-state-test-button\s*\{/);
+  assert.match(refineStyles, /\.obs-sim-window > \.obs-sim-state-lab-backdrop\s*\{\s*z-index: 220;/s);
+});
