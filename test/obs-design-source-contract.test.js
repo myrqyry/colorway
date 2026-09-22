@@ -57,3 +57,28 @@ test('reference docs pin provenance and reject mockup-as-spec drift', () => {
   assert.match(reference, /CC0-1\.0/);
   assert.match(reference, /not as a current OBS UI specification/i);
 });
+
+
+test('state stress lab exercises all Colorway semantic state roles', () => {
+  assert.match(preview, /function stateLabMarkup\(\)/);
+  assert.match(preview, /data-open-state-lab/);
+  assert.match(preview, /data-state-kind="info"/);
+  assert.match(preview, /data-state-kind="warning"/);
+  assert.match(preview, /data-state-kind="error"/);
+  assert.match(preview, /data-state-kind="success"/);
+  assert.match(styles, /\.obs-sim-state-card\.info\s*\{\s*--state-color:\s*var\(--cw-live-primary, var\(--primary\)\)/);
+  assert.match(styles, /\.obs-sim-state-card\.warning\s*\{\s*--state-color:\s*var\(--cw-live-warning, var\(--warning\)\)/);
+  assert.match(styles, /\.obs-sim-state-card\.error\s*\{\s*--state-color:\s*var\(--cw-live-danger, var\(--danger\)\)/);
+  assert.match(styles, /\.obs-sim-state-card\.success\s*\{\s*--state-color:\s*var\(--cw-live-success, var\(--success\)\)/);
+});
+
+test('state stress lab carries source-backed OBS vocabulary without claiming current placement', () => {
+  assert.match(preview, />Secondary information</);
+  assert.match(preview, />Warning</);
+  assert.match(preview, />Error</);
+  assert.match(preview, />Crash Recovery</);
+  assert.match(preview, />Run in Safe Mode</);
+  assert.match(preview, />Run Normally</);
+  assert.match(reference, /testing surface, not a claim about current OBS notification placement/i);
+  assert.match(reference, /Colorway does not define a separate info token/i);
+});

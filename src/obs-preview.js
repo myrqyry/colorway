@@ -175,6 +175,81 @@ function settingsMarkup() {
   `;
 }
 
+function stateLabMarkup() {
+  return `
+    <div class="obs-sim-state-lab-backdrop" data-state-lab hidden>
+      <section class="obs-sim-state-lab" role="dialog" aria-modal="true" aria-labelledby="obs-state-lab-title">
+        <header class="obs-sim-state-lab-header">
+          <div>
+            <span>Theme stress test</span>
+            <strong id="obs-state-lab-title">OBS interface states</strong>
+          </div>
+          <button type="button" data-close-state-lab aria-label="Close state stress test">${iconMarkup('close')}</button>
+        </header>
+
+        <div class="obs-sim-state-grid">
+          <article class="obs-sim-state-card info" data-state-kind="info">
+            <i aria-hidden="true"></i>
+            <div>
+              <strong>Secondary information</strong>
+              <p>A new OBS update is available when you are ready.</p>
+            </div>
+            <button type="button">Details</button>
+          </article>
+
+          <article class="obs-sim-state-card warning" data-state-kind="warning">
+            <i aria-hidden="true"></i>
+            <div>
+              <strong>Warning</strong>
+              <p>Dropped frames were detected during the current stream.</p>
+            </div>
+            <button type="button">Review</button>
+          </article>
+
+          <article class="obs-sim-state-card error" data-state-kind="error">
+            <i aria-hidden="true"></i>
+            <div>
+              <strong>Error</strong>
+              <p>Recording could not start using the selected output path.</p>
+            </div>
+            <button type="button">Fix output</button>
+          </article>
+
+          <article class="obs-sim-state-card success" data-state-kind="success">
+            <i aria-hidden="true"></i>
+            <div>
+              <strong>Recovered</strong>
+              <p>The streaming connection is healthy again.</p>
+            </div>
+            <button type="button">Dismiss</button>
+          </article>
+        </div>
+
+        <section class="obs-sim-crash-recovery" aria-label="Crash recovery specimen">
+          <div class="obs-sim-crash-copy">
+            <span class="obs-sim-crash-mark" aria-hidden="true">${iconMarkup('refresh')}</span>
+            <div>
+              <strong>Crash Recovery</strong>
+              <p>OBS did not shut down normally. Compare recovery actions against this theme before shipping it.</p>
+            </div>
+          </div>
+          <div class="obs-sim-crash-actions">
+            <button type="button">Run in Safe Mode</button>
+            <button type="button" class="primary">Run Normally</button>
+          </div>
+        </section>
+
+        <footer class="obs-sim-state-key" aria-label="Semantic color roles">
+          <span class="info">Primary · information</span>
+          <span class="warning">Warning</span>
+          <span class="error">Danger · error</span>
+          <span class="success">Success · recovery</span>
+        </footer>
+      </section>
+    </div>
+  `;
+}
+
 function previewMarkup() {
   const sceneFooter = `
     ${buttonIcon('plus', 'Add scene')}
@@ -209,6 +284,7 @@ function previewMarkup() {
         </div>
         <div class="obs-preview-legend">
           <span><i class="obs-preview-legend-dot"></i> live theme</span>
+          <button type="button" class="obs-preview-open-settings obs-preview-state-test" data-open-state-lab>Test UI states</button>
           <button type="button" class="obs-preview-open-settings" data-open-settings>Open Appearance settings</button>
         </div>
       </div>
@@ -334,6 +410,7 @@ function previewMarkup() {
           </div>
         </div>
 
+        ${stateLabMarkup()}
         ${settingsMarkup()}
       </div>
     </section>
@@ -489,9 +566,32 @@ function wirePreview(root) {
     root.querySelector('[data-canvas-area]')?.classList.toggle('studio-mode', studio);
   });
 
+  const stateLab = root.querySelector('[data-state-lab]');
   const dialog = root.querySelector('[data-settings-dialog]');
+  const closeStateLab = () => {
+    if (stateLab) stateLab.hidden = true;
+  };
+  root.querySelectorAll('[data-open-state-lab]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (dialog) dialog.hidden = true;
+      if (stateLab) stateLab.hidden = false;
+    });
+  });
+  root.querySelectorAll('[data-close-state-lab]').forEach((button) => {
+    button.addEventListener('click', closeStateLab);
+  });
+  stateLab?.addEventListener('click', (event) => {
+    if (event.target === stateLab) closeStateLab();
+  });
+  root.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && stateLab && !stateLab.hidden) closeStateLab();
+  });
+
   root.querySelectorAll('[data-open-settings]').forEach((button) => {
-    button.addEventListener('click', () => { if (dialog) dialog.hidden = false; });
+    button.addEventListener('click', () => {
+      closeStateLab();
+      if (dialog) dialog.hidden = false;
+    });
   });
   root.querySelectorAll('[data-close-settings]').forEach((button) => {
     button.addEventListener('click', () => { if (dialog) dialog.hidden = true; });
