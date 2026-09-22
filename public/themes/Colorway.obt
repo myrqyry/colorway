@@ -154,11 +154,11 @@
     --settings_scrollbar_size: calc(var(--scrollbar_size) + 9px);
     --scrollbar_handle: var(--border_color);
 
-    --scrollbar_bg: #181818;
+    --scrollbar_bg: var(--bg_base);
     --scrollbar_hover: var(--primary);
     --scrollbar_down: var(--primary_dark);
 
-    --scrollbar_border: #333333;
+    --scrollbar_border: var(--border_color);
 
     /* Semantic Feedback Active States
        Keep these as aliases so every variant drives the actual OBS controls. */
@@ -268,7 +268,7 @@
 
     --palette_light: var(--input_bg_hover);
     --palette_mid: var(--bg_preview);
-    --palette_dark: #1f1d2e;
+    --palette_dark: var(--bg_dock);
 
     --palette_highlight: var(--primary);
     --palette_highlightedText: var(--text_inverse);
@@ -337,7 +337,7 @@
     --surface2: var(--bg_preview);
     --surface3: var(--input_bg_focus);
     --surface4: var(--input_bg_hover);
-    --surface_dim: var(--grey8);
+    --surface_dim: var(--button_bg_disabled);
 
     /* M3 Expressive - Container Colors */
     --primary_container: var(--surface3);
@@ -427,8 +427,8 @@
 }
 
 .frame-notice {
-    background: var(--grey8);
-    border: 1px solid var(--grey6);
+    background: var(--surface1);
+    border: 1px solid var(--border_color);
     border-radius: var(--border_radius);
     padding: var(--padding_xlarge) var(--padding_large);
 }
@@ -467,7 +467,7 @@
 .button-primary:hover,
 .button-primary:focus {
     background-color: var(--primary);
-    border-color: var(--white3);
+    border-color: var(--primary_lighter);
 }
 
 .button-primary:hover {
@@ -1044,7 +1044,7 @@ VolumeControl #volLabel {
 
 VolumeControl.volume-inactive,
 VolumeControl.volume-inactive VolumeMeter {
-    background: var(--grey7);
+    background: var(--button_bg_disabled);
 }
 
 VolumeControl.volume-hidden .mixer-name,
@@ -1054,38 +1054,38 @@ VolumeControl.volume-inactive .mixer-name {
 
 VolumeControl .mixer-category {
     font-weight: bold;
-    background: var(--blue6);
-    color: var(--blue1);
+    background: var(--bg_hover);
+    color: var(--text_muted);
 }
 
 VolumeControl.volume-pinned .mixer-category {
-    background: var(--blue5);
-    color: var(--text_light);
+    background: var(--bg_hover);
+    color: var(--primary);
 }
 
 VolumeControl.volume-hidden .mixer-category {
-    background: var(--purple6);
-    color: var(--purple1);
+    background: var(--bg_base);
+    color: var(--primary_dark);
 }
 
 VolumeControl.volume-unassigned .mixer-category {
-    background: var(--yellow6);
-    color: var(--yellow1);
+    background: var(--bg_hover);
+    color: var(--warning);
 }
 
 VolumeControl.volume-inactive .mixer-category {
-    background: var(--grey8);
+    background: var(--bg_base);
     color: var(--text_muted);
 }
 
 VolumeControl.volume-preview .mixer-category {
-    background: var(--green6);
-    color: var(--green1);
+    background: var(--bg_hover);
+    color: var(--success);
 }
 
 #stackedMixerArea VolumeControl.volume-hidden QSlider::groove,
 #stackedMixerArea VolumeControl.volume-inactive QSlider::groove {
-    background: var(--grey8);
+    background: var(--button_bg_disabled);
 }
 
 /* Table View */
@@ -1390,7 +1390,7 @@ QDateTimeEdit::down-arrow {
 }
 
 QDateTimeEdit:on {
-    background-color: var(--grey7);
+    background-color: var(--input_bg_focus);
 }
 
 /* Calendar Top Bar */
@@ -1471,7 +1471,7 @@ QCalendarWidget QSpinBox::down-arrow {
 
 /* Days of the Week Bar */
 QCalendarWidget QWidget {
-    alternate-background-color: var(--grey7);
+    alternate-background-color: var(--bg_hover);
 }
 
 QCalendarWidget QAbstractItemView:enabled {
@@ -1512,7 +1512,7 @@ OBSBasicAdvAudio #scrollAreaWidgetContents {
 }
 
 #previewXContainer {
-    border: 1px solid var(--grey6);
+    border: 1px solid var(--border_color);
 }
 
 #previewScalePercent {
@@ -1522,7 +1522,7 @@ OBSBasicAdvAudio #scrollAreaWidgetContents {
 
 #previewScalingMode {
     padding: 0px var(--input_text_padding);
-    border: 1px solid var(--grey6);
+    border: 1px solid var(--border_color);
 }
 
 #previewScalingMode:hover,
@@ -1538,7 +1538,7 @@ OBSBasicAdvAudio #scrollAreaWidgetContents {
 #previewXScrollBar,
 #previewYScrollBar {
     background: transparent;
-    border: 1px solid var(--grey6);
+    border: 1px solid var(--border_color);
     border-radius: var(--border_radius_small);
 }
 
@@ -1670,19 +1670,19 @@ idian--PropertiesList {
 }
 
 idian--Row {
-    background: var(--grey5);
+    background: var(--surface2);
     margin: 0;
     padding: var(--action_row_padding) var(--action_row_padding_x);
 }
 
 idian--Row.keyFocus {
-    background: var(--grey4);
-    border: var(--highlight_width) solid var(--grey4);
+    background: var(--surface3);
+    border: var(--highlight_width) solid var(--highlight_color);
 }
 
 idian--Row.cursor-pointer.hover {
-    background: var(--grey4);
-    border: var(--highlight_width) solid var(--grey1);
+    background: var(--surface3);
+    border: var(--highlight_width) solid var(--input_border_hover);
 }
 
 idian--Row.first {
@@ -1755,7 +1755,7 @@ idian--Row QComboBox:focus {
 }
 
 idian--Row QComboBox.hover {
-    border-color: var(--grey1);
+    border-color: var(--input_border_hover);
 }
 
 idian--Row QComboBox.keyFocus {
@@ -1821,7 +1821,7 @@ idian--CheckBox.hover::indicator,
 idian--CheckBox.checked.hover::indicator,
 idian--Row.hover > idian--CheckBox.row-buddy::indicator,
 idian--Row.hover > idian--CheckBox.row-buddy.checked::indicator {
-    border-color: var(--grey1);
+    border-color: var(--input_border_hover);
 }
 
 idian--CheckBox.keyFocus::indicator,
@@ -1841,14 +1841,14 @@ idian--CollapsibleRow.keyFocus {
 
 idian--CollapsibleRow idian--PropertiesList {
     border-radius: 0;
-    border-left: 1px solid var(--grey5);
-    border-right: 1px solid var(--grey5);
-    border-bottom: 1px solid var(--grey5);
+    border-left: 1px solid var(--border_color);
+    border-right: 1px solid var(--border_color);
+    border-bottom: 1px solid var(--border_color);
     margin: var(--spacing_small) 0px 0px;
 }
 
 idian--CollapsibleRow idian--PropertiesList idian--Row {
-    background-color: var(--grey6);
+    background-color: var(--surface1);
     padding-left: var(--action_row_padding_nested);
 }
 
@@ -1867,8 +1867,8 @@ idian--CollapsibleRow idian--Row.last {
 }
 
 idian--CollapsibleRow idian--PropertiesList idian--ToggleSwitch {
-    qproperty-background: var(--grey7);
-    qproperty-background_hover: var(--grey6);
+    qproperty-background: var(--surface2);
+    qproperty-background_hover: var(--surface3);
 }
 
 idian--ExpandButton {
@@ -1881,11 +1881,11 @@ idian--ExpandButton {
 }
 
 idian--ExpandButton::indicator {
-    background: var(--grey5);
+    background: var(--surface2);
     border-radius: var(--action_row_collapse_radius);
     padding: var(--padding_large);
     image: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
-    border: var(--highlight_width) solid var(--grey5);
+    border: var(--highlight_width) solid var(--border_color);
 }
 
 idian--ExpandButton::indicator:checked {
@@ -1898,28 +1898,28 @@ idian--ExpandButton.keyFocus::indicator {
 }
 
 idian--RowFrame .btn-frame {
-    background: var(--grey5);
+    background: var(--surface2);
     padding: var(--action_row_padding) var(--action_row_padding_x);
 }
 
 idian--RowFrame.hover .btn-frame {
-    background: var(--grey4);
+    background: var(--surface3);
 }
 
 idian--RowFrame.hover idian--Row {
-    background: var(--grey4);
-    border: var(--highlight_width) solid var(--grey1);
+    background: var(--surface3);
+    border: var(--highlight_width) solid var(--input_border_hover);
     border-right: none;
 }
 
 idian--RowFrame.hover .row-buddy {
-    background: var(--grey4);
-    border: var(--highlight_width) solid var(--grey1);
+    background: var(--surface3);
+    border: var(--highlight_width) solid var(--input_border_hover);
     border-left: none;
 }
 
 idian--RowFrame.hover idian--ExpandButton::indicator {
-    border-color: var(--grey1);
+    border-color: var(--input_border_hover);
 }
 
 /* Current Idian widget names (OBS 32+).
@@ -2090,7 +2090,7 @@ AlignmentSelector {
 
 AlignmentSelector:focus,
 AlignmentSelector:hover {
-    border: 1px solid var(--white3);
+    border: 1px solid var(--primary_lighter);
 }
 
 AlignmentSelector:checked:hover {
@@ -2111,15 +2111,15 @@ AlignmentSelector::indicator:checked:focus {
 }
 
 AlignmentSelector:disabled {
-    border: 1px solid var(--grey3);
+    border: 1px solid var(--border_color);
 }
 
 AlignmentSelector::indicator:disabled {
-    background: var(--grey5);
+    background: var(--button_bg_disabled);
 }
 
 AlignmentSelector::indicator:checked:disabled {
-    background: var(--grey3);
+    background: var(--border_color);
 }
 
  QPushButton {
@@ -2391,27 +2391,27 @@ QSlider::handle:vertical:pressed {
 }
 
 QSlider::sub-page:horizontal:disabled {
-    background-color: var(--grey4);
+    background-color: var(--border_color);
     border-radius: var(--slider_groove_radius);
 }
 
 QSlider::add-page:horizontal:disabled {
-    background-color: var(--grey7);
+    background-color: var(--button_bg_disabled);
     border-radius: var(--slider_groove_radius);
 }
 
 QSlider::add-page:vertical:disabled {
-    background-color: var(--grey4);
+    background-color: var(--border_color);
     border-radius: var(--slider_groove_radius);
 }
 
 QSlider::sub-page:vertical:disabled {
-    background-color: var(--grey7);
+    background-color: var(--button_bg_disabled);
     border-radius: var(--slider_groove_radius);
 }
 
 QSlider::handle:disabled {
-    background-color: var(--white5);
+    background-color: var(--text_disabled);
 }
 
 /* Vertical sliders */
@@ -3263,7 +3263,7 @@ SourceTreeItem:focus,
 QMenu::item:selected:focus,
 QListView::item:selected:focus,
 QListWidget::item:selected:focus {
-    border: 1px solid var(--white3);
+    border: 1px solid var(--primary_lighter);
 }
 
 QMenu::item:selected:hover,
@@ -3293,13 +3293,13 @@ QListWidget QLineEdit {
     padding: 0;
     padding-bottom: 1px;
     margin: 0;
-    border: var(--input_border_width) solid var(--white1);
+    border: var(--input_border_width) solid var(--input_border);
     border-radius: var(--border_radius);
 }
 
 QListView QLineEdit:focus,
 QListWidget QLineEdit:focus {
-    border: 1px solid var(--grey1);
+    border: 1px solid var(--input_border_focus);
 }
 
 /* Settings QList */
@@ -3350,11 +3350,11 @@ OBSDock QToolBar QToolButton {
 }
 
 OBSDock QToolBar QToolButton:hover {
-    border-color: var(--grey1);
+    border-color: var(--input_border_hover);
 }
 
 OBSDock QToolBar QToolButton:disabled {
-    background: var(--grey7);
+    background: var(--button_bg_disabled);
 }
 
 #transitionsFrame {
@@ -3526,7 +3526,7 @@ QComboBox:on {
 QComboBox::drop-down,
 QDateTimeEdit::drop-down {
     border: none;
-    border-left: 1px solid var(--grey6);
+    border-left: 1px solid var(--border_color);
     width: var(--input_height);
 }
 
