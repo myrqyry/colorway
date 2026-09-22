@@ -2623,7 +2623,7 @@ QListWidget, QTreeView, QTableView {
     selection-background-color: var(--primary);
     selection-color: var(--text_inverse);
     show-decoration-selected: 1;
-    gridline-color: var(--grey1);
+    gridline-color: var(--border_color);
 }
 
 QListWidget::item, QTreeView::item {

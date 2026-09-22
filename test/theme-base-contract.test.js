@@ -74,3 +74,19 @@ test('current input sizing and tab placement guards are present', () => {
   assert.match(base, /QDateTimeEdit:focus/);
   assert.match(base, /QToolButton:disabled/);
 });
+
+
+test('widget rules consume semantic tokens instead of raw OBS palette ramps', () => {
+  const varsEnd = base.indexOf('/* --------------------- */');
+  assert.ok(varsEnd > 0, 'could not find end of Colorway variable section');
+  const qss = base.slice(varsEnd);
+  assert.doesNotMatch(
+    qss,
+    /var\(--(?:blue|red|pink|teal|purple|green|yellow|grey|white|black)\d+\)/,
+    'widget QSS must use semantic Colorway tokens rather than raw palette ramps',
+  );
+  assert.match(base, /--scrollbar_bg:\s*var\(--bg_base\);/);
+  assert.match(base, /--scrollbar_border:\s*var\(--border_color\);/);
+  assert.match(base, /--palette_dark:\s*var\(--bg_dock\);/);
+  assert.match(base, /--surface_dim:\s*var\(--button_bg_disabled\);/);
+});
