@@ -143,6 +143,7 @@
 
     --padding_base_border: calc(var(--padding_base) + 1px);
 
+    --spinbox_min_width: calc(var(--input_height) * 2.5);
     --spinbox_button_height: calc(var(--input_height_half) - 1px);
 
     --volume_slider: calc(calc(4px + var(--font_base_value)) / 4);
@@ -159,18 +160,21 @@
 
     --scrollbar_border: #333333;
 
-    /* Semantic Feedback Active States */
-    --live: #38bdf8;
-    --recording: #fb4d5d;
+    /* Semantic Feedback Active States
+       Keep these as aliases so every variant drives the actual OBS controls. */
+    --live: var(--primary);
+    --recording: var(--danger);
     --lavender_accent: var(--primary);
 
-    /* Semantic Feedback Backgrounds */
-    --live_bg_start: rgba(56, 189, 248, 0.3);
-    --live_bg_end: rgba(56, 189, 248, 0.1);
-    --recording_bg_start: rgba(251, 77, 93, 0.3);
-    --recording_bg_end: rgba(251, 77, 93, 0.1);
+    /* Semantic Feedback Backgrounds
+       Accent tints are variant-overridable; recording uses neutral theme surfaces
+       so we do not bake one red palette into every Colorway variant. */
     --accent_bg_start: rgba(196, 167, 231, 0.3);
     --accent_bg_end: rgba(196, 167, 231, 0.1);
+    --live_bg_start: var(--accent_bg_start);
+    --live_bg_end: var(--accent_bg_end);
+    --recording_bg_start: var(--bg_hover);
+    --recording_bg_end: var(--bg_base);
 
     /* Indicator Tint Overlays */
     --tint_amber: rgba(251, 191, 36, 0.1);
@@ -419,7 +423,7 @@
 }
 
 .text-success {
-    color: var(--green3);
+    color: var(--success);
 }
 
 .frame-notice {
@@ -765,16 +769,16 @@ QTreeView::item:selected:hover .icon-media-prev {
 /* Primary Control Button Active Hover States */
 #streamButton:hover:!pressed.state-active,
 #broadcastButton:hover:!pressed.state-active {
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(56, 189, 248, 0.45), stop:1 rgba(56, 189, 248, 0.15));
+    background: var(--button_bg_hover);
     border-color: var(--live);
-    color: var(--text_light);
+    color: var(--live);
 }
 
 #recordButton:hover:!pressed.state-active,
 #pauseRecordButton:hover:!pressed.state-active {
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(251, 77, 93, 0.45), stop:1 rgba(251, 77, 93, 0.15));
+    background: var(--button_bg_hover);
     border-color: var(--recording);
-    color: var(--text_light);
+    color: var(--recording);
 }
 
 #replayBufferButton:hover:!pressed.state-active,
@@ -856,28 +860,33 @@ QPushButton:focus {
 }
 
 .btn-mute.checked {
-    color: var(--red3);
+    color: var(--danger);
     background: transparent;
 }
 
 .btn-mute.checked.hover {
-    color: var(--red2);
-    background: var(--grey8);
-    border-color: var(--red1);
+    color: var(--danger);
+    background: var(--bg_hover);
+    border-color: var(--danger);
 }
 
 .btn-mute.checked:focus {
-    border-color: var(--red1);
+    border-color: var(--danger);
 }
 
+/* OBS renamed mute-unassigned to mute-warning for Monitor Only warnings.
+   Keep both selectors so Colorway remains usable across OBS versions. */
+.btn-mute.mute-warning,
 .btn-mute.mute-unassigned {
-    color: var(--yellow1);
-    background: var(--yellow6);
+    color: var(--warning);
+    background: var(--bg_hover);
 }
 
+.btn-mute.mute-warning.hover,
+.btn-mute.mute-warning:focus,
 .btn-mute.mute-unassigned.hover,
 .btn-mute.mute-unassigned:focus {
-    border-color: var(--yellow1);
+    border-color: var(--warning);
 }
 
 /* Monitor Button */
@@ -887,31 +896,28 @@ QPushButton:focus {
 }
 
 .btn-monitor:focus {
-    border-color: var(--red1);
+    border-color: var(--success);
 }
 
 .btn-monitor.checked {
-    background: var(--green4);
-    color: var(--text_light);
+    background: var(--bg_hover);
+    color: var(--success);
+    border-color: var(--success);
 }
 
 .btn-monitor.checked:focus,
-.btn-monitor:checked:focus {
-    color: var(--text_light);
-    border-color: var(--green1);
-}
-
+.btn-monitor:checked:focus,
 .btn-monitor.checked:hover {
-    background: var(--green3);
-    border-color: var(--green1);
-    color: var(--text_light);
+    background: var(--button_bg_hover);
+    color: var(--success);
+    border-color: var(--success);
 }
 
 /* Toggle hidden button */
 
 .toggle-hidden:checked {
-    background: var(--purple5);
-    border-color: var(--purple3);
+    background: var(--primary_dark);
+    border-color: var(--primary);
 }
 
 .toggle-hidden:disabled {
@@ -1100,6 +1106,25 @@ QTableView QToolButton {
     padding: 0px;
     margin: -1px;
     border-radius: var(--shape_xs);
+}
+
+QTableView::indicator {
+    width: var(--icon_base);
+    height: var(--icon_base);
+}
+
+QTableView::indicator:unchecked {
+    image: url(theme:icons/colorway/iconamoon/normal/checkbox_line.svg);
+}
+
+QTableView::indicator:checked {
+    image: url(theme:icons/colorway/iconamoon/normal/checkbox_fill.svg);
+}
+
+QTableView::indicator:unchecked:hover,
+QTableView::indicator:checked:hover {
+    border: var(--highlight_width) solid var(--primary);
+    border-radius: var(--shape_sm);
 }
 
 /* Canvas / Preview background color */
@@ -1559,6 +1584,22 @@ OBSBasicAdvAudio #scrollAreaWidgetContents {
 }
 
 /* Add Source Dialog */
+.btn-create-new {
+    background: transparent;
+    padding: var(--padding_wide) var(--padding_large);
+    border-radius: var(--shape_lg);
+    border: 2px dashed var(--border_color);
+    outline: none;
+    qproperty-icon: url(theme:icons/colorway/iconamoon/normal/plus.svg);
+    margin-bottom: var(--spacing_large);
+}
+
+.btn-create-new:hover,
+.btn-create-new:focus {
+    background: var(--button_bg_hover);
+    border-color: var(--primary);
+}
+
 SourceSelectButton {
     background: var(--button_bg);
     padding: var(--padding_base) var(--padding_large);
@@ -1881,6 +1922,157 @@ idian--RowFrame.hover idian--ExpandButton::indicator {
     border-color: var(--grey1);
 }
 
+/* Current Idian widget names (OBS 32+).
+   Legacy Idian selectors above stay in place for older OBS releases. */
+idian--ListHeader {
+    border-radius: var(--shape_md);
+    font-weight: bold;
+    margin: 0 0 var(--spacing_base);
+    padding: 0 var(--padding_base);
+    min-width: 300px;
+}
+
+idian--ListHeader .title {
+    font-weight: bold;
+    padding: var(--padding_large) 0;
+    color: var(--text);
+}
+
+idian--ListHeader .description,
+idian--RowInfo QLabel.description {
+    color: var(--text_muted);
+}
+
+idian--RowList {
+    border-width: 0;
+    padding: 0;
+    margin: var(--spacing_base) 0;
+}
+
+idian--Row {
+    background: var(--surface2);
+    border-radius: var(--shape_md);
+}
+
+idian--Row.keyFocus {
+    background: var(--surface3);
+    border: var(--highlight_width) solid var(--highlight_color);
+}
+
+idian--Row.cursor-pointer.hover {
+    background: var(--surface3);
+    border: var(--highlight_width) solid var(--input_border_hover);
+}
+
+idian--RowList idian--Row {
+    border-radius: 0;
+}
+
+idian--RowList idian--Row.first {
+    border-top-left-radius: var(--shape_md);
+    border-top-right-radius: var(--shape_md);
+}
+
+idian--RowList idian--Row.last {
+    border-bottom-left-radius: var(--shape_md);
+    border-bottom-right-radius: var(--shape_md);
+}
+
+idian--RowListSpacer {
+    max-height: var(--spacing_small);
+    min-height: var(--spacing_small);
+    background-color: var(--bg_window);
+}
+
+idian--CollapsibleGroup {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+idian--CollapsibleGroup.expanded > idian--Row {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+idian--CollapsibleGroup idian--Row.keyFocus {
+    border: var(--highlight_width) solid var(--highlight_color);
+}
+
+idian--CollapsibleGroup idian--RowList {
+    border-radius: 0;
+    border-left: 1px solid var(--border_color);
+    border-right: 1px solid var(--border_color);
+    border-bottom: 1px solid var(--border_color);
+    margin: var(--spacing_small) 0 0;
+}
+
+idian--CollapsibleGroup idian--RowList idian--Row {
+    background-color: var(--surface1);
+    padding-left: var(--action_row_padding_nested);
+}
+
+idian--CollapsibleGroup idian--RowList idian--Row.first {
+    border-radius: 0;
+}
+
+idian--CollapsibleGroup idian--RowList idian--Row.last {
+    border-bottom-left-radius: var(--shape_md);
+    border-bottom-right-radius: var(--shape_md);
+}
+
+idian--RowList idian--CollapsibleGroup idian--Row.last {
+    border-radius: 0;
+}
+
+idian--RowList idian--CollapsibleGroup.last idian--Row.last {
+    border-bottom-left-radius: var(--shape_md);
+    border-bottom-right-radius: var(--shape_md);
+}
+
+idian--CollapsibleGroup idian--RowList idian--ToggleSwitch {
+    qproperty-background: var(--surface2);
+    qproperty-background_hover: var(--surface3);
+}
+
+idian--InlineButton,
+idian--Row idian--InlineButton {
+    background: transparent;
+    min-width: var(--input_height);
+    min-height: var(--input_height);
+    border-radius: var(--shape_sm);
+    padding: var(--padding_large);
+    margin: 0 var(--spacing_base);
+    border: var(--highlight_width) solid transparent;
+}
+
+idian--InlineButton:hover,
+idian--Row.hover idian--InlineButton.row-buddy {
+    background-color: var(--button_bg_hover);
+    border-color: var(--input_border_hover);
+}
+
+idian--InlineButton:pressed {
+    background-color: var(--button_bg_down);
+}
+
+idian--InlineButton:focus,
+idian--InlineButton.keyFocus,
+idian--Row.keyFocus idian--InlineButton,
+idian--Row.keyFocus idian--InlineButton.checked {
+    border-color: var(--highlight_color);
+}
+
+idian--ExpandButton {
+    qproperty-icon: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
+}
+
+idian--ExpandButton.checked {
+    qproperty-icon: url(theme:icons/colorway/iconamoon/normal/chevron-up.svg);
+    background: transparent;
+    border-color: transparent;
+}
+
 AlignmentSelector {
     border: 1px solid var(--input_border);
     margin: 0px;
@@ -1972,7 +2164,21 @@ AlignmentSelector::indicator:checked:disabled {
      color: var(--text_disabled);
  }
 
- QPushButton::menu-indicator {
+ QToolButton:checked,
+.btn-tool:checked {
+    background-color: var(--primary);
+    border-color: var(--primary_light);
+    color: var(--text_inverse);
+}
+
+QToolButton:checked:hover,
+QToolButton:checked:focus,
+.btn-tool:checked:hover,
+.btn-tool:checked:focus {
+    border-color: var(--primary_lighter);
+}
+
+QPushButton::menu-indicator {
      image: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
      subcontrol-position: right center;
      subcontrol-origin: content;
@@ -2003,6 +2209,7 @@ QComboBox, QSpinBox, QDoubleSpinBox, QLineEdit, QPlainTextEdit, QTextEdit {
 
 QSpinBox, QDoubleSpinBox {
     min-height: calc(2.6pt * var(--font_base_value));
+    min-width: var(--spinbox_min_width);
 }
 
 QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus, QLineEdit:focus {
@@ -2030,6 +2237,16 @@ QTreeView:focus, QListWidget:focus, QTableView:focus {
      background: var(--bg_base);
      border-color: var(--border_base);
      color: var(--text_disabled);
+ }
+
+ QLineEdit:read-only:hover,
+ QLineEdit:read-only:focus,
+ QTextEdit:!editable:hover,
+ QTextEdit:!editable:focus,
+ QPlainTextEdit:!editable:hover,
+ QPlainTextEdit:!editable:focus {
+     background: var(--bg_base);
+     border-color: var(--input_border_hover);
  }
 
 /* Dropdown Arrow Area */
@@ -2286,7 +2503,8 @@ QScrollArea, QScrollArea > QWidget, QScrollArea > QWidget > QWidget {
     background: transparent;
 }
 
-QMenu {
+QMenu,
+QMenu > QMenu {
     background-color: var(--bg_dock);
     border: 1px solid var(--border_base);
     border-bottom: 2px solid var(--elevation_2);
@@ -2475,6 +2693,21 @@ QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
 
 QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
     background: transparent;
+}
+
+QTabBar {
+    outline: none;
+    font-size: var(--font_small);
+}
+
+QTabBar::top {
+    border-top-left-radius: var(--shape_sm);
+    border-top-right-radius: var(--shape_sm);
+}
+
+QTabBar::bottom {
+    border-bottom-left-radius: var(--shape_sm);
+    border-bottom-right-radius: var(--shape_sm);
 }
 
 QTabWidget::pane {
