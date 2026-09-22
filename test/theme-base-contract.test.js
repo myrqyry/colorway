@@ -101,3 +101,38 @@ test('current OBS runtime state classes receive visible styling', () => {
   assert.match(base, /QGroupBox::indicator:checked:disabled/);
   assert.match(base, /QTabBar::tab:bottom:selected/);
 });
+
+
+test('OBS parser-only math never leaks into Qt QSS rules', () => {
+  const vars = base.match(/@OBSThemeVars\s*\{[\s\S]*?\n\}/);
+  assert.ok(vars, 'Colorway vars block missing');
+  const qss = base.slice(base.indexOf(vars[0]) + vars[0].length);
+  assert.doesNotMatch(
+    qss,
+    /\b(?:calc|min|max)\s*\(/,
+    'calc/min/max are OBS theme-parser features and must stay inside @OBSThemeVars',
+  );
+});
+
+test('OBS theme declarations follow parser naming and placement rules', () => {
+  assert.ok(base.startsWith('@OBSThemeMeta'), '@OBSThemeMeta must be the first theme block');
+  const metaEnd = base.indexOf('}', base.indexOf('@OBSThemeMeta'));
+  const varsStart = base.indexOf('@OBSThemeVars');
+  assert.ok(varsStart > metaEnd, '@OBSThemeVars must follow @OBSThemeMeta before QSS');
+
+  const vars = base.match(/@OBSThemeVars\s*\{([\s\S]*?)\n\}/);
+  assert.ok(vars, 'Colorway vars block missing');
+  for (const match of vars[1].matchAll(/^\s*(--[^:\s]+)\s*:/gm)) {
+    assert.match(match[1], /^--[A-Za-z0-9_]+$/, `invalid OBS theme variable name: ${match[1]}`);
+  }
+});
+
+test('QSS asset URLs use the OBS theme search path', () => {
+  const vars = base.match(/@OBSThemeVars\s*\{[\s\S]*?\n\}/);
+  assert.ok(vars, 'Colorway vars block missing');
+  const qss = base.slice(base.indexOf(vars[0]) + vars[0].length);
+  const urls = [...qss.matchAll(/url\(([^)]+)\)/g)].map((match) => match[1].trim());
+  for (const url of urls) {
+    assert.ok(url.startsWith('theme:'), `theme asset must use theme: search path: ${url}`);
+  }
+});

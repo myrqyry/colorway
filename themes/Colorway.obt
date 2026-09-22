@@ -143,6 +143,13 @@
 
     --padding_base_border: calc(var(--padding_base) + 1px);
 
+    /* Precomputed widget geometry.
+       OBS evaluates calc/min/max only while parsing @OBSThemeVars. */
+    --button_min_height: calc(1.8pt * var(--font_base_value));
+    --compact_control_min_height: calc(1.6pt * var(--font_base_value));
+    --input_min_height: calc(2.0pt * var(--font_base_value));
+    --spinbox_min_height: calc(2.6pt * var(--font_base_value));
+
     --spinbox_min_width: calc(var(--input_height) * 2.5);
     --spinbox_button_height: calc(var(--input_height_half) - 1px);
 
@@ -151,6 +158,7 @@
     --volume_slider_label: calc(var(--volume_slider_box) * 2);
 
     --scrollbar_size: 10px;
+    --scrollbar_handle_radius: calc(var(--scrollbar_size) / 2);
     --settings_scrollbar_size: calc(var(--scrollbar_size) + 9px);
     --scrollbar_handle: var(--border_color);
 
@@ -192,6 +200,7 @@
     --slider_handle_size: 14px;       /* Set equal to track thickness to stop vertical clipping */
     --slider_handle_radius: 7px;     /* Half of 14px for a perfect circle */
     --slider_handle_margin: 0px;      /* Set to 0px since no vertical centering offset is needed */
+    --properties_slider_min_height: calc(var(--slider_handle_size) + calc(var(--slider_handle_radius) * 2));
 
     /* Inputs & Layout Controls */
     --input_font_scale: calc(var(--font_base_value) * 2.2);
@@ -2138,7 +2147,7 @@ AlignmentSelector::indicator:checked:disabled {
      color: var(--text);
      border: 2px solid var(--button_bg);
      border-radius: var(--border_radius); /* Propagates 9px rounding globally */
-     min-height: calc(1.8pt * var(--font_base_value));
+     min-height: var(--button_min_height);
      padding: var(--padding_small) var(--padding_wide);
      margin: var(--spacing_small);
      font-weight: 500;
@@ -2244,13 +2253,13 @@ QPushButton::menu-indicator {
 QPushButton[themeID="settingsIconSmall"],
 QPushButton[themeID="menuIconSmall"],
 QPushButton[themeID="replayIconSmall"] {
-    min-height: calc(1.6pt * var(--font_base_value));
+    min-height: var(--compact_control_min_height);
     padding: var(--padding_small) var(--padding_large);
     font-size: var(--font_small);
 }
 
 QComboBox, QDateTimeEdit, QSpinBox, QDoubleSpinBox, QLineEdit, QPlainTextEdit, QTextEdit {
-    min-height: calc(2.0pt * var(--font_base_value));
+    min-height: var(--input_min_height);
     padding: var(--padding_small) var(--padding_large);
     border: 1px solid var(--border_base);
     background: var(--bg_input);
@@ -2262,7 +2271,7 @@ QComboBox, QDateTimeEdit, QSpinBox, QDoubleSpinBox, QLineEdit, QPlainTextEdit, Q
 }
 
 QSpinBox, QDoubleSpinBox {
-    min-height: calc(2.6pt * var(--font_base_value));
+    min-height: var(--spinbox_min_height);
     min-width: var(--spinbox_min_width);
 }
 
@@ -2665,7 +2674,7 @@ QListWidget, QTreeView, QTableView {
 
 QListWidget::item, QTreeView::item {
     padding: var(--padding_base) var(--padding_large);
-    min-height: calc(1.6pt * var(--font_base_value));
+    min-height: var(--compact_control_min_height);
     margin: 0px;
     border-radius: var(--border_radius_small);
     background-color: transparent;
@@ -2723,7 +2732,7 @@ QScrollBar:vertical {
 QScrollBar::handle:vertical {
     background: var(--scrollbar_handle);
     min-height: 20px;
-    border-radius: calc(var(--scrollbar_size) / 2);
+    border-radius: var(--scrollbar_handle_radius);
     margin: 1px;
 }
 
@@ -2757,7 +2766,7 @@ QScrollBar:horizontal {
 QScrollBar::handle:horizontal {
     background: var(--scrollbar_handle);
     min-width: 20px;
-    border-radius: calc(var(--scrollbar_size) / 2);
+    border-radius: var(--scrollbar_handle_radius);
     margin: 1px;
 }
 
@@ -2975,7 +2984,7 @@ QToolBar QToolButton:pressed {
 }
 
 OBSPropertiesView {
-    min-height: calc(2.0pt * var(--font_base_value));
+    min-height: var(--input_min_height);
 }
 
 OBSPropertiesView QLabel {
@@ -3000,7 +3009,7 @@ OBSPropertiesView IconLabel {
 }
 
 OBSPropertiesView QSlider:horizontal {
-    min-height: calc(var(--slider_handle_size) + calc(var(--slider_handle_radius) * 2));
+    min-height: var(--properties_slider_min_height);
     padding-left: var(--slider_handle_radius);
     padding-right: var(--slider_handle_radius);
     padding-top: var(--slider_handle_radius);

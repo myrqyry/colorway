@@ -39,3 +39,21 @@ Avoid adding new fixed RGB values for these roles in QSS. Prefer semantic aliase
 ## Distribution invariant
 
 `themes/` is the source distribution and `public/themes/` is its static-site mirror. The two sets of `.obt/.ovt` files must stay byte-identical. `test/theme-base-contract.test.js` enforces this for every shipped theme file.
+
+
+## Official theme-system contract
+
+The OBS Studio Theme System wiki is the parser-level reference for this repository:
+
+- https://github.com/obsproject/obs-studio/wiki/OBS-Studio-Theme-System
+
+Colorway follows these constraints:
+
+- `@OBSThemeMeta` and `@OBSThemeVars` stay at the top of theme files.
+- OBS variable names use only alphanumeric characters and underscores after the `--` prefix.
+- Variables are declared only inside `@OBSThemeVars`.
+- Theme assets use the `theme:` Qt search-path prefix.
+- `calc()` is evaluated by the OBS theme parser only inside `@OBSThemeVars`; widget QSS consumes precomputed variables instead.
+- Current OBS source also supports `min()` and `max()` in the variable parser, even though the wiki currently documents only `calc()`.
+
+The wiki explicitly permits a variant to extend another variant as long as the dependency chain ends at a base theme. That makes a future `Yami.obt → Colorway.ovt → Colorway-*.ovt` migration a supported architecture. It still needs OBS runtime testing before replacing Colorway's standalone base because variant QSS is appended after its parent and specificity determines which rule wins.
