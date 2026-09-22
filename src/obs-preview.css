@@ -999,3 +999,71 @@
     flex-wrap: wrap;
   }
 }
+
+
+/* OBS design-reference integration. Geometry/state semantics come from the
+   upstream design workbench; Colorway theme variables still own appearance. */
+.obs-sim-svg-icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  background: currentColor;
+  -webkit-mask: var(--obs-icon) center / contain no-repeat;
+  mask: var(--obs-icon) center / contain no-repeat;
+}
+
+.obs-sim-dock-title-actions { display: grid; place-items: center; }
+.obs-sim-dock-title-actions .obs-sim-svg-icon { width: 11px; height: 11px; }
+.obs-sim-row-icon { display: grid; place-items: center; }
+.obs-sim-row-icon .obs-sim-svg-icon { width: 13px; height: 13px; }
+
+.obs-sim-row-actions .obs-sim-svg-icon,
+.obs-sim-audio-icon .obs-sim-svg-icon,
+.obs-sim-tool .obs-sim-svg-icon { width: 12px; height: 12px; }
+
+.obs-sim-icon-button { cursor: pointer; }
+.obs-sim-icon-button.active { opacity: 1; }
+.obs-sim-icon-button:not(.active) { opacity: .66; }
+
+.obs-sim-tool-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
+.obs-sim-tool-group + .obs-sim-tool-group {
+  margin-left: 2px;
+  padding-left: 3px;
+  border-left: 1px solid color-mix(in srgb, var(--border_color) 68%, transparent);
+}
+.obs-sim-tool-group-static { color: var(--text); }
+
+.obs-sim-properties-row button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.obs-sim-properties-row button .obs-sim-svg-icon { width: 12px; height: 12px; }
+.obs-sim-vchannel-actions .obs-sim-audio-icon { display: inline-grid; place-items: center; }
+
+.obs-sim-status-left,
+.obs-sim-status-right { gap: 10px; }
+
+.obs-sim-status-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+.obs-sim-status-icon { width: 13px; height: 13px; }
+.obs-sim-status-icon-active { display: none; }
+.obs-sim-status-item[data-state="active"] .obs-sim-status-icon-inactive { display: none; }
+.obs-sim-status-item[data-state="active"] .obs-sim-status-icon-active { display: inline-block; }
+.obs-sim-stream-indicator[data-state="active"] { color: var(--cw-live-primary, var(--primary)); }
+.obs-sim-record-indicator[data-state="active"] { color: var(--cw-live-danger, var(--danger)); }
+.obs-sim-network-indicator[data-state="active"] { color: var(--cw-live-success, var(--success)); }
+.obs-sim-status-item[data-state="inactive"] { color: var(--text_muted); }
+
+@media (max-width: 760px) {
+  .obs-sim-tool-group[data-toolbar-group="source-order"] { display: none; }
+}

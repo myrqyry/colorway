@@ -9,15 +9,35 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
+const ICON_ROOTS = {
+  colorway: '/icons/colorway/iconamoon/normal',
+  obsDesign: '/icons/obs-design',
+};
+
+function iconPath(name, source = 'colorway') {
+  const root = source === 'obs-design' ? ICON_ROOTS.obsDesign : ICON_ROOTS.colorway;
+  return `${root}/${name}.svg`;
+}
+
+function iconMarkup(name, source = 'colorway', extra = '') {
+  const path = escapeHtml(iconPath(name, source));
+  return `<span class="obs-sim-svg-icon ${extra}" style="--obs-icon: url('${path}')" aria-hidden="true"></span>`;
+}
+
+function setIcon(node, name, source = 'colorway') {
+  if (!node) return;
+  node.style.setProperty('--obs-icon', `url('${iconPath(name, source)}')`);
+}
+
 const scenes = ['Scene', 'Gameplay', 'Starting Soon'];
 const sources = [
-  { name: 'Browser', icon: '▧' },
-  { name: 'IMG_3158.GIF', icon: '▣' },
-  { name: 'Media Source', icon: '▶' },
+  { name: 'Browser', icon: 'globe' },
+  { name: 'IMG_3158.GIF', icon: 'image' },
+  { name: 'Media Source', icon: 'media-play' },
 ];
 
-function buttonIcon(label, title, extra = '') {
-  return `<button type="button" class="obs-sim-tool ${extra}" title="${title}" aria-label="${title}">${label}</button>`;
+function buttonIcon(iconName, title, extra = '') {
+  return `<button type="button" class="obs-sim-tool ${extra}" title="${title}" aria-label="${title}">${iconMarkup(iconName)}</button>`;
 }
 
 function dock(title, body, footer = '', extra = '') {
@@ -25,7 +45,7 @@ function dock(title, body, footer = '', extra = '') {
     <section class="obs-sim-dock ${extra}" aria-label="${title}">
       <div class="obs-sim-dock-title">
         <span>${title}</span>
-        <span class="obs-sim-dock-title-actions" aria-hidden="true">□</span>
+        <span class="obs-sim-dock-title-actions" aria-hidden="true">${iconMarkup('popout')}</span>
       </div>
       <div class="obs-sim-dock-body">${body}</div>
       ${footer ? `<div class="obs-sim-dock-footer">${footer}</div>` : ''}
@@ -36,23 +56,26 @@ function dock(title, body, footer = '', extra = '') {
 function sceneRows() {
   return scenes.map((name, index) => `
     <button type="button" class="obs-sim-list-row${index === 0 ? ' selected' : ''}" data-scene-row>
-      <span class="obs-sim-row-icon" aria-hidden="true">▦</span>
+      <span class="obs-sim-row-icon" aria-hidden="true">${iconMarkup('scene')}</span>
       <span class="obs-sim-row-label">${name}</span>
     </button>
   `).join('');
 }
 
 function sourceRows() {
-  return sources.map((source, index) => `
-    <button type="button" class="obs-sim-list-row${index === 1 ? ' selected' : ''}" data-source-row>
-      <span class="obs-sim-row-icon" aria-hidden="true">${source.icon}</span>
+  return sources.map((source, index) => {
+    const locked = index === 1;
+    return `
+    <button type="button" class="obs-sim-list-row${locked ? ' selected' : ''}" data-source-row>
+      <span class="obs-sim-row-icon" aria-hidden="true">${iconMarkup(source.icon)}</span>
       <span class="obs-sim-row-label">${source.name}</span>
       <span class="obs-sim-row-actions">
-        <span class="obs-sim-icon-button source-visible" data-source-action="visible" role="button" tabindex="0" aria-label="Toggle visibility" aria-pressed="true">◉</span>
-        <span class="obs-sim-icon-button" data-source-action="lock" role="button" tabindex="0" aria-label="Toggle lock" aria-pressed="${index === 1 ? 'true' : 'false'}">${index === 1 ? '◆' : '◇'}</span>
+        <span class="obs-sim-icon-button source-visible active" data-source-action="visible" role="button" tabindex="0" aria-label="Toggle visibility" aria-pressed="true">${iconMarkup('eye')}</span>
+        <span class="obs-sim-icon-button${locked ? ' active' : ''}" data-source-action="lock" role="button" tabindex="0" aria-label="Toggle lock" aria-pressed="${locked ? 'true' : 'false'}">${iconMarkup(locked ? 'lock' : 'unlock')}</span>
       </span>
     </button>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function mixerChannel(name, level = 72) {
@@ -71,8 +94,8 @@ function mixerChannel(name, level = 72) {
         </div>
       </div>
       <div class="obs-sim-vchannel-actions">
-        <button type="button" class="obs-sim-audio-icon" data-mute aria-pressed="false" title="Mute">◖</button>
-        <button type="button" class="obs-sim-audio-icon" title="Audio properties">⚙</button>
+        <button type="button" class="obs-sim-audio-icon" data-mute aria-pressed="false" title="Mute">${iconMarkup('volume-high')}</button>
+        <button type="button" class="obs-sim-audio-icon" title="Audio properties">${iconMarkup('settings')}</button>
       </div>
     </div>
   `;
@@ -154,20 +177,27 @@ function settingsMarkup() {
 
 function previewMarkup() {
   const sceneFooter = `
-    ${buttonIcon('+', 'Add scene')}
-    ${buttonIcon('−', 'Remove scene')}
-    ${buttonIcon('▼', 'Scene menu')}
+    ${buttonIcon('plus', 'Add scene')}
+    ${buttonIcon('minus', 'Remove scene')}
+    ${buttonIcon('dots-vert', 'Scene menu')}
     <span class="obs-sim-footer-spacer"></span>
-    ${buttonIcon('⌃', 'Move scene up')}
-    ${buttonIcon('⌄', 'Move scene down')}
+    ${buttonIcon('arrow-up', 'Move scene up')}
+    ${buttonIcon('arrow-down', 'Move scene down')}
   `;
   const sourceFooter = `
-    ${buttonIcon('+', 'Add source')}
-    ${buttonIcon('−', 'Remove source')}
-    ${buttonIcon('⚙', 'Source properties')}
+    <span class="obs-sim-tool-group" data-toolbar-group="source-edit">
+      ${buttonIcon('plus', 'Add source')}
+      ${buttonIcon('minus', 'Remove source')}
+    </span>
+    <span class="obs-sim-tool-group" data-toolbar-group="source-order">
+      ${buttonIcon('arrow-up', 'Move source up')}
+      ${buttonIcon('arrow-down', 'Move source down')}
+    </span>
     <span class="obs-sim-footer-spacer"></span>
-    ${buttonIcon('⌃', 'Move source up')}
-    ${buttonIcon('⌄', 'Move source down')}
+    <span class="obs-sim-tool-group obs-sim-tool-group-static" data-toolbar-group="source-static">
+      ${buttonIcon('settings', 'Source properties')}
+      ${buttonIcon('filter', 'Source filters')}
+    </span>
   `;
 
   return `
@@ -252,8 +282,8 @@ function previewMarkup() {
 
             <div class="obs-sim-properties-row">
               <strong>No source selected</strong>
-              <button type="button" disabled>⚙ Properties</button>
-              <button type="button" disabled>▣ Filters</button>
+              <button type="button" disabled>${iconMarkup('settings')}<span>Properties</span></button>
+              <button type="button" disabled>${iconMarkup('filter')}<span>Filters</span></button>
             </div>
 
             <div class="obs-sim-bottom-row">
@@ -264,7 +294,7 @@ function previewMarkup() {
                     ${mixerChannel('Media Source', 74)}
                     ${mixerChannel('Mic/Aux', 56)}
                   </div>
-                `, `<span>0 hidden</span><span class="obs-sim-footer-spacer"></span><span>▤</span><span>⚙ Options</span>`, 'mixer')}
+                `, `<span>0 hidden</span><span class="obs-sim-footer-spacer"></span>${buttonIcon('dots-vert', 'Mixer menu')}${buttonIcon('settings', 'Mixer options')}`, 'mixer')}
               </div>
               <div class="obs-sim-transition-slot">
                 ${dock('Scene Transitions', `
@@ -273,7 +303,7 @@ function previewMarkup() {
                     <span>Duration</span>
                     <input class="obs-sim-input" value="300 ms" aria-label="Transition duration">
                   </div>
-                `, `<span class="obs-sim-footer-spacer"></span>${buttonIcon('+', 'Add transition')}${buttonIcon('⌫', 'Remove transition')}${buttonIcon('⋮', 'Transition menu')}`, 'transitions')}
+                `, `<span class="obs-sim-footer-spacer"></span>${buttonIcon('plus', 'Add transition')}${buttonIcon('trash', 'Remove transition')}${buttonIcon('dots-vert', 'Transition menu')}`, 'transitions')}
               </div>
               <div class="obs-sim-controls-slot">${controlsDock()}</div>
             </div>
@@ -282,15 +312,25 @@ function previewMarkup() {
 
         <div class="obs-sim-statusbar">
           <div class="obs-sim-status-left">
-            <span>▥</span><span>◉</span>
-            <span data-stream-status>00:00:00</span>
-            <span class="obs-sim-status-dot"></span>
-            <span data-record-status>00:00:00</span>
+            <span class="obs-sim-status-item obs-sim-stream-indicator" data-stream-indicator data-state="inactive" title="Streaming status">
+              ${iconMarkup('streaming-inactive', 'obs-design', 'obs-sim-status-icon obs-sim-status-icon-inactive')}
+              ${iconMarkup('streaming-active', 'obs-design', 'obs-sim-status-icon obs-sim-status-icon-active')}
+              <span data-stream-status>00:00:00</span>
+            </span>
+            <span class="obs-sim-status-item obs-sim-record-indicator" data-record-indicator data-state="inactive" title="Recording status">
+              ${iconMarkup('recording-inactive', 'obs-design', 'obs-sim-status-icon obs-sim-status-icon-inactive')}
+              ${iconMarkup('recording-active', 'obs-design', 'obs-sim-status-icon obs-sim-status-icon-active')}
+              <span data-record-status>00:00:00</span>
+            </span>
           </div>
           <div class="obs-sim-status-right">
             <strong>CPU: 0.4%</strong>
             <strong>60.00 / 60.00 FPS</strong>
-            <span class="obs-sim-status-health"><i></i><span data-bitrate>0 kb/s</span></span>
+            <span class="obs-sim-status-item obs-sim-network-indicator" data-network-indicator data-state="inactive" title="Network status">
+              ${iconMarkup('network-inactive', 'obs-design', 'obs-sim-status-icon obs-sim-status-icon-inactive')}
+              ${iconMarkup('network-good', 'obs-design', 'obs-sim-status-icon obs-sim-status-icon-active')}
+              <span data-bitrate>0 kb/s</span>
+            </span>
           </div>
         </div>
 
@@ -353,14 +393,20 @@ function wirePreview(root) {
   });
 
   root.querySelectorAll('[data-source-action]').forEach((action) => {
-    const toggle = () => {
-      const pressed = action.getAttribute('aria-pressed') === 'true';
-      action.setAttribute('aria-pressed', pressed ? 'false' : 'true');
-      action.classList.toggle('active', !pressed);
-      action.textContent = action.dataset.sourceAction === 'visible'
-        ? (pressed ? '○' : '◉')
-        : (pressed ? '◇' : '◆');
+    const syncActionIcon = (pressed) => {
+      const icon = action.querySelector('.obs-sim-svg-icon');
+      const name = action.dataset.sourceAction === 'visible'
+        ? (pressed ? 'eye' : 'eye-off')
+        : (pressed ? 'lock' : 'unlock');
+      setIcon(icon, name);
     };
+    const toggle = () => {
+      const nextPressed = action.getAttribute('aria-pressed') !== 'true';
+      action.setAttribute('aria-pressed', nextPressed ? 'true' : 'false');
+      action.classList.toggle('active', nextPressed);
+      syncActionIcon(nextPressed);
+    };
+    syncActionIcon(action.getAttribute('aria-pressed') === 'true');
     action.addEventListener('click', (event) => {
       event.stopPropagation();
       toggle();
@@ -376,11 +422,11 @@ function wirePreview(root) {
 
   root.querySelectorAll('[data-mute]').forEach((button) => {
     button.addEventListener('click', () => {
-      const muted = button.getAttribute('aria-pressed') === 'true';
-      button.setAttribute('aria-pressed', muted ? 'false' : 'true');
-      button.classList.toggle('muted', !muted);
-      button.textContent = muted ? '◖' : '×';
-      button.closest('.obs-sim-vchannel')?.classList.toggle('muted', !muted);
+      const nextMuted = button.getAttribute('aria-pressed') !== 'true';
+      button.setAttribute('aria-pressed', nextMuted ? 'true' : 'false');
+      button.classList.toggle('muted', nextMuted);
+      setIcon(button.querySelector('.obs-sim-svg-icon'), nextMuted ? 'volume-mute' : 'volume-high');
+      button.closest('.obs-sim-vchannel')?.classList.toggle('muted', nextMuted);
     });
   });
 
@@ -411,6 +457,10 @@ function wirePreview(root) {
     streaming = !streaming;
     toggleControl(streamButton, streaming, 'Stop Streaming', 'Start Streaming');
     root.querySelector('[data-stream-status]')?.classList.toggle('on', streaming);
+    const streamIndicator = root.querySelector('[data-stream-indicator]');
+    const networkIndicator = root.querySelector('[data-network-indicator]');
+    if (streamIndicator) streamIndicator.dataset.state = streaming ? 'active' : 'inactive';
+    if (networkIndicator) networkIndicator.dataset.state = streaming ? 'active' : 'inactive';
     const bitrate = root.querySelector('[data-bitrate]');
     if (bitrate) bitrate.textContent = streaming ? '5987 kb/s' : '0 kb/s';
   });
@@ -421,6 +471,8 @@ function wirePreview(root) {
     toggleControl(recordButton, recording, 'Stop Recording', 'Start Recording');
     recordButton.classList.toggle('recording', recording);
     root.querySelector('[data-record-status]')?.classList.toggle('on', recording);
+    const recordIndicator = root.querySelector('[data-record-indicator]');
+    if (recordIndicator) recordIndicator.dataset.state = recording ? 'active' : 'inactive';
   });
 
   const virtualButton = root.querySelector('[data-control="virtualcam"]');
