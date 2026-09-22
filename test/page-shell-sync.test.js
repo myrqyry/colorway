@@ -61,3 +61,10 @@ test('page sync loads after preview, product actions, and ambient source', () =>
   assert.ok(ambient > actions);
   assert.ok(pageSync > ambient);
 });
+
+
+test('streaming and recording timers keep distinct semantic colors', () => {
+  assert.doesNotMatch(styles, /\.obs-sim-status-left \.on\s*\{[\s\S]*--cw-live-danger/s);
+  assert.match(styles, /\.obs-sim-record-indicator \.on\s*\{\s*color: var\(--cw-live-danger, var\(--danger\)\) !important;/s);
+  assert.match(styles, /\.obs-sim-stream-indicator \.on\s*\{\s*color: var\(--cw-live-primary, var\(--primary\)\) !important;/s);
+});

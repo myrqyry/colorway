@@ -999,3 +999,311 @@
     flex-wrap: wrap;
   }
 }
+
+
+/* OBS design-reference integration. Geometry/state semantics come from the
+   upstream design workbench; Colorway theme variables still own appearance. */
+.obs-sim-svg-icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  background: currentColor;
+  -webkit-mask: var(--obs-icon) center / contain no-repeat;
+  mask: var(--obs-icon) center / contain no-repeat;
+}
+
+.obs-sim-dock-title-actions { display: grid; place-items: center; }
+.obs-sim-dock-title-actions .obs-sim-svg-icon { width: 11px; height: 11px; }
+.obs-sim-row-icon { display: grid; place-items: center; }
+.obs-sim-row-icon .obs-sim-svg-icon { width: 13px; height: 13px; }
+
+.obs-sim-row-actions .obs-sim-svg-icon,
+.obs-sim-audio-icon .obs-sim-svg-icon,
+.obs-sim-tool .obs-sim-svg-icon { width: 12px; height: 12px; }
+
+.obs-sim-icon-button { cursor: pointer; }
+.obs-sim-icon-button.active { opacity: 1; }
+.obs-sim-icon-button:not(.active) { opacity: .66; }
+
+.obs-sim-tool-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
+.obs-sim-tool-group + .obs-sim-tool-group {
+  margin-left: 2px;
+  padding-left: 3px;
+  border-left: 1px solid color-mix(in srgb, var(--border_color) 68%, transparent);
+}
+.obs-sim-tool-group-static { color: var(--text); }
+
+.obs-sim-properties-row button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.obs-sim-properties-row button .obs-sim-svg-icon { width: 12px; height: 12px; }
+.obs-sim-vchannel-actions .obs-sim-audio-icon { display: inline-grid; place-items: center; }
+
+.obs-sim-status-left,
+.obs-sim-status-right { gap: 10px; }
+
+.obs-sim-status-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+.obs-sim-status-icon { width: 13px; height: 13px; }
+.obs-sim-status-icon-active { display: none; }
+.obs-sim-status-item[data-state="active"] .obs-sim-status-icon-inactive { display: none; }
+.obs-sim-status-item[data-state="active"] .obs-sim-status-icon-active { display: inline-block; }
+.obs-sim-stream-indicator[data-state="active"] { color: var(--cw-live-primary, var(--primary)); }
+.obs-sim-record-indicator[data-state="active"] { color: var(--cw-live-danger, var(--danger)); }
+.obs-sim-network-indicator[data-state="active"] { color: var(--cw-live-success, var(--success)); }
+.obs-sim-status-item[data-state="inactive"] { color: var(--text_muted); }
+
+@media (max-width: 760px) {
+  .obs-sim-tool-group[data-toolbar-group="source-order"] { display: none; }
+}
+
+
+/* Semantic-state stress lab.
+   These are specimens, not claims about current OBS placement. The state
+   vocabulary comes from OBS design resources while Colorway owns the colors. */
+.obs-sim-state-lab-backdrop {
+  position: absolute;
+  z-index: 90;
+  inset: 53px 0 28px;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: color-mix(in srgb, var(--bg_preview, var(--bg_base)) 68%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.obs-sim-state-lab-backdrop[hidden] {
+  display: none !important;
+}
+
+.obs-sim-state-lab {
+  display: grid;
+  width: min(790px, 92%);
+  max-height: 94%;
+  gap: 10px;
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, var(--border_color) 78%, var(--text) 22%);
+  border-radius: var(--border_radius_large, 12px);
+  padding: 12px;
+  background: var(--bg_window);
+  color: var(--text);
+  box-shadow: 0 18px 44px var(--elevation_2, rgb(0 0 0 / 40%));
+}
+
+.obs-sim-state-lab-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.obs-sim-state-lab-header > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.obs-sim-state-lab-header span {
+  color: var(--text_muted);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.obs-sim-state-lab-header strong {
+  color: var(--text);
+  font-size: 15px;
+}
+
+.obs-sim-state-lab-header button {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 0;
+  border-radius: var(--shape_full, 999px);
+  background: transparent;
+  color: var(--text_muted);
+}
+
+.obs-sim-state-lab-header button:hover {
+  background: var(--button_bg_hover, var(--bg_hover));
+  color: var(--text);
+}
+
+.obs-sim-state-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.obs-sim-state-card {
+  --state-color: var(--cw-live-primary, var(--primary));
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid color-mix(in srgb, var(--state-color) 58%, var(--border_color));
+  border-radius: var(--border_radius, 9px);
+  padding: 9px;
+  background: color-mix(in srgb, var(--state-color) 11%, var(--bg_dock, var(--bg_base)));
+}
+
+.obs-sim-state-card.info { --state-color: var(--cw-live-primary, var(--primary)); }
+.obs-sim-state-card.warning { --state-color: var(--cw-live-warning, var(--warning)); }
+.obs-sim-state-card.error { --state-color: var(--cw-live-danger, var(--danger)); }
+.obs-sim-state-card.success { --state-color: var(--cw-live-success, var(--success)); }
+
+.obs-sim-state-card > i {
+  width: 7px;
+  height: 28px;
+  border-radius: var(--shape_full, 999px);
+  background: var(--state-color);
+}
+
+.obs-sim-state-card > div {
+  min-width: 0;
+}
+
+.obs-sim-state-card strong {
+  display: block;
+  color: var(--state-color);
+  font-weight: 750;
+}
+
+.obs-sim-state-card p {
+  margin: 2px 0 0;
+  color: var(--text_muted);
+  line-height: 1.3;
+}
+
+.obs-sim-state-card button,
+.obs-sim-crash-actions button {
+  min-height: 27px;
+  border: 1px solid color-mix(in srgb, var(--border_color) 78%, var(--text) 22%);
+  border-radius: var(--border_radius_small, 5px);
+  padding: 4px 8px;
+  background: var(--button_bg, var(--bg_hover));
+  color: var(--text);
+}
+
+.obs-sim-state-card button:hover,
+.obs-sim-crash-actions button:hover {
+  border-color: var(--state-color, var(--primary));
+  background: var(--button_bg_hover, var(--bg_hover));
+}
+
+.obs-sim-state-card.error button {
+  --state-color: var(--cw-live-danger, var(--danger));
+  border-color: color-mix(in srgb, var(--state-color) 58%, var(--border_color));
+  color: var(--state-color);
+}
+
+.obs-sim-crash-recovery {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid color-mix(in srgb, var(--cw-live-danger, var(--danger)) 42%, var(--border_color));
+  border-radius: var(--border_radius, 9px);
+  padding: 10px;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--cw-live-danger, var(--danger)) 10%, transparent), transparent 48%),
+    var(--bg_dock, var(--bg_base));
+}
+
+.obs-sim-crash-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 9px;
+}
+
+.obs-sim-crash-mark {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--shape_full, 999px);
+  background: color-mix(in srgb, var(--cw-live-danger, var(--danger)) 16%, var(--bg_window));
+  color: var(--cw-live-danger, var(--danger));
+}
+
+.obs-sim-crash-copy strong {
+  color: var(--text);
+  font-weight: 750;
+}
+
+.obs-sim-crash-copy p {
+  margin: 2px 0 0;
+  color: var(--text_muted);
+  line-height: 1.3;
+}
+
+.obs-sim-crash-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 5px;
+}
+
+.obs-sim-crash-actions .primary {
+  border-color: var(--cw-live-primary, var(--primary));
+  background: var(--cw-live-primary, var(--primary));
+  color: var(--text_inverse, var(--bg_base));
+}
+
+.obs-sim-state-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  border-top: 1px solid var(--border_color);
+  padding-top: 8px;
+  color: var(--text_muted);
+  font-size: 8px;
+}
+
+.obs-sim-state-key span::before {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 4px;
+  border-radius: var(--shape_full, 999px);
+  background: currentColor;
+  content: "";
+}
+
+.obs-sim-state-key .info { color: var(--cw-live-primary, var(--primary)); }
+.obs-sim-state-key .warning { color: var(--cw-live-warning, var(--warning)); }
+.obs-sim-state-key .error { color: var(--cw-live-danger, var(--danger)); }
+.obs-sim-state-key .success { color: var(--cw-live-success, var(--success)); }
+
+@media (max-width: 900px) {
+  .obs-sim-state-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .obs-sim-crash-recovery {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .obs-sim-crash-actions {
+    justify-content: flex-end;
+  }
+}

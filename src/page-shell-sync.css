@@ -394,8 +394,12 @@
 
 .obs-sim-audio-icon.muted,
 .obs-sim-control.recording,
-.obs-sim-status-left .on {
+.obs-sim-record-indicator .on {
   color: var(--cw-live-danger, var(--danger)) !important;
+}
+
+.obs-sim-stream-indicator .on {
+  color: var(--cw-live-primary, var(--primary)) !important;
 }
 
 .obs-sim-status-health i,
