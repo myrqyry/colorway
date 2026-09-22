@@ -66,3 +66,16 @@ test('state stress lab is reachable from the permanent Appearance controller', (
   assert.match(refineStyles, /\.obs-sim-state-test-button\s*\{/);
   assert.match(refineStyles, /\.obs-sim-window > \.obs-sim-state-lab-backdrop\s*\{\s*z-index: 220;/s);
 });
+
+
+test('state lab makes all outside UI inert while aria-modal is active', () => {
+  assert.match(refine, /function wireStateLabModality\(root, stateLab\)/);
+  assert.match(refine, /const outsideState = new Map\(\)/);
+  assert.match(refine, /while \(current && current !== document\.body\)/);
+  assert.match(refine, /outsideState\.set\(sibling, sibling\.inert\)/);
+  assert.match(refine, /sibling\.inert = true/);
+  assert.match(refine, /element\.inert = wasInert/);
+  assert.match(refine, /attributeFilter: \['hidden'\]/);
+  assert.match(refine, /document\.addEventListener\('keydown'/);
+  assert.match(refine, /event\.key !== 'Escape' \|\| stateLab\.hidden/);
+});

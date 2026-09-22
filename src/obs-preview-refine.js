@@ -260,10 +260,57 @@ function populatePatternSelect(root) {
   select.addEventListener('change', () => applyPattern(select.value));
 }
 
+function wireStateLabModality(root, stateLab) {
+  if (stateLab.dataset.colorwayModalWired === 'true') return;
+  stateLab.dataset.colorwayModalWired = 'true';
+
+  const outsideState = new Map();
+
+  const setOutsideInert = (active) => {
+    if (active) {
+      let current = stateLab;
+      while (current && current !== document.body) {
+        const parent = current.parentElement;
+        if (!parent) break;
+
+        Array.from(parent.children).forEach((sibling) => {
+          if (sibling === current || outsideState.has(sibling)) return;
+          outsideState.set(sibling, sibling.inert);
+          sibling.inert = true;
+        });
+
+        current = parent;
+      }
+      return;
+    }
+
+    outsideState.forEach((wasInert, element) => {
+      element.inert = wasInert;
+    });
+    outsideState.clear();
+  };
+
+  const syncModality = () => setOutsideInert(!stateLab.hidden);
+
+  new MutationObserver(syncModality)
+    .observe(stateLab, { attributes: true, attributeFilter: ['hidden'] });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || stateLab.hidden) return;
+    event.preventDefault();
+    stateLab.hidden = true;
+    queueMicrotask(() => root.querySelector('[data-permanent-open-state-lab]')?.focus());
+  }, true);
+
+  syncModality();
+}
+
 function populateStateLabControl(root) {
   const appearance = root.querySelector('.obs-sim-appearance-card');
   const stateLab = root.querySelector('[data-state-lab]');
   if (!appearance || !stateLab) return;
+
+  wireStateLabModality(root, stateLab);
 
   let row = appearance.querySelector('[data-state-lab-control]');
   if (!row) {
