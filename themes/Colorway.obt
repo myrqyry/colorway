@@ -1701,8 +1701,8 @@ idian--Row > QLabel.description {
 }
 
 idian--ToggleSwitch {
-    qproperty-background: var(--grey6);
-    qproperty-background_hover: var(--grey7);
+    qproperty-background: var(--surface2);
+    qproperty-background_hover: var(--surface3);
     qproperty-background_checked: var(--primary);
     qproperty-background_checked_hover: var(--primary_light);
 
@@ -1711,18 +1711,18 @@ idian--ToggleSwitch {
 
     border-radius: var(--toggle_radius);
 
-    qproperty-handleColor: var(--white1);
+    qproperty-handleColor: var(--text_inverse);
     qproperty-handleSize: var(--toggle_handle);
 
     border: var(--highlight_width) solid transparent;
 }
 
 idian--ToggleSwitch.hover {
-    border-color: var(--grey4);
+    border-color: var(--input_border_hover);
 }
 
 idian--ToggleSwitch.checked.hover {
-    border-color: var(--white1);
+    border-color: var(--primary_lighter);
 }
 
 idian--ToggleSwitch.keyFocus {
@@ -1731,12 +1731,12 @@ idian--ToggleSwitch.keyFocus {
 
 idian--Row idian--ToggleSwitch.hover,
 idian--Row.hover > idian--ToggleSwitch.row-buddy {
-    border-color: var(--grey1);
+    border-color: var(--input_border_hover);
 }
 
 idian--Row idian--ToggleSwitch.hover.checked,
 idian--Row.hover > idian--ToggleSwitch.checked.row-buddy {
-    border-color: var(--white1);
+    border-color: var(--primary_lighter);
 }
 
 idian--Row QComboBox {
@@ -2064,6 +2064,15 @@ idian--Row.keyFocus idian--InlineButton.checked {
 }
 
 idian--ExpandButton {
+    background: transparent;
+    min-width: var(--input_height);
+    max-width: var(--input_height);
+    min-height: var(--input_height);
+    max-height: var(--input_height);
+    border: var(--highlight_width) solid transparent;
+    border-radius: var(--shape_sm);
+    padding: var(--padding_large);
+    margin: 0 var(--spacing_base);
     qproperty-icon: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
 }
 
@@ -2164,7 +2173,26 @@ AlignmentSelector::indicator:checked:disabled {
      color: var(--text_disabled);
  }
 
- QToolButton:checked,
+ QToolButton,
+.btn-tool {
+    background-color: var(--button_bg);
+    padding: var(--padding_base);
+    margin: 0;
+    border: 1px solid var(--button_border);
+    border-radius: var(--border_radius);
+    icon-size: var(--icon_base);
+    color: var(--text);
+}
+
+QToolButton:hover,
+QToolButton:focus,
+.btn-tool:hover,
+.btn-tool:focus {
+    background-color: var(--button_bg_hover);
+    border-color: var(--button_border_hover);
+}
+
+QToolButton:checked,
 .btn-tool:checked {
     background-color: var(--primary);
     border-color: var(--primary_light);
@@ -2176,6 +2204,21 @@ QToolButton:checked:focus,
 .btn-tool:checked:hover,
 .btn-tool:checked:focus {
     border-color: var(--primary_lighter);
+}
+
+QToolButton:pressed,
+QToolButton:pressed:hover,
+.btn-tool:pressed,
+.btn-tool:pressed:hover {
+    background-color: var(--button_bg_down);
+    border-color: var(--button_border);
+}
+
+QToolButton:disabled,
+.btn-tool:disabled {
+    background-color: var(--button_bg_disabled);
+    border-color: transparent;
+    color: var(--text_disabled);
 }
 
 QPushButton::menu-indicator {
@@ -2195,7 +2238,7 @@ QPushButton[themeID="replayIconSmall"] {
     font-size: var(--font_small);
 }
 
-QComboBox, QSpinBox, QDoubleSpinBox, QLineEdit, QPlainTextEdit, QTextEdit {
+QComboBox, QDateTimeEdit, QSpinBox, QDoubleSpinBox, QLineEdit, QPlainTextEdit, QTextEdit {
     min-height: calc(2.0pt * var(--font_base_value));
     padding: var(--padding_small) var(--padding_large);
     border: 1px solid var(--border_base);
@@ -2212,7 +2255,7 @@ QSpinBox, QDoubleSpinBox {
     min-width: var(--spinbox_min_width);
 }
 
-QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus, QLineEdit:focus {
+QComboBox:focus, QDateTimeEdit:focus, QSpinBox:focus, QDoubleSpinBox:focus, QLineEdit:focus {
     border: 2px solid var(--border_focus);
     background-color: var(--input_bg_focus);
 }
@@ -2222,12 +2265,18 @@ QTreeView:focus, QListWidget:focus, QTableView:focus {
     border: 2px solid var(--border_focus);
 }
 
- QComboBox:hover, QSpinBox:hover, QDoubleSpinBox:hover, QLineEdit:hover {
+ QComboBox:hover, QDateTimeEdit:hover, QSpinBox:hover, QDoubleSpinBox:hover, QLineEdit:hover {
      background: var(--input_bg_hover);
      border-color: var(--input_border_hover);
  }
 
- QLineEdit:read-only, QTextEdit:read-only, QPlainTextEdit:read-only {
+ QPlainTextEdit:hover,
+ QTextEdit:hover {
+     background: var(--input_bg_hover);
+     border-color: var(--input_border_hover);
+ }
+
+ QLineEdit:read-only, QDateTimeEdit:read-only, QTextEdit:read-only, QPlainTextEdit:read-only {
      background: var(--bg_base);
      border-color: var(--border_base);
      color: var(--text_muted);

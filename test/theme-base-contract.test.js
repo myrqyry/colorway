@@ -35,6 +35,8 @@ test('Colorway covers current OBS widget hooks without dropping legacy compatibi
     '.btn-mute.mute-warning',
     '.btn-create-new',
     'QToolButton:checked',
+    '.btn-tool:disabled',
+    'QDateTimeEdit',
     'QMenu > QMenu',
     'QTableView::indicator',
     'idian--ListHeader',
@@ -69,4 +71,6 @@ test('current input sizing and tab placement guards are present', () => {
   assert.match(base, /min-width:\s*var\(--spinbox_min_width\);/);
   assert.match(base, /QTabBar::top/);
   assert.match(base, /QTabBar::bottom/);
+  assert.match(base, /QDateTimeEdit:focus/);
+  assert.match(base, /QToolButton:disabled/);
 });
