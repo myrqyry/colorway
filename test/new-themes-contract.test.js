@@ -44,6 +44,7 @@ const REQUIRED_VARS = [
 ];
 
 const THEMES_DIR = new URL('../themes/', import.meta.url);
+const ICONS_DIR = new URL('../icons/colorway/', import.meta.url);
 const BASE_THEME_FILE = 'Colorway.obt';
 
 const THEME_FILES = readdirSync(THEMES_DIR, { withFileTypes: true })
@@ -152,6 +153,16 @@ function resolveToken(vars, key, seen = new Set()) {
   return alias ? resolveToken(vars, alias[1], seen) : value;
 }
 
+function themeIconColor(value) {
+  const match = value.match(/^url\(theme:icons\/colorway\/(.+)\)$/);
+  assert.ok(match, `unsupported theme icon value: ${value}`);
+
+  const svg = readFileSync(new URL(match[1], ICONS_DIR), 'utf8');
+  const color = svg.match(/(?:stroke|fill)="(#[0-9a-fA-F]{6})"/)?.[1];
+  assert.ok(color, `theme icon has no hex stroke/fill color: ${match[1]}`);
+  return color;
+}
+
 for (const file of THEME_FILES) {
   const vars = resolveTheme(file);
 
@@ -174,6 +185,17 @@ for (const file of THEME_FILES) {
     assert.ok(
       contrastRatio(hoverText, hoverSurface) >= 4.5,
       `${file} button-hover text contrast too low`,
+    );
+  });
+
+  test(`${file} keeps the checkbox check glyph visible on its surface`, () => {
+    const background = resolveToken(vars, '--bg_base');
+    const iconValue = resolveToken(vars, '--checkbox_check_icon');
+    const glyph = themeIconColor(iconValue);
+
+    assert.ok(
+      contrastRatio(glyph, background) >= 3,
+      `${file} checkbox glyph contrast too low`,
     );
   });
 }
