@@ -149,6 +149,20 @@ test('current OBS runtime state classes receive visible styling', () => {
 });
 
 
+test('active state labels keep a surface-safe foreground', () => {
+  assert.match(
+    base,
+    /#streamButton:hover:!pressed\.state-active,[\s\S]*?background:\s*var\(--button_bg_hover\);[\s\S]*?color:\s*var\(--text\);/,
+  );
+  assert.match(
+    base,
+    /#recordButton:hover:!pressed\.state-active,[\s\S]*?background:\s*var\(--button_bg_hover\);[\s\S]*?color:\s*var\(--text\);/,
+  );
+  assert.match(
+    base,
+    /#modeSwitch:!hover:!pressed\.state-active,[\s\S]*?background:\s*var\(--button_bg_hover\);[\s\S]*?color:\s*var\(--text\);/,
+  );
+});
 test('OBS parser-only math never leaks into Qt QSS rules', () => {
   const vars = base.match(/@OBSThemeVars\s*\{[\s\S]*?\n\}/);
   assert.ok(vars, 'Colorway vars block missing');

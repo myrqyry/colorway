@@ -780,14 +780,14 @@ QTreeView::item:selected:hover .icon-media-prev {
 #broadcastButton:hover:!pressed.state-active {
     background: var(--button_bg_hover);
     border-color: var(--live);
-    color: var(--live);
+    color: var(--text);
 }
 
 #recordButton:hover:!pressed.state-active,
 #pauseRecordButton:hover:!pressed.state-active {
     background: var(--button_bg_hover);
     border-color: var(--recording);
-    color: var(--recording);
+    color: var(--text);
 }
 
 #replayBufferButton:hover:!pressed.state-active,
@@ -801,22 +801,22 @@ QTreeView::item:selected:hover .icon-media-prev {
    Current OBS toggles .state-active; :checked stays as a legacy fallback. */
 #modeSwitch:!hover:!pressed.state-active,
 #modeSwitch:!hover:!pressed:checked {
-    background: var(--primary);
-    border-color: var(--primary_light);
-    color: var(--text_inverse);
+    background: var(--button_bg_hover);
+    border-color: var(--primary);
+    color: var(--text);
 }
 
 #modeSwitch:hover:!pressed.state-active,
 #modeSwitch:hover:!pressed:checked {
-    background: var(--primary_light);
+    background: var(--input_bg_hover);
     border-color: var(--primary_lighter);
-    color: var(--text_inverse);
+    color: var(--text);
 }
 
 #modeSwitch:pressed.state-active {
-    background: var(--primary_dark);
+    background: var(--input_bg_focus);
     border-color: var(--primary);
-    color: var(--text_inverse);
+    color: var(--text);
 }
 
 QPushButton:focus {
