@@ -10,10 +10,12 @@ const read = (path) => readFileSync(join(ROOT, path), 'utf8');
 const base = read('themes/Colorway.obt');
 const stripComments = (text) => text.replace(/\/\*[\s\S]*?\*\//g, '');
 const uncommentedBase = stripComments(base);
-const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const selectorRules = [...uncommentedBase.matchAll(/(^|\})\s*([^{}]+?)\s*\{/gm)]
+  .flatMap((match) => match[2].split(','))
+  .map((selector) => selector.replace(/\s+/g, ' ').trim())
+  .filter(Boolean);
 const hasSelectorRule = (selector) =>
-  new RegExp('(?:^|[,\\n])\\s*' + escapeRegExp(selector) + '(?=\\s*(?:,|\\{))', 'm')
-    .test(uncommentedBase);
+  selectorRules.some((rule) => rule === selector || rule.startsWith(selector + ' '));
 
 test('source and public theme distributions are byte-identical', () => {
   const sourceDir = join(ROOT, 'themes');
