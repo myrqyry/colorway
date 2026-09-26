@@ -122,6 +122,7 @@ test('light variants keep warning and success text readable', () => {
   };
 
   const warnings = new Set();
+  const successes = new Set();
 
   for (const file of readdirSync(sourceDir).filter((name) => name.endsWith('.ovt'))) {
     const theme = readFileSync(join(sourceDir, file), 'utf8');
@@ -140,6 +141,13 @@ test('light variants keep warning and success text readable', () => {
     assert.ok(hover, file + ': light variant must define a concrete --bg_hover');
 
     warnings.add(warning.toLowerCase());
+    successes.add(success.toLowerCase());
+
+    assert.match(
+      declarations,
+      /--checkbox_check_icon:\s*url\(theme:icons\/colorway\/iconamoon\/selected\/check\.svg\)\s*;/,
+      file + ': light variant must use the dark checkbox glyph on light surfaces',
+    );
 
     assert.ok(
       contrast(warning, hover) >= 4.5,
@@ -154,6 +162,10 @@ test('light variants keep warning and success text readable', () => {
   assert.ok(
     warnings.size >= 5,
     'light variants must preserve multiple warning palette families',
+  );
+  assert.ok(
+    successes.size >= 5,
+    'light variants must preserve multiple success palette families',
   );
 });
 
@@ -192,26 +204,26 @@ test('current OBS runtime state classes receive visible styling', () => {
   assert.match(base, /QTabBar::tab:bottom:selected/);
 });
 
-test('active button rules keep readable foreground/surface pairs inside each rule', () => {
+test('active button rules use the contracted foreground/surface pairs', () => {
   assert.match(
     base,
-    /#streamButton:hover:!pressed\.state-active,\s*#broadcastButton:hover:!pressed\.state-active\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--text_inverse\);[^}]*\}/,
+    /#streamButton:hover:!pressed\.state-active,\s*#broadcastButton:hover:!pressed\.state-active\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--button_hover_text\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#recordButton:hover:!pressed\.state-active,\s*#pauseRecordButton:hover:!pressed\.state-active\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--text_inverse\);[^}]*\}/,
+    /#recordButton:hover:!pressed\.state-active,\s*#pauseRecordButton:hover:!pressed\.state-active\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--button_hover_text\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#modeSwitch:!hover:!pressed\.state-active,\s*#modeSwitch:!hover:!pressed:checked\s*\{[^}]*background:\s*var\(--button_bg\);[^}]*border:\s*2px solid var\(--primary\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+    /#modeSwitch:!hover:!pressed\.state-active,\s*#modeSwitch:!hover:!pressed:checked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*color:\s*var\(--text\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--text_inverse\);[^}]*\}/,
+    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--button_hover_text\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#modeSwitch:pressed\.state-active,\s*#modeSwitch:pressed:checked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*border:\s*3px solid var\(--primary_dark\);[^}]*color:\s*var\(--text\);[^}]*padding:\s*1px -1px -1px 1px;[^}]*\}/,
+    /#modeSwitch:pressed\.state-active,\s*#modeSwitch:pressed:checked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*border:\s*2px inset var\(--primary_dark\);[^}]*color:\s*var\(--text\);[^}]*\}/,
   );
 });
 
@@ -222,18 +234,18 @@ test('default mixer category uses the guaranteed text/base contrast pair', () =>
   );
 });
 
-test('QTableView checkbox indicators use theme tokens and a shape signal', () => {
+test('QTableView checkbox indicators keep a shape signal and hover/focus affordance', () => {
   assert.match(
     base,
     /QTableView::indicator:unchecked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*border:\s*2px solid var\(--text\);[^}]*\}/,
   );
   assert.match(
     base,
-    /QTableView::indicator:checked\s*\{[^}]*image:\s*var\(--checkbox_check_icon\);[^}]*background:\s*var\(--text\);[^}]*border:\s*2px solid var\(--text\);[^}]*\}/,
+    /QTableView::indicator:checked\s*\{[^}]*image:\s*var\(--checkbox_check_icon\);[^}]*background:\s*var\(--bg_base\);[^}]*border:\s*2px solid var\(--text\);[^}]*\}/,
   );
-  assert.doesNotMatch(
+  assert.match(
     base,
-    /QTableView::indicator:[^{]+\{[^}]*(?:checkbox_line|checkbox_fill)\.svg/,
+    /QTableView::indicator:unchecked:hover,[^{}]*QTableView::indicator:checked:focus\s*\{[^}]*background:\s*var\(--bg_hover\);[^}]*border:\s*3px solid var\(--primary\);[^}]*\}/,
   );
 });
 

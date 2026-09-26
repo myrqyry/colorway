@@ -142,6 +142,16 @@ function contrastRatio(foreground, background) {
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 }
 
+function resolveToken(vars, key, seen = new Set()) {
+  assert.ok(vars.has(key), `missing ${key}`);
+  if (seen.has(key)) throw new Error(`cyclic variable alias: ${key}`);
+  seen.add(key);
+
+  const value = vars.get(key);
+  const alias = value.match(/^var\((--[\w-]+)\)$/);
+  return alias ? resolveToken(vars, alias[1], seen) : value;
+}
+
 for (const file of THEME_FILES) {
   const vars = resolveTheme(file);
 
@@ -151,15 +161,19 @@ for (const file of THEME_FILES) {
     }
   });
 
-  test(`${file} keeps text readable on the base surface`, () => {
-    assert.ok(vars.has('--text'), `${file} missing --text`);
-    assert.ok(vars.has('--bg_base'), `${file} missing --bg_base`);
-    assert.ok(contrastRatio(vars.get('--text'), vars.get('--bg_base')) >= 4.5, `${file} text/base contrast too low`);
-  });
+  test(`${file} keeps contracted text/surface pairs readable`, () => {
+    const text = resolveToken(vars, '--text');
+    const baseSurface = resolveToken(vars, '--bg_base');
+    const hoverText = resolveToken(vars, '--button_hover_text');
+    const hoverSurface = resolveToken(vars, '--button_bg_hover');
 
-  test(`${file} keeps inverse text readable on hover buttons`, () => {
-    assert.ok(vars.has('--text_inverse'), `${file} missing --text_inverse`);
-    assert.ok(vars.has('--button_bg_hover'), `${file} missing --button_bg_hover`);
-    assert.ok(contrastRatio(vars.get('--text_inverse'), vars.get('--button_bg_hover')) >= 4.5, `${file} inverse/button contrast too low`);
+    assert.ok(
+      contrastRatio(text, baseSurface) >= 4.5,
+      `${file} text/base contrast too low`,
+    );
+    assert.ok(
+      contrastRatio(hoverText, hoverSurface) >= 4.5,
+      `${file} button-hover text contrast too low`,
+    );
   });
 }

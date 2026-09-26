@@ -302,6 +302,7 @@
     --text_base: var(--text);
     --text_bright: var(--text_light);
     --text_inverse: var(--bg_base);
+    --button_hover_text: var(--text);
     --primary_hover: var(--primary_light);
     --primary_dark_alias: var(--primary_dark);
 
@@ -331,7 +332,7 @@
     --icon_dock_close: url(theme:icons/colorway/iconamoon/normal/close.svg);
     --icon_dock_popout: url(theme:icons/colorway/iconamoon/normal/popout.svg);
     --icon_check: url(theme:icons/colorway/iconamoon/normal/check.svg);
-    --checkbox_check_icon: url(theme:icons/colorway/iconamoon/selected/check.svg);
+    --checkbox_check_icon: url(theme:icons/colorway/iconamoon/normal/check.svg);
     --pattern_eyes: url(theme:patterns/pattern.svg);
 
     /* Elevation & Depth Simulation */
@@ -781,14 +782,14 @@ QTreeView::item:selected:hover .icon-media-prev {
 #broadcastButton:hover:!pressed.state-active {
     background: var(--button_bg_hover);
     border-color: var(--live);
-    color: var(--text_inverse);
+    color: var(--button_hover_text);
 }
 
 #recordButton:hover:!pressed.state-active,
 #pauseRecordButton:hover:!pressed.state-active {
     background: var(--button_bg_hover);
     border-color: var(--recording);
-    color: var(--text_inverse);
+    color: var(--button_hover_text);
 }
 
 #replayBufferButton:hover:!pressed.state-active,
@@ -802,7 +803,7 @@ QTreeView::item:selected:hover .icon-media-prev {
    Current OBS toggles .state-active; :checked stays as a legacy fallback. */
 #modeSwitch:!hover:!pressed.state-active,
 #modeSwitch:!hover:!pressed:checked {
-    background: var(--button_bg);
+    background: var(--bg_base);
     border: 2px solid var(--primary);
     color: var(--text);
     font-weight: bold;
@@ -812,17 +813,16 @@ QTreeView::item:selected:hover .icon-media-prev {
 #modeSwitch:hover:!pressed:checked {
     background: var(--button_bg_hover);
     border: 2px solid var(--primary_lighter);
-    color: var(--text_inverse);
+    color: var(--button_hover_text);
     font-weight: bold;
 }
 
 #modeSwitch:pressed.state-active,
 #modeSwitch:pressed:checked {
     background: var(--bg_base);
-    border: 3px solid var(--primary_dark);
+    border: 2px inset var(--primary_dark);
     color: var(--text);
     font-weight: bold;
-    padding: 1px -1px -1px 1px;
 }
 
 QPushButton:focus {
@@ -1148,14 +1148,17 @@ QTableView::indicator:unchecked {
 
 QTableView::indicator:checked {
     image: var(--checkbox_check_icon);
-    background: var(--text);
+    background: var(--bg_base);
     border: 2px solid var(--text);
     border-radius: var(--shape_xs);
 }
 
 QTableView::indicator:unchecked:hover,
-QTableView::indicator:checked:hover {
-    border-width: 3px;
+QTableView::indicator:checked:hover,
+QTableView::indicator:unchecked:focus,
+QTableView::indicator:checked:focus {
+    background: var(--bg_hover);
+    border: 3px solid var(--primary);
 }
 
 /* Canvas / Preview background color */

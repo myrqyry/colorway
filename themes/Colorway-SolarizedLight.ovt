@@ -67,8 +67,8 @@
 
     --warning: #745800;
     --danger: #dc322f;
-    --success: #1f6438;
-    --checkbox_check_icon: url(theme:icons/colorway/iconamoon/normal/check.svg);
+    --success: #4b5f00;
+    --checkbox_check_icon: url(theme:icons/colorway/iconamoon/selected/check.svg);
 
     --text: #000000;
     --text_light: #002b36;
