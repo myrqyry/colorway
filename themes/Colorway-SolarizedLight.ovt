@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    /* Official palette reference: Solarized Light+
+    /* Official palette reference (source values; live accessibility overrides below may differ): Solarized Light+
        Hex colors:
        --bg_window: #fdf6e3;
        --bg_base: #fdf6e3;
@@ -65,9 +65,10 @@
     --primary_dark: #1a6d9e;
     --primary_darker: #586e75;
 
-    --warning: #8a5a00;
+    --warning: #745800;
     --danger: #dc322f;
-    --success: #2d7d46;
+    --success: #1f6438;
+    --checkbox_check_icon: url(theme:icons/colorway/iconamoon/normal/check.svg);
 
     --text: #000000;
     --text_light: #002b36;

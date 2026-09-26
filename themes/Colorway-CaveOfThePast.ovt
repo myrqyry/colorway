@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    /* Official palette reference: Cave of the Past
+    /* Official palette reference (source values; live accessibility overrides below may differ): Cave of the Past
        Hex colors:
        --bg_window: #b0d0b8;
        --bg_base: #b0d0b8;
@@ -65,9 +65,10 @@
     --primary_dark: #1a2b1a;
     --primary_darker: #0e1e0e;
 
-    --warning: #8a5a00;
+    --warning: #546658;
     --danger: #8b3a3a;
-    --success: #2d7d46;
+    --success: #1f6438;
+    --checkbox_check_icon: url(theme:icons/colorway/iconamoon/normal/check.svg);
 
     --text: #394537;
     --text_light: #0e1e0e;

@@ -100,7 +100,7 @@ test('widget rules consume semantic tokens instead of raw OBS palette ramps', ()
 });
 
 
-test('light variants keep warning and success semantics visible', () => {
+test('light variants keep warning and success text readable', () => {
   const sourceDir = join(ROOT, 'themes');
 
   const channel = (value) => {
@@ -121,6 +121,8 @@ test('light variants keep warning and success semantics visible', () => {
     return (values[0] + 0.05) / (values[1] + 0.05);
   };
 
+  const warnings = new Set();
+
   for (const file of readdirSync(sourceDir).filter((name) => name.endsWith('.ovt'))) {
     const theme = readFileSync(join(sourceDir, file), 'utf8');
     if (!/\bdark:\s*'false';/.test(theme)) continue;
@@ -136,24 +138,47 @@ test('light variants keep warning and success semantics visible', () => {
     assert.ok(warning, file + ': light variant must override --warning');
     assert.ok(success, file + ': light variant must override --success');
     assert.ok(hover, file + ': light variant must define a concrete --bg_hover');
+
+    warnings.add(warning.toLowerCase());
+
     assert.ok(
-      contrast(warning, hover) >= 3,
-      file + ': --warning must keep at least 3:1 contrast against --bg_hover',
+      contrast(warning, hover) >= 4.5,
+      file + ': --warning must keep at least 4.5:1 contrast against --bg_hover',
     );
     assert.ok(
-      contrast(success, hover) >= 3,
-      file + ': --success must keep at least 3:1 contrast against --bg_hover',
+      contrast(success, hover) >= 4.5,
+      file + ': --success must keep at least 4.5:1 contrast against --bg_hover',
+    );
+  }
+
+  assert.ok(
+    warnings.size >= 5,
+    'light variants must preserve multiple warning palette families',
+  );
+});
+
+test('light palette comments distinguish source values from accessibility overrides', () => {
+  const sourceDir = join(ROOT, 'themes');
+  for (const file of readdirSync(sourceDir).filter((name) => name.endsWith('.ovt'))) {
+    const theme = readFileSync(join(sourceDir, file), 'utf8');
+    if (!/\bdark:\s*'false';/.test(theme)) continue;
+
+    assert.match(
+      theme,
+      /Official palette reference \(source values; live accessibility overrides below may differ\):/,
+      file + ': palette reference must explain accessibility divergence',
     );
   }
 });
-test('monitor checked states keep success on the tested hover surface', () => {
+
+test('monitor checked states keep success on the contrast-tested surface', () => {
   assert.match(
     base,
     /\.btn-monitor\.checked\s*\{[^}]*background:\s*var\(--bg_hover\);[^}]*color:\s*var\(--success\);[^}]*\}/,
   );
   assert.match(
     base,
-    /\.btn-monitor\.checked:focus,[^{}]*\.btn-monitor\.checked:hover\s*\{[^}]*background:\s*var\(--bg_hover\);[^}]*color:\s*var\(--success\);[^}]*\}/,
+    /\.btn-monitor\.checked:focus,\s*\.btn-monitor:checked:focus,\s*\.btn-monitor\.checked:hover\s*\{[^}]*background:\s*var\(--bg_hover\);[^}]*color:\s*var\(--success\);[^}]*\}/,
   );
 });
 
@@ -167,41 +192,51 @@ test('current OBS runtime state classes receive visible styling', () => {
   assert.match(base, /QTabBar::tab:bottom:selected/);
 });
 
-
-test('active state labels keep surface-safe foregrounds inside their own rules', () => {
+test('active button rules keep readable foreground/surface pairs inside each rule', () => {
   assert.match(
     base,
-    /#streamButton:hover:!pressed\.state-active,\s*#broadcastButton:hover:!pressed\.state-active\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+    /#streamButton:hover:!pressed\.state-active,\s*#broadcastButton:hover:!pressed\.state-active\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--text_inverse\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#recordButton:hover:!pressed\.state-active,\s*#pauseRecordButton:hover:!pressed\.state-active\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+    /#recordButton:hover:!pressed\.state-active,\s*#pauseRecordButton:hover:!pressed\.state-active\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--text_inverse\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#modeSwitch:!hover:!pressed\.state-active,\s*#modeSwitch:!hover:!pressed:checked\s*\{[^}]*background:\s*var\(--primary_container\);[^}]*border:\s*2px solid var\(--primary\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+    /#modeSwitch:!hover:!pressed\.state-active,\s*#modeSwitch:!hover:!pressed:checked\s*\{[^}]*background:\s*var\(--button_bg\);[^}]*border:\s*2px solid var\(--primary\);[^}]*color:\s*var\(--text\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--surface2\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--text_inverse\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#modeSwitch:pressed\.state-active,\s*#modeSwitch:pressed:checked\s*\{[^}]*background:\s*var\(--surface0\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+    /#modeSwitch:pressed\.state-active,\s*#modeSwitch:pressed:checked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*border:\s*3px solid var\(--primary_dark\);[^}]*color:\s*var\(--text\);[^}]*padding:\s*1px -1px -1px 1px;[^}]*\}/,
   );
 });
 
-test('table checkbox indicators use theme tokens instead of fixed-color SVGs', () => {
+test('default mixer category uses the guaranteed text/base contrast pair', () => {
   assert.match(
     base,
-    /QTableView::indicator:unchecked\s*\{[^}]*image:\s*none;[^}]*border:\s*2px solid var\(--text_muted\);[^}]*\}/,
+    /VolumeControl \.mixer-category\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*color:\s*var\(--text\);[^}]*\}/,
   );
-  assert.match(
-    base,
-    /QTableView::indicator:checked\s*\{[^}]*image:\s*none;[^}]*background:\s*var\(--primary\);[^}]*\}/,
-  );
-  assert.doesNotMatch(base, /QTableView::indicator:[^{]+\{[^}]*(?:checkbox_line|checkbox_fill)\.svg/);
 });
+
+test('QTableView checkbox indicators use theme tokens and a shape signal', () => {
+  assert.match(
+    base,
+    /QTableView::indicator:unchecked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*border:\s*2px solid var\(--text\);[^}]*\}/,
+  );
+  assert.match(
+    base,
+    /QTableView::indicator:checked\s*\{[^}]*image:\s*var\(--checkbox_check_icon\);[^}]*background:\s*var\(--text\);[^}]*border:\s*2px solid var\(--text\);[^}]*\}/,
+  );
+  assert.doesNotMatch(
+    base,
+    /QTableView::indicator:[^{]+\{[^}]*(?:checkbox_line|checkbox_fill)\.svg/,
+  );
+});
+
 test('OBS parser-only math never leaks into Qt QSS rules', () => {
   const vars = base.match(/@OBSThemeVars\s*\{[\s\S]*?\n\}/);
   assert.ok(vars, 'Colorway vars block missing');

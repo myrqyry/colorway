@@ -331,6 +331,7 @@
     --icon_dock_close: url(theme:icons/colorway/iconamoon/normal/close.svg);
     --icon_dock_popout: url(theme:icons/colorway/iconamoon/normal/popout.svg);
     --icon_check: url(theme:icons/colorway/iconamoon/normal/check.svg);
+    --checkbox_check_icon: url(theme:icons/colorway/iconamoon/selected/check.svg);
     --pattern_eyes: url(theme:patterns/pattern.svg);
 
     /* Elevation & Depth Simulation */
@@ -780,14 +781,14 @@ QTreeView::item:selected:hover .icon-media-prev {
 #broadcastButton:hover:!pressed.state-active {
     background: var(--button_bg_hover);
     border-color: var(--live);
-    color: var(--text);
+    color: var(--text_inverse);
 }
 
 #recordButton:hover:!pressed.state-active,
 #pauseRecordButton:hover:!pressed.state-active {
     background: var(--button_bg_hover);
     border-color: var(--recording);
-    color: var(--text);
+    color: var(--text_inverse);
 }
 
 #replayBufferButton:hover:!pressed.state-active,
@@ -801,7 +802,7 @@ QTreeView::item:selected:hover .icon-media-prev {
    Current OBS toggles .state-active; :checked stays as a legacy fallback. */
 #modeSwitch:!hover:!pressed.state-active,
 #modeSwitch:!hover:!pressed:checked {
-    background: var(--primary_container);
+    background: var(--button_bg);
     border: 2px solid var(--primary);
     color: var(--text);
     font-weight: bold;
@@ -809,18 +810,19 @@ QTreeView::item:selected:hover .icon-media-prev {
 
 #modeSwitch:hover:!pressed.state-active,
 #modeSwitch:hover:!pressed:checked {
-    background: var(--surface2);
+    background: var(--button_bg_hover);
     border: 2px solid var(--primary_lighter);
-    color: var(--text);
+    color: var(--text_inverse);
     font-weight: bold;
 }
 
 #modeSwitch:pressed.state-active,
 #modeSwitch:pressed:checked {
-    background: var(--surface0);
-    border: 2px solid var(--primary_dark);
+    background: var(--bg_base);
+    border: 3px solid var(--primary_dark);
     color: var(--text);
     font-weight: bold;
+    padding: 1px -1px -1px 1px;
 }
 
 QPushButton:focus {
@@ -1078,8 +1080,8 @@ VolumeControl.volume-inactive .mixer-name {
 
 VolumeControl .mixer-category {
     font-weight: bold;
-    background: var(--bg_hover);
-    color: var(--text_muted);
+    background: var(--bg_base);
+    color: var(--text);
 }
 
 VolumeControl.volume-pinned .mixer-category {
@@ -1139,25 +1141,21 @@ QTableView::indicator {
 
 QTableView::indicator:unchecked {
     image: none;
-    background: transparent;
-    border: 2px solid var(--text_muted);
+    background: var(--bg_base);
+    border: 2px solid var(--text);
     border-radius: var(--shape_xs);
 }
 
 QTableView::indicator:checked {
-    image: none;
-    background: var(--primary);
-    border: 2px solid var(--primary);
+    image: var(--checkbox_check_icon);
+    background: var(--text);
+    border: 2px solid var(--text);
     border-radius: var(--shape_xs);
 }
 
-QTableView::indicator:unchecked:hover {
-    border-color: var(--primary);
-}
-
+QTableView::indicator:unchecked:hover,
 QTableView::indicator:checked:hover {
-    background: var(--primary_light);
-    border-color: var(--primary_light);
+    border-width: 3px;
 }
 
 /* Canvas / Preview background color */

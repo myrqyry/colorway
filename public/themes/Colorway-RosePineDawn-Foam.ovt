@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    /* Official palette reference: Rose Pine Dawn — Foam
+    /* Official palette reference (source values; live accessibility overrides below may differ): Rose Pine Dawn — Foam
        Hex colors:
        --bg_window: #faf4ed;
        --bg_base: #faf4ed;
@@ -80,9 +80,10 @@
     --list_item_bg_hover: #f4ede8;
     --list_item_bg_selected: #faf4ed;
 
-    --warning: #8a5a00;
+    --warning: #955c0f;
     --danger: #b4637a;
-    --success: #2d7d46;
+    --success: #1f6438;
+    --checkbox_check_icon: url(theme:icons/colorway/iconamoon/normal/check.svg);
 
     --meter_bg_nom: #fffaf3;
     --meter_bg_war: #ea9d34;

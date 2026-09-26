@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    /* Official palette reference: Magicant
+    /* Official palette reference (source values; live accessibility overrides below may differ): Magicant
        Hex colors:
        --bg_window: #F9F8B9;
        --bg_base: #F9F8B9;
@@ -65,9 +65,10 @@
     --primary_dark: #604633;
     --primary_darker: #3d2a20;
 
-    --warning: #8a5a00;
+    --warning: #876908;
     --danger: #87000d;
-    --success: #2d7d46;
+    --success: #1f6438;
+    --checkbox_check_icon: url(theme:icons/colorway/iconamoon/normal/check.svg);
 
     --text: #220088;
     --text_light: #1a0060;
