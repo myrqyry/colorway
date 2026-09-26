@@ -40,7 +40,7 @@
        --ico_selected: #faf4ed;
        --warning: #ea9d34;
        --danger: #b4637a;
-       --success: #2d7d46;
+       --success: #37d247;
        --meter_bg_nom: #fffaf3;
        --meter_bg_war: #ea9d34;
        --meter_bg_err: #b4637a;
@@ -80,7 +80,7 @@
     --list_item_bg_hover: #f4ede8;
     --list_item_bg_selected: #faf4ed;
 
-    --warning: #ea9d34;
+    --warning: #8a5a00;
     --danger: #b4637a;
     --success: #2d7d46;
 

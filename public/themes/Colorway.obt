@@ -801,22 +801,26 @@ QTreeView::item:selected:hover .icon-media-prev {
    Current OBS toggles .state-active; :checked stays as a legacy fallback. */
 #modeSwitch:!hover:!pressed.state-active,
 #modeSwitch:!hover:!pressed:checked {
-    background: var(--button_bg_hover);
-    border-color: var(--primary);
+    background: var(--primary_container);
+    border: 2px solid var(--primary);
     color: var(--text);
+    font-weight: bold;
 }
 
 #modeSwitch:hover:!pressed.state-active,
 #modeSwitch:hover:!pressed:checked {
-    background: var(--input_bg_hover);
-    border-color: var(--primary_lighter);
+    background: var(--surface2);
+    border: 2px solid var(--primary_lighter);
     color: var(--text);
+    font-weight: bold;
 }
 
-#modeSwitch:pressed.state-active {
-    background: var(--input_bg_focus);
-    border-color: var(--primary);
+#modeSwitch:pressed.state-active,
+#modeSwitch:pressed:checked {
+    background: var(--surface0);
+    border: 2px solid var(--primary_dark);
     color: var(--text);
+    font-weight: bold;
 }
 
 QPushButton:focus {
@@ -928,7 +932,7 @@ QPushButton:focus {
 .btn-monitor.checked:focus,
 .btn-monitor:checked:focus,
 .btn-monitor.checked:hover {
-    background: var(--button_bg_hover);
+    background: var(--bg_hover);
     color: var(--success);
     border-color: var(--success);
 }
@@ -1134,17 +1138,26 @@ QTableView::indicator {
 }
 
 QTableView::indicator:unchecked {
-    image: url(theme:icons/colorway/iconamoon/normal/checkbox_line.svg);
+    image: none;
+    background: transparent;
+    border: 2px solid var(--text_muted);
+    border-radius: var(--shape_xs);
 }
 
 QTableView::indicator:checked {
-    image: url(theme:icons/colorway/iconamoon/normal/checkbox_fill.svg);
+    image: none;
+    background: var(--primary);
+    border: 2px solid var(--primary);
+    border-radius: var(--shape_xs);
 }
 
-QTableView::indicator:unchecked:hover,
+QTableView::indicator:unchecked:hover {
+    border-color: var(--primary);
+}
+
 QTableView::indicator:checked:hover {
-    border: var(--highlight_width) solid var(--primary);
-    border-radius: var(--shape_sm);
+    background: var(--primary_light);
+    border-color: var(--primary_light);
 }
 
 /* Canvas / Preview background color */

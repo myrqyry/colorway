@@ -100,7 +100,7 @@ test('widget rules consume semantic tokens instead of raw OBS palette ramps', ()
 });
 
 
-test('light variants provide a visible success semantic', () => {
+test('light variants keep warning and success semantics visible', () => {
   const sourceDir = join(ROOT, 'themes');
 
   const channel = (value) => {
@@ -129,21 +129,38 @@ test('light variants provide a visible success semantic', () => {
     assert.ok(vars, file + ': vars block missing');
     const declarations = stripComments(vars[1]);
 
+    const warning = declarations.match(/--warning:\s*(#[0-9a-fA-F]{6})\s*;/)?.[1];
     const success = declarations.match(/--success:\s*(#[0-9a-fA-F]{6})\s*;/)?.[1];
     const hover = declarations.match(/--bg_hover:\s*(#[0-9a-fA-F]{6})\s*;/)?.[1];
 
+    assert.ok(warning, file + ': light variant must override --warning');
     assert.ok(success, file + ': light variant must override --success');
     assert.ok(hover, file + ': light variant must define a concrete --bg_hover');
+    assert.ok(
+      contrast(warning, hover) >= 3,
+      file + ': --warning must keep at least 3:1 contrast against --bg_hover',
+    );
     assert.ok(
       contrast(success, hover) >= 3,
       file + ': --success must keep at least 3:1 contrast against --bg_hover',
     );
   }
 });
+test('monitor checked states keep success on the tested hover surface', () => {
+  assert.match(
+    base,
+    /\.btn-monitor\.checked\s*\{[^}]*background:\s*var\(--bg_hover\);[^}]*color:\s*var\(--success\);[^}]*\}/,
+  );
+  assert.match(
+    base,
+    /\.btn-monitor\.checked:focus,[^{}]*\.btn-monitor\.checked:hover\s*\{[^}]*background:\s*var\(--bg_hover\);[^}]*color:\s*var\(--success\);[^}]*\}/,
+  );
+});
+
 test('current OBS runtime state classes receive visible styling', () => {
   assert.match(base, /#modeSwitch:!hover:!pressed\.state-active/);
   assert.match(base, /#modeSwitch:hover:!pressed\.state-active/);
-  assert.match(base, /#modeSwitch:pressed\.state-active/);
+  assert.match(base, /#modeSwitch:pressed\.state-active,\s*#modeSwitch:pressed:checked/);
   assert.match(base, /QSpinBox::up-button:hover/);
   assert.match(base, /QDoubleSpinBox::down-button:disabled/);
   assert.match(base, /QGroupBox::indicator:checked:disabled/);
@@ -151,19 +168,39 @@ test('current OBS runtime state classes receive visible styling', () => {
 });
 
 
-test('active state labels keep a surface-safe foreground', () => {
+test('active state labels keep surface-safe foregrounds inside their own rules', () => {
   assert.match(
     base,
-    /#streamButton:hover:!pressed\.state-active,[\s\S]*?background:\s*var\(--button_bg_hover\);[\s\S]*?color:\s*var\(--text\);/,
+    /#streamButton:hover:!pressed\.state-active,\s*#broadcastButton:hover:!pressed\.state-active\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--text\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#recordButton:hover:!pressed\.state-active,[\s\S]*?background:\s*var\(--button_bg_hover\);[\s\S]*?color:\s*var\(--text\);/,
+    /#recordButton:hover:!pressed\.state-active,\s*#pauseRecordButton:hover:!pressed\.state-active\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--text\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#modeSwitch:!hover:!pressed\.state-active,[\s\S]*?background:\s*var\(--button_bg_hover\);[\s\S]*?color:\s*var\(--text\);/,
+    /#modeSwitch:!hover:!pressed\.state-active,\s*#modeSwitch:!hover:!pressed:checked\s*\{[^}]*background:\s*var\(--primary_container\);[^}]*border:\s*2px solid var\(--primary\);[^}]*color:\s*var\(--text\);[^}]*\}/,
   );
+  assert.match(
+    base,
+    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--surface2\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+  );
+  assert.match(
+    base,
+    /#modeSwitch:pressed\.state-active,\s*#modeSwitch:pressed:checked\s*\{[^}]*background:\s*var\(--surface0\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+  );
+});
+
+test('table checkbox indicators use theme tokens instead of fixed-color SVGs', () => {
+  assert.match(
+    base,
+    /QTableView::indicator:unchecked\s*\{[^}]*image:\s*none;[^}]*border:\s*2px solid var\(--text_muted\);[^}]*\}/,
+  );
+  assert.match(
+    base,
+    /QTableView::indicator:checked\s*\{[^}]*image:\s*none;[^}]*background:\s*var\(--primary\);[^}]*\}/,
+  );
+  assert.doesNotMatch(base, /QTableView::indicator:[^{]+\{[^}]*(?:checkbox_line|checkbox_fill)\.svg/);
 });
 test('OBS parser-only math never leaks into Qt QSS rules', () => {
   const vars = base.match(/@OBSThemeVars\s*\{[\s\S]*?\n\}/);

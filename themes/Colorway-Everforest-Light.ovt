@@ -40,7 +40,7 @@
        --ico_selected: #FDF6E3;
        --warning: #DFA000;
        --danger: #F85552;
-       --success: #2d7d46;
+       --success: #37d247;
        --meter_bg_nom: #26233a;
        --meter_bg_war: #f6c177;
        --meter_bg_err: #eb6f92;
@@ -65,7 +65,7 @@
     --primary_dark: #6E7F26;
     --primary_darker: #4A5B2E;
 
-    --warning: #DFA000;
+    --warning: #8a5a00;
     --danger: #F85552;
     --success: #2d7d46;
 
