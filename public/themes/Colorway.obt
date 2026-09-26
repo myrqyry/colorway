@@ -1731,7 +1731,7 @@ idian--ToggleSwitch {
 
     border-radius: var(--toggle_radius);
 
-    qproperty-handleColor: var(--text_inverse);
+    qproperty-handleColor: var(--text_light);
     qproperty-handleSize: var(--toggle_handle);
 
     border: var(--highlight_width) solid transparent;
@@ -1900,7 +1900,8 @@ idian--ExpandButton {
     border: none;
 }
 
-idian--ExpandButton::indicator {
+/* Legacy Idian CollapsibleRow renders its chevron through ::indicator. */
+idian--CollapsibleRow idian--ExpandButton::indicator {
     background: var(--surface2);
     border-radius: var(--action_row_collapse_radius);
     padding: var(--padding_large);
@@ -1908,12 +1909,12 @@ idian--ExpandButton::indicator {
     border: var(--highlight_width) solid var(--border_color);
 }
 
-idian--ExpandButton::indicator:checked {
+idian--CollapsibleRow idian--ExpandButton::indicator:checked {
     image: url(theme:icons/colorway/iconamoon/normal/chevron-up.svg);
 }
 
 idian--ExpandButton.keyFocus,
-idian--ExpandButton.keyFocus::indicator {
+idian--CollapsibleRow idian--ExpandButton.keyFocus::indicator {
     border-color: var(--highlight_color);
 }
 
@@ -1969,20 +1970,6 @@ idian--RowList {
     margin: var(--spacing_base) 0;
 }
 
-idian--Row {
-    background: var(--surface2);
-    border-radius: var(--shape_md);
-}
-
-idian--Row.keyFocus {
-    background: var(--surface3);
-    border: var(--highlight_width) solid var(--highlight_color);
-}
-
-idian--Row.cursor-pointer.hover {
-    background: var(--surface3);
-    border: var(--highlight_width) solid var(--input_border_hover);
-}
 
 idian--RowList idian--Row {
     border-radius: 0;
@@ -2083,16 +2070,10 @@ idian--Row.keyFocus idian--InlineButton.checked {
     border-color: var(--highlight_color);
 }
 
+/* OBS 32+ Idian exposes the chevron through qproperty-icon.
+   Geometry stays in the shared ExpandButton rule above; legacy CollapsibleRow
+   keeps its scoped ::indicator fallback for older OBS releases. */
 idian--ExpandButton {
-    background: transparent;
-    min-width: var(--input_height);
-    max-width: var(--input_height);
-    min-height: var(--input_height);
-    max-height: var(--input_height);
-    border: var(--highlight_width) solid transparent;
-    border-radius: var(--shape_sm);
-    padding: var(--padding_large);
-    margin: 0 var(--spacing_base);
     qproperty-icon: url(theme:icons/colorway/iconamoon/normal/chevron-down.svg);
 }
 

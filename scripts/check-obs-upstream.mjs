@@ -1,5 +1,5 @@
 import { appendFileSync, readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const BASELINE_FILE = fileURLToPath(new URL('./obs-upstream-baseline.json', import.meta.url));
 
@@ -146,6 +146,7 @@ export async function checkUpstream(baseline) {
     '',
     `Reviewed baseline: ${baseline.reviewed_at}`,
     `Repository: \`${baseline.repository}\``,
+    `Audited commit: \`${baseline.audited_commit}\``,
     '',
   ];
   let changed = false;
@@ -203,7 +204,7 @@ async function main() {
 
 const invokedDirectly =
   process.argv[1] &&
-  import.meta.url === new URL(`file://${process.argv[1]}`).href;
+  import.meta.url === pathToFileURL(process.argv[1]).href;
 
 if (invokedDirectly) {
   main().catch((error) => {

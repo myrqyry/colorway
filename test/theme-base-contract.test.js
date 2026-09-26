@@ -8,6 +8,13 @@ const TEST_DIR = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(TEST_DIR, '..');
 const read = (path) => readFileSync(join(ROOT, path), 'utf8');
 const base = read('themes/Colorway.obt');
+const stripComments = (text) => text.replace(/\/\*[\s\S]*?\*\//g, '');
+const uncommentedBase = stripComments(base);
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\const base = read('themes/Colorway.obt');
+');
+const hasSelectorRule = (selector) =>
+  new RegExp('(?:^|[,\\n])\\s*' + escapeRegExp(selector) + '(?=\\s*(?:,|\\{))', 'm')
+    .test(uncommentedBase);
 
 test('source and public theme distributions are byte-identical', () => {
   const sourceDir = join(ROOT, 'themes');
@@ -45,7 +52,7 @@ test('Colorway covers current OBS widget hooks without dropping legacy compatibi
     'idian--CollapsibleGroup',
     'idian--InlineButton',
   ]) {
-    assert.ok(base.includes(selector), `missing current OBS hook: ${selector}`);
+    assert.ok(hasSelectorRule(selector), `missing current OBS hook: ${selector}`);
   }
 
   for (const legacy of [
@@ -54,7 +61,7 @@ test('Colorway covers current OBS widget hooks without dropping legacy compatibi
     'idian--PropertiesList',
     'idian--CollapsibleRow',
   ]) {
-    assert.ok(base.includes(legacy), `legacy compatibility disappeared: ${legacy}`);
+    assert.ok(hasSelectorRule(legacy), `legacy compatibility disappeared: ${legacy}`);
   }
 });
 
@@ -77,9 +84,9 @@ test('current input sizing and tab placement guards are present', () => {
 
 
 test('widget rules consume semantic tokens instead of raw OBS palette ramps', () => {
-  const varsEnd = base.indexOf('/* --------------------- */');
-  assert.ok(varsEnd > 0, 'could not find end of Colorway variable section');
-  const qss = base.slice(varsEnd);
+  const vars = base.match(/@OBSThemeVars\s*\{[\s\S]*?\n\}/);
+  assert.ok(vars, 'Colorway vars block missing');
+  const qss = base.slice(base.indexOf(vars[0]) + vars[0].length);
   assert.doesNotMatch(
     qss,
     /var\(--(?:blue|red|pink|teal|purple|green|yellow|grey|white|black)\d+\)/,
@@ -92,6 +99,46 @@ test('widget rules consume semantic tokens instead of raw OBS palette ramps', ()
 });
 
 
+test('light variants provide a visible success semantic', () => {
+  const sourceDir = join(ROOT, 'themes');
+
+  const channel = (value) => {
+    const srgb = value / 255;
+    return srgb <= 0.04045
+      ? srgb / 12.92
+      : ((srgb + 0.055) / 1.055) ** 2.4;
+  };
+  const luminance = (hex) => {
+    const value = hex.slice(1);
+    const [r, g, b] = [0, 2, 4]
+      .map((offset) => parseInt(value.slice(offset, offset + 2), 16))
+      .map(channel);
+    return (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
+  };
+  const contrast = (a, b) => {
+    const values = [luminance(a), luminance(b)].sort((x, y) => y - x);
+    return (values[0] + 0.05) / (values[1] + 0.05);
+  };
+
+  for (const file of readdirSync(sourceDir).filter((name) => name.endsWith('.ovt'))) {
+    const theme = readFileSync(join(sourceDir, file), 'utf8');
+    if (!/\bdark:\s*'false';/.test(theme)) continue;
+
+    const vars = theme.match(/@OBSThemeVars\s*\{([\s\S]*?)\n\}/);
+    assert.ok(vars, file + ': vars block missing');
+    const declarations = stripComments(vars[1]);
+
+    const success = declarations.match(/--success:\s*(#[0-9a-fA-F]{6})\s*;/)?.[1];
+    const hover = declarations.match(/--bg_hover:\s*(#[0-9a-fA-F]{6})\s*;/)?.[1];
+
+    assert.ok(success, file + ': light variant must override --success');
+    assert.ok(hover, file + ': light variant must define a concrete --bg_hover');
+    assert.ok(
+      contrast(success, hover) >= 3,
+      file + ': --success must keep at least 3:1 contrast against --bg_hover',
+    );
+  }
+});
 test('current OBS runtime state classes receive visible styling', () => {
   assert.match(base, /#modeSwitch:!hover:!pressed\.state-active/);
   assert.match(base, /#modeSwitch:hover:!pressed\.state-active/);

@@ -16,5 +16,6 @@
       "commit": "4819d1714b0384b52a3964672c0c3dfbd8a7b2fe",
       "kind": "parser"
     }
-  ]
+  ],
+  "audited_commit": "ea7536c49cb84420296d3831cda526c232fed3bc"
 }
