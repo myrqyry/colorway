@@ -188,13 +188,13 @@ for (const file of THEME_FILES) {
     );
   });
 
-  test(`${file} keeps the checkbox check glyph visible on its surface`, () => {
-    const background = resolveToken(vars, '--bg_base');
+  test(`${file} keeps the checkbox check glyph visible on its stable checked surface`, () => {
+    const checkedSurface = resolveToken(vars, '--bg_base');
     const iconValue = resolveToken(vars, '--checkbox_check_icon');
     const glyph = themeIconColor(iconValue);
 
     assert.ok(
-      contrastRatio(glyph, background) >= 3,
+      contrastRatio(glyph, checkedSurface) >= 3,
       `${file} checkbox glyph contrast too low`,
     );
   });

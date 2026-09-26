@@ -805,6 +805,7 @@ QTreeView::item:selected:hover .icon-media-prev {
 #modeSwitch:!hover:!pressed:checked {
     background: var(--bg_base);
     border: 2px solid var(--primary);
+    border-bottom: 4px solid var(--primary);
     color: var(--text);
     font-weight: bold;
 }
@@ -813,6 +814,7 @@ QTreeView::item:selected:hover .icon-media-prev {
 #modeSwitch:hover:!pressed:checked {
     background: var(--button_bg_hover);
     border: 2px solid var(--primary_lighter);
+    border-bottom: 4px solid var(--primary);
     color: var(--button_hover_text);
     font-weight: bold;
 }
@@ -821,6 +823,7 @@ QTreeView::item:selected:hover .icon-media-prev {
 #modeSwitch:pressed:checked {
     background: var(--bg_base);
     border: 2px inset var(--primary_dark);
+    border-bottom: 4px inset var(--primary);
     color: var(--text);
     font-weight: bold;
 }
@@ -1157,7 +1160,6 @@ QTableView::indicator:unchecked:hover,
 QTableView::indicator:checked:hover,
 QTableView::indicator:unchecked:focus,
 QTableView::indicator:checked:focus {
-    background: var(--bg_hover);
     border: 3px solid var(--primary);
 }
 

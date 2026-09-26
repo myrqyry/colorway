@@ -143,12 +143,6 @@ test('light variants keep warning and success text readable', () => {
     warnings.add(warning.toLowerCase());
     successes.add(success.toLowerCase());
 
-    assert.match(
-      declarations,
-      /--checkbox_check_icon:\s*url\(theme:icons\/colorway\/iconamoon\/selected\/check\.svg\)\s*;/,
-      file + ': light variant must use the dark checkbox glyph on light surfaces',
-    );
-
     assert.ok(
       contrast(warning, hover) >= 4.5,
       file + ': --warning must keep at least 4.5:1 contrast against --bg_hover',
@@ -215,15 +209,15 @@ test('active button rules use the contracted foreground/surface pairs', () => {
   );
   assert.match(
     base,
-    /#modeSwitch:!hover:!pressed\.state-active,\s*#modeSwitch:!hover:!pressed:checked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+    /#modeSwitch:!hover:!pressed\.state-active,\s*#modeSwitch:!hover:!pressed:checked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*border-bottom:\s*4px solid var\(--primary\);[^}]*color:\s*var\(--text\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--button_hover_text\);[^}]*\}/,
+    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*border-bottom:\s*4px solid var\(--primary\);[^}]*color:\s*var\(--button_hover_text\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#modeSwitch:pressed\.state-active,\s*#modeSwitch:pressed:checked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*border:\s*2px inset var\(--primary_dark\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+    /#modeSwitch:pressed\.state-active,\s*#modeSwitch:pressed:checked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*border:\s*2px inset var\(--primary_dark\);[^}]*border-bottom:\s*4px inset var\(--primary\);[^}]*color:\s*var\(--text\);[^}]*\}/,
   );
 });
 
@@ -245,7 +239,12 @@ test('QTableView checkbox indicators keep a shape signal and hover/focus afforda
   );
   assert.match(
     base,
-    /QTableView::indicator:unchecked:hover,[^{}]*QTableView::indicator:checked:focus\s*\{[^}]*background:\s*var\(--bg_hover\);[^}]*border:\s*3px solid var\(--primary\);[^}]*\}/,
+    /QTableView::indicator:unchecked:hover,[^{}]*QTableView::indicator:checked:focus\s*\{[^}]*border:\s*3px solid var\(--primary\);[^}]*\}/,
+  );
+  assert.doesNotMatch(
+    base,
+    /QTableView::indicator:unchecked:hover,[^{}]*QTableView::indicator:checked:focus\s*\{[^}]*background\s*:/,
+    'checkbox hover/focus must keep the checked glyph surface stable',
   );
 });
 
