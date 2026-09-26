@@ -209,15 +209,35 @@ test('active button rules use the contracted foreground/surface pairs', () => {
   );
   assert.match(
     base,
-    /#modeSwitch:!hover:!pressed\.state-active,\s*#modeSwitch:!hover:!pressed:checked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*border-bottom:\s*4px solid var\(--primary\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+    /#modeSwitch:!hover:!pressed\.state-active,\s*#modeSwitch:!hover:!pressed:checked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*color:\s*var\(--text\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*border-bottom:\s*4px solid var\(--primary\);[^}]*color:\s*var\(--button_hover_text\);[^}]*\}/,
+    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--button_hover_text\);[^}]*\}/,
   );
   assert.match(
     base,
-    /#modeSwitch:pressed\.state-active,\s*#modeSwitch:pressed:checked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*border:\s*2px inset var\(--primary_dark\);[^}]*border-bottom:\s*4px inset var\(--primary\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+    /#modeSwitch:pressed\.state-active,\s*#modeSwitch:pressed:checked\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+  );
+});
+
+test('Studio Mode active styling stays visible without changing box geometry', () => {
+  assert.match(
+    base,
+    /#modeSwitch:!hover:!pressed\.state-active,\s*#modeSwitch:!hover:!pressed:checked\s*\{[^}]*border:\s*2px solid var\(--primary\);[^}]*font-weight:\s*bold;[^}]*\}/,
+  );
+  assert.match(
+    base,
+    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*border:\s*2px solid var\(--primary_lighter\);[^}]*font-weight:\s*bold;[^}]*\}/,
+  );
+  assert.match(
+    base,
+    /#modeSwitch:pressed\.state-active,\s*#modeSwitch:pressed:checked\s*\{[^}]*border:\s*2px inset var\(--primary_dark\);[^}]*font-weight:\s*bold;[^}]*\}/,
+  );
+  assert.doesNotMatch(
+    base,
+    /#modeSwitch[^{}]*\.state-active[^{}]*\{[^}]*(?:border-(?:top|right|bottom|left)-width|border-bottom:\s*(?!2px\b)[^;]+|margin-bottom:\s*-)/,
+    'Studio Mode active states must not change the outer box dimensions',
   );
 });
 
@@ -243,7 +263,7 @@ test('QTableView checkbox indicators keep a shape signal and hover/focus afforda
   );
   assert.doesNotMatch(
     base,
-    /QTableView::indicator:unchecked:hover,[^{}]*QTableView::indicator:checked:focus\s*\{[^}]*background\s*:/,
+    /QTableView::indicator:unchecked:hover,[^{}]*QTableView::indicator:checked:focus\s*\{[^}]*background(?:-color)?\s*:/,
     'checkbox hover/focus must keep the checked glyph surface stable',
   );
 });
