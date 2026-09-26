@@ -7,6 +7,7 @@
     "dev": "vite --host 0.0.0.0",
     "test": "node --test",
     "sync:themes": "node scripts/sync-theme-mirrors.mjs",
+    "check:obs-upstream": "node scripts/check-obs-upstream.mjs",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0"
   },
@@ -19,5 +20,6 @@
     "gsap": "^3.15.0",
     "postcss": "^8.5.16",
     "tailwindcss": "^4.3.2"
-  }
+  },
+  "packageManager": "pnpm@11.17.0"
 }

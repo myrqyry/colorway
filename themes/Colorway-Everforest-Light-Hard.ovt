@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    /* Official palette reference: Everforest Light Hard
+    /* Official palette reference (source values; live accessibility overrides below may differ): Everforest Light Hard
        Hex colors:
        --bg_window: #FFFBEF;
        --bg_base: #FFFBEF;
@@ -65,8 +65,10 @@
     --primary_dark: #6E7F26;
     --primary_darker: #4A5B2E;
 
-    --warning: #DFA000;
+    --warning: #896200;
     --danger: #F85552;
+    --success: #526000;
+    --checkbox_check_icon: url(theme:icons/colorway/iconamoon/selected/check.svg);
 
     --text: #5C6A72;
     --text_light: #2D353B;

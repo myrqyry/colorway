@@ -44,6 +44,7 @@ const REQUIRED_VARS = [
 ];
 
 const THEMES_DIR = new URL('../themes/', import.meta.url);
+const ICONS_DIR = new URL('../icons/colorway/', import.meta.url);
 const BASE_THEME_FILE = 'Colorway.obt';
 
 const THEME_FILES = readdirSync(THEMES_DIR, { withFileTypes: true })
@@ -142,6 +143,26 @@ function contrastRatio(foreground, background) {
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 }
 
+function resolveToken(vars, key, seen = new Set()) {
+  assert.ok(vars.has(key), `missing ${key}`);
+  if (seen.has(key)) throw new Error(`cyclic variable alias: ${key}`);
+  seen.add(key);
+
+  const value = vars.get(key);
+  const alias = value.match(/^var\((--[\w-]+)\)$/);
+  return alias ? resolveToken(vars, alias[1], seen) : value;
+}
+
+function themeIconColor(value) {
+  const match = value.match(/^url\(theme:icons\/colorway\/(.+)\)$/);
+  assert.ok(match, `unsupported theme icon value: ${value}`);
+
+  const svg = readFileSync(new URL(match[1], ICONS_DIR), 'utf8');
+  const color = svg.match(/(?:stroke|fill)="(#[0-9a-fA-F]{6})"/)?.[1];
+  assert.ok(color, `theme icon has no hex stroke/fill color: ${match[1]}`);
+  return color;
+}
+
 for (const file of THEME_FILES) {
   const vars = resolveTheme(file);
 
@@ -151,15 +172,30 @@ for (const file of THEME_FILES) {
     }
   });
 
-  test(`${file} keeps text readable on the base surface`, () => {
-    assert.ok(vars.has('--text'), `${file} missing --text`);
-    assert.ok(vars.has('--bg_base'), `${file} missing --bg_base`);
-    assert.ok(contrastRatio(vars.get('--text'), vars.get('--bg_base')) >= 4.5, `${file} text/base contrast too low`);
+  test(`${file} keeps contracted text/surface pairs readable`, () => {
+    const text = resolveToken(vars, '--text');
+    const baseSurface = resolveToken(vars, '--bg_base');
+    const hoverText = resolveToken(vars, '--button_hover_text');
+    const hoverSurface = resolveToken(vars, '--button_bg_hover');
+
+    assert.ok(
+      contrastRatio(text, baseSurface) >= 4.5,
+      `${file} text/base contrast too low`,
+    );
+    assert.ok(
+      contrastRatio(hoverText, hoverSurface) >= 4.5,
+      `${file} button-hover text contrast too low`,
+    );
   });
 
-  test(`${file} keeps inverse text readable on hover buttons`, () => {
-    assert.ok(vars.has('--text_inverse'), `${file} missing --text_inverse`);
-    assert.ok(vars.has('--button_bg_hover'), `${file} missing --button_bg_hover`);
-    assert.ok(contrastRatio(vars.get('--text_inverse'), vars.get('--button_bg_hover')) >= 4.5, `${file} inverse/button contrast too low`);
+  test(`${file} keeps the checkbox check glyph visible on its surface`, () => {
+    const background = resolveToken(vars, '--bg_base');
+    const iconValue = resolveToken(vars, '--checkbox_check_icon');
+    const glyph = themeIconColor(iconValue);
+
+    assert.ok(
+      contrastRatio(glyph, background) >= 3,
+      `${file} checkbox glyph contrast too low`,
+    );
   });
 }
