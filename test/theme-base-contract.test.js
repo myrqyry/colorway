@@ -254,7 +254,7 @@ test('Studio Mode active styling stays visible without changing box geometry', (
     for (const property of declarations.keys()) {
       assert.doesNotMatch(
         property,
-        /^(?:padding(?:-.+)?|margin(?:-.+)?|min-(?:width|height)|max-(?:width|height))$/,
+        /^(?:padding(?:-.+)?|margin(?:-.+)?|(?:min-|max-)?(?:width|height))$/,
         `Studio Mode active state must not alter box geometry via ${property}`,
       );
     }
