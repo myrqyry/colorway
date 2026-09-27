@@ -29,6 +29,9 @@ export function buildPaletteComment(themeName, resolvedVars) {
   return lines.join('\n');
 }
 
+// Deliberately more permissive than the light-theme contract in
+// test/theme-base-contract.test.js: freezing any parenthetical only risks a
+// redundant comment, while failing to freeze one destroys a historical record.
 const PALETTE_COMMENT_RE =
   /\/\* Official palette reference(?:\s*\([^)]*\))?:[\s\S]*?\*\//g;
 const SOURCE_VALUES_COMMENT_RE =

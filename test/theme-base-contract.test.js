@@ -174,7 +174,8 @@ test('light palette comments distinguish source values from accessibility overri
     assert.match(
       theme,
       /Official palette reference \([^)]*source values[^)]*\):/,
-      file + ': palette reference must explain accessibility divergence',
+      file + ': light themes need a (source values; ...) palette annotation, which the ' +
+        'generator cannot emit — write one by hand or sync will not freeze this theme',
     );
   }
 });

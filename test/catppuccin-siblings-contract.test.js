@@ -153,10 +153,14 @@ test('every frozen light-theme palette comment still names its current theme', (
   const lightFiles = themeFiles().filter((file) => isLightTheme(readTheme(file)));
   assert.ok(lightFiles.length > 0, 'no light themes found to check');
 
+  const unfrozen = [];
   for (const file of lightFiles) {
     const source = readTheme(file);
     const frozen = source.match(/\/\* Official palette reference\s*\([^)]*\):([^\n]*)/);
-    if (!frozen) continue;
+    if (!frozen) {
+      unfrozen.push(file);
+      continue;
+    }
 
     const name = frozen[1].trim();
     assert.equal(
@@ -165,6 +169,13 @@ test('every frozen light-theme palette comment still names its current theme', (
       `${file} preserves a frozen palette comment naming "${name}" — re-sync after renaming`,
     );
   }
+
+  assert.deepEqual(
+    unfrozen,
+    [],
+    `${unfrozen.join(', ')}: light theme(s) need a (source values; ...) palette annotation, ` +
+      'which the generator cannot emit — write one by hand',
+  );
 });
 
 test('out-of-gamut families fail loudly instead of clipping', () => {
