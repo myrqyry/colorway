@@ -542,6 +542,9 @@ function playColorwayIntroOpening() {
 const HEADER_ROLL_DURATION = 1.2;
 const HEADER_ROLL_STAGGER = 0.055;
 const HEADER_ROLL_BACKFACE_OPACITY = 0.14;
+const HEADER_ROLL_BACKFACE_ENTER = HEADER_ROLL_DURATION * 0.354;
+const HEADER_ROLL_BACKFACE_EXIT = HEADER_ROLL_DURATION * 0.646;
+const HEADER_ROLL_BACKFACE_FADE = HEADER_ROLL_DURATION * 0.08;
 let headerRollTimeline = null;
 let headerRollQueued = false;
 
@@ -556,12 +559,17 @@ function animateHeaderColorway() {
   }
 
   gsap.killTweensOf(chars);
+  gsap.set(chars, { willChange: 'transform, opacity' });
   headerRollTimeline = gsap.timeline({
     onComplete: () => {
+      const rerun = headerRollQueued;
       headerRollTimeline = null;
-      if (!headerRollQueued) return;
       headerRollQueued = false;
-      animateHeaderColorway();
+      if (rerun) {
+        animateHeaderColorway();
+        return;
+      }
+      gsap.set(chars, { willChange: 'auto' });
     },
   });
 
@@ -581,7 +589,6 @@ function animateHeaderColorway() {
         y: 0,
         duration: HEADER_ROLL_DURATION,
         ease: 'power2.inOut',
-        overwrite: true,
       },
       start,
     );
@@ -590,20 +597,20 @@ function animateHeaderColorway() {
       char,
       {
         opacity: HEADER_ROLL_BACKFACE_OPACITY,
-        duration: 0.2,
+        duration: HEADER_ROLL_BACKFACE_FADE,
         ease: 'power1.inOut',
       },
-      start + 0.32,
+      start + HEADER_ROLL_BACKFACE_ENTER - HEADER_ROLL_BACKFACE_FADE,
     );
 
     headerRollTimeline.to(
       char,
       {
         opacity: 1,
-        duration: 0.2,
+        duration: HEADER_ROLL_BACKFACE_FADE,
         ease: 'power1.inOut',
       },
-      start + 0.68,
+      start + HEADER_ROLL_BACKFACE_EXIT,
     );
   });
 }

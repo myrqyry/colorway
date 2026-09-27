@@ -194,22 +194,27 @@ test('theme changes roll the persistent Colorway title through one queued full t
   assert.match(main, /const HEADER_ROLL_DURATION = 1\.2;/);
   assert.match(main, /const HEADER_ROLL_STAGGER = 0\.055;/);
   assert.match(main, /const HEADER_ROLL_BACKFACE_OPACITY = 0\.14;/);
+  assert.match(main, /const HEADER_ROLL_BACKFACE_ENTER = HEADER_ROLL_DURATION \* 0\.354;/);
+  assert.match(main, /const HEADER_ROLL_BACKFACE_EXIT = HEADER_ROLL_DURATION \* 0\.646;/);
+  assert.match(main, /const HEADER_ROLL_BACKFACE_FADE = HEADER_ROLL_DURATION \* 0\.08;/);
   assert.match(main, /if \(headerRollTimeline\?\.isActive\(\)\) \{\s*headerRollQueued = true;\s*return;/s);
   assert.match(main, /rotationX:\s*-360/);
   assert.match(main, /duration:\s*HEADER_ROLL_DURATION/);
   assert.match(main, /ease:\s*'power2\.inOut'/);
   assert.match(main, /opacity:\s*HEADER_ROLL_BACKFACE_OPACITY/);
-  assert.match(main, /start \+ 0\.32/);
-  assert.match(main, /start \+ 0\.68/);
+  assert.match(main, /start \+ HEADER_ROLL_BACKFACE_ENTER - HEADER_ROLL_BACKFACE_FADE/);
+  assert.match(main, /start \+ HEADER_ROLL_BACKFACE_EXIT/);
+  assert.match(main, /gsap\.set\(chars, \{ willChange: 'transform, opacity' \}\)/);
+  assert.match(main, /gsap\.set\(chars, \{ willChange: 'auto' \}\)/);
+  assert.doesNotMatch(main, /overwrite:\s*true/);
   assert.match(main, /if \(!headerRollQueued\) return;\s*headerRollQueued = false;\s*animateHeaderColorway\(\);/s);
   assert.match(
     pageShellCss,
     /\.colorway-page-title-chars\s*\{[^}]*perspective:\s*400px/s,
   );
-  assert.match(
-    pageShellCss,
-    /\.colorway-page-title-chars \.colorway-char\s*\{[^}]*backface-visibility:\s*visible;[^}]*will-change:\s*transform, opacity/s,
-  );
+  const titleCharRule = pageShellCss.match(/\.colorway-page-title-chars \.colorway-char\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(titleCharRule, /backface-visibility:\s*visible;/);
+  assert.doesNotMatch(titleCharRule, /will-change:/);
 });
 
 test('intro handoff lands directly without retriggering the header roll', () => {
