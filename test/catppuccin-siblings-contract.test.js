@@ -1,42 +1,29 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { families, renderTheme } from '../scripts/generate-catppuccin-siblings.mjs';
+
+import { THEMES } from '../src/theme-catalog.js';
+import {
+  accentLC,
+  families,
+  neutralLC,
+  renderTheme,
+  resolvedPaletteVars,
+} from '../scripts/generate-catppuccin-siblings.mjs';
+import { buildPaletteComment, injectCommentBlock } from '../scripts/theme-palette-comments.mjs';
 
 const themesDir = new URL('../themes/', import.meta.url);
-const catalogText = readFileSync(new URL('../src/theme-catalog.js', import.meta.url), 'utf8');
+const docs = readFileSync(new URL('../docs/CATPPUCCIN_SIBLINGS_V2.md', import.meta.url), 'utf8');
 const siblingFiles = readdirSync(themesDir)
-  .filter((file) => /^Colorway-CatppuccinSibling-[A-Za-z]+\.ovt$/.test(file))
+  .filter((file) => file.startsWith('Colorway-CatppuccinSibling-') && file.endsWith('.ovt'))
   .sort();
-
+const expectedFiles = Object.values(families)
+  .map((config) => `Colorway-CatppuccinSibling-${config.name}.ovt`)
+  .sort();
 const expectedSeedNames = [
-  "--sibling_text",
-  "--sibling_subtext1",
-  "--sibling_subtext0",
-  "--sibling_overlay2",
-  "--sibling_overlay1",
-  "--sibling_overlay0",
-  "--sibling_surface2",
-  "--sibling_surface1",
-  "--sibling_surface0",
-  "--sibling_base",
-  "--sibling_mantle",
-  "--sibling_crust",
-  "--sibling_rosewater",
-  "--sibling_flamingo",
-  "--sibling_pink",
-  "--sibling_mauve",
-  "--sibling_red",
-  "--sibling_maroon",
-  "--sibling_peach",
-  "--sibling_yellow",
-  "--sibling_green",
-  "--sibling_teal",
-  "--sibling_sky",
-  "--sibling_sapphire",
-  "--sibling_blue",
-  "--sibling_lavender"
-];
+  ...Object.keys(neutralLC),
+  ...Object.keys(accentLC),
+].map((name) => `--sibling_${name}`).sort();
 
 function parseMeta(source) {
   const value = (field) => source.match(new RegExp(`${field}:\\s*'([^']+)'`))?.[1];
@@ -60,20 +47,18 @@ function parseVars(source) {
   return vars;
 }
 
-function parseCatalog() {
-  const entries = new Map();
-  for (const match of catalogText.matchAll(/\{ file: '([^']+)', name: '([^']+)' \}/g)) {
-    entries.set(match[1], match[2]);
-  }
-  return entries;
-}
+test('every generated sibling ships exactly one source theme and catalog entry', () => {
+  assert.deepEqual(siblingFiles, expectedFiles);
 
-test('ships exactly eight discoverable Catppuccin sibling palettes', () => {
-  assert.equal(siblingFiles.length, 8);
+  const catalogFiles = THEMES
+    .filter(({ file }) => file.startsWith('Colorway-CatppuccinSibling-'))
+    .map(({ file }) => file)
+    .sort();
+  assert.deepEqual(catalogFiles, expectedFiles);
 });
 
 test('sibling identities are unique and catalog labels match theme metadata', () => {
-  const catalog = parseCatalog();
+  const catalog = new Map(THEMES.map(({ file, name }) => [file, name]));
   const ids = new Set();
 
   for (const file of siblingFiles) {
@@ -92,8 +77,10 @@ test('every sibling has exactly the complete OBS-safe V2 seed', () => {
   for (const file of siblingFiles) {
     const source = readFileSync(new URL(`../themes/${file}`, import.meta.url), 'utf8');
     const vars = parseVars(source);
-    const actualSeedNames = [...vars.keys()].filter((name) => name.startsWith('--sibling_')).sort();
-    assert.deepEqual(actualSeedNames, [...expectedSeedNames].sort(), `${file} sibling seed set drifted`);
+    const actualSeedNames = [...vars.keys()]
+      .filter((name) => name.startsWith('--sibling_'))
+      .sort();
+    assert.deepEqual(actualSeedNames, expectedSeedNames, `${file} sibling seed set drifted`);
     assert.doesNotMatch(source, /--sibling-/);
     for (const name of expectedSeedNames) {
       assert.match(vars.get(name) ?? '', /^#[0-9a-f]{6}$/);
@@ -101,7 +88,7 @@ test('every sibling has exactly the complete OBS-safe V2 seed', () => {
   }
 });
 
-test('all eight sibling palette seeds are distinct', () => {
+test('all sibling palette seeds are distinct', () => {
   const blocks = siblingFiles.map((file) => {
     const source = readFileSync(new URL(`../themes/${file}`, import.meta.url), 'utf8');
     const vars = parseVars(source);
@@ -110,22 +97,32 @@ test('all eight sibling palette seeds are distinct', () => {
   assert.equal(new Set(blocks).size, siblingFiles.length);
 });
 
-
-function stripGeneratedPaletteComment(source) {
-  return source.replace(
-    /\n    \/\* Official palette reference:[\s\S]*?    \*\/\n\n/,
-    '\n',
-  );
-}
-
-test('generator reproduces every checked-in sibling source before mirror annotation', () => {
+test('generator reproduces the checked-in post-sync sibling sources exactly', () => {
   for (const config of Object.values(families)) {
     const file = `Colorway-CatppuccinSibling-${config.name}.ovt`;
     const checkedIn = readFileSync(new URL(`../themes/${file}`, import.meta.url), 'utf8');
     assert.equal(
-      stripGeneratedPaletteComment(checkedIn),
+      checkedIn,
       renderTheme(config),
       `${file} drifted from scripts/generate-catppuccin-siblings.mjs`,
     );
   }
+});
+
+test('rendered sibling themes are fixed points of palette-comment synchronization', () => {
+  for (const config of Object.values(families)) {
+    const rendered = renderTheme(config);
+    const { resolved } = resolvedPaletteVars(config);
+    const comment = buildPaletteComment(`Catppuccin Sibling — ${config.name}`, resolved);
+    assert.equal(injectCommentBlock(rendered, comment), rendered);
+  }
+});
+
+test('documentation recipe stays synchronized with the generator source of truth', () => {
+  const jsonBlocks = [...docs.matchAll(/```json\n([\s\S]*?)\n```/g)]
+    .map((match) => JSON.parse(match[1]));
+  assert.equal(jsonBlocks.length, 3);
+  assert.deepEqual(jsonBlocks[0], neutralLC);
+  assert.deepEqual(jsonBlocks[1], accentLC);
+  assert.deepEqual(jsonBlocks[2], families);
 });

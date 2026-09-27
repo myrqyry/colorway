@@ -325,6 +325,11 @@ Accent roles use these `[L, C]` pairs. **C is the pre-scale chroma**; each famil
 
 ## Conversion and gamut handling
 
-Generation converts OKLCH → OKLab → linear sRGB. Each linear sRGB channel is clamped independently to `[0, 1]` **before** sRGB transfer encoding. Encoded channels are then clamped defensively to `[0, 1]`, multiplied by 255, and rounded to the nearest integer to produce six-digit hex colors.
+Generation converts OKLCH → OKLab → linear sRGB. The generator checks the raw linear channels and **throws with the family and palette role** if any value falls outside the sRGB gamut. In-gamut channels are bounded only for floating-point noise, transfer-encoded to sRGB, multiplied by 255, and rounded to the nearest integer to produce six-digit hex colors. This deliberately refuses to hide hue shifts behind silent per-channel clipping.
 
 Each resulting `.ovt` stores the complete 12-neutral + 14-accent seed as OBS-safe `--sibling_*` tokens, then maps Colorway semantic roles onto that seed. The human-authored “not an official Catppuccin flavor” notice lives outside `@OBSThemeVars`, so `sync-theme-mirrors.mjs` cannot erase it when regenerating the resolved palette comment.
+
+
+## Meter-state treatment
+
+These sibling themes intentionally keep `--meter_bg_nom`, `--meter_bg_war`, and `--meter_bg_err` on the neutral `surface0` track. State color is carried by the foreground fill instead: green for nominal, yellow for warning, and red for error. This is a deliberate divergence from the Colorway base's colored warning/error backgrounds, chosen to keep the meter bed visually quiet while preserving an obvious colored fill.

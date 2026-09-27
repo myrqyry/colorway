@@ -1,11 +1,13 @@
-import { writeFileSync } from 'node:fs';
+import { renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+
+import { buildPaletteComment } from './theme-palette-comments.mjs';
 
 const repoRoot = fileURLToPath(new URL('../', import.meta.url));
 const themesDir = path.join(repoRoot, 'themes');
 
-const neutralLC = {
+export const neutralLC = {
   "text": [
     0.879,
     0.03
@@ -55,7 +57,7 @@ const neutralLC = {
     0.02
   ]
 };
-const accentLC = {
+export const accentLC = {
   "rosewater": [
     0.923,
     0.024
@@ -454,7 +456,7 @@ function byteHex(value) {
   return Math.round(value).toString(16).padStart(2, '0');
 }
 
-function oklchToHex(L, C, h) {
+function oklchToHex(L, C, h, context) {
   const radians = h * Math.PI / 180;
   const a = C * Math.cos(radians);
   const b = C * Math.sin(radians);
@@ -469,17 +471,23 @@ function oklchToHex(L, C, h) {
     4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
     -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
     -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s,
-  ].map((channel) => Math.max(0, Math.min(1, channel)));
+  ];
 
-  const srgb = linear.map((channel) =>
+  const epsilon = 1e-9;
+  if (linear.some((channel) => channel < -epsilon || channel > 1 + epsilon)) {
+    throw new RangeError(
+      `${context} is outside sRGB gamut: linear channels ${linear.map((channel) => channel.toFixed(6)).join(', ')}`,
+    );
+  }
+
+  const bounded = linear.map((channel) => Math.max(0, Math.min(1, channel)));
+  const srgb = bounded.map((channel) =>
     channel <= 0.0031308
       ? 12.92 * channel
       : 1.055 * (channel ** (1 / 2.4)) - 0.055,
   );
 
-  return '#' + srgb
-    .map((channel) => byteHex(Math.max(0, Math.min(1, channel)) * 255))
-    .join('');
+  return '#' + srgb.map((channel) => byteHex(channel * 255)).join('');
 }
 
 function toRgba(hex, alpha) {
@@ -487,26 +495,48 @@ function toRgba(hex, alpha) {
   return `rgba(${rgb.join(', ')}, ${alpha})`;
 }
 
-function makePalette(config) {
+export function makePalette(config) {
   const palette = {};
   for (const [name, [L, C]] of Object.entries(neutralLC)) {
-    palette[name] = oklchToHex(L, C * config.neutral_chroma_scale, config.neutral_hue);
+    palette[name] = oklchToHex(
+      L,
+      C * config.neutral_chroma_scale,
+      config.neutral_hue,
+      `${config.name} neutral ${name}`,
+    );
   }
   for (const [name, [L, C]] of Object.entries(accentLC)) {
     palette[name] = oklchToHex(
       L,
       C * config.accent_chroma_scale,
       config.accent_hues[name],
+      `${config.name} accent ${name}`,
     );
   }
   return palette;
 }
 
-export function renderTheme(config) {
+export function resolvedPaletteVars(config) {
   const palette = makePalette(config);
+  const resolved = new Map();
+
+  for (const [token, seed] of semanticMap) {
+    resolved.set(token, palette[seed]);
+  }
+  resolved.set('--ico', palette.text);
+  resolved.set('--ico_selected', palette.crust);
+  resolved.set('--accent_bg_start', toRgba(palette.mauve, '0.3'));
+  resolved.set('--accent_bg_end', toRgba(palette.mauve, '0.1'));
+
+  return { palette, resolved };
+}
+
+export function renderTheme(config) {
+  const { palette, resolved } = resolvedPaletteVars(config);
+  const themeName = `Catppuccin Sibling — ${config.name}`;
   const lines = [
     '@OBSThemeMeta {',
-    `    name: 'Catppuccin Sibling — ${config.name}';`,
+    `    name: '${themeName}';`,
     `    id: 'com.myrqyry.Colorway.CatppuccinSibling.${config.name}';`,
     "    extends: 'com.myrqyry.Colorway';",
     "    author: 'myrqyry';",
@@ -519,6 +549,8 @@ export function renderTheme(config) {
     ` * Family: ${config.description}.`,
     ' */',
     '@OBSThemeVars {',
+    buildPaletteComment(themeName, resolved),
+    '',
     '    /* Full V2 sibling palette seed. */',
   ];
 
@@ -546,13 +578,55 @@ export function renderTheme(config) {
   return lines.join('\n');
 }
 
-const isMain = process.argv[1] === fileURLToPath(import.meta.url);
+function generatedOutputs() {
+  return Object.values(families).map((config) => ({
+    file: `Colorway-CatppuccinSibling-${config.name}.ovt`,
+    content: renderTheme(config),
+  }));
+}
+
+function writeGeneratedThemes(outputs) {
+  const staged = [];
+  let currentFile = 'rendered payloads';
+
+  try {
+    for (const output of outputs) {
+      currentFile = output.file;
+      const target = path.join(themesDir, output.file);
+      const temp = `${target}.tmp-${process.pid}`;
+      writeFileSync(temp, output.content);
+      staged.push({ target, temp, file: output.file });
+    }
+
+    for (const entry of staged) {
+      currentFile = entry.file;
+      renameSync(entry.temp, entry.target);
+    }
+    return true;
+  } catch (error) {
+    for (const entry of staged) {
+      try {
+        unlinkSync(entry.temp);
+      } catch {
+        // The temp may already have been renamed.
+      }
+    }
+    console.error(`failed to generate Catppuccin sibling palettes while writing ${currentFile}`, error);
+    process.exitCode = 1;
+    return false;
+  }
+}
+
+const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 
 if (isMain) {
-  for (const config of Object.values(families)) {
-    const file = `Colorway-CatppuccinSibling-${config.name}.ovt`;
-    writeFileSync(path.join(themesDir, file), renderTheme(config));
+  try {
+    const outputs = generatedOutputs();
+    if (writeGeneratedThemes(outputs)) {
+      console.log(`generated ${outputs.length} Catppuccin-inspired sibling palettes`);
+    }
+  } catch (error) {
+    console.error('failed to render Catppuccin sibling palettes', error);
+    process.exitCode = 1;
   }
-
-  console.log(`generated ${Object.keys(families).length} Catppuccin-inspired sibling palettes`);
 }
