@@ -213,7 +213,7 @@ test('active button rules use the contracted foreground/surface pairs', () => {
   );
   assert.match(
     base,
-    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--primary\);[^}]*color:\s*var\(--checked_tool_text\);[^}]*\}/,
+    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--button_hover_text\);[^}]*\}/,
   );
   assert.match(
     base,
@@ -228,7 +228,7 @@ test('Studio Mode active styling stays visible without changing box geometry', (
   );
   assert.match(
     base,
-    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--primary\);[^}]*border:\s*2px solid var\(--primary_lighter\);[^}]*font-weight:\s*bold;[^}]*\}/,
+    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*border:\s*2px solid var\(--primary\);[^}]*font-weight:\s*bold;[^}]*\}/,
   );
   assert.match(
     base,
@@ -280,18 +280,22 @@ test('default mixer category uses the guaranteed text/base contrast pair', () =>
   );
 });
 
-test('checked tools, pinned mixer labels, and toggle handles use contracted semantic foregrounds', () => {
+test('checked tools, pinned mixer labels, and toggles reuse proven contrast pairs', () => {
   assert.match(
     base,
-    /QToolButton:checked,\s*\.btn-tool:checked\s*\{[^}]*background-color:\s*var\(--primary\);[^}]*color:\s*var\(--checked_tool_text\);[^}]*\}/,
+    /QToolButton:checked,\s*\.btn-tool:checked\s*\{[^}]*background-color:\s*var\(--button_bg_hover\);[^}]*border-color:\s*var\(--primary\);[^}]*color:\s*var\(--button_hover_text\);[^}]*font-weight:\s*bold;[^}]*\}/,
   );
   assert.match(
     base,
-    /VolumeControl\.volume-pinned \.mixer-category\s*\{[^}]*background:\s*var\(--bg_hover\);[^}]*color:\s*var\(--mixer_pinned_text\);[^}]*\}/,
+    /VolumeControl\.volume-pinned \.mixer-category\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--button_hover_text\);[^}]*\}/,
   );
   assert.match(
     base,
-    /idian--ToggleSwitch\s*\{[^}]*qproperty-handleColor:\s*var\(--toggle_handle_color\);[^}]*\}/,
+    /idian--ToggleSwitch\s*\{[^}]*qproperty-background:\s*var\(--bg_base\);[^}]*qproperty-background_hover:\s*var\(--bg_base\);[^}]*qproperty-background_checked:\s*var\(--bg_base\);[^}]*qproperty-background_checked_hover:\s*var\(--bg_base\);[^}]*qproperty-handleColor:\s*var\(--text\);[^}]*\}/,
+  );
+  assert.match(
+    base,
+    /idian--ToggleSwitch\.checked\s*\{[^}]*border-color:\s*var\(--primary\);[^}]*\}/,
   );
 });
 

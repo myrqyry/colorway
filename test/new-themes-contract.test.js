@@ -27,9 +27,6 @@ const REQUIRED_VARS = [
   '--button_bg',
   '--button_bg_hover',
   '--button_hover_text',
-  '--checked_tool_text',
-  '--mixer_pinned_text',
-  '--toggle_handle_color',
   '--button_bg_disabled',
   '--list_item_bg_hover',
   '--list_item_bg_selected',
@@ -190,39 +187,6 @@ for (const file of THEME_FILES) {
       contrastRatio(hoverText, hoverSurface) >= 4.5,
       `${file} button-hover text contrast too low`,
     );
-  });
-
-  test(`${file} keeps checked tools and pinned mixer labels readable`, () => {
-    const primary = resolveToken(vars, '--primary');
-    const checkedToolText = resolveToken(vars, '--checked_tool_text');
-    const hoverSurface = resolveToken(vars, '--bg_hover');
-    const pinnedText = resolveToken(vars, '--mixer_pinned_text');
-
-    assert.ok(
-      contrastRatio(checkedToolText, primary) >= 4.5,
-      `${file} checked-tool text contrast too low`,
-    );
-    assert.ok(
-      contrastRatio(pinnedText, hoverSurface) >= 4.5,
-      `${file} pinned mixer text contrast too low`,
-    );
-  });
-
-  test(`${file} keeps the toggle handle visible across every track state`, () => {
-    const handle = resolveToken(vars, '--toggle_handle_color');
-    const tracks = [
-      ['surface2', resolveToken(vars, '--surface2')],
-      ['surface3', resolveToken(vars, '--surface3')],
-      ['primary', resolveToken(vars, '--primary')],
-      ['primary_light', resolveToken(vars, '--primary_light')],
-    ];
-
-    for (const [name, track] of tracks) {
-      assert.ok(
-        contrastRatio(handle, track) >= 3,
-        `${file} toggle handle contrast too low on ${name}`,
-      );
-    }
   });
 
   test(`${file} keeps the checkbox check glyph visible on its stable checked surface`, () => {

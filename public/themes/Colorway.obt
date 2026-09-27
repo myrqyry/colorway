@@ -303,9 +303,6 @@
     --text_bright: var(--text_light);
     --text_inverse: var(--bg_base);
     --button_hover_text: var(--text);
-    --checked_tool_text: var(--text_inverse);
-    --mixer_pinned_text: var(--text);
-    --toggle_handle_color: var(--text);
     --primary_hover: var(--primary_light);
     --primary_dark_alias: var(--primary_dark);
 
@@ -814,9 +811,9 @@ QTreeView::item:selected:hover .icon-media-prev {
 
 #modeSwitch:hover:!pressed.state-active,
 #modeSwitch:hover:!pressed:checked {
-    background: var(--primary);
-    border: 2px solid var(--primary_lighter);
-    color: var(--checked_tool_text);
+    background: var(--button_bg_hover);
+    border: 2px solid var(--primary);
+    color: var(--button_hover_text);
     font-weight: bold;
 }
 
@@ -1088,8 +1085,8 @@ VolumeControl .mixer-category {
 }
 
 VolumeControl.volume-pinned .mixer-category {
-    background: var(--bg_hover);
-    color: var(--mixer_pinned_text);
+    background: var(--button_bg_hover);
+    color: var(--button_hover_text);
 }
 
 VolumeControl.volume-hidden .mixer-category {
@@ -1737,17 +1734,17 @@ idian--Row > QLabel.description {
 }
 
 idian--ToggleSwitch {
-    qproperty-background: var(--surface2);
-    qproperty-background_hover: var(--surface3);
-    qproperty-background_checked: var(--primary);
-    qproperty-background_checked_hover: var(--primary_light);
+    qproperty-background: var(--bg_base);
+    qproperty-background_hover: var(--bg_base);
+    qproperty-background_checked: var(--bg_base);
+    qproperty-background_checked_hover: var(--bg_base);
 
     min-width: var(--toggle_width);
     min-height: var(--toggle_height);
 
     border-radius: var(--toggle_radius);
 
-    qproperty-handleColor: var(--toggle_handle_color);
+    qproperty-handleColor: var(--text);
     qproperty-handleSize: var(--toggle_handle);
 
     border: var(--highlight_width) solid transparent;
@@ -1755,6 +1752,10 @@ idian--ToggleSwitch {
 
 idian--ToggleSwitch.hover {
     border-color: var(--input_border_hover);
+}
+
+idian--ToggleSwitch.checked {
+    border-color: var(--primary);
 }
 
 idian--ToggleSwitch.checked.hover {
@@ -2211,9 +2212,10 @@ QToolButton:focus,
 
 QToolButton:checked,
 .btn-tool:checked {
-    background-color: var(--primary);
-    border-color: var(--primary_light);
-    color: var(--checked_tool_text);
+    background-color: var(--button_bg_hover);
+    border-color: var(--primary);
+    color: var(--button_hover_text);
+    font-weight: bold;
 }
 
 QToolButton:checked:hover,
