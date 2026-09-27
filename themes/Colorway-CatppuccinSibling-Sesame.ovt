@@ -128,4 +128,5 @@
     --ico_selected: var(--sibling_crust);
     --accent_bg_start: rgba(198, 172, 229, 0.3);
     --accent_bg_end: rgba(198, 172, 229, 0.1);
+
 }

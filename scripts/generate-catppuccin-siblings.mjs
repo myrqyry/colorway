@@ -571,6 +571,7 @@ export function renderTheme(config) {
     '    --ico_selected: var(--sibling_crust);',
     `    --accent_bg_start: ${toRgba(palette.mauve, '0.3')};`,
     `    --accent_bg_end: ${toRgba(palette.mauve, '0.1')};`,
+    '',
     '}',
     '',
   );
