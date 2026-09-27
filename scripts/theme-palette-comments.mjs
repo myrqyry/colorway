@@ -29,14 +29,17 @@ export function buildPaletteComment(themeName, resolvedVars) {
   return lines.join('\n');
 }
 
+const PALETTE_COMMENT_RE =
+  /\/\* Official palette reference(?:\s*\([^)]*\))?:[\s\S]*?\*\//g;
+const SOURCE_VALUES_COMMENT_RE =
+  /\/\* Official palette reference\s*\(source values; live accessibility overrides below may differ\):[\s\S]*?\*\//;
+
 export function injectCommentBlock(text, commentBlock) {
   return text.replace(/(@OBSThemeVars\s*\{)([\s\S]*?)(\n\})/, (_match, open, body, close) => {
-    const cleanBody = body
-      .replace(
-        /\s*\/\* Official palette reference(?:\s*\([^)]*\))?:[\s\S]*?\*\/\s*/,
-        '\n',
-      )
-      .trim();
-    return `${open}\n${commentBlock}\n\n    ${cleanBody}\n${close}`;
+    const sourceValuesComment = body.match(SOURCE_VALUES_COMMENT_RE)?.[0];
+    const paletteComment = sourceValuesComment ?? commentBlock;
+    const cleanBody = body.replace(PALETTE_COMMENT_RE, '\n').trim();
+
+    return `${open}\n    ${paletteComment.trim()}\n\n    ${cleanBody}\n${close}`;
   });
 }

@@ -10,7 +10,7 @@
     "check:obs-upstream": "node scripts/check-obs-upstream.mjs",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "generate:siblings": "node scripts/generate-catppuccin-siblings.mjs && node scripts/sync-theme-mirrors.mjs"
+    "generate:siblings": "node scripts/generate-catppuccin-siblings.mjs && npm run sync:themes"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.2",

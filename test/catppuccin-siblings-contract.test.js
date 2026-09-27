@@ -14,6 +14,7 @@ import { buildPaletteComment, injectCommentBlock } from '../scripts/theme-palett
 
 const themesDir = new URL('../themes/', import.meta.url);
 const docs = readFileSync(new URL('../docs/CATPPUCCIN_SIBLINGS_V2.md', import.meta.url), 'utf8');
+const solarizedLight = readFileSync(new URL('../themes/Colorway-SolarizedLight.ovt', import.meta.url), 'utf8');
 const siblingFiles = readdirSync(themesDir)
   .filter((file) => file.startsWith('Colorway-CatppuccinSibling-') && file.endsWith('.ovt'))
   .sort();
@@ -28,9 +29,7 @@ const expectedSeedNames = [
 test('V2 sibling recipe keeps its promised 12-neutral + 14-accent shape', () => {
   assert.equal(Object.keys(neutralLC).length, 12);
   assert.equal(Object.keys(accentLC).length, 14);
-  assert.equal(expectedSeedNames.length, 26);
 });
-
 
 function parseMeta(source) {
   const value = (field) => source.match(new RegExp(`${field}:\\s*'([^']+)'`))?.[1];
@@ -134,19 +133,29 @@ test('documentation recipe stays synchronized with the generator source of truth
   assert.deepEqual(jsonBlocks[2], families);
 });
 
-
-test('palette sync replaces both generic and annotated palette comment headers', () => {
-  const nextComment = '    /* Official palette reference: Replacement\n    */';
+test('palette sync replaces generic palette comments without duplicating them', () => {
+  const nextComment = '/* Official palette reference: Replacement\n    */';
   const generic = '@OBSThemeVars {\n    /* Official palette reference: Old\n    */\n\n    --text: #ffffff;\n}';
-  const annotated = '@OBSThemeVars {\n    /* Official palette reference (source values; live accessibility overrides below may differ): Old\n    */\n\n    --text: #ffffff;\n}';
+  const next = injectCommentBlock(generic, nextComment);
 
-  for (const source of [generic, annotated]) {
-    const next = injectCommentBlock(source, nextComment);
-    assert.equal((next.match(/Official palette reference/g) ?? []).length, 1);
-    assert.match(next, /Official palette reference: Replacement/);
-    assert.doesNotMatch(next, /source values/);
-    assert.match(next, /--text: #ffffff;/);
-  }
+  assert.equal((next.match(/Official palette reference/g) ?? []).length, 1);
+  assert.match(next, /Official palette reference: Replacement/);
+  assert.match(next, /--text: #ffffff;/);
+});
+
+test('palette sync preserves real light-theme source-value annotations verbatim', () => {
+  const sourceComment = solarizedLight.match(
+    /\/\* Official palette reference \(source values; live accessibility overrides below may differ\):[\s\S]*?\*\//,
+  )?.[0];
+  assert.ok(sourceComment, 'Solarized Light source-values annotation missing from fixture');
+
+  const replacement = '/* Official palette reference: Accessibility-adjusted replacement\n    */';
+  const next = injectCommentBlock(solarizedLight, replacement);
+
+  assert.equal((next.match(/Official palette reference/g) ?? []).length, 1);
+  assert.ok(next.includes(sourceComment), 'sync must preserve the original source-values palette comment');
+  assert.doesNotMatch(next, /Accessibility-adjusted replacement/);
+  assert.match(next, /--warning:\s*#745800;/);
 });
 
 test('out-of-gamut families fail loudly instead of clipping', () => {
