@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { PALETTE_VARS } from '../src/theme-loader.js';
+import { buildPaletteComment, injectCommentBlock } from './theme-palette-comments.mjs';
 
 const repoRoot = fileURLToPath(new URL('../', import.meta.url));
 const themesDir = path.join(repoRoot, 'themes');
@@ -112,42 +112,6 @@ function resolveTheme(file, graph, seen = new Set()) {
   }
 
   return resolved;
-}
-
-function buildPaletteComment(themeName, resolvedVars) {
-  const hexLines = [];
-  const derivedLines = [];
-
-  for (const [varName] of PALETTE_VARS) {
-    const value = resolvedVars.get(varName);
-    if (!value) continue;
-
-    const line = `       ${varName}: ${value};`;
-    if (/^#[0-9a-fA-F]{3,8}$/.test(value)) {
-      hexLines.push(line);
-    } else {
-      derivedLines.push(line);
-    }
-  }
-
-  const lines = [`    /* Official palette reference: ${themeName}`];
-  if (hexLines.length) {
-    lines.push('       Hex colors:');
-    lines.push(...hexLines);
-  }
-  if (derivedLines.length) {
-    lines.push('       Derived colors:');
-    lines.push(...derivedLines);
-  }
-  lines.push('    */');
-  return lines.join('\n');
-}
-
-function injectCommentBlock(text, commentBlock) {
-  return text.replace(/(@OBSThemeVars\s*\{)([\s\S]*?)(\n\})/, (_match, open, body, close) => {
-    const cleanBody = body.replace(/\/\*[\s\S]*?\*\//g, '').trim();
-    return `${open}\n${commentBlock}\n\n    ${cleanBody}\n${close}`;
-  });
 }
 
 function syncFile(file, graph) {

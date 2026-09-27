@@ -1,0 +1,132 @@
+@OBSThemeMeta {
+    name: 'Catppuccin Sibling — Sesame';
+    id: 'com.myrqyry.Colorway.CatppuccinSibling.Sesame';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry';
+    dark: 'true';
+}
+
+/*
+ * Colorway-original Catppuccin-inspired sibling palette.
+ * Not an official Catppuccin flavor.
+ * Family: warm charcoal / near-neutral.
+ */
+@OBSThemeVars {
+    /* Official palette reference: Catppuccin Sibling — Sesame
+       Hex colors:
+       --bg_window: #1c1916;
+       --bg_base: #231f1b;
+       --bg_preview: #14120f;
+       --bg_dock: #1c1916;
+       --bg_hover: #363330;
+       --text: #dbd6d0;
+       --text_light: #f0e2de;
+       --text_muted: #898580;
+       --text_inactive: #b2ada8;
+       --text_inverse: #14120f;
+       --text_disabled: #b2ada8;
+       --primary: #c6ace5;
+       --primary_light: #c0bdeb;
+       --primary_lighter: #ecc8e0;
+       --primary_dark: #8fb7e4;
+       --primary_darker: #5f5c58;
+       --input_bg: #363330;
+       --input_bg_hover: #4b4845;
+       --input_bg_focus: #4b4845;
+       --input_border: #4b4845;
+       --input_border_hover: #c6ace5;
+       --button_bg: #1c1916;
+       --button_bg_hover: #363330;
+       --button_bg_disabled: #231f1b;
+       --list_item_bg_hover: #363330;
+       --list_item_bg_selected: #c6ace5;
+       --border_color: #363330;
+       --ico: #dbd6d0;
+       --ico_selected: #14120f;
+       --warning: #f3e2c0;
+       --danger: #e398a3;
+       --success: #bbdcaa;
+       --meter_bg_nom: #363330;
+       --meter_bg_war: #363330;
+       --meter_bg_err: #363330;
+       --meter_fg_nom: #bbdcaa;
+       --meter_fg_war: #f3e2c0;
+       --meter_fg_err: #e398a3;
+       Derived colors:
+       --accent_bg_start: rgba(198, 172, 229, 0.3);
+       --accent_bg_end: rgba(198, 172, 229, 0.1);
+    */
+
+    /* Full V2 sibling palette seed. */
+    --sibling_text: #dbd6d0;
+    --sibling_subtext1: #c7c2bd;
+    --sibling_subtext0: #b2ada8;
+    --sibling_overlay2: #9e9a95;
+    --sibling_overlay1: #898580;
+    --sibling_overlay0: #74716d;
+    --sibling_surface2: #5f5c58;
+    --sibling_surface1: #4b4845;
+    --sibling_surface0: #363330;
+    --sibling_base: #231f1b;
+    --sibling_mantle: #1c1916;
+    --sibling_crust: #14120f;
+
+    --sibling_rosewater: #f0e2de;
+    --sibling_flamingo: #ead0d0;
+    --sibling_pink: #ecc8e0;
+    --sibling_mauve: #c6ace5;
+    --sibling_red: #e398a3;
+    --sibling_maroon: #dea8a7;
+    --sibling_peach: #ebb99c;
+    --sibling_yellow: #f3e2c0;
+    --sibling_green: #bbdcaa;
+    --sibling_teal: #abddcd;
+    --sibling_sky: #a0d9dd;
+    --sibling_sapphire: #8cc4dc;
+    --sibling_blue: #8fb7e4;
+    --sibling_lavender: #c0bdeb;
+
+    /* Colorway semantic roles. */
+    --bg_window: var(--sibling_mantle);
+    --bg_base: var(--sibling_base);
+    --bg_preview: var(--sibling_crust);
+    --bg_dock: var(--sibling_mantle);
+    --bg_hover: var(--sibling_surface0);
+    --text: var(--sibling_text);
+    --text_light: var(--sibling_rosewater);
+    --text_muted: var(--sibling_overlay1);
+    --text_inactive: var(--sibling_subtext0);
+    --text_inverse: var(--sibling_crust);
+    --text_disabled: var(--sibling_subtext0);
+    --primary: var(--sibling_mauve);
+    --primary_light: var(--sibling_lavender);
+    --primary_lighter: var(--sibling_pink);
+    --primary_dark: var(--sibling_blue);
+    --primary_darker: var(--sibling_surface2);
+    --input_bg: var(--sibling_surface0);
+    --input_bg_hover: var(--sibling_surface1);
+    --input_bg_focus: var(--sibling_surface1);
+    --input_border: var(--sibling_surface1);
+    --input_border_hover: var(--sibling_mauve);
+    --button_bg: var(--sibling_mantle);
+    --button_bg_hover: var(--sibling_surface0);
+    --button_hover_text: var(--sibling_text);
+    --button_bg_disabled: var(--sibling_base);
+    --list_item_bg_hover: var(--sibling_surface0);
+    --list_item_bg_selected: var(--sibling_mauve);
+    --border_color: var(--sibling_surface0);
+    --warning: var(--sibling_yellow);
+    --danger: var(--sibling_red);
+    --success: var(--sibling_green);
+    --meter_bg_nom: var(--sibling_surface0);
+    --meter_bg_war: var(--sibling_surface0);
+    --meter_bg_err: var(--sibling_surface0);
+    --meter_fg_nom: var(--sibling_green);
+    --meter_fg_war: var(--sibling_yellow);
+    --meter_fg_err: var(--sibling_red);
+    --ico: var(--text);
+    --ico_selected: var(--sibling_crust);
+    --accent_bg_start: rgba(198, 172, 229, 0.3);
+    --accent_bg_end: rgba(198, 172, 229, 0.1);
+
+}

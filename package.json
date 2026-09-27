@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "test": "node --test",
+    "test": "node --test \"test/**/*.test.js\"",
     "sync:themes": "node scripts/sync-theme-mirrors.mjs",
     "check:obs-upstream": "node scripts/check-obs-upstream.mjs",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "generate:siblings": "node scripts/generate-catppuccin-siblings.mjs && npm run sync:themes"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.2",
