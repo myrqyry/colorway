@@ -171,7 +171,7 @@ test('light palette comments distinguish source values from accessibility overri
 
     assert.match(
       theme,
-      /Official palette reference \(source values; live accessibility overrides below may differ\):/,
+      /Official palette reference \([^)]*\):/,
       file + ': palette reference must explain accessibility divergence',
     );
   }

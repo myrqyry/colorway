@@ -144,18 +144,27 @@ test('palette sync replaces generic palette comments without duplicating them', 
 });
 
 test('palette sync preserves real light-theme source-value annotations verbatim', () => {
-  const sourceComment = solarizedLight.match(
-    /\/\* Official palette reference \(source values; live accessibility overrides below may differ\):[\s\S]*?\*\//,
-  )?.[0];
-  assert.ok(sourceComment, 'Solarized Light source-values annotation missing from fixture');
-
   const replacement = '/* Official palette reference: Accessibility-adjusted replacement\n    */';
-  const next = injectCommentBlock(solarizedLight, replacement);
+  assert.equal(injectCommentBlock(solarizedLight, replacement), solarizedLight);
+});
 
-  assert.equal((next.match(/Official palette reference/g) ?? []).length, 1);
-  assert.ok(next.includes(sourceComment), 'sync must preserve the original source-values palette comment');
-  assert.doesNotMatch(next, /Accessibility-adjusted replacement/);
-  assert.match(next, /--warning:\s*#745800;/);
+test('every frozen light-theme palette comment still names its current theme', () => {
+  const lightFiles = readdirSync(themesDir)
+    .filter((file) => file.endsWith('.ovt'))
+    .filter((file) => !/\bdark:\s*'true';/.test(readFileSync(new URL(file, themesDir), 'utf8')));
+  assert.ok(lightFiles.length > 0, 'no light themes found to check');
+
+  for (const file of lightFiles) {
+    const source = readFileSync(new URL(file, themesDir), 'utf8');
+    const header = source.match(
+      /\/\* Official palette reference\s*\([^)]*\):([^\n]*)/,
+    )?.[1].trim();
+    assert.equal(
+      header,
+      parseMeta(source).name,
+      `${file} preserves a frozen palette comment naming "${header}" — re-sync after renaming`,
+    );
+  }
 });
 
 test('out-of-gamut families fail loudly instead of clipping', () => {

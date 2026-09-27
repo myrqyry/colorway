@@ -32,10 +32,12 @@ export function buildPaletteComment(themeName, resolvedVars) {
 const PALETTE_COMMENT_RE =
   /\/\* Official palette reference(?:\s*\([^)]*\))?:[\s\S]*?\*\//g;
 const SOURCE_VALUES_COMMENT_RE =
-  /\/\* Official palette reference\s*\(source values; live accessibility overrides below may differ\):[\s\S]*?\*\//;
+  /\/\* Official palette reference\s*\([^)]*\):[\s\S]*?\*\//;
 
 export function injectCommentBlock(text, commentBlock) {
   return text.replace(/(@OBSThemeVars\s*\{)([\s\S]*?)(\n\})/, (_match, open, body, close) => {
+    // An annotated palette reference is frozen on purpose: it records the upstream
+    // source values the theme was derived from, which current code cannot reproduce.
     const sourceValuesComment = body.match(SOURCE_VALUES_COMMENT_RE)?.[0];
     const paletteComment = sourceValuesComment ?? commentBlock;
     const cleanBody = body.replace(PALETTE_COMMENT_RE, '\n').trim();
