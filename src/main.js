@@ -539,34 +539,99 @@ function playColorwayIntroOpening() {
   });
 }
 
+const HEADER_ROLL_DURATION = 1.2;
+const HEADER_ROLL_STAGGER = 0.055;
+const HEADER_ROLL_BACKFACE_OPACITY = 0.14;
+let headerRollTimeline = null;
+let headerRollQueued = false;
+
 function animateHeaderColorway({ settle = false } = {}) {
-  const chars = document.querySelectorAll('[data-colorway-page-title-chars] .colorway-char');
+  const chars = [...document.querySelectorAll('[data-colorway-page-title-chars] .colorway-char')];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduceMotion || !chars.length) return;
+
+  if (settle) {
+    headerRollTimeline?.kill();
+    headerRollTimeline = null;
+    headerRollQueued = false;
+    gsap.killTweensOf(chars);
+    gsap.fromTo(
+      chars,
+      {
+        rotationX: -45,
+        y: 4,
+        opacity: 0.4,
+        transformOrigin: '50% 50% -8px',
+      },
+      {
+        rotationX: 0,
+        y: 0,
+        opacity: 1,
+        duration: 1.15,
+        ease: 'power3.out',
+        stagger: 0.06,
+        overwrite: true,
+      },
+    );
+    return;
+  }
+
+  if (headerRollTimeline?.isActive()) {
+    headerRollQueued = true;
+    return;
+  }
+
   gsap.killTweensOf(chars);
-  gsap.fromTo(
-    chars,
-    {
-      rotationX: settle ? -45 : -360,
-      y: settle ? 4 : 0,
-      opacity: settle ? 0.4 : 1,
-
-      transformPerspective: 500,
-      transformOrigin: '50% 50% -8px',
+  headerRollTimeline = gsap.timeline({
+    onComplete: () => {
+      headerRollTimeline = null;
+      if (!headerRollQueued) return;
+      headerRollQueued = false;
+      animateHeaderColorway();
     },
-    {
-      rotationX: 0,
-      y: 0,
-      opacity: 1,
+  });
 
-      duration: settle ? 1.15 : 1.2,
-      ease: settle ? 'power3.out' : 'power2.inOut',
+  chars.forEach((char, index) => {
+    const start = index * HEADER_ROLL_STAGGER;
 
-      stagger: settle ? 0.06 : 0.055,
+    headerRollTimeline.fromTo(
+      char,
+      {
+        rotationX: -360,
+        y: 0,
+        opacity: 1,
+        transformOrigin: '50% 50% -8px',
+      },
+      {
+        rotationX: 0,
+        y: 0,
+        duration: HEADER_ROLL_DURATION,
+        ease: 'power2.inOut',
+        overwrite: true,
+      },
+      start,
+    );
 
-      overwrite: true,
-    }
-  );
+    headerRollTimeline.to(
+      char,
+      {
+        opacity: HEADER_ROLL_BACKFACE_OPACITY,
+        duration: 0.2,
+        ease: 'power1.inOut',
+      },
+      start + 0.32,
+    );
+
+    headerRollTimeline.to(
+      char,
+      {
+        opacity: 1,
+        duration: 0.2,
+        ease: 'power1.inOut',
+      },
+      start + 0.68,
+    );
+  });
 }
 
 async function getColorwayHeaderTarget() {

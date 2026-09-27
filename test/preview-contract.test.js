@@ -190,15 +190,32 @@ test('header colorway word animates only when the theme changes', () => {
   assert.match(main, /setTheme\(file, \{ patternFile = null, transition = true, animateTitle = true \} = \{\}\)/);
 });
 
-test('theme changes roll the persistent Colorway title through one full turn', () => {
-  assert.match(main, /rotationX:\s*settle \? -45 : -360/);
-  assert.match(main, /duration:\s*settle \? 1\.15 : 1\.2/);
-  assert.match(main, /ease:\s*settle \? 'power3\.out' : 'power2\.inOut'/);
-  assert.match(main, /stagger:\s*settle \? 0\.06 : 0\.055/);
+test('theme changes roll the persistent Colorway title through one queued full turn', () => {
+  assert.match(main, /const HEADER_ROLL_DURATION = 1\.2;/);
+  assert.match(main, /const HEADER_ROLL_STAGGER = 0\.055;/);
+  assert.match(main, /const HEADER_ROLL_BACKFACE_OPACITY = 0\.14;/);
+  assert.match(main, /if \(headerRollTimeline\?\.isActive\(\)\) \{\s*headerRollQueued = true;\s*return;/s);
+  assert.match(main, /rotationX:\s*-360/);
+  assert.match(main, /duration:\s*HEADER_ROLL_DURATION/);
+  assert.match(main, /ease:\s*'power2\.inOut'/);
+  assert.match(main, /opacity:\s*HEADER_ROLL_BACKFACE_OPACITY/);
+  assert.match(main, /start \+ 0\.32/);
+  assert.match(main, /start \+ 0\.68/);
+  assert.match(main, /if \(!headerRollQueued\) return;\s*headerRollQueued = false;\s*animateHeaderColorway\(\);/s);
   assert.match(
     pageShellCss,
-    /\.colorway-page-title-chars \.colorway-char\s*\{[^}]*backface-visibility:\s*visible/s,
+    /\.colorway-page-title-chars\s*\{[^}]*perspective:\s*400px/s,
   );
+  assert.match(
+    pageShellCss,
+    /\.colorway-page-title-chars \.colorway-char\s*\{[^}]*backface-visibility:\s*visible;[^}]*will-change:\s*transform, opacity/s,
+  );
+});
+
+test('header settle motion remains separate from the full theme roll', () => {
+  assert.match(main, /if \(settle\) \{[\s\S]*?rotationX:\s*-45,[\s\S]*?duration:\s*1\.15,[\s\S]*?ease:\s*'power3\.out'/);
+  const headerAnimation = main.match(/function animateHeaderColorway[\s\S]*?async function getColorwayHeaderTarget/)?.[0] ?? '';
+  assert.doesNotMatch(headerAnimation, /transformPerspective/);
 });
 
 test('animated chars respect reduced motion', () => {

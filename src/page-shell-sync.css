@@ -109,6 +109,7 @@
   display: inline-block;
   backface-visibility: visible;
   transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
 .colorway-page-title-copy > span {
