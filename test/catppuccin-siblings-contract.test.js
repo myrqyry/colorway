@@ -41,20 +41,22 @@ const siblings = [
 
 test('catalog exposes all Colorway Catppuccin sibling palettes', () => {
   for (const sibling of siblings) {
-    assert.match(catalog, new RegExp(sibling.file.replace(/[.*+?^$\{\}()|[\]\\]/g, '\\$&')));
-    assert.match(catalog, new RegExp(`Catppuccin Sibling — ${sibling.name}`));
+    assert.ok(
+      catalog.includes(`{ file: '${sibling.file}', name: 'Catppuccin Sibling — ${sibling.name}' }`),
+      `${sibling.file} missing from theme catalog`,
+    );
   }
 });
 
 for (const sibling of siblings) {
   test(`${sibling.file} preserves the complete V2 sibling seed`, () => {
     const source = readFileSync(new URL(`../themes/${sibling.file}`, import.meta.url), 'utf8');
-    assert.match(source, /extends:\\s*'com\\.myrqyry\\.Colorway'/);
-    assert.match(source, /dark:\\s*'true'/);
-    assert.match(source, /Colorway-original Catppuccin-inspired sibling palette/);
-    assert.match(source, /Not an official Catppuccin flavor/);
+    assert.ok(source.includes("extends: 'com.myrqyry.Colorway';"));
+    assert.ok(source.includes("dark: 'true';"));
+    assert.ok(source.includes('Colorway-original Catppuccin-inspired sibling palette.'));
+    assert.ok(source.includes('Not an official Catppuccin flavor.'));
     for (const token of seedTokens) {
-      assert.match(source, new RegExp(`--sibling-${token}:\\\\s*#[0-9a-f]{6};`, 'i'));
+      assert.match(source, new RegExp(`--sibling-${token}:\\s*#[0-9a-f]{6};`, 'i'));
     }
   });
 }
