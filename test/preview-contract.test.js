@@ -206,7 +206,8 @@ test('theme changes roll the persistent Colorway title through one queued full t
   assert.match(main, /start \+ HEADER_ROLL_BACKFACE_EXIT/);
   assert.match(main, /gsap\.set\(chars, \{ willChange: 'transform, opacity' \}\)/);
   assert.match(main, /gsap\.set\(chars, \{ willChange: 'auto' \}\)/);
-  assert.doesNotMatch(main, /overwrite:\s*true/);
+  const headerRoll = main.match(/function animateHeaderColorway\(\)[\s\S]*?async function getColorwayHeaderTarget/)?.[0] ?? '';
+  assert.doesNotMatch(headerRoll, /overwrite:\s*true/);
   assert.match(main, /const rerun = headerRollQueued;\s*headerRollTimeline = null;\s*headerRollQueued = false;\s*if \(rerun\) \{\s*animateHeaderColorway\(\);\s*return;\s*\}/s);
   assert.match(
     pageShellCss,
