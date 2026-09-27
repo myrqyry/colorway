@@ -539,34 +539,83 @@ function playColorwayIntroOpening() {
   });
 }
 
-function animateHeaderColorway({ settle = false } = {}) {
-  const chars = document.querySelectorAll('[data-colorway-page-title-chars] .colorway-char');
+const HEADER_ROLL_DURATION = 1.2;
+const HEADER_ROLL_STAGGER = 0.055;
+const HEADER_ROLL_BACKFACE_OPACITY = 0.14;
+// power2.inOut is cubic: eased progress 0.25 lands at t≈0.397 and 0.75 at t≈0.603.
+// Those are the backface entry/exit crossings for a -360° → 0° turn.
+// Recompute these fractions if HEADER_ROLL's easing changes.
+const HEADER_ROLL_BACKFACE_ENTER = HEADER_ROLL_DURATION * 0.397;
+const HEADER_ROLL_BACKFACE_EXIT = HEADER_ROLL_DURATION * 0.603;
+const HEADER_ROLL_BACKFACE_FADE = HEADER_ROLL_DURATION * 0.08;
+let headerRollTimeline = null;
+let headerRollQueued = false;
+
+function animateHeaderColorway() {
+  const chars = [...document.querySelectorAll('[data-colorway-page-title-chars] .colorway-char')];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduceMotion || !chars.length) return;
+
+  if (headerRollTimeline?.isActive()) {
+    headerRollQueued = true;
+    return;
+  }
+
   gsap.killTweensOf(chars);
-  gsap.fromTo(
-    chars,
-    {
-      rotationX: settle ? -45 : -30,
-      y: settle ? 4 : 2,
-      opacity: settle ? 0.4 : 0.65,
-
-      transformPerspective: 400,
-      transformOrigin: '50% 50% -8px',
+  gsap.set(chars, { willChange: 'transform, opacity' });
+  headerRollTimeline = gsap.timeline({
+    onComplete: () => {
+      const rerun = headerRollQueued;
+      headerRollTimeline = null;
+      headerRollQueued = false;
+      gsap.set(chars, { willChange: 'auto' });
+      if (rerun) {
+        animateHeaderColorway();
+        return;
+      }
     },
-    {
-      rotationX: 0,
-      y: 0,
-      opacity: 1,
+  });
 
-      duration: settle ? 1.15 : 0.85,
-      ease: 'power3.out',
+  chars.forEach((char, index) => {
+    const start = index * HEADER_ROLL_STAGGER;
 
-      stagger: settle ? 0.06 : 0.045,
+    headerRollTimeline.fromTo(
+      char,
+      {
+        rotationX: -360,
+        y: 0,
+        opacity: 1,
+        transformOrigin: '50% 50% -8px',
+      },
+      {
+        rotationX: 0,
+        y: 0,
+        duration: HEADER_ROLL_DURATION,
+        ease: 'power2.inOut',
+      },
+      start,
+    );
 
-      overwrite: true,
-    }
-  );
+    headerRollTimeline.to(
+      char,
+      {
+        opacity: HEADER_ROLL_BACKFACE_OPACITY,
+        duration: HEADER_ROLL_BACKFACE_FADE,
+        ease: 'power1.inOut',
+      },
+      start + HEADER_ROLL_BACKFACE_ENTER - HEADER_ROLL_BACKFACE_FADE,
+    );
+
+    headerRollTimeline.to(
+      char,
+      {
+        opacity: 1,
+        duration: HEADER_ROLL_BACKFACE_FADE,
+        ease: 'power1.inOut',
+      },
+      start + HEADER_ROLL_BACKFACE_EXIT,
+    );
+  });
 }
 
 async function getColorwayHeaderTarget() {
@@ -609,7 +658,6 @@ async function handoffColorway() {
         headerChars.classList.remove('intro-pending');
         gsap.set(finalWord, { visibility: 'hidden' });
         intro.remove();
-        animateHeaderColorway({ settle: true });
         if (mark) {
           gsap.fromTo(
             mark,
