@@ -213,7 +213,7 @@ test('active button rules use the contracted foreground/surface pairs', () => {
   );
   assert.match(
     base,
-    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--button_bg_hover\);[^}]*color:\s*var\(--button_hover_text\);[^}]*\}/,
+    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--primary\);[^}]*color:\s*var\(--checked_tool_text\);[^}]*\}/,
   );
   assert.match(
     base,
@@ -228,23 +228,70 @@ test('Studio Mode active styling stays visible without changing box geometry', (
   );
   assert.match(
     base,
-    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*border:\s*2px solid var\(--primary_lighter\);[^}]*font-weight:\s*bold;[^}]*\}/,
+    /#modeSwitch:hover:!pressed\.state-active,\s*#modeSwitch:hover:!pressed:checked\s*\{[^}]*background:\s*var\(--primary\);[^}]*border:\s*2px solid var\(--primary_lighter\);[^}]*font-weight:\s*bold;[^}]*\}/,
   );
   assert.match(
     base,
     /#modeSwitch:pressed\.state-active,\s*#modeSwitch:pressed:checked\s*\{[^}]*border:\s*2px inset var\(--primary_dark\);[^}]*font-weight:\s*bold;[^}]*\}/,
   );
-  assert.doesNotMatch(
-    base,
-    /#modeSwitch[^{}]*\.state-active[^{}]*\{[^}]*(?:border-(?:top|right|bottom|left)-width|border-bottom:\s*(?!2px\b)[^;]+|margin-bottom:\s*-)/,
-    'Studio Mode active states must not change the outer box dimensions',
-  );
+
+  const activeRules = [...uncommentedBase.matchAll(/([^{}]*#modeSwitch[^{}]*\.state-active[^{}]*)\{([^}]*)\}/g)];
+  assert.equal(activeRules.length, 3, 'expected three Studio Mode active-state rules');
+
+  for (const [, selectors, body] of activeRules) {
+    const declarations = new Map(
+      body
+        .split(';')
+        .map((part) => part.trim())
+        .filter(Boolean)
+        .map((part) => {
+          const colon = part.indexOf(':');
+          assert.ok(colon > 0, `invalid declaration in ${selectors.trim()}: ${part}`);
+          return [part.slice(0, colon).trim(), part.slice(colon + 1).trim()];
+        }),
+    );
+
+    for (const property of declarations.keys()) {
+      assert.doesNotMatch(
+        property,
+        /^(?:padding(?:-.+)?|margin(?:-.+)?|min-(?:width|height)|max-(?:width|height))$/,
+        `Studio Mode active state must not alter box geometry via ${property}`,
+      );
+    }
+
+    for (const property of ['border-width', 'border-top-width', 'border-right-width', 'border-bottom-width', 'border-left-width']) {
+      if (!declarations.has(property)) continue;
+      const widths = declarations.get(property).match(/[0-9]+px/g) ?? [];
+      assert.ok(widths.length > 0, `${property} must use explicit px widths`);
+      assert.ok(widths.every((width) => width === '2px'), `${property} must stay at 2px`);
+    }
+
+    if (declarations.has('border')) {
+      const widths = declarations.get('border').match(/[0-9]+px/g) ?? [];
+      assert.deepEqual(widths, ['2px'], 'Studio Mode border shorthand must keep one 2px width');
+    }
+  }
 });
 
 test('default mixer category uses the guaranteed text/base contrast pair', () => {
   assert.match(
     base,
     /VolumeControl \.mixer-category\s*\{[^}]*background:\s*var\(--bg_base\);[^}]*color:\s*var\(--text\);[^}]*\}/,
+  );
+});
+
+test('checked tools, pinned mixer labels, and toggle handles use contracted semantic foregrounds', () => {
+  assert.match(
+    base,
+    /QToolButton:checked,\s*\.btn-tool:checked\s*\{[^}]*background-color:\s*var\(--primary\);[^}]*color:\s*var\(--checked_tool_text\);[^}]*\}/,
+  );
+  assert.match(
+    base,
+    /VolumeControl\.volume-pinned \.mixer-category\s*\{[^}]*background:\s*var\(--bg_hover\);[^}]*color:\s*var\(--mixer_pinned_text\);[^}]*\}/,
+  );
+  assert.match(
+    base,
+    /idian--ToggleSwitch\s*\{[^}]*qproperty-handleColor:\s*var\(--toggle_handle_color\);[^}]*\}/,
   );
 });
 

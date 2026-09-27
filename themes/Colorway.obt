@@ -303,6 +303,9 @@
     --text_bright: var(--text_light);
     --text_inverse: var(--bg_base);
     --button_hover_text: var(--text);
+    --checked_tool_text: var(--text_inverse);
+    --mixer_pinned_text: var(--text);
+    --toggle_handle_color: var(--text);
     --primary_hover: var(--primary_light);
     --primary_dark_alias: var(--primary_dark);
 
@@ -811,9 +814,9 @@ QTreeView::item:selected:hover .icon-media-prev {
 
 #modeSwitch:hover:!pressed.state-active,
 #modeSwitch:hover:!pressed:checked {
-    background: var(--button_bg_hover);
+    background: var(--primary);
     border: 2px solid var(--primary_lighter);
-    color: var(--button_hover_text);
+    color: var(--checked_tool_text);
     font-weight: bold;
 }
 
@@ -1086,7 +1089,7 @@ VolumeControl .mixer-category {
 
 VolumeControl.volume-pinned .mixer-category {
     background: var(--bg_hover);
-    color: var(--primary);
+    color: var(--mixer_pinned_text);
 }
 
 VolumeControl.volume-hidden .mixer-category {
@@ -1744,7 +1747,7 @@ idian--ToggleSwitch {
 
     border-radius: var(--toggle_radius);
 
-    qproperty-handleColor: var(--text_light);
+    qproperty-handleColor: var(--toggle_handle_color);
     qproperty-handleSize: var(--toggle_handle);
 
     border: var(--highlight_width) solid transparent;
@@ -2210,7 +2213,7 @@ QToolButton:checked,
 .btn-tool:checked {
     background-color: var(--primary);
     border-color: var(--primary_light);
-    color: var(--text_inverse);
+    color: var(--checked_tool_text);
 }
 
 QToolButton:checked:hover,
