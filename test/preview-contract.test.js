@@ -184,10 +184,63 @@ test('slideshow starts only after the intro handoff completes', () => {
 });
 
 test('header colorway word animates only when the theme changes', () => {
-  assert.match(main, /function animateHeaderColorway\(\{ settle = false \} = \{\}\)/);
+  assert.match(main, /function animateHeaderColorway\(\)/);
   assert.match(main, /\[data-colorway-page-title-chars\]/);
   assert.match(main, /if \(animateTitle\) animateHeaderColorway\(\)/);
   assert.match(main, /setTheme\(file, \{ patternFile = null, transition = true, animateTitle = true \} = \{\}\)/);
+});
+
+test('theme changes roll the persistent Colorway title through one queued full turn', () => {
+  const headerRoll = main.match(/function animateHeaderColorway\(\)[\s\S]*?async function getColorwayHeaderTarget/)?.[0] ?? '';
+  assert.ok(headerRoll.length, 'animateHeaderColorway block not found — extraction regex is stale');
+
+  assert.match(main, /const HEADER_ROLL_DURATION = 1\.2;/);
+  assert.match(main, /const HEADER_ROLL_STAGGER = 0\.055;/);
+  assert.match(main, /const HEADER_ROLL_BACKFACE_OPACITY = 0\.14;/);
+  assert.match(main, /const HEADER_ROLL_BACKFACE_ENTER = HEADER_ROLL_DURATION \* 0\.397;/);
+  assert.match(main, /const HEADER_ROLL_BACKFACE_EXIT = HEADER_ROLL_DURATION \* 0\.603;/);
+  assert.match(main, /const HEADER_ROLL_BACKFACE_FADE = HEADER_ROLL_DURATION \* 0\.08;/);
+
+  // GSAP power2.inOut is a cubic ease. Check the normalized crossing points
+  // numerically so changing either the ease or the fractions breaks the contract.
+  const power2InOut = (t) => t < 0.5
+    ? 4 * t * t * t
+    : 1 - ((-2 * t + 2) ** 3) / 2;
+  assert.ok(Math.abs(power2InOut(0.397) - 0.25) < 0.003);
+  assert.ok(Math.abs(power2InOut(0.603) - 0.75) < 0.003);
+
+  assert.match(headerRoll, /if \(headerRollTimeline\?\.isActive\(\)\) \{\s*headerRollQueued = true;\s*return;/s);
+  assert.match(headerRoll, /rotationX:\s*-360/);
+  assert.match(headerRoll, /duration:\s*HEADER_ROLL_DURATION/);
+  assert.match(headerRoll, /ease:\s*'power2\.inOut'/);
+  assert.match(headerRoll, /opacity:\s*HEADER_ROLL_BACKFACE_OPACITY/);
+  assert.match(headerRoll, /start \+ HEADER_ROLL_BACKFACE_ENTER - HEADER_ROLL_BACKFACE_FADE/);
+  assert.match(headerRoll, /start \+ HEADER_ROLL_BACKFACE_EXIT/);
+  assert.match(headerRoll, /gsap\.set\(chars, \{ willChange: 'transform, opacity' \}\)/);
+  assert.match(headerRoll, /gsap\.set\(chars, \{ willChange: 'auto' \}\)/);
+  assert.doesNotMatch(headerRoll, /overwrite:\s*true/);
+  assert.match(
+    headerRoll,
+    /const rerun = headerRollQueued;\s*headerRollTimeline = null;\s*headerRollQueued = false;\s*gsap\.set\(chars, \{ willChange: 'auto' \}\);\s*if \(rerun\) \{\s*animateHeaderColorway\(\);\s*return;\s*\}/s,
+  );
+
+  assert.match(
+    pageShellCss,
+    /\.colorway-page-title-chars\s*\{[^}]*perspective:\s*400px/s,
+  );
+  const titleCharRule = pageShellCss.match(/\.colorway-page-title-chars \.colorway-char\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.ok(titleCharRule.length, 'page title character rule not found — extraction regex is stale');
+  assert.match(titleCharRule, /backface-visibility:\s*visible;/);
+  assert.doesNotMatch(titleCharRule, /will-change:/);
+});
+
+test('intro handoff lands directly without retriggering the header roll', () => {
+  const handoff = main.match(/async function handoffColorway\(\)[\s\S]*?function updateStatusDemo/)?.[0] ?? '';
+  assert.ok(handoff.length, 'handoffColorway block not found — extraction regex is stale');
+  assert.match(handoff, /headerChars\.classList\.remove\('intro-pending'\)/);
+  assert.match(handoff, /gsap\.set\(finalWord, \{ visibility: 'hidden' \}\)/);
+  assert.match(handoff, /intro\.remove\(\)/);
+  assert.doesNotMatch(handoff, /animateHeaderColorway\(/);
 });
 
 test('animated chars respect reduced motion', () => {
