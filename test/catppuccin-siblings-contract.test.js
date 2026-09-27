@@ -25,6 +25,13 @@ const expectedSeedNames = [
   ...Object.keys(accentLC),
 ].map((name) => `--sibling_${name}`).sort();
 
+test('V2 sibling recipe keeps its promised 12-neutral + 14-accent shape', () => {
+  assert.equal(Object.keys(neutralLC).length, 12);
+  assert.equal(Object.keys(accentLC).length, 14);
+  assert.equal(expectedSeedNames.length, 26);
+});
+
+
 function parseMeta(source) {
   const value = (field) => source.match(new RegExp(`${field}:\\s*'([^']+)'`))?.[1];
   return {
@@ -125,4 +132,26 @@ test('documentation recipe stays synchronized with the generator source of truth
   assert.deepEqual(jsonBlocks[0], neutralLC);
   assert.deepEqual(jsonBlocks[1], accentLC);
   assert.deepEqual(jsonBlocks[2], families);
+});
+
+
+test('palette sync replaces both generic and annotated palette comment headers', () => {
+  const nextComment = '    /* Official palette reference: Replacement\n    */';
+  const generic = '@OBSThemeVars {\n    /* Official palette reference: Old\n    */\n\n    --text: #ffffff;\n}';
+  const annotated = '@OBSThemeVars {\n    /* Official palette reference (source values; live accessibility overrides below may differ): Old\n    */\n\n    --text: #ffffff;\n}';
+
+  for (const source of [generic, annotated]) {
+    const next = injectCommentBlock(source, nextComment);
+    assert.equal((next.match(/Official palette reference/g) ?? []).length, 1);
+    assert.match(next, /Official palette reference: Replacement/);
+    assert.doesNotMatch(next, /source values/);
+    assert.match(next, /--text: #ffffff;/);
+  }
+});
+
+test('out-of-gamut families fail loudly instead of clipping', () => {
+  assert.throws(
+    () => renderTheme({ ...families.terracotta, accent_chroma_scale: 5 }),
+    /Terracotta accent \w+ is outside sRGB gamut/,
+  );
 });

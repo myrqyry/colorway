@@ -32,7 +32,10 @@ export function buildPaletteComment(themeName, resolvedVars) {
 export function injectCommentBlock(text, commentBlock) {
   return text.replace(/(@OBSThemeVars\s*\{)([\s\S]*?)(\n\})/, (_match, open, body, close) => {
     const cleanBody = body
-      .replace(/\s*\/\* Official palette reference:[\s\S]*?\*\/\s*/, '\n')
+      .replace(
+        /\s*\/\* Official palette reference(?:\s*\([^)]*\))?:[\s\S]*?\*\/\s*/,
+        '\n',
+      )
       .trim();
     return `${open}\n${commentBlock}\n\n    ${cleanBody}\n${close}`;
   });

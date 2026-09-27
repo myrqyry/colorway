@@ -1,4 +1,4 @@
-import { renameSync, unlinkSync, writeFileSync } from 'node:fs';
+import { readdirSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -588,9 +588,15 @@ function generatedOutputs() {
 
 function writeGeneratedThemes(outputs) {
   const staged = [];
-  let currentFile = 'rendered payloads';
+  let currentFile = 'stale temp cleanup';
 
   try {
+    for (const name of readdirSync(themesDir)) {
+      if (!/^Colorway-CatppuccinSibling-.*\.ovt\.tmp-\d+$/.test(name)) continue;
+      unlinkSync(path.join(themesDir, name));
+    }
+
+    currentFile = 'rendered payloads';
     for (const output of outputs) {
       currentFile = output.file;
       const target = path.join(themesDir, output.file);
