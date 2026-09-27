@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { families, renderTheme } from '../scripts/generate-catppuccin-siblings.mjs';
 
 const themesDir = new URL('../themes/', import.meta.url);
 const catalogText = readFileSync(new URL('../src/theme-catalog.js', import.meta.url), 'utf8');
@@ -107,4 +108,24 @@ test('all eight sibling palette seeds are distinct', () => {
     return expectedSeedNames.map((name) => `${name}=${vars.get(name)}`).join('\n');
   });
   assert.equal(new Set(blocks).size, siblingFiles.length);
+});
+
+
+function stripGeneratedPaletteComment(source) {
+  return source.replace(
+    /\n    \/\* Official palette reference:[\s\S]*?    \*\/\n\n/,
+    '\n',
+  );
+}
+
+test('generator reproduces every checked-in sibling source before mirror annotation', () => {
+  for (const config of Object.values(families)) {
+    const file = `Colorway-CatppuccinSibling-${config.name}.ovt`;
+    const checkedIn = readFileSync(new URL(`../themes/${file}`, import.meta.url), 'utf8');
+    assert.equal(
+      stripGeneratedPaletteComment(checkedIn),
+      renderTheme(config),
+      `${file} drifted from scripts/generate-catppuccin-siblings.mjs`,
+    );
+  }
 });

@@ -113,7 +113,7 @@ const accentLC = {
     0.091
   ]
 };
-const families = {
+export const families = {
   "affogato": {
     "name": "Affogato",
     "description": "warm espresso / cocoa",
@@ -502,7 +502,7 @@ function makePalette(config) {
   return palette;
 }
 
-function renderTheme(config) {
+export function renderTheme(config) {
   const palette = makePalette(config);
   const lines = [
     '@OBSThemeMeta {',
@@ -546,9 +546,13 @@ function renderTheme(config) {
   return lines.join('\n');
 }
 
-for (const config of Object.values(families)) {
-  const file = `Colorway-CatppuccinSibling-${config.name}.ovt`;
-  writeFileSync(path.join(themesDir, file), renderTheme(config));
-}
+const isMain = process.argv[1] === fileURLToPath(import.meta.url);
 
-console.log(`generated ${Object.keys(families).length} Catppuccin-inspired sibling palettes`);
+if (isMain) {
+  for (const config of Object.values(families)) {
+    const file = `Colorway-CatppuccinSibling-${config.name}.ovt`;
+    writeFileSync(path.join(themesDir, file), renderTheme(config));
+  }
+
+  console.log(`generated ${Object.keys(families).length} Catppuccin-inspired sibling palettes`);
+}
