@@ -545,36 +545,10 @@ const HEADER_ROLL_BACKFACE_OPACITY = 0.14;
 let headerRollTimeline = null;
 let headerRollQueued = false;
 
-function animateHeaderColorway({ settle = false } = {}) {
+function animateHeaderColorway() {
   const chars = [...document.querySelectorAll('[data-colorway-page-title-chars] .colorway-char')];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduceMotion || !chars.length) return;
-
-  if (settle) {
-    headerRollTimeline?.kill();
-    headerRollTimeline = null;
-    headerRollQueued = false;
-    gsap.killTweensOf(chars);
-    gsap.fromTo(
-      chars,
-      {
-        rotationX: -45,
-        y: 4,
-        opacity: 0.4,
-        transformOrigin: '50% 50% -8px',
-      },
-      {
-        rotationX: 0,
-        y: 0,
-        opacity: 1,
-        duration: 1.15,
-        ease: 'power3.out',
-        stagger: 0.06,
-        overwrite: true,
-      },
-    );
-    return;
-  }
 
   if (headerRollTimeline?.isActive()) {
     headerRollQueued = true;
@@ -674,7 +648,6 @@ async function handoffColorway() {
         headerChars.classList.remove('intro-pending');
         gsap.set(finalWord, { visibility: 'hidden' });
         intro.remove();
-        animateHeaderColorway({ settle: true });
         if (mark) {
           gsap.fromTo(
             mark,

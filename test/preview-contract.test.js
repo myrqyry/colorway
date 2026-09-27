@@ -184,7 +184,7 @@ test('slideshow starts only after the intro handoff completes', () => {
 });
 
 test('header colorway word animates only when the theme changes', () => {
-  assert.match(main, /function animateHeaderColorway\(\{ settle = false \} = \{\}\)/);
+  assert.match(main, /function animateHeaderColorway\(\)/);
   assert.match(main, /\[data-colorway-page-title-chars\]/);
   assert.match(main, /if \(animateTitle\) animateHeaderColorway\(\)/);
   assert.match(main, /setTheme\(file, \{ patternFile = null, transition = true, animateTitle = true \} = \{\}\)/);
@@ -212,10 +212,12 @@ test('theme changes roll the persistent Colorway title through one queued full t
   );
 });
 
-test('header settle motion remains separate from the full theme roll', () => {
-  assert.match(main, /if \(settle\) \{[\s\S]*?rotationX:\s*-45,[\s\S]*?duration:\s*1\.15,[\s\S]*?ease:\s*'power3\.out'/);
-  const headerAnimation = main.match(/function animateHeaderColorway[\s\S]*?async function getColorwayHeaderTarget/)?.[0] ?? '';
-  assert.doesNotMatch(headerAnimation, /transformPerspective/);
+test('intro handoff lands directly without retriggering the header roll', () => {
+  const handoff = main.match(/async function handoffColorway\(\)[\s\S]*?function updateStatusDemo/)?.[0] ?? '';
+  assert.match(handoff, /headerChars\.classList\.remove\('intro-pending'\)/);
+  assert.match(handoff, /gsap\.set\(finalWord, \{ visibility: 'hidden' \}\)/);
+  assert.match(handoff, /intro\.remove\(\)/);
+  assert.doesNotMatch(handoff, /animateHeaderColorway\(/);
 });
 
 test('animated chars respect reduced motion', () => {
