@@ -107,7 +107,7 @@
 
 .colorway-page-title-chars .colorway-char {
   display: inline-block;
-  backface-visibility: hidden;
+  backface-visibility: visible;
   transform-style: preserve-3d;
 }
 

@@ -190,6 +190,17 @@ test('header colorway word animates only when the theme changes', () => {
   assert.match(main, /setTheme\(file, \{ patternFile = null, transition = true, animateTitle = true \} = \{\}\)/);
 });
 
+test('theme changes roll the persistent Colorway title through one full turn', () => {
+  assert.match(main, /rotationX:\s*settle \? -45 : -360/);
+  assert.match(main, /duration:\s*settle \? 1\.15 : 1\.2/);
+  assert.match(main, /ease:\s*settle \? 'power3\.out' : 'power2\.inOut'/);
+  assert.match(main, /stagger:\s*settle \? 0\.06 : 0\.055/);
+  assert.match(
+    pageShellCss,
+    /\.colorway-page-title-chars \.colorway-char\s*\{[^}]*backface-visibility:\s*visible/s,
+  );
+});
+
 test('animated chars respect reduced motion', () => {
   assert.match(main, /prefers-reduced-motion: reduce/);
   assert.match(main, /crossfadeShowcase\(commit, reduceMotion\)/);
