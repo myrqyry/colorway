@@ -143,7 +143,7 @@ test('public themes mirror the root themes and keep palette comments', () => {
     const publicText = readTheme(publicThemesDir, file);
 
     assert.equal(publicText, rootText, `${file} is out of sync with public/themes`);
-    assert.match(rootText, /Official palette reference:/, `${file} is missing a palette comment`);
+    assert.match(rootText, /Official palette reference(?: \([^)]*\))?:/, `${file} is missing a palette comment`);
   }
 });
 

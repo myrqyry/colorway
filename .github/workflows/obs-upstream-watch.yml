@@ -1,0 +1,26 @@
+name: OBS Upstream Watch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 15 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Colorway
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check OBS theme upstream
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/check-obs-upstream.mjs

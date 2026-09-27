@@ -85,6 +85,7 @@
 
     --button_bg: #270022;
     --button_bg_hover: #ff0546;
+    --button_hover_text: var(--text_inverse);
     --button_bg_disabled: #09010d;
 
     

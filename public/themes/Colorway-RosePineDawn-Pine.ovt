@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    /* Official palette reference: Rose Pine Dawn — Pine
+    /* Official palette reference (source values; live accessibility overrides below may differ): Rose Pine Dawn — Pine
        Hex colors:
        --bg_window: #faf4ed;
        --bg_base: #faf4ed;
@@ -80,9 +80,10 @@
     --list_item_bg_hover: #f4ede8;
     --list_item_bg_selected: #faf4ed;
 
-    --warning: #ea9d34;
+    --warning: #955c0f;
     --danger: #b4637a;
-    --success: #37d247;
+    --success: #286983;
+    --checkbox_check_icon: url(theme:icons/colorway/iconamoon/selected/check.svg);
 
     --meter_bg_nom: #fffaf3;
     --meter_bg_war: #ea9d34;

@@ -93,5 +93,6 @@
 
     
     --text_inverse: #000000;
+    --checkbox_check_icon: url(theme:icons/colorway/iconamoon/selected/check.svg);
 
 }
