@@ -207,7 +207,7 @@ test('theme changes roll the persistent Colorway title through one queued full t
   assert.match(main, /gsap\.set\(chars, \{ willChange: 'transform, opacity' \}\)/);
   assert.match(main, /gsap\.set\(chars, \{ willChange: 'auto' \}\)/);
   assert.doesNotMatch(main, /overwrite:\s*true/);
-  assert.match(main, /if \(!headerRollQueued\) return;\s*headerRollQueued = false;\s*animateHeaderColorway\(\);/s);
+  assert.match(main, /const rerun = headerRollQueued;\s*headerRollTimeline = null;\s*headerRollQueued = false;\s*if \(rerun\) \{\s*animateHeaderColorway\(\);\s*return;\s*\}/s);
   assert.match(
     pageShellCss,
     /\.colorway-page-title-chars\s*\{[^}]*perspective:\s*400px/s,
