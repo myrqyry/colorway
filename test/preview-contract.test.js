@@ -197,10 +197,17 @@ test('theme changes roll the persistent Colorway title through one queued full t
   assert.match(main, /const HEADER_ROLL_DURATION = 1\.2;/);
   assert.match(main, /const HEADER_ROLL_STAGGER = 0\.055;/);
   assert.match(main, /const HEADER_ROLL_BACKFACE_OPACITY = 0\.14;/);
-  assert.match(main, /power2\.inOut reaches eased progress 0\.25 at t≈0\.354 and 0\.75 at t≈0\.646/);
-  assert.match(main, /const HEADER_ROLL_BACKFACE_ENTER = HEADER_ROLL_DURATION \* 0\.354;/);
-  assert.match(main, /const HEADER_ROLL_BACKFACE_EXIT = HEADER_ROLL_DURATION \* 0\.646;/);
+  assert.match(main, /const HEADER_ROLL_BACKFACE_ENTER = HEADER_ROLL_DURATION \* 0\.397;/);
+  assert.match(main, /const HEADER_ROLL_BACKFACE_EXIT = HEADER_ROLL_DURATION \* 0\.603;/);
   assert.match(main, /const HEADER_ROLL_BACKFACE_FADE = HEADER_ROLL_DURATION \* 0\.08;/);
+
+  // GSAP power2.inOut is a cubic ease. Check the normalized crossing points
+  // numerically so changing either the ease or the fractions breaks the contract.
+  const power2InOut = (t) => t < 0.5
+    ? 4 * t * t * t
+    : 1 - ((-2 * t + 2) ** 3) / 2;
+  assert.ok(Math.abs(power2InOut(0.397) - 0.25) < 0.003);
+  assert.ok(Math.abs(power2InOut(0.603) - 0.75) < 0.003);
 
   assert.match(headerRoll, /if \(headerRollTimeline\?\.isActive\(\)\) \{\s*headerRollQueued = true;\s*return;/s);
   assert.match(headerRoll, /rotationX:\s*-360/);

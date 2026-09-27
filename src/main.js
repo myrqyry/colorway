@@ -542,11 +542,11 @@ function playColorwayIntroOpening() {
 const HEADER_ROLL_DURATION = 1.2;
 const HEADER_ROLL_STAGGER = 0.055;
 const HEADER_ROLL_BACKFACE_OPACITY = 0.14;
-// power2.inOut reaches eased progress 0.25 at t≈0.354 and 0.75 at t≈0.646.
+// power2.inOut is cubic: eased progress 0.25 lands at t≈0.397 and 0.75 at t≈0.603.
 // Those are the backface entry/exit crossings for a -360° → 0° turn.
 // Recompute these fractions if HEADER_ROLL's easing changes.
-const HEADER_ROLL_BACKFACE_ENTER = HEADER_ROLL_DURATION * 0.354;
-const HEADER_ROLL_BACKFACE_EXIT = HEADER_ROLL_DURATION * 0.646;
+const HEADER_ROLL_BACKFACE_ENTER = HEADER_ROLL_DURATION * 0.397;
+const HEADER_ROLL_BACKFACE_EXIT = HEADER_ROLL_DURATION * 0.603;
 const HEADER_ROLL_BACKFACE_FADE = HEADER_ROLL_DURATION * 0.08;
 let headerRollTimeline = null;
 let headerRollQueued = false;
