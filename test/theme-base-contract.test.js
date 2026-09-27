@@ -4,6 +4,8 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
+import { isLightTheme } from './helpers/themes.mjs';
+
 const TEST_DIR = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(TEST_DIR, '..');
 const read = (path) => readFileSync(join(ROOT, path), 'utf8');
@@ -126,7 +128,7 @@ test('light variants keep warning and success text readable', () => {
 
   for (const file of readdirSync(sourceDir).filter((name) => name.endsWith('.ovt'))) {
     const theme = readFileSync(join(sourceDir, file), 'utf8');
-    if (!/\bdark:\s*'false';/.test(theme)) continue;
+    if (!isLightTheme(theme)) continue;
 
     const vars = theme.match(/@OBSThemeVars\s*\{([\s\S]*?)\n\}/);
     assert.ok(vars, file + ': vars block missing');
@@ -167,11 +169,11 @@ test('light palette comments distinguish source values from accessibility overri
   const sourceDir = join(ROOT, 'themes');
   for (const file of readdirSync(sourceDir).filter((name) => name.endsWith('.ovt'))) {
     const theme = readFileSync(join(sourceDir, file), 'utf8');
-    if (!/\bdark:\s*'false';/.test(theme)) continue;
+    if (!isLightTheme(theme)) continue;
 
     assert.match(
       theme,
-      /Official palette reference \([^)]*\):/,
+      /Official palette reference \([^)]*source values[^)]*\):/,
       file + ': palette reference must explain accessibility divergence',
     );
   }

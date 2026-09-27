@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "test": "node --test",
+    "test": "node --test \"test/**/*.test.js\"",
     "sync:themes": "node scripts/sync-theme-mirrors.mjs",
     "check:obs-upstream": "node scripts/check-obs-upstream.mjs",
     "build": "vite build",

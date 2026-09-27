@@ -11,6 +11,7 @@ import {
   resolvedPaletteVars,
 } from '../scripts/generate-catppuccin-siblings.mjs';
 import { buildPaletteComment, injectCommentBlock } from '../scripts/theme-palette-comments.mjs';
+import { isLightTheme, readTheme, themeFiles } from './helpers/themes.mjs';
 
 const themesDir = new URL('../themes/', import.meta.url);
 const docs = readFileSync(new URL('../docs/CATPPUCCIN_SIBLINGS_V2.md', import.meta.url), 'utf8');
@@ -149,20 +150,19 @@ test('palette sync preserves real light-theme source-value annotations verbatim'
 });
 
 test('every frozen light-theme palette comment still names its current theme', () => {
-  const lightFiles = readdirSync(themesDir)
-    .filter((file) => file.endsWith('.ovt'))
-    .filter((file) => !/\bdark:\s*'true';/.test(readFileSync(new URL(file, themesDir), 'utf8')));
+  const lightFiles = themeFiles().filter((file) => isLightTheme(readTheme(file)));
   assert.ok(lightFiles.length > 0, 'no light themes found to check');
 
   for (const file of lightFiles) {
-    const source = readFileSync(new URL(file, themesDir), 'utf8');
-    const header = source.match(
-      /\/\* Official palette reference\s*\([^)]*\):([^\n]*)/,
-    )?.[1].trim();
+    const source = readTheme(file);
+    const frozen = source.match(/\/\* Official palette reference\s*\([^)]*\):([^\n]*)/);
+    if (!frozen) continue;
+
+    const name = frozen[1].trim();
     assert.equal(
-      header,
+      name,
       parseMeta(source).name,
-      `${file} preserves a frozen palette comment naming "${header}" — re-sync after renaming`,
+      `${file} preserves a frozen palette comment naming "${name}" — re-sync after renaming`,
     );
   }
 });
