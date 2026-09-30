@@ -1,6 +1,15 @@
 # Proposed Code File Reorganization Plan
 
-**Status:** Proposal / review before execution (no files have been moved yet).
+> **Status correction (2026-09-29):** This plan's Tier 1 was **executed**, by commit
+> `90bbbe4 refactor: reorganize repo into themes/, fonts/, scripts/, docs/ folders`, which
+> is in `main` and in the current branch. The line below — "no files have been moved yet" —
+> is now false and is preserved here only as historical record. Themes, fonts, the shell
+> script, and the pattern-preview page are all already moved; the remaining recommendations
+> (§8.1–8.5, §9, §12) are the parts that were *not* done. Treat this document as a historical
+> proposal with a partial execution record, not as a task list. The durable current state is
+> `.meristem/PROJECT.md` §Open structural uncertainty.
+
+**Original status (as written):** Proposal / review before execution (no files have been moved yet).
 **Goal:** Make the repository's file layout one that a developer (or an AI agent) can read and immediately understand. This plan is organized as: (1) what the repo actually contains today, (2) where the real mess is, (3) concrete proposals (no-brainers first, optional niceties after), (4) the exact edits to calling code, and (5) a step-by-step migration checklist so nothing breaks.
 
 ---
@@ -88,7 +97,9 @@ Note the `copy-themes.sh` glob at line 5 is `"$SCRIPT_DIR"/*.ovt "$SCRIPT_DIR"/*
 
 Notable things that are *not* where the reader expects:
 
-- The curated `.ovt` themes (the project's actual subject matter, ~100+ of them) are loose at the **root**, mixed in with build config and docs.
+- The curated `.ovt` themes (the project's actual subject matter, ~100+ of them) now live in
+  `themes/` at the repository root, not loose among build config. (Written before execution;
+  commit `90bbbe4` moved them.)
 - The one "real" theme asset that ships to users, `Colorway.obt`, sits at root next to its preview-only `public/themes/Colorway.obt` mirror — two copies of the same file, different locations, no obvious relationship unless you read `sync-theme-mirrors.mjs`.
 - The `patterns/` SVGs exist **twice**: once at `patterns/` and once at `public/patterns/`. There is **no** sync script that keeps them in step (unlike `themes/`), so they can silently drift.
 - `index.html` and `preview-patterns.html` are standalone HTML pages at the root with no obvious "this is the app" vs "this is a helper" signal.
