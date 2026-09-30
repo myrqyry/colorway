@@ -328,21 +328,34 @@ colorway/
 └── vercel.json                            # pnpm build, dist/ output
 ```
 
-### Test coverage (475 tests)
+### Test coverage (589 tests) ✅ measured 2026-09-29
+
+> Per-file counts were measured by running `node --test` on each `test/*.test.js` file
+> individually (not inferred). Total: **589 tests, 588 pass, 0 fail, 1 skipped** — the skip is
+> `fromLospecPalette` in `lospec-import.test.js`, network-gated by design. Earlier figures in
+> this section (475 total, 452/8/8/5 per file) were stale and have been replaced.
 
 | Test file | Tests | What it validates |
 |---|---|---|
-| `test/new-themes-contract.test.js` | 452 | Every `.ovt` overrides required vars, passes WCAG contrast (text→bg, inverse→hover-button) |
-| `test/preview-contract.test.js` | 8 | UI structure classes exist, theme pipeline functions present, public themes mirror root |
+| `test/new-themes-contract.test.js` | 477 | Every `.ovt` overrides required vars, passes WCAG contrast (text→bg, inverse→hover-button), sibling palettes keep the 12-neutral + 14-accent seed shape |
+| `test/preview-contract.test.js` | 29 | UI structure classes exist, theme pipeline functions present, public themes mirror root, public patterns mirror patterns/ |
+| `test/theme-base-contract.test.js` | 17 | Source and public theme distributions are byte-identical; `parseOVT` dark rule; `extends` resolution |
 | `test/workbench-engine.test.js` | 8 | Normalized theme shape, serializeOVT round-trip, toYamiOVT extends injection, full catalog round-trip |
-| `test/lospec-import.test.js` | 5 | Slug extraction, minimum-color guard, all 31 tokens present, hex format, dark mode detection |
+| `test/obs-preview-actions.test.js` | 8 | OBS preview action handlers |
+| `test/obs-preview-refine.test.js` | 9 | OBS preview refine path |
+| `test/catppuccin-siblings-contract.test.js` | 12 | Generated sibling palettes are exactly generator output; light-theme frozen-comment header names the current theme name (non-vacuity check) |
+| `test/obs-design-source-contract.test.js` | 7 | OBS design source contracts |
+| `test/obs-preview-ambient.test.js` | 5 | OBS preview ambient path |
+| `test/lospec-import.test.js` | 6 | Slug extraction, minimum-color guard, all 31 tokens present, hex format, dark mode detection (1 skipped: `fromLospecPalette`) |
+| `test/obs-upstream-watch.test.js` | 3 | OBS upstream format drift watch |
+| `test/page-shell-sync.test.js` | 8 | Page shell sync behavior |
 
 ### Build & deploy
 
 - `npm run dev` — Vite dev server (host 0.0.0.0)
 - `npm run build` — Vite build to `dist/`
 - `npm run sync:themes` — Mirror themes to `public/themes/` with palette comments
-- `npm run test` — Node test runner, 475 tests, ~500ms
+- `npm run test` — Node test runner, 589 tests, ~350ms (0 fail, 1 skipped: the network-gated `fromLospecPalette`)
 - `npm run preview` — Vite preview of built output
 
 Deployed on Vercel via `vercel.json` using pnpm as package manager.

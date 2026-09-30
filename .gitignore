@@ -7,7 +7,12 @@
 !public/
 !scripts/
 !docs/
+!.meristem/
 docs/superpowers/
 .vercel
 *.bak
 *.tmp-*
+
+# meristem:local-ignore:start
+.meristem/local/
+# meristem:local-ignore:end
