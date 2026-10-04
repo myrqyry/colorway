@@ -81,18 +81,13 @@ Meristem files are the only uncommitted artifacts.
 
 ## Current objective
 
-PR #8's review and CI state remain unverified on this machine (no `gh` auth). The Meristem
-substrate is complete and doctor-verified. **Doc reconciliation is done** (2026-09-29):
-`PROPOSED_CODE_FILE_REORGANIZATION_PLAN.md` carries a status-correction header naming
-`90bbbe4` as Tier 1's executor, and `docs/ARCHITECTURE.md` §"Test coverage" reports the real
-589/588/0/1 with a per-file table measured by running `node --test` per file (12 files summing
-to 589, cross-checked programmatically). Both feature requests in `.meristem/FEATURE_REQUESTS.md`
-are marked closed. The only outstanding item is the commit decision: commit the substrate and
-the doc fixes together, or split them.
+No active implementation objective is recorded here. The previous repository reorganization and
+documentation-reconciliation work is complete. Choose future work from current runtime needs or
+the remaining open uncertainties in `.meristem/PROJECT.md`.
 
 ## Verification
 
-Run against the current tree (`747813c` + uncommitted Meristem files + the doc fixes):
+Before making a fresh verification claim, run against the current tree:
 
 - `pnpm test` → **589 tests, 588 pass, 0 fail, 1 skipped**. Re-run after the doc edits; still
   green. The per-file breakdown was independently measured (not inherited from the suite

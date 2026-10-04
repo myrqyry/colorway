@@ -88,20 +88,14 @@ modules under `test/` are not collected as tests that pass on containing no asse
 
 ## Open structural uncertainty
 
-- ~~`PROPOSED_CODE_FILE_REORGANIZATION_PLAN.md` is superseded but still reads as live guidance.~~
-  **Closed 2026-09-29** — annotated in place with a status-correction header naming commit
-  `90bbbe4` as Tier 1's executor, and its "themes loose at the root" premise line marked as
-  pre-execution. The plan body otherwise retains its pre-execution snapshot by design. Residual
-  unexecuted recommendations (§8.1–8.5, §9, §12) are listed in the header and below.
 - ~~`docs/ARCHITECTURE.md` §"Test coverage" still reports 475 tests and credits
   `new-themes-contract.test.js` with 452; the real figure is 589 total.~~
   **Closed 2026-09-29** — the section now reports 589/588/0/1 with a per-file table measured by
   running `node --test` on each `test/*.test.js` individually (12 files summing to 589,
   cross-checked programmatically). The bogus root `vite.config.js` line had already been
   removed.
-- `src/` flatness and `main.js` length (15 entries, 1183 lines) are past the reorg plan's stated
-  triggers; no decision recorded on whether to revisit. The reorg plan's remaining
-  recommendations (§8.1–8.5, §9, §12) are unexecuted by design.
+- src/ remains intentionally flat; main.js is large enough that a future split may be worthwhile,
+  but only for a concrete maintenance or feature need.
 - There is no root `README.md`. `docs/ARCHITECTURE.md` is the de facto entry document; whether a
   root README should exist or point at it is undecided.
 - `patterns/` has a `public/patterns/` mirror that, unlike the themes mirror, has no generator
