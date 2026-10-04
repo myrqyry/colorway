@@ -5,55 +5,6 @@ Requested capabilities that are not currently implemented.
 
 This is not a backlog priority order. Keep requests here when remembering the capability prevents repeated rediscovery.
 
-## Reconcile the superseded reorg plan with the tree
-
-> **Closed 2026-09-29** — executed. `PROPOSED_CODE_FILE_REORGANIZATION_PLAN.md` now carries a
-> status-correction header naming commit `90bbbe4` as the executor of Tier 1, and its
-> "themes loose at the root" premise line was annotated as pre-execution. The body otherwise
-> retains its pre-execution snapshot by design. Residual open items (§8.1–8.5, §9, §12) are
-> listed in the header and in PROJECT.md §Open structural uncertainty.
-
-**Capability:** Annotate, archive, or update `PROPOSED_CODE_FILE_REORGANIZATION_PLAN.md`.
-
-**Why it matters:** The plan opens with "Status: Proposal / review before execution (no files
-have been moved yet)" and describes themes loose at the repository root, `copy-themes.sh` at
-root, and the font at root. Commit `90bbbe4` executed all of Tier 1, so the *status line* and
-the *root-layout premises* are false, while the body's pre-execution snapshot is accurate as
-history. Its test baseline (475 tests, 468 pass, 6 fail) is also wrong — the suite is 589/588/0.
-An agent that opens it to find current work will act on a completed plan.
-
-**Current gap:** Closed — see the status-correction header added to the plan itself.
-
-**Constraints:** Its Tier 1–2 recommendations and the tracked path-edit table remain useful as a
-record of what changed and why. Do not delete it; mark it.
-
-**Related project state / references:** Recorded under "Open structural uncertainty" in
-PROJECT.md; the reorg commit is `90bbbe4`.
-
-## Update the stale test counts in docs/ARCHITECTURE.md
-
-> **Closed 2026-09-29** — fully done. The "Test coverage" section now reports **589 tests, 588
-> pass, 0 fail, 1 skipped**, with a per-file table measured by running `node --test` on each
-> `test/*.test.js` individually (12 files; 477 + 29 + 17 + 8 + 8 + 9 + 12 + 7 + 5 + 6 + 3 + 8 =
-> 589, cross-checked programmatically). The `npm run test` line matches. The bogus root
-> `vite.config.js` line had already been removed.
-
-**Capability:** Correct the "Test coverage (475 tests)" section to the real 589, and re-check
-the per-file counts it attributes (it credits `new-themes-contract.test.js` with 452).
-
-**Why it matters:** ARCHITECTURE.md is the de facto entry document for this repository. Wrong
-counts there undermine trust in every other number it reports, and the reorg plan used a
-matching count as a cross-check that the docs were "otherwise truthful" — so two documents
-currently agree on a figure that is wrong.
-
-**Current gap:** Doc-only change; no code is involved.
-
-**Constraints:** The bogus root `vite.config.js` line the reorg plan flagged in this same
-document has already been removed, so that part is closed.
-
-**Related project state / references:** `docs/ARCHITECTURE.md` §"Test coverage"; also noted in
-PROJECT.md.
-
 ## Guard the `patterns/` mirror the way the `themes/` mirror is guarded
 
 **Capability:** Mirror `patterns/*.svg` into `public/patterns/` from a script, and assert parity
