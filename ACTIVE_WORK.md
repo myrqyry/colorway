@@ -10,7 +10,7 @@ unchanged: browser-side `theme:` asset URL resolution, actual QSS SVG polarity
 and baked foregrounds, selection ink/hover roles, and separate OBS control
 active roles. Non-Appearance pages no longer claim invented options.
 
-**Verified:** `pnpm test` 620 total/619 pass/1 skipped; `pnpm build` pass;
+**Verified:** `pnpm test` 621 total/620 pass/1 skipped; `pnpm build` pass;
 isolated Chromium checked the rendered normal and selected MingCute paths,
 pattern, status masks, selected ink and QSS active control border roles for
 Monokai and Catppuccin Latte Blue. The repeatable check is

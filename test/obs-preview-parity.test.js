@@ -53,7 +53,12 @@ test('streaming, recording, virtual camera, and studio states reflect the real O
   assert.match(preview, /data-control="studio"/);
 });
 
+test('selected density control uses authored OBS selection ink', () => {
+  assert.match(css, /\.obs-sim-density button\.selected\s*\{[^}]*background:\s*var\(--primary\);[^}]*color:\s*var\(--on_primary\)/s);
+});
+
 test('non-Appearance preview pages never invent options as actual OBS settings', () => {
   assert.doesNotMatch(preview, /Example option|\$\{page\} setting/);
+  assert.match(preview, /class=\"obs-sim-settings-notice\"/);
   assert.match(preview, /Only Appearance is interactive in this theme preview/);
 });

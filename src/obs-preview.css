@@ -966,30 +966,24 @@
 
 .obs-sim-density button.selected {
   background: var(--primary);
-  color: var(--text_inverse, var(--bg_base));
+  color: var(--on_primary);
   font-weight: 700;
 }
 
-.obs-sim-settings-placeholder {
+.obs-sim-settings-notice {
   border: 1px solid var(--border_color);
   border-radius: var(--border_radius, 9px);
   padding: 12px;
   background: color-mix(in srgb, var(--bg_dock) 74%, transparent);
 }
 
-.obs-sim-settings-placeholder h3 {
+.obs-sim-settings-notice h3 {
   margin: 0 0 8px;
   color: var(--primary);
 }
 
-.obs-sim-settings-placeholder p {
+.obs-sim-settings-notice p {
   color: var(--text_muted);
-}
-
-.obs-sim-settings-placeholder label {
-  display: grid;
-  gap: 5px;
-  margin-top: 9px;
 }
 
 .obs-sim-check {

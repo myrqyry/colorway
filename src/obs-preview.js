@@ -614,7 +614,7 @@ function wirePreview(root) {
       if (page === 'Appearance') {
         setAppearancePanel(root);
       } else {
-        panel.innerHTML = `<div class="obs-sim-settings-placeholder"><h3>${escapeHtml(page)}</h3><p>Only Appearance is interactive in this theme preview. Open OBS Studio to change these settings.</p></div>`;
+        panel.innerHTML = `<div class="obs-sim-settings-notice"><h3>${escapeHtml(page)}</h3><p>Only Appearance is interactive in this theme preview. Open OBS Studio to change these settings.</p></div>`;
       }
     });
   });
