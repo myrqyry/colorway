@@ -17,10 +17,14 @@ for (const includeBase of [true, false]) {
     assert.equal(Object.hasOwn(zip, 'themes/Colorway.obt'), includeBase);
     assert.equal(strFromU8(zip['themes/' + variant]), readFileSync(new URL('themes/' + variant, root), 'utf8'));
     const manifest = JSON.parse(readFileSync(new URL('public/theme-assets.json', root), 'utf8'));
-    assert.equal(Object.keys(zip).length, manifest.length + (includeBase ? 3 : 2));
+    assert.equal(Object.keys(zip).length, manifest.length + (includeBase ? 6 : 5));
     for (const path of manifest) {
       const target = path.startsWith('fonts/') ? path : 'themes/' + path;
       assert.deepEqual(Buffer.from(zip[target]), readFileSync(new URL(path, root)), target);
+    }
+    for (const companion of ['colorway-patterns.lua', 'colorway-preview.html', 'README.md']) {
+      const path = 'companion/' + companion;
+      assert.deepEqual(Buffer.from(zip[path]), readFileSync(new URL('public/' + path, root)), path);
     }
     assert.ok(zip['themes/patterns/pattern.svg']);
     assert.ok(zip['themes/icons/colorway/mingcute/normal/check.svg']);

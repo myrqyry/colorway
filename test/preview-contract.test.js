@@ -235,7 +235,7 @@ test('theme changes roll the persistent Colorway title through one queued full t
 });
 
 test('intro handoff lands directly without retriggering the header roll', () => {
-  const handoff = main.match(/async function handoffColorway\(\)[\s\S]*?function updateStatusDemo/)?.[0] ?? '';
+  const handoff = main.match(/async function handoffColorway\(\)[\s\S]*?\nrenderApp\(\);/)?.[0] ?? '';
   assert.ok(handoff.length, 'handoffColorway block not found — extraction regex is stale');
   assert.match(handoff, /headerChars\.classList\.remove\('intro-pending'\)/);
   assert.match(handoff, /gsap\.set\(finalWord, \{ visibility: 'hidden' \}\)/);

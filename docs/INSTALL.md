@@ -24,9 +24,33 @@ theme directory of the OBS installation you actually run. Installed duplicate ID
 take precedence over user themes; ensure you are testing the updated Colorway files.
 
 The package includes both icon polarities, all patterns, and the selected `.ovt`.
-The base expects `patterns/pattern.svg`; replace that file with another supplied pattern
-to change the installed background while keeping its filename. No browser font-loading
-or SVG recoloring feature is required.
+The base expects `patterns/pattern.svg`. For easy pattern changes, **use the optional
+Colorway Pattern Manager** instead of replacing SVG files manually.
+
+## Optional Colorway Pattern Manager and theme previews
+
+The ZIP includes a separate `companion/` folder (do **not** copy this folder into
+the OBS themes directory). It contains two working, offline tools:
+
+- `companion/colorway-patterns.lua`: add through **OBS Tools → Scripts → +**.
+  Choose a pattern and click **Apply**. The original SVG is backed up;
+  **Restore original** reverses the change exactly.
+- `companion/colorway-preview.html`: add through **OBS Docks → Custom Browser
+  Docks...** with a `file:///...` URL to the extracted HTML file. Browse
+  all Colorway theme palettes, preview scene/source/audio-mixer styling,
+  compare installed background patterns, search and favorite themes.
+
+The dock is **preview-only**; choose the actual theme in Settings → Appearance.
+The Lua script changes only `patterns/pattern.svg`, and does not alter OBS's
+active theme, scenes, or settings.
+
+Without `AutoReload=true`, OBS needs a restart after changing patterns.
+To enable native live reload, close OBS, add `AutoReload=true` inside the
+`[Appearance]` section of OBS's `user.ini`, then restart once. The Lua script
+then requests theme refresh using the native OBS file watcher. It does not
+edit `user.ini` itself. See `companion/README.md` for details.
+
+No network service, Docker, or additional OBS plugin is required.
 
 ## Installing directly from the repository
 

@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "test": "node --test \"test/**/*.test.js\"",
-    "sync:themes": "node scripts/sync-theme-mirrors.mjs",
+    "sync:themes": "node scripts/sync-theme-mirrors.mjs && node scripts/build-obs-companion.mjs",
     "check:obs-upstream": "node scripts/check-obs-upstream.mjs",
     "check:preview": "pnpm build && node scripts/check-preview-parity.mjs",
     "check:obs-native": "bash scripts/check-obs-native.sh",
+    "check:companion": "node scripts/build-obs-companion.mjs && node scripts/check-companion-preview.mjs",
+    "install:companion": "node scripts/build-obs-companion.mjs && bash scripts/install-obs-companion.sh",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
     "generate:siblings": "node scripts/generate-catppuccin-siblings.mjs && npm run sync:themes"

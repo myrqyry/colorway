@@ -386,22 +386,6 @@ function renderApp() {
         </section>
 
         <section class="showcase-card">
-          <div class="card-header">Status Indicators</div>
-          <div class="card-body status-demo">
-            <div class="status-row">
-              <span class="status-badge"><span class="status-dot live"></span> LIVE</span>
-              <span class="status-badge recording"><span class="status-dot"></span> REC</span>
-            </div>
-            <div class="status-stats">
-              <span>CPU: <strong id="cpu-value">4.2%</strong></span>
-              <span><strong id="fps-value">60.00</strong> fps</span>
-              <span>Dropped: <strong id="dropped-value">0.3%</strong></span>
-              <span><strong id="bitrate-value">3820</strong> kb/s</span>
-            </div>
-          </div>
-        </section>
-
-        <section class="showcase-card">
           <div class="card-header">Progress Bar</div>
           <div class="card-body progress-demo">
             <div class="demo-progress" role="progressbar" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100" aria-label="Progress: 57%"><div class="demo-progress-fill" style="width:57%"></div></div>
@@ -690,17 +674,6 @@ async function handoffColorway() {
       .to(finalWord, { x: dx, y: dy, scale, duration: 1.15, ease: 'expo.inOut' }, 0)
       .to(backdrop, { autoAlpha: 0, duration: 0.95, ease: 'power2.inOut' }, 0.18);
   });
-}
-
-function updateStatusDemo() {
-  const cpu = document.querySelector('#cpu-value');
-  const fps = document.querySelector('#fps-value');
-  const dropped = document.querySelector('#dropped-value');
-  const bitrate = document.querySelector('#bitrate-value');
-  if (cpu) cpu.textContent = `${(Math.random() * 15 + 2).toFixed(1)}%`;
-  if (fps) fps.textContent = (55 + Math.random() * 10).toFixed(2);
-  if (dropped) dropped.textContent = `${(Math.random() * 2).toFixed(1)}%`;
-  if (bitrate) bitrate.textContent = `${Math.floor(Math.random() * 3000) + 2000}`;
 }
 
 renderApp();
@@ -1196,8 +1169,6 @@ function selectListItem(item) {
   item.setAttribute('aria-selected', 'true');
 }
 
-updateStatusDemo();
-const statusInterval = setInterval(updateStatusDemo, 2000);
 window.addEventListener('beforeunload', () => clearInterval(statusInterval));
 
 document.querySelectorAll('.demo-tab').forEach((tab) => {

@@ -122,6 +122,35 @@ blocks. The normal web-preview appearance cannot verify this lexer contract.
 Use the actual native parser check and an isolated OBS configuration before
 claiming a new icon or pattern path works in OBS.
 
+## Colorway companion and preview emphasis — 2026-10-16
+
+The main web showcase no longer dedicates a large card to status indicators
+or randomly changes nominal CPU, FPS and bitrate values. The real OBS status
+bar stays inside its representative workspace geometry. Scene/source lists,
+mixer, controls and their real theme surfaces now get the visual attention.
+
+An optional, portable Colorway companion ships as `companion/` in the theme
+ZIP, separate from the OBS theme search directory:
+
+- The Lua manager safely backs up and replaces the installed
+  `patterns/pattern.svg` with a selected bundled SVG, never changing the
+  theme ID, QSS, scene collection, or live OBS configuration.
+- With existing `AutoReload=true` in `[Appearance]`, re-writing the first
+  unchanged byte of the base triggers OBS 32.2's QFileSystemWatcher; this was
+  tested in disposable OBS/Xvfb and confirmed in native logs. Without that
+  setting a restart is reported as required.
+- The single-file browser dock embeds **all 160 source palettes** with their
+  actual `.ovt` ancestry and 14 SVG patterns, rendered without a server.
+  It offers search, favorites, light/dark filters, and focused OBS widget
+  previews. It is not a native Qt screenshot or theme-changing control.
+- Generated `obs-companion/colorway-preview.html` and `public/companion/`
+  are reproduced from the source theme and pattern catalogs by
+  `pnpm sync:themes`; local Chromium checks verify real interactions.
+  The ZIP packages all three companion files.
+
+Do not invent OBS frontend theme-switching from Lua: the supported API
+exposes theme-change events, not a theme-setting function.
+
 ## Browser preview fidelity — 2026-10-15
 
 The web preview is a representative OBS Studio interaction surface, **not a

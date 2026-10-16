@@ -15,13 +15,19 @@ export async function buildThemePackage(file, includeBase = true, fetcher = fetc
     && /^(icons\/colorway\/mingcute\/|patterns\/|fonts\/)/.test(path))) {
     throw new Error('Invalid theme asset manifest');
   }
-  const sources = [`themes/${file}`, ...(includeBase ? ['themes/Colorway.obt'] : []), ...new Set(manifest)];
+  const companion = [
+    'companion/colorway-patterns.lua',
+    'companion/colorway-preview.html',
+    'companion/README.md',
+  ];
+  const sources = [`themes/${file}`, ...(includeBase ? ['themes/Colorway.obt'] : []),
+    ...new Set(manifest), ...companion];
   const entries = {};
   // Keep network demand bounded rather than firing a hundred requests at once.
   for (let i = 0; i < sources.length; i += 8) {
     await Promise.all(sources.slice(i, i + 8).map(async (path) => {
       const bytes = new Uint8Array(await (await get(path)).arrayBuffer());
-      entries[path.startsWith('fonts/') || path.startsWith('themes/') ? path : 'themes/' + path] = bytes;
+      entries[path.startsWith('fonts/') || path.startsWith('themes/') || path.startsWith('companion/') ? path : 'themes/' + path] = bytes;
     }));
   }
   const instructions = await (await get('INSTALL.md')).text();

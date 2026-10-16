@@ -859,34 +859,7 @@
 
 .mixer-mute:hover { background: var(--button_bg_hover); border-color: var(--primary); }
 
-.status-demo { gap: 10px; }
-
-.status-row { display: flex; gap: 10px; }
-
-.status-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 3px 10px; font-size: 11px; font-weight: 600;
-  color: var(--text); background: var(--bg_hover);
-  border-radius: 6px;
-}
-
-.status-dot {
-  height: 7px; width: 7px; border-radius: 999px;
-  display: inline-block; background: var(--danger);
-}
-
-.status-dot.live { background: var(--live); }
-
-.status-badge.recording { color: var(--text_light); }
-.status-badge.recording .status-dot { animation: pulse-dot 1.5s ease-in-out infinite; }
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .status-badge.recording .status-dot { animation: none; }
   .demo-tab { transition: none; }
   .demo-list-item { transition: none; }
   .list-action { transition: none; }
@@ -901,14 +874,6 @@
     animation-duration: 0s;
   }
 }
-
-.status-stats {
-  display: flex; flex-wrap: wrap; gap: 10px;
-  font-size: 11px; color: var(--text_muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.status-stats strong { color: var(--text); font-weight: 600; }
 
 .progress-demo { gap: 6px; }
 

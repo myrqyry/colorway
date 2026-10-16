@@ -2,6 +2,7 @@
 !.gitignore
 !icons/
 !patterns/
+!obs-companion/
 !src/
 !test/
 !public/

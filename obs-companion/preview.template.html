@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Colorway — OBS Theme Library</title>
+<style>
+:root { --canvas:#191724; --base:#26233a; --dock:#1f1d2e; --hover:#343044;
+--primary:#c4a7e7; --primary-light:#e0def4; --border:#403d52; --ink:#e0def4;
+--muted:#908caa; --inverse:#191724; --button:#26233a; --meter:#c4a7e7;
+--selected:#191724; --tile:none; }
+*{box-sizing:border-box}
+body{margin:0;background:#15151a;color:#e6e3ef;font:13px/1.4 system-ui,"Segoe UI",sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+.shell{display:grid;grid-template-columns:minmax(215px,280px) minmax(280px,1fr);min-height:100vh}
+.sidebar{padding:16px;display:flex;flex-direction:column;gap:12px;background:#1e1e25;border-right:1px solid #393741}
+.brand{display:flex;gap:9px;align-items:center;font-size:16px;font-weight:800;letter-spacing:.01em}
+.mark{display:grid;place-items:center;width:29px;height:29px;border-radius:8px;background:#c4a7e7;color:#21182b}
+.subtitle{font-size:11px;color:#afa9bd;margin:2px 0 4px}
+.search{width:100%;border:1px solid #4b4653;border-radius:9px;padding:9px;background:#2a2831;color:#f3edf7}
+.search:focus-visible,button:focus-visible{outline:2px solid #bf9bda;outline-offset:2px}
+.filter{display:flex;gap:5px;flex-wrap:wrap}
+.filter button{border:1px solid #48434f;border-radius:7px;padding:5px 8px;color:#c4bfd0;background:transparent}
+.filter button[aria-pressed="true"]{background:#423750;color:#f4eafa;border-color:#90739d}
+.result-count{font-size:11px;color:#9993a8}
+.theme-list{max-height:520px;overflow:auto;display:flex;flex-direction:column;gap:3px;scrollbar-color:#62576c transparent}
+.theme-row{display:flex;align-items:center;gap:9px;text-align:left;border:1px solid transparent;border-radius:8px;padding:8px 9px;background:transparent;color:#e1dce7;min-width:0}
+.theme-row:hover{background:#302b36}
+.theme-row[aria-current="true"]{background:#403449;border-color:#8e719e}
+.theme-label{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:transparent;border:0;padding:0;text-align:left;color:inherit}
+.theme-swatches{display:flex;flex-shrink:0;gap:2px}
+.theme-swatches i{width:8px;height:17px;display:block;border-radius:2px;border:1px solid #ffffff10}
+.fave{width:23px;height:23px;border:0;background:transparent;color:#756b7e;font-size:17px}
+.fave[aria-pressed="true"]{color:#e2ba80}
+.panel{padding:14px;min-width:0}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.panel-head h1{font-size:18px;line-height:1.2;margin:0 0 5px}
+.panel-head p{font-size:11px;color:#a9a3b3;margin:0}
+.theme-tag{font-size:10px;border:1px solid #48444f;border-radius:12px;padding:4px 7px;color:#b5aebe;white-space:nowrap}
+.obs{border:1px solid var(--border);border-radius:11px;overflow:hidden;background:var(--canvas);color:var(--ink)}
+.obs-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;background:var(--canvas);border-bottom:1px solid var(--border)}
+.obs-header strong{font-size:12px;font-weight:650}
+.obs-menubar{display:flex;gap:15px;font-size:10px;color:var(--muted)}
+.obs-body{padding:12px;background:var(--base);display:grid;gap:10px}
+.preview-frame{background:var(--canvas);border:1px solid var(--border);border-radius:6px;padding:9px}
+.preview-stage{aspect-ratio:16/6;background:linear-gradient(145deg,var(--canvas),var(--dock));border-radius:4px;display:grid;place-items:center;border:1px solid var(--border)}
+.preview-stage span{font-size:11px;color:var(--muted)}
+.workspace{display:grid;grid-template-columns:minmax(130px,1fr) minmax(150px,1.2fr);gap:9px}
+.docks{display:grid;gap:9px}
+.dock{background:var(--dock);border:1px solid var(--border);border-radius:7px;overflow:hidden}
+.dock-head{padding:7px 10px;background:var(--canvas);font-size:11px;font-weight:650;border-bottom:1px solid var(--border)}
+.dock-body{padding:7px;display:grid;gap:4px;min-height:54px;background-color:var(--base);background-image:var(--tile)}
+.item{padding:5px 7px;font-size:11px;display:flex;justify-content:space-between;gap:7px;border-radius:4px}
+.item.selected{background:var(--primary);color:var(--selected)}
+.item.muted{color:var(--muted)}
+.dock-toolbar{padding:5px 8px;display:flex;gap:8px;font-size:11px;color:var(--muted);border-top:1px solid var(--border)}
+.dock-panel{padding:9px;display:grid;gap:10px}
+.mixer-label{display:flex;justify-content:space-between;font-size:11px}
+.meter{height:7px;background:var(--base);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.meter>span{height:100%;display:block;background:var(--meter);width:64%;border-radius:10px}
+.meter.alt>span{width:37%}
+.controls{display:flex;gap:5px;flex-wrap:wrap}
+.control{padding:6px 8px;border-radius:5px;background:var(--button);color:var(--ink);border:1px solid var(--border);font-size:10px}
+.control.featured{border-color:var(--primary)}
+.obs-footer{border-top:1px solid var(--border);background:var(--canvas);color:var(--muted);font-size:9px;padding:5px 10px;text-align:right}
+.section{margin-top:17px}
+.section h2{font-size:13px;font-weight:650;margin:0 0 4px}
+.section p{color:#a39db0;font-size:11px;margin:0 0 10px}
+.pattern-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:7px}
+.pattern-card{border:1px solid #48434f;background:#29252e;border-radius:8px;padding:5px;text-align:left;color:#ded7e5}
+.pattern-card[aria-pressed="true"]{border-color:#bda0d2;background:#3b3044}
+.pattern-art{height:46px;display:block;border-radius:5px;background-color:var(--base);background-image:var(--candidate);border:1px solid var(--border)}
+.pattern-name{display:block;font-size:10px;margin:6px 2px 1px}
+.notice{margin-top:12px;border-top:1px solid #3b3644;padding-top:10px;font-size:11px;color:#aaa3b6}
+.notice strong{color:#e8e0ee}
+.empty{color:#c5bccb;font-size:11px;padding:15px 3px}
+@media(max-width:850px){.shell{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid #393741}.theme-list{max-height:170px;display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}.panel{padding:12px}.workspace{grid-template-columns:1fr 1fr}}
+@media(max-width:400px){.workspace{grid-template-columns:1fr}.preview-stage{aspect-ratio:16/7}.panel-head h1{font-size:16px}}
+</style>
+</head>
+<body>
+<!-- INSERT_COLORWAY_JSON -->
+<div class="shell">
+<aside class="sidebar" aria-label="Theme library">
+  <div class="brand"><span class="mark">C</span> Colorway</div>
+  <p class="subtitle">Local theme library · previews from the actual OBS palettes</p>
+  <label for="theme-search">Search 160 themes</label>
+  <input id="theme-search" class="search" type="search" aria-label="Search themes by name or collection" autocomplete="off">
+  <div class="filter" role="group" aria-label="Theme filtering">
+    <button type="button" data-filter="all" aria-pressed="true">All</button>
+    <button type="button" data-filter="dark" aria-pressed="false">Dark</button>
+    <button type="button" data-filter="light" aria-pressed="false">Light</button>
+    <button type="button" data-filter="favorites" aria-pressed="false">★ Favorites</button>
+  </div>
+  <div id="result-count" class="result-count" aria-live="polite"></div>
+  <div id="theme-list" class="theme-list"></div>
+</aside>
+<main class="panel">
+  <div class="panel-head">
+    <div><h1 id="theme-name">Colorway</h1><p id="theme-id"></p></div>
+    <span id="theme-kind" class="theme-tag">Dark</span>
+  </div>
+  <div id="theme-workspace" class="obs">
+    <div class="obs-header"><strong>OBS Studio</strong><span class="obs-menubar">File &nbsp; Edit &nbsp; Docks &nbsp; Profile</span></div>
+    <div class="obs-body">
+      <div class="preview-frame"><div class="preview-stage"><span>Preview canvas · theme styling around your content</span></div></div>
+      <div class="workspace">
+        <div class="docks">
+          <section class="dock"><div class="dock-head">Scenes</div><div class="dock-body">
+            <div class="item selected">Gameplay <span>●</span></div>
+            <div class="item">Starting Soon</div><div class="item muted">Be Right Back</div>
+          </div><div class="dock-toolbar">+ &nbsp; − &nbsp; ↑ &nbsp; ↓</div></section>
+          <section class="dock"><div class="dock-head">Sources</div><div class="dock-body">
+            <div class="item">Game Capture <span>◉</span></div>
+            <div class="item selected">Camera <span>◉</span></div>
+            <div class="item muted">Overlay <span>◯</span></div>
+          </div><div class="dock-toolbar">+ &nbsp; − &nbsp; ⚙</div></section>
+        </div>
+        <div class="docks">
+          <section class="dock"><div class="dock-head">Audio Mixer</div><div class="dock-panel">
+            <div><div class="mixer-label"><span>Desktop Audio</span><span>−12 dB</span></div><div class="meter"><span></span></div></div>
+            <div><div class="mixer-label"><span>Mic/Aux</span><span>−24 dB</span></div><div class="meter alt"><span></span></div></div>
+          </div></section>
+          <section class="dock"><div class="dock-head">Controls</div><div class="dock-panel">
+            <div class="controls"><span class="control featured">Start Streaming</span><span class="control">Start Recording</span><span class="control">Studio Mode</span><span class="control">Settings</span></div>
+          </div></section>
+        </div>
+      </div>
+    </div>
+    <div class="obs-footer">Representative OBS workspace · appearance preview only</div>
+  </div>
+  <section class="section" aria-label="Pattern choices">
+    <h2>Background pattern</h2>
+    <p>Pick a tile to compare it with this palette. The pattern changes here only until you apply it using Colorway Pattern Manager in Tools → Scripts.</p>
+    <div id="pattern-list" class="pattern-grid"></div>
+  </section>
+  <p class="notice"><strong>Preview only.</strong> To use a palette, choose it in OBS Settings → Appearance. To change the installed pattern, use the Colorway Pattern Manager Lua script; the browser dock does not write files.</p>
+</main>
+</div>
+<script>
+(function(){
+'use strict';
+const data = JSON.parse(document.getElementById('colorway-data').textContent);
+const root = document.documentElement;
+const labels = {'bg_window':'--canvas','bg_base':'--base','bg_dock':'--dock','bg_hover':'--hover',
+  'primary':'--primary','primary_light':'--primary-light','border_color':'--border',
+  'text':'--ink','text_muted':'--muted','text_inverse':'--inverse',
+  'button_bg':'--button','meter_fg_nom':'--meter','on_primary':'--selected'};
+const state={ theme:data.themes.find(x=>x.file==='Colorway-Everforest-Hard.ovt') || data.themes[0],
+  pattern:data.patterns[0],filter:'all',query:'',favorites:new Set()};
+try { state.favorites=new Set(JSON.parse(localStorage.getItem('colorway-dock-favorites-v1') || '[]')); } catch {}
+const byId=(id)=>document.getElementById(id);
+function node(tag,cls,text){const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el;}
+function setTheme(theme){
+  state.theme=theme;
+  for(const [color,prop] of Object.entries(labels))root.style.setProperty(prop,theme.colors[color]);
+  byId('theme-name').textContent=theme.name;
+  byId('theme-id').textContent=theme.id;
+  byId('theme-kind').textContent=theme.dark?'Dark theme':'Light theme';
+  updateThemeList();
+}
+function setPattern(pattern){
+  state.pattern=pattern;
+  root.style.setProperty('--tile','url("'+pattern.image+'")');
+  updatePatternList();
+}
+function updateThemeList(){
+  const list=byId('theme-list');list.replaceChildren();
+  const items=data.themes.filter(theme=>{
+    if(state.filter==='dark'&&!theme.dark)return false;
+    if(state.filter==='light'&&theme.dark)return false;
+    if(state.filter==='favorites'&&!state.favorites.has(theme.file))return false;
+    return (theme.name+' '+theme.file).toLowerCase().includes(state.query);
+  });
+  byId('result-count').textContent=items.length+' of '+data.themes.length+' themes';
+  if(!items.length){list.append(node('div','empty','No themes match. Try a different filter.'));return;}
+  for(const theme of items){
+    const row=node('div','theme-row');
+    row.setAttribute('aria-current',theme.file===state.theme.file?'true':'false');
+    const choice=node('button','theme-label',theme.name);choice.type='button';choice.title=theme.id;
+    choice.addEventListener('click',()=>setTheme(theme));
+    row.append(choice);
+    const swatches=node('span','theme-swatches');
+    for(const color of ['bg_window','bg_dock','primary','text']){
+      const chip=node('i');chip.style.backgroundColor=theme.colors[color];swatches.append(chip);
+    }
+    row.append(swatches);
+    const fave=node('button','fave','★');fave.type='button';
+    fave.title='Toggle favorite';fave.setAttribute('aria-label','Favorite '+theme.name);
+    fave.setAttribute('aria-pressed',state.favorites.has(theme.file)?'true':'false');
+    fave.addEventListener('click',()=>{
+      if(state.favorites.has(theme.file))state.favorites.delete(theme.file);else state.favorites.add(theme.file);
+      try{localStorage.setItem('colorway-dock-favorites-v1',JSON.stringify([...state.favorites]));}catch{}
+      updateThemeList();
+    });row.append(fave);list.append(row);
+  }
+}
+function updatePatternList(){
+  const list=byId('pattern-list');list.replaceChildren();
+  for(const pattern of data.patterns){
+    const button=node('button','pattern-card');button.type='button';
+    button.setAttribute('aria-pressed',pattern.file===state.pattern.file?'true':'false');
+    button.title=pattern.name;
+    const art=node('span','pattern-art');
+    art.style.setProperty('--candidate','url("'+pattern.image+'")');
+    button.append(art,node('span','pattern-name',pattern.name));
+    button.addEventListener('click',()=>setPattern(pattern));
+    list.append(button);
+  }
+}
+byId('theme-search').addEventListener('input',e=>{state.query=e.target.value.trim().toLowerCase();updateThemeList();});
+for(const button of document.querySelectorAll('[data-filter]')){
+  button.addEventListener('click',()=>{
+    state.filter=button.dataset.filter;
+    for(const other of document.querySelectorAll('[data-filter]')){
+      other.setAttribute('aria-pressed',other===button?'true':'false');
+    }
+    updateThemeList();
+  });
+}
+setTheme(state.theme);
+setPattern(state.pattern);
+})();
+</script>
+</body>
+</html>

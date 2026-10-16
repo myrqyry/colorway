@@ -1,6 +1,44 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Latest continuation — Colorway optional OBS companion (2026-10-16)
+
+User requested easier pattern changes, theme previews in OBS, and a web
+preview that prioritizes common widgets rather than colorful status counters.
+Removed the redundant standalone status showcase and its randomized telemetry;
+kept OBS's own tiny status bar. Added standalone OBS Lua pattern manager
+(`obs-companion/colorway-patterns.lua`): 14 whitelisted bundled SVGs,
+first-use exact-original backup, safe atomic replacement, restore original,
+manual-apply semantics, and optional live OBS reload via the existing
+`AutoReload=true` theme watcher. Does not edit OBS's user.ini or selected theme.
+
+Built a **self-contained, local/offline Browser Dock** from all 160 real
+theme palettes, their parent inheritance chains, and 14 embedded SVG
+patterns. Features search, dark/light filters, favorites and a
+workstation-focused preview of scenes/sources/mixer/controls; theme selection
+is clearly preview-only. `pnpm sync:themes` builds the portable HTML and
+`public/companion` mirrors; website ZIP now includes the optional companion
+outside the themes directory. `scripts/install-obs-companion.sh` copies
+companions into a stable local directory while preserving previous copies.
+
+**Verification:** `pnpm test` 634 total, 633 passed, 1 pre-existing
+network-gated skip; `pnpm build`; existing `pnpm check:preview`; and
+`pnpm check:companion` (real Chromium file://) all passed. Actual LuaJIT
+exercised pattern selection/restore/traversal rejection and AutoReload opt-in
+against isolated real SVG files, without changing user.ini or QSS bytes. The
+native OBS 32.2 Xvfb watcher was independently observed logging a successful
+theme reload after the exact same one-byte touch. Source/mirror/companion sync
+was byte-idempotent; ZIP tests verified companion files in both download modes;
+real installer tests verified recovery of overwritten user files and refusal of
+symlink install targets. `pnpm check:obs-native` continues to pass on three
+variants.
+
+Companion files were installed separately at the user's OBS companion
+directory, but **neither the Lua script nor browser dock was auto-activated**;
+no live OBS scenes, theme selection, or settings were changed. A live OBS
+Scripts-window click-through remains unverified until user setup. Preserve
+that boundary in user-facing summaries.
+
 ## Latest continuation — OBS patterned background regression (2026-10-16)
 
 User saw a flat background after the verified fresh installation. The source
