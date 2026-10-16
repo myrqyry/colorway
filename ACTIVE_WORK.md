@@ -1,6 +1,24 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Latest continuation — OBS patterned background regression (2026-10-16)
+
+User saw a flat background after the verified fresh installation. The source
+`patterns/pattern.svg` was byte-identical to the installed asset, and
+`QSvgRenderer` loaded it. In direct offscreen Qt6 tests the six
+`background-repeat: repeat` declarations in the base `.obt` prevented
+the small transparent SVG background image from painting, while the same
+`background-image` with no explicit repeat tiled correctly. Remove only those
+six declarations and preserve all background colors/asset paths. The new
+`test/pattern-qt-tiling.test.js` and Python helper require actual alternating
+SVG pixel colors as well as the no-repeat source contract.
+
+The live OBS session was open while debugging. Avoid changing its selected
+variant or quitting/restarting OBS without user approval. Validate through
+isolated Qt/OBS before updating the installed base; preserve the previous
+base in the dedicated theme-backups directory. The installed folder was a
+clean 161-theme MingCute distribution matching `c41ed4b` before this fix.
+
 ## Latest continuation — base OBT forensic repairs (2026-10-16)
 
 Repository `Colorway.obt` is the authority. The installed user's OBS profile

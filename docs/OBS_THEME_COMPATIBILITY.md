@@ -61,6 +61,25 @@ Colorway follows these constraints:
 The wiki permits a variant to extend another variant as long as the dependency chain ends at a base theme, and OBS's parser confirms it: `PrepareQSS` concatenates the chain base-first, so a variant's rules are appended after its parent's and win at equal specificity. Colorway uses exactly this — every variant extends `com.myrqyry.Colorway`, and light variants append their own icon `url()` overrides after the base's. No inheritance change is planned or wanted; see the settled decision in *Upstream baseline* above.
 
 
+## Qt SVG background tiling — 2026-10-16
+
+The Colorway base uses a small, transparent SVG tile at
+`theme:patterns/pattern.svg`. On the installed Linux Qt6 engine,
+`background-image: var(--pattern_eyes)` alone renders and repeats the SVG,
+but adding CSS-style `background-repeat: repeat` to the Qt stylesheet makes
+the pattern disappear, leaving only the flat background color. Qt does not
+follow browser CSS background-repeat semantics here.
+
+Keep the authored `background-image` properties, but omit
+`background-repeat` in these Qt widget rules. Browser preview CSS is
+separate and retains its own supported repeat behavior.
+
+`test/pattern-qt-tiling.test.js` verifies all pattern-bearing QSS blocks,
+then renders the actual SceneTree declarations and shipped SVG under
+offscreen PyQt6 to require multiple background pixel colors (not a uniform
+fill). The native isolated `pnpm check:obs-native` gate continues to verify
+the actual OBS stylesheet, whereas this test adds rendered-pixel coverage.
+
 ## OBS 32.2 parser boundary — verified 2026-10-16
 
 OBS's `@OBSThemeVars` parser (`frontend/OBSApp_Themes.cpp`) evaluates
