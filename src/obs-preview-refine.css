@@ -61,7 +61,7 @@
   ) !important;
 }
 
-/* Permanent Settings controller, positioned over only the fake OBS preview. */
+/* Permanent Settings controller, positioned over only the OBS simulator preview. */
 .obs-sim-preview-area > .obs-sim-dialog-backdrop {
   position: absolute;
   z-index: 100;
