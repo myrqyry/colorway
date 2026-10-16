@@ -61,6 +61,39 @@ Colorway follows these constraints:
 The wiki permits a variant to extend another variant as long as the dependency chain ends at a base theme, and OBS's parser confirms it: `PrepareQSS` concatenates the chain base-first, so a variant's rules are appended after its parent's and win at equal specificity. Colorway uses exactly this — every variant extends `com.myrqyry.Colorway`, and light variants append their own icon `url()` overrides after the base's. No inheritance change is planned or wanted; see the settled decision in *Upstream baseline* above.
 
 
+## Browser preview fidelity — 2026-10-15
+
+The web preview is a representative OBS Studio interaction surface, **not a
+pixel-identical OBS screenshot**. The theme files remain the authority:
+
+- Browser-only `theme:` to `/` URL translation occurs in
+  `src/theme-loader.js` when applying variables to the DOM. Neither exported
+  `.obt/.ovt` content nor the parser's returned values are rewritten.
+- QWidget icon samples use the exact `--cw_icon_*_base` token from the selected
+  theme variant. Their authored MingCute ink and selected/normal SVG polarity
+  are preserved; CSS does not retint them. Status *indicators*, which are
+  semantic rather than Qt `qproperty-icon` widgets, use theme-colored masks.
+- Selected rows use OBS's `--primary` with `--on_primary`, and its selected
+  hover uses `--primary_light` with `--on_primary_hover`.
+- Stream/record/virtual-camera/studio controls use the respective Colorway QSS
+  active colors and surfaces, not one universal active tint.
+- Only Appearance settings are actually represented; other settings pages
+  explain that they must be changed in OBS, rather than inventing controls.
+
+**Reproducible checks:** `pnpm test` validates QSS-matched CSS/URL semantics
+and token origin; `pnpm check:preview` builds then launches a temporary
+localhost Vite preview and isolated headless Chromium profile to check a light
+and a dark theme, actual MingCute background image URL/polarity, selected ink,
+active control borders, pattern rendering, and status transitions. This
+requires Chromium installed on the local machine (`CHROMIUM_PATH` can override
+`/usr/bin/chromium`). It does not change a real OBS configuration or
+installed theme files.
+
+Qt rendering, window-manager chrome, native focus/scroll behavior, platform
+fonts, dock arrangement, and plugin-controlled widgets can still differ.
+Actual OBS 32.2 rendering remains the final visual gate. Do not market the
+browser representation as a screenshot or authoritative OBS geometry.
+
 ## Automated upstream watch
 
 `pnpm check:obs-upstream` checks the real `obsproject/obs-studio` repository against the reviewed baseline in `scripts/obs-upstream-baseline.json`.

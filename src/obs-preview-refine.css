@@ -250,8 +250,13 @@
 }
 
 .colorway-theme-option.selected {
-  background: var(--list_item_bg_selected, var(--primary));
-  color: var(--text_inverse, var(--bg_base));
+  background: var(--primary);
+  color: var(--on_primary);
+}
+
+.colorway-theme-option.selected:hover {
+  background: var(--primary_light);
+  color: var(--on_primary_hover);
 }
 
 .colorway-theme-option.selected .palette-swatch {

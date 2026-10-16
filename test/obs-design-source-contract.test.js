@@ -43,8 +43,9 @@ test('status bar uses MingCute versions of OBS-informed state families', () => {
   assert.match(preview, /recordIndicator\.dataset\.state = recording \? 'active' : 'inactive'/);
 });
 
-test('imported OBS geometry stays themeable', () => {
-  assert.match(styles, /mask: var\(--obs-icon\) center \/ contain no-repeat/);
+test('MingCute QWidget glyphs use authored inks while status signals remain themeable', () => {
+  assert.match(styles, /background-image: var\(--obs-icon\)/);
+  assert.match(styles, /\.obs-sim-status-icon\s*\{[^}]*mask: var\(--obs-icon\) center \/ contain no-repeat/s);
   assert.match(styles, /background: currentColor/);
   assert.match(styles, /--cw-live-primary/);
   assert.match(styles, /--cw-live-danger/);

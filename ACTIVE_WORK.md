@@ -1,6 +1,24 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Latest continuation — OBS browser preview parity (2026-10-15)
+
+The MingCute migration and previously integrated Colorway base/EarthBound
+changes were published on `main` in `946a2bf` and `343489b`; remote HEAD
+was verified. The subsequent web-preview alignment keeps source OBS themes
+unchanged: browser-side `theme:` asset URL resolution, actual QSS SVG polarity
+and baked foregrounds, selection ink/hover roles, and separate OBS control
+active roles. Non-Appearance pages no longer claim invented options.
+
+**Verified:** `pnpm test` 620 total/619 pass/1 skipped; `pnpm build` pass;
+isolated Chromium checked the rendered normal and selected MingCute paths,
+pattern, status masks, selected ink and QSS active control border roles for
+Monokai and Catppuccin Latte Blue. The repeatable check is
+`pnpm check:preview`. See `docs/OBS_THEME_COMPATIBILITY.md` for boundary.
+**Still open:** live OBS Studio visual comparison of widget geometry/native
+style under OBS 32.2. Browser and offscreen Qt checks do not establish full
+pixel-level parity.
+
 ## Latest continuation — MingCute migration (2026-10-15)
 
 Migrated Colorway's real OBS icon paths and browser preview to pinned MingCute
@@ -14,13 +32,13 @@ theme IDs, color roles, and the unrelated ongoing base-theme work.
 `pnpm build` passed; all 106 MingCute assets valid under Qt SVG; repeated
 `pnpm sync:themes` byte-idempotent; Chromium passed preview/mask transitions
 and status asset loading. **Not yet verified in the user's running OBS UI.**
-No user OBS installation or settings were changed; migration is local and
-uncommitted, not pushed. Details and provenance: `docs/MINGCUTE_MIGRATION.md`.
+No user OBS installation or settings were changed; migration was subsequently
+published to `origin/main` in `946a2bf`. Details and provenance: `docs/MINGCUTE_MIGRATION.md`.
 
 
 ## Current continuation — base-theme review fixes
 
-The requested base-theme fixes and asset delivery are implemented and uncommitted.
+The requested base-theme fixes and asset delivery are implemented and published in `946a2bf`.
 `docs/COLORWAY_BASE_REVIEW.md` §Delivery update owns the detailed outcome/evidence;
 `docs/INSTALL.md` owns installation instructions. Current source/runtime evidence takes
 precedence over the older documentation-only snapshot preserved below.
@@ -41,9 +59,9 @@ repeat sync is byte-idempotent. See the delivery update for environment/count de
 menus, disabled states, and high contrast. Offscreen Qt evidence does not close that gate.
 No user OBS configuration or installed theme was changed.
 
-Existing documentation/continuity edits predate this implementation and remain in the
-working tree. Use `git status` and scoped diffs to recover the current change set; do not
-treat the old “only two dirty files” statements below as a current inventory.
+The documentation/continuity edits predate the implementation and are preserved in
+the published checkpoint. Use `git status` for the current change set; the old
+“only two dirty files” statements below are a historical inventory only.
 
 ## Earlier documentation-only snapshot (historical)
 

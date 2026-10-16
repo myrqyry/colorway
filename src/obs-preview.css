@@ -456,8 +456,13 @@
 }
 
 .obs-sim-list-row.selected {
-  background: var(--list_item_bg_selected, var(--primary));
-  color: var(--text_inverse, var(--bg_base));
+  background: var(--primary);
+  color: var(--on_primary);
+}
+
+.obs-sim-list-row.selected:hover {
+  background: var(--primary_light);
+  color: var(--on_primary_hover);
 }
 
 .obs-sim-row-icon {
@@ -682,29 +687,61 @@
   padding: 5px 3px;
 }
 
+/* The OBS controls are QPushButtons: Colorway.obt's #controlsFrame and
+   #streamButton/#recordButton/#virtualCamButton/#modeSwitch rules own their states. */
 .obs-sim-control {
   min-height: 27px;
-  border: 1px solid transparent;
-  border-radius: var(--border_radius_small, 5px);
+  border: 2px solid var(--button_bg);
+  border-radius: var(--border_radius, 9px);
   padding: 4px 6px;
-  background: transparent;
+  background: var(--button_bg);
   color: var(--text);
+  font-weight: 500;
 }
 
 .obs-sim-control:hover {
-  border-color: var(--button_border_hover, var(--border_color));
-  background: var(--button_bg_hover, var(--bg_hover));
-}
-
-.obs-sim-control.active {
   border-color: var(--primary);
-  background: color-mix(in srgb, var(--primary) 20%, transparent);
+  background: radial-gradient(circle, var(--button_bg) 0 50%, var(--primary) 100%);
+  color: var(--text_bright, var(--text));
 }
 
-.obs-sim-control.recording {
-  border-color: var(--danger);
-  color: var(--danger);
+.obs-sim-control[data-control="stream"].active {
+  border-color: var(--live);
+  background: linear-gradient(to bottom, var(--live_bg_start), var(--live_bg_end));
+  color: var(--live);
+  font-weight: 700;
 }
+
+.obs-sim-control[data-control="record"].active {
+  border-color: var(--recording);
+  background: linear-gradient(to bottom, var(--recording_bg_start), var(--recording_bg_end));
+  color: var(--recording);
+  font-weight: 700;
+}
+
+.obs-sim-control[data-control="virtualcam"].active {
+  border-color: var(--lavender_accent);
+  background: linear-gradient(to bottom, var(--accent_bg_start), var(--accent_bg_end));
+  color: var(--lavender_accent);
+  font-weight: 700;
+}
+
+.obs-sim-control[data-control="studio"].active {
+  border-color: var(--primary);
+  background: var(--bg_base);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.obs-sim-control[data-control].active:hover {
+  background: var(--button_bg_hover);
+  color: var(--button_hover_text);
+}
+
+.obs-sim-control[data-control="stream"].active:hover { border-color: var(--live); }
+.obs-sim-control[data-control="record"].active:hover { border-color: var(--recording); }
+.obs-sim-control[data-control="virtualcam"].active:hover { border-color: var(--lavender_accent); }
+.obs-sim-control[data-control="studio"].active:hover { border-color: var(--primary); }
 
 .obs-sim-statusbar {
   display: flex;
@@ -1008,6 +1045,15 @@
   width: 14px;
   height: 14px;
   flex: 0 0 auto;
+  background-image: var(--obs-icon);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+/* Status symbols are semantic indicators, not QWidget qproperty-icon SVGs.
+   Retain a colorable mask for the status-specific OBS role colors. */
+.obs-sim-status-icon {
   background: currentColor;
   -webkit-mask: var(--obs-icon) center / contain no-repeat;
   mask: var(--obs-icon) center / contain no-repeat;

@@ -410,6 +410,13 @@
 .obs-sim-list-row.selected,
 .obs-sim-settings-nav button.selected {
   background: var(--cw-live-primary, var(--primary)) !important;
+  color: var(--on_primary) !important;
+}
+
+.obs-sim-list-row.selected:hover,
+.obs-sim-settings-nav button.selected:hover {
+  background: var(--primary_light) !important;
+  color: var(--on_primary_hover) !important;
 }
 
 @media (max-width: 720px) {

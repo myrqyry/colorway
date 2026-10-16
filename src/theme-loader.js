@@ -164,6 +164,15 @@ export async function loadTheme(file) {
   return vars;
 }
 
+// OBS resolves `theme:` through its theme-search path. Browsers cannot, so
+// translate only known, packaged assets at the DOM boundary. The .obt/.ovt
+// source and the palette parser retain the original Qt URLs unchanged.
+export function browserThemeAssetValue(value) {
+  if (typeof value !== 'string') return value;
+  const match = value.match(/^url\(theme:((?:icons\/colorway\/mingcute\/(?:normal|selected|status)\/[\w-]+\.svg)|(?:patterns\/[\w-]+\.svg))\)$/);
+  return match ? `url("/${match[1]}")` : value;
+}
+
 let _appliedVars = new Set();
 
 export function applyTheme(vars) {
@@ -171,7 +180,7 @@ export function applyTheme(vars) {
   _appliedVars.forEach(key => root.style.removeProperty(key));
   Object.entries(vars).forEach(([key, value]) => {
     if (key.startsWith('--')) {
-      root.style.setProperty(key, value);
+      root.style.setProperty(key, browserThemeAssetValue(value));
       _appliedVars.add(key);
     }
   });

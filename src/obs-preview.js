@@ -19,14 +19,22 @@ function iconPath(name, source = 'colorway') {
   return `${root}/${name}.svg`;
 }
 
+function iconValue(name, source = 'colorway') {
+  const fallback = `url('${iconPath(name, source)}')`;
+  // QWidget icon properties resolve to a concrete, contrast-baked SVG for
+  // each variant. Use the same authored --cw_icon_*_base token in the web UI.
+  if (source === 'mingcute-status') return fallback;
+  return `var(--cw_icon_${name.replaceAll('-', '_')}_base, ${fallback})`;
+}
+
 function iconMarkup(name, source = 'colorway', extra = '') {
-  const path = escapeHtml(iconPath(name, source));
-  return `<span class="obs-sim-svg-icon ${extra}" style="--obs-icon: url('${path}')" aria-hidden="true"></span>`;
+  const icon = escapeHtml(iconValue(name, source));
+  return `<span class="obs-sim-svg-icon ${extra}" style="--obs-icon: ${icon}" aria-hidden="true"></span>`;
 }
 
 function setIcon(node, name, source = 'colorway') {
   if (!node) return;
-  node.style.setProperty('--obs-icon', `url('${iconPath(name, source)}')`);
+  node.style.setProperty('--obs-icon', iconValue(name, source));
 }
 
 const scenes = ['Scene', 'Gameplay', 'Starting Soon'];
@@ -280,7 +288,7 @@ function previewMarkup() {
       <div class="obs-preview-heading-row">
         <div>
           <h2 id="obs-preview-heading">OBS Studio preview</h2>
-          <p>Colorway rendered in the same dock hierarchy and settings state as OBS Studio.</p>
+          <p>Representative OBS interface; theme colors and icon assets follow the shipped OBS theme.</p>
         </div>
         <div class="obs-preview-legend">
           <span><i class="obs-preview-legend-dot"></i> live theme</span>
@@ -291,7 +299,7 @@ function previewMarkup() {
 
       <div class="obs-sim-window" data-obs-window>
         <div class="obs-sim-titlebar">
-          <strong>OBS 32.2.0 - Profile: Untitled - Scenes: 2026</strong>
+          <strong>OBS Studio — Colorway theme preview</strong>
           <span aria-hidden="true">×</span>
         </div>
 
@@ -606,7 +614,7 @@ function wirePreview(root) {
       if (page === 'Appearance') {
         setAppearancePanel(root);
       } else {
-        panel.innerHTML = `<div class="obs-sim-settings-placeholder"><h3>${page}</h3><p>This preview keeps the real OBS category geometry visible while Appearance is the Colorway-specific state.</p><label><span>Example option</span><input class="obs-sim-input" value="${page} setting"></label><label class="obs-sim-check"><input type="checkbox" checked> Enabled</label></div>`;
+        panel.innerHTML = `<div class="obs-sim-settings-placeholder"><h3>${escapeHtml(page)}</h3><p>Only Appearance is interactive in this theme preview. Open OBS Studio to change these settings.</p></div>`;
       }
     });
   });
