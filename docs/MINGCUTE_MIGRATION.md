@@ -23,17 +23,20 @@ reconstructed or fabricated glyphs. Generated 16-pixel SVGs live under
 `scripts/build-mingcute-icons.mjs` preserves the upstream 24×24 path geometry,
 adds 16×16 dimensions for Qt, and replaces `currentColor` with fixed, contrast-
 tested foregrounds (`#e0def4` and `#191724`). Qt does not re-tint the SVGs
-based on CSS variables. The generator runs automatically during
+based on CSS variables. Function-valued OBS variables in `@OBSThemeVars` are written as quoted strings
+(`'url(theme:...)'`), as required by the OBS 32.2 lexer. The browser parser
+decodes these values for CSS; Qt/OBS receives unquoted CSS after theme substitution.
+The generator runs automatically during
 `pnpm sync:themes` and requires no network or new package dependency.
 
 ## Coverage
 
-- 50 semantic glyph names, two color polarities each (100 OBS-compatible SVGs)
+- 51 semantic glyph names, two color polarities each (102 OBS-compatible SVGs)
 - Six state indicator SVGs generated from MingCute filled/regular shapes
 - `Colorway.obt` uses only `theme:icons/colorway/mingcute/...` paths
 - Light-theme direct checkbox references and generated state tokens also use
   the new paths
-- Downloads package all 106 icons, patterns, font license, and MingCute license
+- Downloads package all 108 icons, patterns, font license, and MingCute license
 - `scripts/copy-themes.sh` installs the MingCute tree without modifying OBS
   settings or deleting files from the user's active OBS installation
 

@@ -60,6 +60,7 @@
     "status/recording-active": "filled/dot-circle",
     "status/recording-inactive": "dot-circle",
     "status/network-good": "wifi",
-    "status/network-inactive": "wifi-off"
+    "status/network-inactive": "wifi-off",
+    "slideshow": "photo-album"
   }
 }

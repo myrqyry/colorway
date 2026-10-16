@@ -1,4 +1,5 @@
 import { THEMES } from './theme-catalog.js';
+import { decodeObsFunctionValue } from './theme-value-codec.js';
 
 const LOCAL_THEMES = '/themes/';
 
@@ -96,7 +97,7 @@ export function parseOVT(text) {
   if (blockMatch) {
     for (const line of blockMatch[1].split('\n')) {
       const match = line.match(/^\s*(--[\w-]+)\s*:\s*(.+?);/);
-      if (match) vars[match[1]] = match[2].trim();
+      if (match) vars[match[1]] = decodeObsFunctionValue(match[2].trim());
     }
   }
 
@@ -169,8 +170,9 @@ export async function loadTheme(file) {
 // source and the palette parser retain the original Qt URLs unchanged.
 export function browserThemeAssetValue(value) {
   if (typeof value !== 'string') return value;
-  const match = value.match(/^url\(theme:((?:icons\/colorway\/mingcute\/(?:normal|selected|status)\/[\w-]+\.svg)|(?:patterns\/[\w-]+\.svg))\)$/);
-  return match ? `url("/${match[1]}")` : value;
+  const unquoted = decodeObsFunctionValue(value);
+  const match = unquoted.match(/^url\(theme:((?:icons\/colorway\/mingcute\/(?:normal|selected|status)\/[\w-]+\.svg)|(?:patterns\/[\w-]+\.svg))\)$/);
+  return match ? `url("/${match[1]}")` : unquoted;
 }
 
 let _appliedVars = new Set();

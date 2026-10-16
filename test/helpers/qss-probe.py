@@ -30,6 +30,14 @@ for source in [payload['base'], payload.get('variant', '')]:
     css.append(re.sub(r'@OBSTheme(?:Meta|Vars)\s*\{.*?\}', '', source, flags=re.S))
 
 
+# Match OBSApp_Themes.cpp: quoted function values become raw QSS strings.
+# Preserve any other string tokens and the authored QSS unchanged.
+for name, value in list(variables.items()):
+    if value.startswith(("'url(", "'rgba(", '"url(', '"rgba(')) and value[-1] == value[0]:
+        variables[name] = value[1:-1]
+
+
+
 def evaluate(value, trail=()):
     value = value.strip()
     alias = re.fullmatch(r'var\((--\w+)\)', value)

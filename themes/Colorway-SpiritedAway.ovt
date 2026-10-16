@@ -92,8 +92,8 @@
     --bg_hover: #2E3A38;
 
     
-    --accent_bg_start: rgba(243, 177, 179, 0.3);
-    --accent_bg_end: rgba(243, 177, 179, 0.1);
+    --accent_bg_start: 'rgba(243, 177, 179, 0.3)';
+    --accent_bg_end: 'rgba(243, 177, 179, 0.1)';
 
     
     --ico: var(--text);

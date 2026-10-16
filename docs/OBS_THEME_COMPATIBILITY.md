@@ -61,6 +61,48 @@ Colorway follows these constraints:
 The wiki permits a variant to extend another variant as long as the dependency chain ends at a base theme, and OBS's parser confirms it: `PrepareQSS` concatenates the chain base-first, so a variant's rules are appended after its parent's and win at equal specificity. Colorway uses exactly this — every variant extends `com.myrqyry.Colorway`, and light variants append their own icon `url()` overrides after the base's. No inheritance change is planned or wanted; see the settled decision in *Upstream baseline* above.
 
 
+## OBS 32.2 parser boundary — verified 2026-10-16
+
+OBS's `@OBSThemeVars` parser (`frontend/OBSApp_Themes.cpp`) evaluates
+`var()`, `calc()`, `min()`, `max()` and hex colors as special forms. It
+treats other values as **one lexical string token**, which means an unquoted
+`url(theme:...)` or `rgba(...)` is truncated to the function name and cannot
+be substituted as working QSS. This differs from an ordinary browser CSS
+variable declaration.
+
+- Theme source and exported packages use `'url(theme:...)'` and `'rgba(...)'`.
+- `src/theme-value-codec.js` is the single disk-format codec. It quotes only
+  actual declarations inside `@OBSThemeVars`, preserves comment provenance
+  verbatim, and decodes function tokens for browser import and export.
+- `pnpm sync:themes`, the Catppuccin sibling generator, palette import/export,
+  and state-token generation all preserve the quoted format.
+- `test/obs-theme-parser-contract.test.js` enforces this across all 161 theme
+  files; when libobs headers/compiler are present it also compiles a probe
+  against the actual libobs lexer. Other platforms retain the source-format
+  contract. The Qt rendering harness decodes these values to mirror OBS's
+  substitution before constructing the QSS.
+- The two accidentally joined QSS selector lists were separated so checkbox,
+  group box, and menubar backgrounds no longer inherit item-view pattern
+  rules, and unrelated source-tree selectors no longer bleed into menu icons.
+- Source types now use distinct MingCute photo-album slideshow and playback
+  media glyphs, plus the existing general output monitor glyph.
+
+**Native OBS verification:** on a Linux development machine with OBS,
+Xvfb, C++ and Qt6Widgets headers installed, run
+`pnpm check:obs-native`. This copies the current source theme and assets into
+new temporary OBS configurations and launches isolated OBS sessions for the
+base, Catppuccin Latte Blue and Monokai. An observation-only Qt6 hook records
+the real `QApplication::setStyleSheet` argument. The check verifies the exact
+variant palette, MingCute/pattern URLs and absence of unresolved `var()`
+references. It stops all test processes and removes its temporary config;
+the user's existing OBS installation/settings are never edited. This is an
+**optional local integration gate**, not an assumed headless CI prerequisite.
+
+Do not reintroduce unquoted `url()` / `rgba()` values in OBS-theme variable
+blocks. The normal web-preview appearance cannot verify this lexer contract.
+Use the actual native parser check and an isolated OBS configuration before
+claiming a new icon or pattern path works in OBS.
+
 ## Browser preview fidelity — 2026-10-15
 
 The web preview is a representative OBS Studio interaction surface, **not a

@@ -93,8 +93,8 @@
 
     
     
-    --accent_bg_start: rgba(102, 238, 170, 0.3);
-    --accent_bg_end: rgba(102, 238, 170, 0.1);
+    --accent_bg_start: 'rgba(102, 238, 170, 0.3)';
+    --accent_bg_end: 'rgba(102, 238, 170, 0.1)';
 
     --bg_dock: #17171f;
     --bg_hover: #2f2f40;

@@ -1,4 +1,5 @@
 import { parseOVT } from './theme-loader.js';
+import { encodeObsFunctionValue } from './theme-value-codec.js';
 
 export { parseOVT };
 
@@ -47,7 +48,7 @@ function formatVars(tokens) {
   const entries = Object.entries(tokens).filter(([k]) => k.startsWith('--'));
   if (!entries.length) return '@OBSThemeVars {\n}';
   const body = entries
-    .map(([k, v]) => `    ${k}: ${v};`)
+    .map(([k, v]) => `    ${k}: ${encodeObsFunctionValue(v)};`)
     .join('\n');
   return `@OBSThemeVars {\n${body}\n}`;
 }

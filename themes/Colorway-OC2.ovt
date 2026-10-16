@@ -52,8 +52,8 @@
        --accent_bg_end: rgba(250, 178, 131, 0.1);
     */
 
-    --accent_bg_start: rgba(250, 178, 131, 0.3);
-    --accent_bg_end: rgba(250, 178, 131, 0.1);
+    --accent_bg_start: 'rgba(250, 178, 131, 0.3)';
+    --accent_bg_end: 'rgba(250, 178, 131, 0.1)';
 
     
     --bg_window: #1f1f1f;

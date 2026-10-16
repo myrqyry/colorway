@@ -1,3 +1,4 @@
+import { quoteObsThemeFunctions } from '../src/theme-value-codec.js';
 import { readdirSync, readFileSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -578,8 +579,8 @@ export function renderTheme(config) {
     '',
   );
 
-  return injectStateOverrides(lines.join('\n'), renderStateOverrides(resolved,
-    new Map(Object.entries(parseOVT(readFileSync(path.join(themesDir, 'Colorway.obt'), 'utf8')).vars))));
+  return quoteObsThemeFunctions(injectStateOverrides(lines.join('\n'), renderStateOverrides(resolved,
+    new Map(Object.entries(parseOVT(readFileSync(path.join(themesDir, 'Colorway.obt'), 'utf8')).vars)))));
 }
 
 function generatedOutputs() {

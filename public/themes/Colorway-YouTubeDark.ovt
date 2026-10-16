@@ -88,8 +88,8 @@
     --button_bg_disabled: #0f0f0f;
 
     
-    --accent_bg_start: rgba(255, 0, 0, 0.3);
-    --accent_bg_end: rgba(255, 0, 0, 0.1);
+    --accent_bg_start: 'rgba(255, 0, 0, 0.3)';
+    --accent_bg_end: 'rgba(255, 0, 0, 0.1)';
 
     
     --text_inverse: #FFFFFF;

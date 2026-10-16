@@ -94,8 +94,8 @@
     --meter_fg_war: #fdd3b0;
     --meter_fg_err: #e055b8;
 
-    --accent_bg_start: rgba(189, 255, 255, 0.3);
-    --accent_bg_end: rgba(189, 255, 255, 0.1);
+    --accent_bg_start: 'rgba(189, 255, 255, 0.3)';
+    --accent_bg_end: 'rgba(189, 255, 255, 0.1)';
 
     --text_inverse: #000000;
 

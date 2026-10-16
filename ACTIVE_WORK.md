@@ -1,6 +1,30 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Latest continuation — base OBT forensic repairs (2026-10-16)
+
+Repository `Colorway.obt` is the authority. The installed user's OBS profile
+was older (Iconamoon) and **has not been modified**.
+
+OBS 32.2 theme parser source and compiled libobs lexer exposed a release-blocking
+contract violation: raw `url()` and `rgba()` in `@OBSThemeVars` were not full
+lexical string values. Added a narrow codec at the OBS disk boundary, updated
+generators/synchronization, web import/export and Qt test adapter, and
+regenerated all 161 source themes plus byte-identical public mirrors, keeping
+22 frozen reference comments unchanged. Added a compiled libobs lexer contract
+and corpus static tests. Removed two inherited QSS selector spills and three
+empty rules. Pinned the official MingCute slideshow/photo-album artwork, with
+51 named icons across both polarities and 6 state indicators.
+
+**Verification:** `pnpm test` (627 total/626 pass/1 network-gated skip),
+production build, byte-idempotent sync, 22 frozen source palette comments
+unchanged, and `pnpm check:obs-native` against real OBS 32.2 under isolated
+Xvfb. Qt actually applied base (90,547 QSS bytes), Catppuccin Latte Blue
+(90,728) and Monokai (90,549); each has 194 MingCute asset references and
+zero unresolved variables. The isolated profile is under a disposable
+`/tmp/colorway-native-*` directory. See
+`docs/OBS_THEME_COMPATIBILITY.md` for checks and remaining pixel-level limits.
+
 ## Latest continuation — OBS browser preview parity (2026-10-15)
 
 The MingCute migration and previously integrated Colorway base/EarthBound

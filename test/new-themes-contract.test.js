@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { decodeObsFunctionValue } from '../src/theme-value-codec.js';
 
 const REQUIRED_VARS = [
   '--bg_window',
@@ -64,7 +65,7 @@ function parseVars(text) {
   const vars = new Map();
   for (const line of match[1].split('\n')) {
     const parsed = line.match(/^\s*(--[\w-]+)\s*:\s*(.+?);\s*$/);
-    if (parsed) vars.set(parsed[1], parsed[2].trim());
+    if (parsed) vars.set(parsed[1], decodeObsFunctionValue(parsed[2].trim()));
   }
   return vars;
 }

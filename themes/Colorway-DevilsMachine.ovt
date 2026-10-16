@@ -58,8 +58,8 @@
        OBS/QSS uses Colorway's own widgets; VS Code syntax highlighting is not
        transferred. See docs/EARTHBOUND_THEMES.md for provenance and license. */
 
-    --accent_bg_start: rgba(147, 129, 152, 0.3);
-    --accent_bg_end: rgba(147, 129, 152, 0.1);
+    --accent_bg_start: 'rgba(147, 129, 152, 0.3)';
+    --accent_bg_end: 'rgba(147, 129, 152, 0.1)';
 
     --bg_window: #170000;
     --bg_base: #040001;

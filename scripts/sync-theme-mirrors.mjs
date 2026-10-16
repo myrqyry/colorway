@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { buildMingcuteIcons } from './build-mingcute-icons.mjs';
+import { decodeObsFunctionValue, quoteObsThemeFunctions } from '../src/theme-value-codec.js';
 import { buildPaletteComment, injectCommentBlock } from './theme-palette-comments.mjs';
 import { injectStateOverrides, renderStateOverrides, normalizeBaseIcons, injectButtonIconRules } from './theme-state-tokens.mjs';
 
@@ -32,7 +33,7 @@ function parseVars(text) {
   const vars = new Map();
   for (const line of cleanBody.split('\n')) {
     const parsed = line.match(/^\s*(--[\w-]+)\s*:\s*(.+?);\s*$/);
-    if (parsed) vars.set(parsed[1], parsed[2].trim());
+    if (parsed) vars.set(parsed[1], decodeObsFunctionValue(parsed[2].trim()));
   }
   return vars;
 }
@@ -122,8 +123,8 @@ function syncFile(file, graph) {
   const sourceText = readFileSync(sourcePath, 'utf8');
   const resolved = resolveTheme(file, graph);
   const commentBlock = buildPaletteComment(graph.parsedByFile.get(file).meta.name, resolved);
-  const nextText = injectStateOverrides(injectCommentBlock(sourceText, commentBlock),
-    renderStateOverrides(resolved, graph.parsedByFile.get('Colorway.obt').vars));
+  const nextText = quoteObsThemeFunctions(injectStateOverrides(injectCommentBlock(sourceText, commentBlock),
+    renderStateOverrides(resolved, graph.parsedByFile.get('Colorway.obt').vars)));
 
   writeFileSync(sourcePath, nextText);
   writeFileSync(publicPath, nextText);
@@ -131,8 +132,8 @@ function syncFile(file, graph) {
 
 const graph = buildGraph();
 const basePath = path.join(themesDir, 'Colorway.obt');
-const baseText = injectButtonIconRules(injectStateOverrides(normalizeBaseIcons(readFileSync(basePath, 'utf8')),
-  renderStateOverrides(graph.parsedByFile.get('Colorway.obt').vars)));
+const baseText = quoteObsThemeFunctions(injectButtonIconRules(injectStateOverrides(normalizeBaseIcons(readFileSync(basePath, 'utf8')),
+  renderStateOverrides(graph.parsedByFile.get('Colorway.obt').vars))));
 writeFileSync(basePath, baseText);
 mkdirSync(publicThemesDir, { recursive: true });
 writeFileSync(path.join(publicThemesDir, 'Colorway.obt'), baseText);

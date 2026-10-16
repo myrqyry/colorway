@@ -126,7 +126,7 @@
     --meter_fg_err: var(--sibling_red);
     --ico: var(--text);
     --ico_selected: var(--sibling_crust);
-    --accent_bg_start: rgba(199, 171, 231, 0.3);
-    --accent_bg_end: rgba(199, 171, 231, 0.1);
+    --accent_bg_start: 'rgba(199, 171, 231, 0.3)';
+    --accent_bg_end: 'rgba(199, 171, 231, 0.1)';
 
 }
