@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-Colorway is a theme system for OBS Studio that distributes custom `.ovt` (OBS Variant Theme) files through a static preview site. A variant theme is a small text file that overrides ~25 CSS custom property tokens — backgrounds, text colors, accent hues, borders — on top of a full base theme (`Colorway.obt`, ~150+ variables). The site provides real-time previews of all ~150 variants, direct downloads, upload-based conversion from any `.ovt` into the Colorway format, and algorithmic generation of OBS themes from any Lospec palette.
+Colorway is a theme system for OBS Studio that distributes custom `.ovt` (OBS Variant Theme) files through a static preview site. A variant theme is a small text file that overrides the 40 tracked palette tokens — backgrounds, text colors, accent hues, borders — on top of a full base theme (`Colorway.obt`, 274 variables). Each variant also restates a handful of layout properties (72 custom properties per variant in total); everything else cascades from the base. The site provides real-time previews of all 159 variants, direct downloads, upload-based conversion from any `.ovt` into the Colorway format, and algorithmic generation of OBS themes from any Lospec palette.
 
 The system is entirely client-side (no server), deployed as a Vite-built static site on Vercel.
 
@@ -17,15 +17,27 @@ The system is entirely client-side (no server), deployed as a Vite-built static 
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────┐ │
 │  │  theme-       │  │  theme-      │  │  theme-              │ │
 │  │  catalog.js   │──│  loader.js   │  │  workbench.js        │ │
-│  │  (150 themes) │  │  (parse,     │  │  (normalize,         │ │
+│  │  (159 themes) │  │  (parse,     │  │  (normalize,         │ │
 │  │               │  │   resolve,   │  │   serialize,         │ │
 │  │               │  │   apply)     │  │   Lospec import)     │ │
 │  └──────────────┘  └──────┬───────┘  └──────────┬───────────┘ │
 │                           │                     │              │
 │                    ┌──────▼───────┐     ┌────────▼──────────┐ │
 │                    │   main.js    │     │  src/styles.css   │ │
-│                    │  (UI shell)  │     │  (679 lines CSS)  │ │
+│                    │  (UI shell)  │     │  (1163 lines CSS)  │ │
 │                    └──────┬───────┘     └───────────────────┘ │
+│                           │                                     │
+│         ┌─────────────────▼──────────────────┐                  │
+│         │  OBS preview layer (side-effect)   │                  │
+│         │  no exports; loaded by index.html  │                  │
+│         │  shares state through the DOM      │                  │
+│         ├────────────────────────────────────┤                  │
+│         │  obs-preview.js         654 lines  │ ← builds the UI  │
+│         │  obs-preview-refine.js  520 lines  │ ← fidelity       │
+│         │  obs-preview-actions.js 414 lines  │ ← import/export  │
+│         │  page-shell-sync.js     290 lines  │ ← page chrome    │
+│         │  obs-preview-ambient.js 175 lines  │ ← backdrop       │
+│         └─────────────────┬──────────────────┘                  │
 │                           │                                     │
 │                    ┌──────▼───────┐                             │
 │                    │  /public/    │                             │
@@ -38,15 +50,15 @@ The system is entirely client-side (no server), deployed as a Vite-built static 
                     ┌─────────▼─────────┐
                     │   Colorway.obt     │
                     │   (base theme)     │
-                    │   ~3293 lines      │
-                    │   ~150+ variables  │
+                    │   ~3659 lines      │
+                    │   ~274 variables   │
                     └───────────────────┘
          Each variant extends this via `extends:`
 ```
 
 ### Data flow
 
-1. **Page load**: `renderApp()` renders the shell, including a fixed full-viewport intro overlay (`#colorway-intro`) with a large per-character "Colorway" word (manual char spans, no SplitText). `runIntro()` starts `preloadAllThemes()` (chunks all 150 themes, fetches each `.ovt` from `public/themes/`, parses via `parseOVT()`, resolves inheritance chains, extracts a 6-color palette preview) and the GSAP `playColorwayIntroOpening()` concurrently. Only when both settle (`Promise.all`) does the app prepare the initial random theme under the overlay (`setTheme(initialTheme, { transition: false, animateTitle: false })`), init the workbench, then hand the settled word off into the sticky header title via `handoffColorway()` before `startShuffle()` begins. The handoff lands directly into the final header state; it does not trigger a second title animation.
+1. **Page load**: `renderApp()` renders the shell, including a fixed full-viewport intro overlay (`#colorway-intro`) with a large per-character "Colorway" word (manual char spans, no SplitText). `runIntro()` starts `preloadAllThemes()` (chunks all 159 themes, fetches each `.ovt` from `public/themes/`, parses via `parseOVT()`, resolves inheritance chains, extracts a 6-color palette preview) and the GSAP `playColorwayIntroOpening()` concurrently. Only when both settle (`Promise.all`) does the app prepare the initial random theme under the overlay (`setTheme(initialTheme, { transition: false, animateTitle: false })`), init the workbench, then hand the settled word off into the sticky header title via `handoffColorway()` before `startShuffle()` begins. The handoff lands directly into the final header state; it does not trigger a second title animation.
 2. **Theme selection**: Clicking a theme row calls `setTheme(file, { patternFile })` → `loadTheme(file)` → cache check → `resolveTheme(file)` → fetch raw `.ovt` → `parseOVT()` → recursively resolve `extends:` chain → merge variables → `applyThemeState(file, theme, patternFile)` applies the theme, updates the palette/status, syncs the pattern select (via a dispatched `change` event that also drives the OBS Appearance mirror and ambient generator), and toggles the active theme row. The swap is committed atomically through the View Transition API when available, with a GSAP fade (`crossfadeShowcase`, promise-based) as the fallback; `transition: false` skips animation entirely. After the transition, `animateHeaderColorway()` plays a full per-character 3D turn on the header title; retriggers queue one additional roll rather than snapping an in-flight animation back to its start. The slideshow advances through shuffle bags for both theme and pattern (current pick excluded, `pattern.svg` skipped) so neither repeats until the bag is exhausted. A 12s cadence (`SHUFFLE_MS`) drives it; the circular shuffle button skips to the next theme immediately, the `❚❚` button beside the theme name toggles pause/resume, and a thin linear progress bar (plus the ring) shows time until the next change.
 3. **Import**: Drop a `.ovt` file → `importThemeFile()` → `file.text()` → `toNormalizedTheme()` → `parseOVT()` → preview. "Apply" writes tokens to CSS. "Download" serializes via `serializeOVT()`.
 4. **Lospec generation**: Paste a slug → `fromLospecPalette(slug)` → fetch `https://lospec.com/palette-list/<slug>.json` → `assignRoles()` sorts hexes by OKLCH lightness → maps darkest→bg, lightest→text, most saturated→accent → derives ~30 OBS tokens → preview/download.
@@ -93,7 +105,7 @@ Each line is `--<name>: <value>;`. Values can be:
 - `var()` references: `var(--primary)` — resolved during inheritance
 - `rgba()`: `rgba(130, 170, 255, 0.3)` — used for accent gradient overlays
 
-The base theme `Colorway.obt` (3293 lines) defines ~150 variables including gray scales, color ramps, spacing tokens, icon paths, and sizing. Variants only override ~25 core visual variables — everything else cascades via the base theme.
+The base theme `Colorway.obt` (3659 lines) defines 274 variables including gray scales, color ramps, spacing tokens, icon paths, and sizing. Variants only override the 40 tracked palette variables (`PALETTE_VARS`) plus a few layout properties — everything else cascades via the base theme.
 
 ### Inheritance Resolution
 
@@ -181,14 +193,14 @@ Single-page app with four screen regions:
 ### 3.4 `src/theme-catalog.js` — Registry
 
 Static catalog containing:
-- `THEMES` — Array of `{ file, name }` for all 150+ built-in variants (generated by `scripts/sync-theme-mirrors.mjs`)
+- `THEMES` — Array of `{ file, name }` for all 159 built-in variants (generated by `scripts/sync-theme-mirrors.mjs`)
 - `PATTERNS` — 14 SVG background patterns for the preview backdrop
 - `DEFAULT_THEME` — `'Colorway-CatppuccinMocha.ovt'`
 - `DEFAULT_PATTERN` — `'pattern.svg'`
 
 ### 3.5 `scripts/sync-theme-mirrors.mjs` — Build Pipeline
 
-Node.js script (run via `npm run sync:themes`) that:
+Node.js script (run via `pnpm sync:themes`) that:
 1. Reads all `Colorway-*.ovt` from `themes/`
 2. Parses each via the same regex parser
 3. Resolves inheritance chains (handles `var()` references, detects cycles)
@@ -196,6 +208,96 @@ Node.js script (run via `npm run sync:themes`) that:
 5. Mirrors the augmented file into `public/themes/`
 
 This ensures every theme file in `public/themes/` is identical to the `themes/` version and includes a human-readable palette reference comment.
+
+### 3.6 The OBS preview layer — five side-effect modules
+
+Sections 3.1–3.5 describe the *theme engine*, which owns parsing, resolution, and the workbench. The other half of `src/` is the **OBS preview layer**: five modules that build and drive the simulated OBS Studio window that the whole site exists to show. Together they are the majority of the shipped UI code (2,048 of 3,859 lines of JS in `src/`).
+
+They do not behave like the engine modules, and the difference matters when you change them.
+
+| Property | Theme engine (§3.1–3.4) | OBS preview layer (§3.6–3.11) |
+|---|---|---|
+| Exports | Explicit named exports | **None** — side effects on import |
+| Loaded by | `import` from other modules | `<script type="module">` in `index.html` |
+| Share state via | Function calls and imports | **The DOM** and `MutationObserver` |
+| Mount point | n/a | `.obs-real-preview` |
+| Test style | Import and call the function | **Assert on source text** via regex |
+
+**The boot contract.** Each module defines a `boot()` that returns `false` if its mount point is not in the DOM yet. On failure it installs a `MutationObserver` on `document.documentElement` that retries `boot()` until it succeeds, then disconnects:
+
+```js
+function boot() {
+  const root = document.querySelector('.obs-real-preview');
+  if (!root) return false;
+  wireRoot(root);
+  return true;
+}
+
+if (!boot()) {
+  const observer = new MutationObserver(() => {
+    if (boot()) observer.disconnect();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+}
+```
+
+This decouples the preview layer from `main.js`'s render order — the modules do not need `main.js` to have finished. Individual modules add extra preconditions (`obs-preview-actions` also waits for `.obs-sim-dialog`, `obs-preview-ambient` for `.obs-sim-preview-area`) and `obs-preview-refine` additionally waits for `#theme-list .theme-row` before calling `ensureAppearanceControls`.
+
+**Shared state is read out of the DOM.** The modules observe state that `main.js` owns — `#theme-list .theme-row.active`, `#active-theme-name`, `#pattern-select` — and re-derive from it via `MutationObserver`. There is no shared store and no event bus except one `CustomEvent` (`colorway:shuffle-state`, dispatched by `main.js`). When adding a module, follow the same pattern: read the DOM, observe mutations, do not reach into another module's internals.
+
+**Testing consequence — read this before trusting a green suite for these modules.** Because the modules export nothing, their tests cannot exercise behavior. `test/obs-preview-actions.test.js`, `test/obs-preview-refine.test.js`, `test/obs-preview-ambient.test.js`, and `test/page-shell-sync.test.js` all `readFileSync` the source and assert on **regex matches of literal source text**:
+
+```js
+const actions = readFileSync(new URL('../src/obs-preview-actions.js', import.meta.url), 'utf8');
+assert.match(actions, /className = 'colorway-dialog-brand'/);
+```
+
+So for these five modules a green `pnpm test` proves the source still contains certain strings. It does **not** prove the UI works, and it can break on a behavior-preserving refactor that changes a literal. Interaction and visual claims about the preview must be verified in a browser (`pnpm dev`). The theme engine and the generator contracts are different — those are real behavioral tests.
+
+### 3.7 `src/obs-preview.js` — Shell construction (654 lines)
+
+The only module that *creates* the OBS UI. `mountObsPreview()` (line 638) is the entry point; everything else builds its markup.
+
+- **Markup builders** — `dock`, `controlsDock`, `settingsMarkup`, `previewMarkup`, `stateLabMarkup`, `sceneRows`, `sourceRows`, `mixerChannel`.
+- **Icon system** — `escapeHtml`, `iconPath`, `iconMarkup`, `setIcon`, `buttonIcon` resolve icons from `icons/` and inject them as inline SVG.
+- **Wiring** — `wirePreview` (docks, action buttons, menus), `wireDensity`, `setAppearancePanel`, `syncStyleName`, `toggleControl`.
+- Simulates the studio-mode controls (`data-control="stream" | "record" | "virtualcam" | "studio"`) with their status labels and the stream/network indicators and bitrate readout.
+
+A `MutationObserver` inside `syncStyleName` keeps the displayed style name current as the host element changes.
+
+### 3.8 `src/obs-preview-refine.js` — Control fidelity (520 lines)
+
+Replaces the page's default form controls with OBS-like equivalents. Imports `THEMES`, `PATTERNS`, and `DEFAULT_PATTERN` from `theme-catalog.js`.
+
+- **Theme picker** — `buildThemePicker`, `refreshThemeOptions`, `syncThemePicker`, `makeThemeOption`, `hasFullThemeList` turn theme selection into an OBS-style dropdown with a palette preview, delegating to `selectTheme` / `applyPattern`.
+- **State Lab** — `wireStateLabModality` implements the modal behavior: `inert` on everything outside while open, Escape to dismiss, and `returnFocus` to restore focus on close. `populateStateLabControl`, `syncVisibleControls`, and `ensureAppearanceControls` keep it in sync with the active theme.
+- `makeSettingsPermanent` pins the Settings dock open; `removeTopYamiShortcut` strips a shortcut that should not be there.
+
+### 3.9 `src/obs-preview-actions.js` — Import, export, branding (414 lines)
+
+The user-facing I/O layer of the preview. Imports `applyTheme` from `theme-loader.js` plus workbench functions.
+
+- **Branding** — `syncBrand` / `ensureBrand` write Colorway into the permanent Settings titlebar (`data-colorway-brand-theme`) and keep `document.title` in step with the active theme.
+- **Download** — `downloadCurrent` dispatches to `downloadBuiltInColorway`, `downloadBuiltInYami`, or `downloadAppliedExternal` (with `safeFilenameStem` for filenames), chosen by `isImportedTheme` / `isGeneratedTheme` / `externalThemeIsActive`. The split Download menu (`closeDownloadMenu`) offers Colorway `.ovt` as the native variant and Yami as an optional compatibility export.
+- **Import** — `stageImportedFile`, `triggerImport`, `importFromSettings`, `applyExternalTheme`. A `settingsImportGeneration` token guards against a slow workbench initialization clobbering a fast Settings-path import; the contract test asserts the observer is *not* attached to the apply button.
+- **Lospec** — `parseGeneratedPreview`, `generatedId`, `wireWorkbenchSnapshots` keep the generated-palette preview current.
+
+### 3.10 `src/obs-preview-ambient.js` — Ambient backdrop (175 lines)
+
+The smallest of the five. Derives a deterministic ambient gradient for the preview area from the active theme and pattern names: `hashString` seeds `mulberry32`, and `appliedPalette` supplies the colors that `ensureAmbientLayer` / `syncAmbient` paint.
+
+Because the backdrop is seeded from *names* rather than time or randomness, the same theme + pattern always produces the same gradient — re-rendering never causes a visible shift.
+
+### 3.11 `src/page-shell-sync.js` — Page chrome mirror (290 lines)
+
+Mirrors theme state to the parts of the page *outside* `.obs-real-preview`, so the marketing shell around the simulated OBS window agrees with it.
+
+- **Header** — `ensurePageHeader`, `paintHeaderPalette`, `syncPageIdentity`, `restoreSettingsTitle`, `syncLivePaint`.
+- **Mixer** — `sliderDb` and `syncMixerChannel` map fader positions onto meter fill/peak, reading live values via `computedVariable`.
+- **Font scale** — `wireFontSize` writes `--obs-sim-font-scale` to `window.style`.
+- **Slideshow** — `wirePageSlideshow` listens for the `colorway:shuffle-state` `CustomEvent` dispatched by `main.js`, then mirrors pause state and progress into the page header by proxy-clicking `#slideshow-pause` and reading `#slideshow-progress-fill`.
+
+This is the only module that consumes a custom event rather than inferring state from the DOM, because slideshow progress has no DOM attribute to observe.
 
 ---
 
@@ -300,8 +402,8 @@ All matrix values are the standard OKLab constants from Björn Ottosson's 2020 p
 ```
 colorway/
 ├── themes/
-│   ├── Colorway.obt                       # Base theme (~3293 lines, ~150 vars)
-│   └── Colorway-*.ovt                     # ~150 variant themes (~25 vars each)
+│   ├── Colorway.obt                       # Base theme (~3659 lines, 274 vars)
+│   └── Colorway-*.ovt                     # 159 variant themes (40 palette tokens each)
 ├── patterns/                              # 14 SVG background patterns (source of truth)
 ├── fonts/                                 # Bundled font (BricolageGrotesqueVariable.ttf) + OFL.txt
 ├── public/
@@ -352,11 +454,13 @@ colorway/
 
 ### Build & deploy
 
-- `npm run dev` — Vite dev server (host 0.0.0.0)
-- `npm run build` — Vite build to `dist/`
-- `npm run sync:themes` — Mirror themes to `public/themes/` with palette comments
-- `npm run test` — Node test runner, 589 tests, ~350ms (0 fail, 1 skipped: the network-gated `fromLospecPalette`)
-- `npm run preview` — Vite preview of built output
+This repo pins `pnpm@11.17.0` via `packageManager`, and CI installs and runs with pnpm. Use `pnpm`, not `npm` — the two are not interchangeable here because the lockfile is pnpm's.
+
+- `pnpm dev` — Vite dev server (host 0.0.0.0)
+- `pnpm build` — Vite build to `dist/`
+- `pnpm sync:themes` — Mirror themes to `public/themes/` with palette comments
+- `pnpm test` — Node test runner, 589 tests, ~350ms (0 fail, 1 skipped: the network-gated `fromLospecPalette`)
+- `pnpm preview` — Vite preview of built output
 
 Deployed on Vercel via `vercel.json` using pnpm as package manager.
 
@@ -380,9 +484,11 @@ The OKLab transform is ~30 lines of matrix math with zero dependencies. Adding a
 
 Yami themes use the same `.ovt` format but target a different base theme. By forcing `extends: 'com.myrqyry.Colorway'`, the Yami variant layers on top of the user's installed Colorway base — they only need to drop the `.ovt` file, not replace the entire theme. This makes Yami output a simple `extends` rewrite of the same token set.
 
-### 7.5 Why only 25 tokens per variant instead of all 150?
+### 7.5 Why only 40 palette tokens per variant instead of the base's 274?
 
-The base theme (`Colorway.obt`) defines all infrastructure variables: spacing, font sizes, border radii, icon paths, gray scale ramps, color scales (`--blue1`–`--blue6`, etc.), scrollbar sizing, toggle dimensions, and padding. A variant only needs to override the color tokens — everything else cascades. This makes each variant small (~99 lines), easy to read, and focused on what it actually changes.
+The base theme (`Colorway.obt`) defines all infrastructure variables: spacing, font sizes, border radii, icon paths, gray scale ramps, color scales (`--blue1`–`--blue6`, etc.), scrollbar sizing, toggle dimensions, and padding. A variant only needs to override the color tokens tracked in `PALETTE_VARS` — everything else cascades. This makes each variant small (~100 lines), easy to read, and focused on what it actually changes.
+
+The 40 tracked tokens are the *palette* vocabulary, not the variant's total property count: a shipped variant declares 72 custom properties, because the palette tokens plus a small set of layout overrides together cover what OBS needs to render correctly. The number that matters for review is `PALETTE_VARS.length` (40), because that is what the palette comment, the frozen-source contract, and the Lospec role assignment are all keyed to.
 
 ---
 
@@ -454,7 +560,7 @@ The `colors` array is hex strings without `#` prefix. The `assignRoles()` functi
 
 1. Create `Colorway-MyTheme.ovt` in `themes/` with `@OBSThemeMeta` and `@OBSThemeVars` blocks, extending `com.myrqyry.Colorway`
 2. Add entry to `THEMES` array in `src/theme-catalog.js`
-3. Run `npm run sync:themes` to mirror to `public/themes/`
+3. Run `pnpm sync:themes` to mirror to `public/themes/`
 4. Run `npm test` — the per-theme contract tests will validate variable overrides and contrast ratios
 5. Build and deploy
 

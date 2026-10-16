@@ -118,3 +118,35 @@ unguarded duplicate mirror of this kind (see FEATURE_REQUESTS.md).
 distributions are byte-identical"; executed in `90bbbe4`.
 
 **Supersedes:** the pre-reorg layout, where themes sat loose at the repository root.
+
+## 2026-10-04 — Colorway stays its own base theme; no Yami migration
+
+**Decision:** Colorway remains a standalone base theme. `themes/Colorway.obt` is the base and all
+159 variants extend `com.myrqyry.Colorway`. We do **not** adopt Yami as a base theme, and we do
+**not** restructure into a `Yami.obt → Colorway.ovt → Colorway-*.ovt` inheritance chain. We do not
+copy Yami rules into Colorway.
+
+**Why:** OBS's wiki recommends Yami as a base for custom themes, and that recommendation has
+repeatedly caused agents to propose migrating Colorway onto it. That is a misreading of this
+project. Colorway's standalone base carries the product: substantial custom QSS, its own 98-file
+icon set, custom surfaces, mixer, and layout behavior. Inheriting from Yami would mean giving up
+control of exactly the things that make Colorway distinct. The trade-off of owning the base is
+tracked-upstream maintenance, which is accepted deliberately. Upstream Yami is referenced **only**
+as a format-drift signal for `pnpm check:obs-upstream`.
+
+**Alternatives considered:** Yami as base theme; Yami base with a Colorway variant layer; copying
+Yami's QSS into Colorway's base. All rejected — each trades away control of Colorway's own visual
+system for upstream widget coverage Colorway already provides itself.
+
+**Constraints / consequences:** Anyone touching theme architecture must not re-open this. If a new
+OBS release adds widgets Colorway does not style, the fix is to add Colorway-styled rules to
+`Colorway.obt` directly — never to reparent the inheritance chain. Reviewers should reject any
+proposal that reintroduces Yami as a base.
+
+**Evidence / references:** `docs/OBS_THEME_COMPATIBILITY.md` (rewritten 2026-10-04 to state this as
+settled rather than as a future option); OBS wiki "Theme Files" recommends Yami as base, which is
+the advice being deliberately declined; `scripts/obs-upstream-baseline.json` pins Yami for drift
+tracking only; `test/theme-base-contract.test.js` enforces the `themes/` ↔ `public/themes/` mirror.
+
+**Supersedes:** the earlier `docs/OBS_THEME_COMPATIBILITY.md` wording, which described a
+Yami-inheritance migration as "a supported architecture" and invited exactly this proposal.

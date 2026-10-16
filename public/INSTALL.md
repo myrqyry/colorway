@@ -1,0 +1,37 @@
+# Installing a Colorway theme package
+
+The Browse download produces one ZIP. Extract it before installing.
+
+1. Copy the **contents** of the ZIP's `themes/` directory into the active OBS theme
+   directory, preserving the nested `icons/` and `patterns/` folders.
+   If you unchecked “Include base theme”, an existing `Colorway.obt` is required;
+   update it from a full package if it predates the accompanying variant/assets.
+2. Optionally install `fonts/BricolageGrotesqueVariable.ttf` as an **OS font**, using
+   your desktop's font installer, and restart OBS. Merely copying it into the theme
+   folder does not load it. The theme uses Qt-compatible system fallbacks otherwise.
+   The font's license is included as `fonts/OFL.txt`.
+3. Restart OBS, then choose **Colorway** under Theme and the downloaded palette under
+   Style/Variant in Settings → Appearance.
+
+Default desktop theme directories:
+
+- Linux: `~/.config/obs-studio/themes/`
+- Windows: `%APPDATA%\obs-studio\themes\`
+- macOS: `~/Library/Application Support/obs-studio/themes/`
+
+Flatpak, portable mode, and other packaging can move the configuration root. Use the
+theme directory of the OBS installation you actually run. Installed duplicate IDs can
+take precedence over user themes; ensure you are testing the updated Colorway files.
+
+The package includes both icon polarities, all patterns, and the selected `.ovt`.
+The base expects `patterns/pattern.svg`; replace that file with another supplied pattern
+to change the installed background while keeping its filename. No browser font-loading
+or SVG recoloring feature is required.
+
+## Installing directly from the repository
+
+Run `pnpm sync:themes` after edits. Then run
+`bash scripts/copy-themes.sh /path/to/your/active/obs-studio/themes` to copy themes,
+icons, and patterns to an explicitly chosen destination. Without an argument the script
+uses the ordinary Linux config root (`$XDG_CONFIG_HOME`, or `~/.config`). It does not
+install fonts or change OBS's selected theme/settings.

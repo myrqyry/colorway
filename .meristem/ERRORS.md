@@ -120,3 +120,35 @@ about the code.
 
 **Evidence / references:** All three were caught by re-running with visible output; in each case
 the code was correct and the harness was wrong.
+
+## 2026-10-04 — Theme-supplied SVG icons do not tint; stop trying to make them
+
+**Observed failure:** Repeated attempts to make OBS recolor the theme's own SVG icons — via
+`currentColor`, theme-token fills, or CSS-variable indirection — have failed across multiple
+maintainer passes. Each attempt was re-derived from scratch because the conclusion was never
+recorded. This is a recurring, non-obvious platform limitation, not a bug in the current icons.
+
+**Root mechanism:** OBS renders QSS `image: url(theme:…)` through Qt's SVG rasterizer, which honors
+the fill authored in the file. It does not propagate `currentColor` or CSS custom properties into
+the SVG, so a theme-supplied icon's color is fixed at authoring time. Corroborating evidence: the
+upstream Yami theme (tracked by `scripts/check-obs-upstream.mjs`) bakes `fill="#fefefe"` into
+`frontend/data/themes/Dark/plus.svg` rather than attempting theming. Baked color is the OBS norm.
+
+**Affected environment:** `themes/Colorway.obt` and every icon under
+`icons/colorway/iconamoon/{normal,selected}/` (98 files, referenced 142× via `url(theme:…)`).
+
+**Recovery / fix:** None needed for the limitation itself — accept baked color and design around it.
+The follow-on consequence is the real defect: all 98 icons are baked to exactly two Catppuccin Mocha
+values, `#e0def4` and `#191724`, while the catalog spans 159 variants. The 22 light variants have
+near-white icons on near-white surfaces, e.g. `#e0def4` on CatppuccinLatte `--bg_base: #e6e9ef`
+= **1.08:1**. Icons must be authored per polarity, or per variant, not once.
+
+**How to detect earlier:** Before proposing any icon theming, assume baked color and check the
+contrast of the baked fill against the *target* surface. Note that this class of defect is invisible
+to both the test suite and the preview site: `src/obs-preview.css` renders icons as CSS
+`mask: var(--obs-icon)`, and a mask discards fill entirely, so the preview is faithful for shape and
+structurally blind to icon color. Only OBS itself shows this.
+
+**Evidence / references:** `icons/colorway/iconamoon/` (98 files, two hex values across all of them);
+`themes/Colorway.obt` `url(theme:…)` references; `src/obs-preview.css` mask rendering; upstream
+Yami `Dark/plus.svg`; `docs/OBS_THEME_COMPATIBILITY.md` (which does not currently discuss icon color).

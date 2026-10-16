@@ -1,118 +1,170 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Latest continuation — MingCute migration (2026-10-15)
+
+Migrated Colorway's real OBS icon paths and browser preview to pinned MingCute
+artwork, including all 160 variants and six streaming/recording/network state
+icons. Added an offline reproducible generator, vendored pinned upstream SVGs,
+Apache-2.0 license in packages, and a path/byte/Qt migration contract. Removed
+the obsolete local Iconamoon and OBS-design icon assets. Preserved existing
+theme IDs, color roles, and the unrelated ongoing base-theme work.
+
+**Evidence:** `pnpm test` 615 total, 614 passed, 1 intentionally skipped;
+`pnpm build` passed; all 106 MingCute assets valid under Qt SVG; repeated
+`pnpm sync:themes` byte-idempotent; Chromium passed preview/mask transitions
+and status asset loading. **Not yet verified in the user's running OBS UI.**
+No user OBS installation or settings were changed; migration is local and
+uncommitted, not pushed. Details and provenance: `docs/MINGCUTE_MIGRATION.md`.
+
+
+## Current continuation — base-theme review fixes
+
+The requested base-theme fixes and asset delivery are implemented and uncommitted.
+`docs/COLORWAY_BASE_REVIEW.md` §Delivery update owns the detailed outcome/evidence;
+`docs/INSTALL.md` owns installation instructions. Current source/runtime evidence takes
+precedence over the older documentation-only snapshot preserved below.
+
+**Implemented:** accessible state ink/fixed-color icon roles, correct Qt state selectors,
+font policy, combo/scrollbar/group/tab cascade fixes, semantic hover surfaces, complete
+ZIP downloads through the visible Settings action, and dependency-aware local copying.
+Marked generated state/icon blocks are owned by `scripts/theme-state-tokens.mjs` and
+updated through `pnpm sync:themes`. Preserve frozen palette comments and the standalone
+Colorway base architecture.
+
+**Verified:** Node suite and build pass; optional real-Qt probes pass locally and detect
+the reviewed failures on the prior QSS; Chromium's visible download path succeeds and
+surfaces missing assets without partial output; independent ZIP CRC/byte checks pass;
+repeat sync is byte-idempotent. See the delivery update for environment/count details.
+
+**Next verification:** a visual pass in actual OBS, particularly source-tree selection,
+menus, disabled states, and high contrast. Offscreen Qt evidence does not close that gate.
+No user OBS configuration or installed theme was changed.
+
+Existing documentation/continuity edits predate this implementation and remain in the
+working tree. Use `git status` and scoped diffs to recover the current change set; do not
+treat the old “only two dirty files” statements below as a current inventory.
+
+## Earlier documentation-only snapshot (historical)
+
 ## Outcome
 
-PR #8 (`aster/catppuccin-siblings-v2` → `main`) — eight Catppuccin-inspired sibling palettes
-plus a hardened, non-destructive theme sync path — is code-complete, pushed, and green, awaiting
-review and a merge decision. A second, smaller strand — the Meristem substrate — is scaffolded
-in the working tree and not yet committed.
+Two documentation-reconciliation changes are staged on `main` at `86a1023`: the `.gitignore` allowlist
+now covers `themes/` and `fonts/`, and `docs/ARCHITECTURE.md` documents the five OBS preview-layer
+modules that carry half the shipped UI while correcting stale token and theme counts. `pnpm test` is
+green (589 tests, 588 pass, 0 fail, 1 skipped). Nothing is committed; the tree carries `.gitignore`
+and `docs/ARCHITECTURE.md` as the only modified files.
 
 ## Why it matters
 
-The sync path originally had a destructive failure mode: regenerating a light theme's palette
-comment could silently delete the frozen record of where that theme's colors came from. The
-branch's purpose is to make sync idempotent and provably non-destructive, so the theme corpus
-can be regenerated without fear of losing hand-curated provenance. That property is now
-enforced by contracts rather than by convention, and it is easy to regress by "tidying up" the
-preservation logic.
+The allowlist gap was a live data-loss trap on the project's primary content type. `.gitignore` line 1
+is `/*/`, and the allowlist omitted `!themes/` and `!fonts/`. A newly created theme was ignored and
+never appeared in `git status`, while already-tracked themes were unaffected — so the repository looked
+perfectly healthy. Anyone adding a theme would have concluded the file was lost.
+
+The `ARCHITECTURE.md` gap was a completeness failure. §3 documented only the theme engine
+(`theme-loader`, `theme-workbench`, `main`, `theme-catalog`, `sync-theme-mirrors`) and never mentioned
+`obs-preview.js`, `obs-preview-refine.js`, `obs-preview-actions.js`, `page-shell-sync.js`, or
+`obs-preview-ambient.js` — 2,048 of the 3,859 lines of JS in `src/`, and every module `index.html`
+actually loads. Following §3 alone would give a false picture of the codebase.
 
 ## Current state
 
-**Branch context (committed and pushed, 12 commits ahead of `main`, 0 behind):**
+**Branch context (committed, on `main`, in sync with `origin/main`):**
 
-- `a5f6d26` feat: add Catppuccin-inspired sibling palettes
-- `5c2e506`…`08a9b8d` — generator/sync hardening, including `08a9b8d fix: preserve light-theme
-  source palette notes` (the originating preservation bug).
-- `f369c68` fix: preserve any annotated palette reference, not one wording
-- `9759123` test: derive light-theme checks from the runtime parser
-- `747813c` test: make the frozen-comment contract non-vacuous and self-explaining
+`HEAD` is `86a1023`, a fast-forward of the previous `a9e39d2`. Two PRs landed since this file was
+last accurate, and both invalidate its previous text:
 
-`HEAD` is `747813c` and matches `origin/aster/catppuccin-siblings-v2`. The branch is **not**
-merged into `main`; `main` does not contain any of these commits.
+- `a9e39d2` — PR #8, `aster/catppuccin-siblings-v2`: eight Catppuccin-inspired sibling palettes plus
+  the hardened non-destructive sync path. **This is the work the previous version of this file
+  described as "pushed, unmerged, awaiting a merge decision." It is merged.**
+- `86a1023` — PR #9, `aster/meristem-project-state`: the Meristem substrate itself, plus a stale-authority
+  reconciliation pass. It added `ACTIVE_WORK.md` and `AGENTS.md`, populated all six `.meristem/*.md`
+  files, **deleted `PROPOSED_CODE_FILE_REORGANIZATION_PLAN.md` as obsolete**, and fixed the
+  `docs/ARCHITECTURE.md` test-coverage section to the measured 589/588/0/1 with a per-file table.
 
-**Current working tree (uncommitted, and the only dirty state):**
+**Current working tree (uncommitted, the only dirty state):**
 
-- `?? .meristem/` — new substrate (`README.md`, `PROJECT.md`, `DECISIONS.md`, `LEARNINGS.md`,
-  `ERRORS.md`, `FEATURE_REQUESTS.md`, plus an ignored `local/`).
-- `?? AGENTS.md`, `?? ACTIVE_WORK.md` — new agent entry point and this file.
-- `M .gitignore` — two additions: `!.meristem/` (see Locked decisions) and the
-  `<!-- meristem:local-ignore -->` block.
+- `M .gitignore` — adds `!themes/` and `!fonts/` to the allowlist. This is the substantive fix;
+  everything else in this file is documentation.
+- `M docs/ARCHITECTURE.md` — adds §3.6–§3.11 (the preview layer and its boot/testing contract),
+  adds the layer to the §1 diagram, and corrects measured figures: 40 `PALETTE_VARS` (not "~25"),
+  274 base-theme variables (not "~150"), 159 variants (not "~150"), `Colorway.obt` at 3,659 lines
+  (not 3,293), `styles.css` at 1,163 lines (not 679), and seven `npm run` invocations corrected to
+  `pnpm`.
 
-No implementation code is dirty. The review-response work is finished and pushed; the
-Meristem files are the only uncommitted artifacts.
+No implementation code, theme file, script, or test is modified. Nothing is staged.
 
 ## Locked decisions
 
-- **The palette-comment stripper and the light-theme contract are deliberately different
-  rules, and must not be collapsed into one.** `SOURCE_VALUES_COMMENT_RE` in
-  `scripts/theme-palette-comments.mjs` freezes *any* parenthesized annotation; the contract in
-  `test/theme-base-contract.test.js` accepts only an annotation containing `source values`.
-  Rationale: preservation is a safety rule (freezing too much costs a redundant comment,
-  freezing too little destroys a historical record), while the contract is an authoring rule.
-  A review round proposed exporting the stripper regex and asserting against it; doing so would
-  have re-opened a permissiveness hole an earlier round had closed. If a future round proposes
-  this again, it has already been considered and rejected.
-- **Preserve frozen palette comments verbatim rather than regenerating them.** Rewriting source
-  values would be the actual bug; a stale-but-honest record beats an accurate-but-fictional one.
-- **A light theme's frozen comment header must name its current `@OBSThemeMeta` name.** Asserted
-  by `test/catppuccin-siblings-contract.test.js`, including a non-vacuity check that names the
-  offending files, so a rename fails loudly instead of drifting invisibly.
-- **`pnpm test` is pinned to `test/**/*.test.js`.** `node --test`'s default glob collects every
-  file under `test/`, which reported helper modules as passing tests that contain no assertions.
-  Do not widen the glob.
-- **`.meristem/` must be explicitly allowlisted in `.gitignore`.** The repo's first rule is `/*`,
-  which hid the entire canonical Meristem directory; `!.meristem/` restores the canonical files
-  as commit-safe repository knowledge while the later `.meristem/local/` block re-ignores only
-  the private lane. Last-match-wins ordering is what makes this correct — do not reorder those
-  two blocks.
+- **The OBS preview layer stays a set of side-effect modules with no exports.** They are loaded by
+  `index.html`, mount on `.obs-real-preview`, and share state through the DOM. This is now documented
+  in `ARCHITECTURE.md` §3.6; treat that section as the contract when changing any of the five.
+- **The `boot()` + `MutationObserver` retry is deliberate, not boilerplate to remove.** Each module
+  returns `false` when its mount point is absent and retries until it appears, which is what decouples
+  the preview layer from `main.js`'s render order.
+- **Theme-layer and preview-layer tests are not the same kind of test.** The preview-layer tests assert
+  on source text by regex because the modules export nothing. A green suite proves those source strings
+  are present; it does not prove the UI works. Do not treat `pnpm test` as UI verification.
+- **`.gitignore` last-match-wins ordering must not be reordered.** `!.meristem/` re-includes the
+  canonical directory and the later `.meristem/local/` block re-ignores only the private lane.
+- **The palette-comment stripper and the light-theme contract stay deliberately different rules**, and
+  frozen `(source values; …)` comments are never regenerated. Carried forward unchanged from the
+  previous version of this file; see `.meristem/DECISIONS.md`.
 
 ## Constraints / do-not-regress
 
-- `pnpm sync:themes` on a clean tree must leave `git status` empty. A dirty first run is a
-  regression, not formatting.
-- Do not regenerate or "correct" the frozen `(source values; …)` comments in the 22 light themes.
-  Their values intentionally differ from the live tokens (e.g. `Everforest-Light-Hard.ovt`
-  documents `--warning: #DFA000` while shipping `#896200`). That divergence is the record.
-- Do not merge `theme-loader.js` into `theme-workbench.js`; `parseOVT` is consumed from both
-  paths today and `theme-loader.js` is the owner. Import from the owner in new code.
-- Do not nest `src/`. A reorg proposal exists but is not adopted (see PROJECT.md uncertainty).
+- `pnpm sync:themes` on a clean tree must leave `git status` empty. A dirty first run is a regression,
+  not formatting.
+- Do not regenerate or "correct" the frozen `(source values; …)` comments in the light themes.
+- Do not merge `theme-loader.js` into `theme-workbench.js`; `theme-loader.js` owns `parseOVT`.
+- Do not nest `src/`. The reorg proposal that once argued for it was **deleted** in `86a1023` as
+  obsolete — there is no live proposal to revisit.
+- **Colorway stays its own base theme. Do not propose a Yami migration.** No `Yami.obt` base, no
+  `Yami.obt → Colorway.ovt → Colorway-*.ovt` chain, no copying Yami rules in. This is settled — see
+  `.meristem/DECISIONS.md` (2026-10-04). OBS's wiki recommends Yami as a base; we decline that
+  deliberately. New OBS widgets get Colorway-styled rules added to `Colorway.obt` directly. Upstream
+  Yami is a format-drift reference for `pnpm check:obs-upstream` only, never an architecture target.
+  This has been proposed repeatedly by agents reading the wiki recommendation without the project
+  context; do not be the next one.
 - There is no lint script. Do not report a lint result.
+- Use `pnpm`, not `npm`; the lockfile is pnpm's.
 
 ## Current objective
 
-No active implementation objective is recorded here. The previous repository reorganization and
-documentation-reconciliation work is complete. Choose future work from current runtime needs or
-the remaining open uncertainties in `.meristem/PROJECT.md`.
+No active implementation objective. The documentation reconciliation that this file tracks is
+complete and uncommitted; the decision to commit it, and on which branch, is the only open thread.
 
 ## Verification
 
-Before making a fresh verification claim, run against the current tree:
+Run against the current tree before extending any claim:
 
-- `pnpm test` → **589 tests, 588 pass, 0 fail, 1 skipped**. Re-run after the doc edits; still
-  green. The per-file breakdown was independently measured (not inherited from the suite
-  summary) and matches the table now in `docs/ARCHITECTURE.md`.
-- `meristem_init.py doctor --root .` → `Status: ready`, all 9 checks `ok`, including after the
-  `.meristem/FEATURE_REQUESTS.md` and `PROJECT.md` updates.
-- `pnpm sync:themes` on pristine HEAD → left `git status` clean (checked via stash/restore).
-- `pnpm build` was **not** run in this session. CI runs it on the PR; confirm it there.
+- `pnpm test` → **589 tests, 588 pass, 0 fail, 1 skipped** (~480ms). Re-run after the `ARCHITECTURE.md`
+  edits: still green. No test reads `docs/ARCHITECTURE.md` or `.gitignore` (grep-confirmed), so these
+  edits cannot affect the suite — that is why the green result is expected rather than surprising.
+- `pnpm sync:themes` on pristine HEAD → left `git status` empty, checked by stashing the local edits,
+  running sync, and confirming a clean tree. The do-not-regress invariant holds.
+- `git check-ignore -v` → new `themes/*.ovt` and `fonts/*` paths are visible; `.meristem/local/`,
+  `.vercel/`, `node_modules/`, `dist/`, and `docs/superpowers/` remain ignored.
+- `meristem_init.py doctor --root .` → `Status: ready`.
+- `PALETTE_VARS.length === 40` verified by counting the `PALETTE_GROUPS` literals in
+  `src/theme-loader.js`; base variable count (274) and variant property count (72) counted directly
+  from `themes/Colorway.obt` and two sibling `.ovt` files.
 
-Behavior was validated by mutation rather than by inspection: rewording an annotation is still
-preserved, a `souce` typo is rejected, a `(todo: …)` annotation is rejected, a legitimate
-rephrase is accepted, a rename fails loudly, and an unannotated light theme fails the non-vacuity
-check. A theme omitting `dark:` was confirmed to resolve to **dark**, matching
-`src/theme-loader.js`.
+**Not verified:** the OBS preview layer's runtime behavior in a browser. Its modules export nothing, so
+no test in this repository can confirm the UI still works after a change to them — `pnpm dev` and a
+visual pass are required, and have not been done for these edits (the edits were documentation-only,
+so no behavior changed).
 
 ## Open uncertainty
 
-- **PR #8's review and CI state is unverified.** This machine has no `gh` authentication, so
-  `gh pr view` / `gh pr checks` were unavailable. PR state here is inferred from git: the
-  branch is pushed, level with its remote, 12 commits ahead of `main`, and unmerged. Whether
-  reviewers have responded, whether CI is green, and whether Kilo Code's review loop considers
-  the branch done are all unknown. Check on an authenticated machine before assuming the PR is
-  ready to merge.
-- Whether the maintainer wants the Meristem substrate committed at all, and on which branch.
-- `src/` flatness and `main.js` length (15 entries, 1183 lines) are past the reorg plan's stated
-  triggers; no decision recorded on whether to revisit. The reorg plan's remaining
-  recommendations (§8.1–8.5, §9, §12) are unexecuted by design.
-- The `patterns/` mirror still has no generator script; only the themes mirror is guarded.
+- **Whether to commit these two changes, and where.** Not decided. They are the only dirty state.
+- **`patterns/` still has no generator.** Unlike the themes mirror, `public/patterns/` is an unguarded
+  duplicate with no parity assertion. Recorded in `.meristem/FEATURE_REQUESTS.md`; undecided.
+- **No root `README.md`.** `docs/ARCHITECTURE.md` is the de facto entry document. Whether a root README
+  should exist or point at it is undecided; note that the allowlist makes a root file trackable.
+- **`src/` flatness and `main.js` length** (1,183 lines) remain a possible future split, but there is no
+  proposal on record and no agreed trigger.
+- **The preview layer has no behavioral test coverage at all.** Documenting the limitation in §3.6 makes
+  it visible but does not fix it. Whether to introduce a DOM-based test harness for those five modules
+  is undecided and would be a real piece of work.

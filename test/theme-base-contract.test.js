@@ -79,8 +79,9 @@ test('live and recording controls inherit each variant semantic colors', () => {
 test('current input sizing and tab placement guards are present', () => {
   assert.match(base, /--spinbox_min_width:/);
   assert.match(base, /min-width:\s*var\(--spinbox_min_width\);/);
-  assert.match(base, /QTabBar::top/);
-  assert.match(base, /QTabBar::bottom/);
+  assert.match(base, /QTabBar::tab:top/);
+  assert.match(base, /QTabBar::tab:bottom/);
+  assert.doesNotMatch(base, /QTabBar::(?:top|bottom)\b/);
   assert.match(base, /QDateTimeEdit:focus/);
   assert.match(base, /QToolButton:disabled/);
 });

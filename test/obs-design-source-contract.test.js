@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 const preview = readFileSync(new URL('../src/obs-preview.js', import.meta.url), 'utf8');
 const styles = readFileSync(new URL('../src/obs-preview.css', import.meta.url), 'utf8');
 const reference = readFileSync(new URL('../docs/OBS_DESIGN_REFERENCE.md', import.meta.url), 'utf8');
-const iconDir = new URL('../public/icons/obs-design/', import.meta.url);
+const iconDir = new URL('../public/icons/colorway/mingcute/status/', import.meta.url);
 
 test('OBS simulator replaces source/status placeholder glyphs with icon primitives', () => {
   assert.match(preview, /function iconMarkup\(/);
@@ -25,7 +25,7 @@ test('Sources toolbar keeps OBS-informed grouped and trailing static actions', (
   assert.match(preview, /buttonIcon\('filter', 'Source filters'\)/);
 });
 
-test('status bar uses imported OBS design state families', () => {
+test('status bar uses MingCute versions of OBS-informed state families', () => {
   const files = new Set(readdirSync(iconDir));
   for (const file of [
     'streaming-active.svg',

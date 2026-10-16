@@ -13,12 +13,12 @@ Colorway uses selected material from [obsproject/design](https://github.com/obsp
 ## Adopted mechanisms
 
 - `mockups/sources-toolbar/sources-toolbar.svg`: static actions move to the end; Filters and Properties become icon actions; related controls stay grouped.
-- `icons/`: streaming, recording, and network active/inactive state families are used in the simulator.
+- `icons/`: OBS status semantics (streaming, recording, network) informed the simulator; the artwork now uses the pinned MingCute icon set.
 - `resources/colors.md`: semantic roles (accent, destructive, layered backgrounds, controls, borders) are treated as validation targets, not literal palette values.
 - `resources/widgets.svg`: the labeled `Warning`, `Error`, and `Secondary information` specimens inform Colorway's state stress-test vocabulary.
 - `mockups/crash-recovery/crash-recovery.svg`: the `Crash Recovery`, `Run in Safe Mode`, and `Run Normally` language is represented in the stress test so themes are exercised against a consequential decision surface.
 
-The imported status SVGs are rendered as CSS masks. Their OBS geometry survives, but Colorway's `.ovt` semantic variables still determine visible color.
+The MingCute status SVGs are rendered as CSS masks. The indicator states remain OBS-informed, while Colorway's `.ovt` semantic variables determine visible color.
 
 ## State stress test
 

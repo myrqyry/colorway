@@ -273,9 +273,26 @@
   background: var(--bg_hover);
 }
 
+.pause-icon,
+.theme-download-icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+  flex: 0 0 auto;
+  background: currentColor;
+  -webkit-mask: var(--cw-browser-icon) center / contain no-repeat;
+  mask: var(--cw-browser-icon) center / contain no-repeat;
+}
+
 .pause-icon {
-  font-size: 9px;
-  line-height: 1;
+  width: 16px;
+  height: 16px;
+  --cw-browser-icon: url('/icons/colorway/mingcute/normal/pause.svg');
+}
+
+.theme-download-icon {
+  --cw-browser-icon: url('/icons/colorway/mingcute/normal/download.svg');
 }
 
 .slideshow-progress {
@@ -465,6 +482,48 @@
   color: var(--text_disabled); margin-left: auto;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
    max-width: 68px; text-align: right;
+}
+
+.theme-library {
+  width: 268px;
+  max-width: min(268px, 66vw);
+  min-width: 0;
+}
+
+.theme-library-controls {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 5px;
+  min-width: 0;
+}
+
+.theme-library-controls select {
+  width: 136px;
+  min-width: 0;
+  font-size: 11px;
+  padding: 5px 6px;
+}
+
+.theme-library-controls input {
+  width: 0;
+  min-width: 0;
+  flex: 1;
+  border: 1px solid var(--input_border);
+  border-radius: 6px;
+  background: var(--input_bg);
+  color: var(--text);
+  padding: 5px 7px;
+  font-size: 11px;
+}
+
+.theme-library-controls input:focus-visible {
+  border-color: var(--primary);
+  outline: 2px solid color-mix(in srgb, var(--primary) 24%, transparent);
+}
+
+.theme-row[hidden],
+.theme-group[hidden] {
+  display: none;
 }
 
 .theme-list-container {

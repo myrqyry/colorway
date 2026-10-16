@@ -1,5 +1,5 @@
 @OBSThemeMeta {
-    name: 'Fire Spring';
+    name: 'EarthBound — Fire Spring';
     id: 'com.myrqyry.Colorway.FireSpring';
     extends: 'com.myrqyry.Colorway';
     author: 'myrqyry';
@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    /* Official palette reference: Fire Spring
+    /* Official palette reference: EarthBound — Fire Spring
        Hex colors:
        --bg_window: #181020;
        --bg_base: #181020;

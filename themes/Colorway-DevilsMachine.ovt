@@ -1,0 +1,104 @@
+@OBSThemeMeta {
+    name: 'EarthBound — Devil’s Machine';
+    id: 'com.myrqyry.Colorway.DevilsMachine';
+    extends: 'com.myrqyry.Colorway';
+    author: 'myrqyry (palette adapted from Ben Busby)';
+    dark: 'true';
+}
+
+@OBSThemeVars {
+    /* Official palette reference: EarthBound — Devil’s Machine
+       Hex colors:
+       --bg_window: #170000;
+       --bg_base: #040001;
+       --bg_preview: #040001;
+       --bg_dock: #260000;
+       --bg_hover: #481200;
+       --text: #ffcccc;
+       --text_light: #ffcc99;
+       --text_muted: #ddaaaa;
+       --text_inactive: #a59e85;
+       --text_inverse: #040001;
+       --text_disabled: #a59e85;
+       --primary: #938198;
+       --primary_light: #b4a0dc;
+       --primary_lighter: #ffcccc;
+       --primary_dark: #e6817e;
+       --primary_darker: #c15bac;
+       --input_bg: #170000;
+       --input_bg_hover: #260000;
+       --input_bg_focus: #260000;
+       --input_border: #481200;
+       --input_border_hover: #938198;
+       --button_bg: #938198;
+       --button_bg_hover: #e6817e;
+       --button_bg_disabled: #260000;
+       --list_item_bg_hover: #481200;
+       --list_item_bg_selected: #481200;
+       --border_color: #481200;
+       --ico: #ffcccc;
+       --ico_selected: #040001;
+       --warning: #ffcc99;
+       --danger: #ff8c69;
+       --success: #37d247;
+       --meter_bg_nom: #26233a;
+       --meter_bg_war: #f6c177;
+       --meter_bg_err: #eb6f92;
+       --meter_fg_nom: #c4a7e7;
+       --meter_fg_war: #f6c177;
+       --meter_fg_err: #eb6f92;
+       Derived colors:
+       --accent_bg_start: rgba(147, 129, 152, 0.3);
+       --accent_bg_end: rgba(147, 129, 152, 0.1);
+    */
+
+    /* Palette adapted from Ben Busby's Devil's Machine VS Code theme (MIT).
+       Source: https://github.com/earthbound-themes/vscode/blob/main/themes/devils-machine.json
+       Original copyright (c) 2020 Ben Busby.
+       OBS/QSS uses Colorway's own widgets; VS Code syntax highlighting is not
+       transferred. See docs/EARTHBOUND_THEMES.md for provenance and license. */
+
+    --accent_bg_start: rgba(147, 129, 152, 0.3);
+    --accent_bg_end: rgba(147, 129, 152, 0.1);
+
+    --bg_window: #170000;
+    --bg_base: #040001;
+    --bg_preview: #040001;
+    --bg_dock: #260000;
+    --bg_hover: #481200;
+
+    --text: #ffcccc;
+    --text_light: #ffcc99;
+    --text_muted: #ddaaaa;
+    --text_inactive: #a59e85;
+    --text_disabled: #a59e85;
+    --text_inverse: #040001;
+
+    --primary: #938198;
+    --primary_light: #b4a0dc;
+    --primary_lighter: #ffcccc;
+    --primary_dark: #e6817e;
+    --primary_darker: #c15bac;
+
+    --input_bg: #170000;
+    --input_bg_hover: #260000;
+    --input_bg_focus: var(--input_bg_hover);
+    --input_border: #481200;
+    --input_border_hover: #938198;
+
+    --button_bg: #938198;
+    --button_bg_hover: #e6817e;
+    --button_hover_text: var(--text_inverse);
+    --button_bg_disabled: #260000;
+    --list_item_bg_hover: #481200;
+    --list_item_bg_selected: #481200;
+    --border_color: #481200;
+
+    --ico: var(--text);
+    --ico_selected: #040001;
+
+    --warning: #ffcc99;
+    --danger: #ff8c69;
+    --success: #37d247;
+
+}

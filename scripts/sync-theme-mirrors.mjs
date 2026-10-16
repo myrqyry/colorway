@@ -1,8 +1,10 @@
-import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync, mkdirSync, cpSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { buildMingcuteIcons } from './build-mingcute-icons.mjs';
 import { buildPaletteComment, injectCommentBlock } from './theme-palette-comments.mjs';
+import { injectStateOverrides, renderStateOverrides, normalizeBaseIcons, injectButtonIconRules } from './theme-state-tokens.mjs';
 
 const repoRoot = fileURLToPath(new URL('../', import.meta.url));
 const themesDir = path.join(repoRoot, 'themes');
@@ -120,13 +122,20 @@ function syncFile(file, graph) {
   const sourceText = readFileSync(sourcePath, 'utf8');
   const resolved = resolveTheme(file, graph);
   const commentBlock = buildPaletteComment(graph.parsedByFile.get(file).meta.name, resolved);
-  const nextText = injectCommentBlock(sourceText, commentBlock);
+  const nextText = injectStateOverrides(injectCommentBlock(sourceText, commentBlock),
+    renderStateOverrides(resolved, graph.parsedByFile.get('Colorway.obt').vars));
 
   writeFileSync(sourcePath, nextText);
   writeFileSync(publicPath, nextText);
 }
 
 const graph = buildGraph();
+const basePath = path.join(themesDir, 'Colorway.obt');
+const baseText = injectButtonIconRules(injectStateOverrides(normalizeBaseIcons(readFileSync(basePath, 'utf8')),
+  renderStateOverrides(graph.parsedByFile.get('Colorway.obt').vars)));
+writeFileSync(basePath, baseText);
+mkdirSync(publicThemesDir, { recursive: true });
+writeFileSync(path.join(publicThemesDir, 'Colorway.obt'), baseText);
 for (const file of graph.themeFiles) {
   syncFile(file, graph);
 }
@@ -142,8 +151,25 @@ const fontsDir = path.join(repoRoot, 'fonts');
 const publicFontsDir = path.join(repoRoot, 'public', 'fonts');
 mkdirSync(publicFontsDir, { recursive: true });
 for (const name of readdirSync(fontsDir)) {
-  if (!/\.(ttf|otf|woff2?)$/.test(name)) continue;
+  if (!/\.(ttf|otf|woff2?)$/.test(name) && name !== 'OFL.txt') continue;
   writeFileSync(path.join(publicFontsDir, name), readFileSync(path.join(fontsDir, name)));
 }
 
-console.log(`synced ${graph.themeFiles.length} theme files to public/themes`);
+buildMingcuteIcons();
+const iconsDir = path.join(repoRoot, 'icons', 'colorway', 'mingcute');
+const publicIconsDir = path.join(repoRoot, 'public', 'icons', 'colorway', 'mingcute');
+rmSync(publicIconsDir, { recursive: true, force: true });
+cpSync(iconsDir, publicIconsDir, { recursive: true });
+// Drop obsolete generated assets; installed user themes and settings are never modified.
+rmSync(path.join(repoRoot, 'public', 'icons', 'colorway', 'iconamoon'), { recursive: true, force: true });
+rmSync(path.join(repoRoot, 'public', 'icons', 'obs-design'), { recursive: true, force: true });
+const assets = ['normal', 'selected', 'status'].flatMap((polarity) =>
+  readdirSync(path.join(iconsDir, polarity)).filter((name) => name.endsWith('.svg')).sort()
+    .map((name) => `icons/colorway/mingcute/${polarity}/${name}`));
+assets.push('icons/colorway/mingcute/LICENSE');
+assets.push(...readdirSync(patternsDir).filter((name) => name.endsWith('.svg')).sort().map((name) => `patterns/${name}`));
+assets.push('fonts/BricolageGrotesqueVariable.ttf', 'fonts/OFL.txt');
+writeFileSync(path.join(repoRoot, 'public', 'theme-assets.json'), JSON.stringify(assets, null, 2) + '\n');
+writeFileSync(path.join(repoRoot, 'public', 'INSTALL.md'), readFileSync(path.join(repoRoot, 'docs', 'INSTALL.md')));
+
+console.log(`synced base, ${graph.themeFiles.length} variants, and ${assets.length} package assets`);

@@ -1,5 +1,5 @@
 @OBSThemeMeta {
-    name: 'Earthbound Darker';
+    name: 'EarthBound — Darker';
     id: 'com.myrqyry.Colorway.EarthBound.Darker';
     extends: 'com.myrqyry.Colorway';
     author: 'myrqyry';
@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    /* Official palette reference: Earthbound Darker
+    /* Official palette reference: EarthBound — Darker
        Hex colors:
        --bg_window: #080808;
        --bg_base: #080808;

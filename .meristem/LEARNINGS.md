@@ -137,3 +137,60 @@ negated. Doctor verified that `.meristem/local/` was ignored and that canonical 
 tool-reported status to prove a file is committable.
 
 **Validation status:** tested
+
+## 2026-10-04 — The allowlist rule recurred: `themes/` and `fonts/` were never added
+
+**Signal / failure:** A newly created theme file under `themes/` did not appear in `git status` and
+could not be staged normally. Nothing errored. Because the 159 existing themes were already tracked,
+the repository looked completely healthy.
+
+**Mechanism:** The same `/*` deny-all-then-allowlist shape documented in the 2026-09-27 entry. That
+entry fixed the *class* by adding `!.meristem/` and left the recommended behavior as a rule to
+remember. The rule was not applied to the two directories that had been in the repo all along:
+`!themes/` and `!fonts/` were never in the allowlist. Ignore rules only affect untracked paths, so
+already-tracked content kept working and the omission stayed invisible.
+
+**Scope:** Any new file under `themes/` or `fonts/`. New themes need `git add -f` until fixed.
+
+**Evidence:**
+```
+$ git check-ignore -v themes/ZZProbe.ovt
+.gitignore:1:/*/   themes/ZZProbe.ovt     # ignored
+$ git check-ignore -v src/ZZProbe.js                        # visible
+```
+
+**Recommended behavior:** Fixed by adding `!themes/` and `!fonts/`. The general lesson survives the
+fix: knowing a failure class is not the same as auditing every instance of it. When a rule like this
+is recorded, grep the existing allowlist for the project's *own* content directories rather than
+assuming they were covered — the ones that predate the rule are the ones that get missed. Verify with
+`git check-ignore -v`, never by whether `git status` looks clean.
+
+**Validation status:** tested (fixed and re-verified after the change)
+
+## 2026-10-04 — Green tests do not mean the OBS preview layer works
+
+**Signal / failure:** `pnpm test` passes 589 tests while providing no behavioral coverage whatsoever
+for the five modules that render the entire simulated OBS interface — 2,048 of the 3,859 lines of JS
+in `src/`.
+
+**Mechanism:** Those modules export nothing. They are loaded as `<script type="module">` by
+`index.html`, mount on `.obs-real-preview`, and exchange state through the DOM and `MutationObserver`.
+With no exports there is nothing to import, so their tests `readFileSync` the source and assert on
+regex matches of literal text — for example asserting the source contains
+`className = 'colorway-dialog-brand'`. The suite therefore proves certain strings are present in the
+file, not that the UI behaves correctly.
+
+**Scope:** `obs-preview.js`, `obs-preview-refine.js`, `obs-preview-actions.js`,
+`obs-preview-ambient.js`, `page-shell-sync.js`. The theme engine and generator contracts are *not*
+affected — those are real behavioral tests, and a green suite there is meaningful.
+
+**Evidence:** `test/obs-preview-actions.test.js` opens with
+`readFileSync(new URL('../src/obs-preview-actions.js', import.meta.url), 'utf8')` followed by
+`assert.match` on source literals. All five modules were confirmed to have zero `export` statements.
+
+**Recommended behavior:** For changes to these five modules, treat `pnpm test` as a lint on source text
+and verify real behavior in a browser (`pnpm dev`). Expect the opposite failure mode too: a
+behavior-preserving refactor that changes a literal will fail a test that never tested behavior.
+Documented in `docs/ARCHITECTURE.md` §3.6.
+
+**Validation status:** observed

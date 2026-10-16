@@ -1,8 +1,10 @@
 import './styles.css';
 import { gsap } from 'gsap';
 import { THEMES, DEFAULT_THEME, PATTERNS, DEFAULT_PATTERN } from './theme-catalog.js';
+import { THEME_CATEGORIES, getThemeCategory, filterThemeCatalog, sortThemesByDisplayName } from './theme-categories.js';
 import { PALETTE_VARS, PALETTE_GROUPS, applyTheme, loadTheme } from './theme-loader.js';
 import { toNormalizedTheme, serializeOVT, toYamiOVT, downloadThemeText, importThemeFile, fromLospecPalette, lospecSlugFromUrl } from './theme-workbench.js';
+import { downloadThemePackage } from './theme-package.js';
 
 function escapeHtml(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -76,18 +78,22 @@ function renderThemeList(themeData, activeTheme) {
           ${swatches}
         </span>
         <a class="theme-download" href="#" data-file="${escapeHtml(theme.file)}" title="Download theme package" aria-label="Download ${escapeHtml(name)}" aria-haspopup="true" aria-expanded="false">
-          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 1.5a.75.75 0 0 1 .75.75v6.69l1.97-1.97a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 8.03a.75.75 0 0 1 1.06-1.06l1.97 1.97V2.25A.75.75 0 0 1 8 1.5Zm-5.5 11a.75.75 0 0 1 .75.75v.5h9.5v-.5a.75.75 0 0 1 1.5 0v.5A1.5 1.5 0 0 1 12.75 15H3.25A1.5 1.5 0 0 1 1.75 13.75v-.5a.75.75 0 0 1 .75-.75Z"/></svg>
+          <span class="theme-download-icon" aria-hidden="true"></span>
         </a>
       </button>
     `;
   };
-  const dark = THEMES.filter((t) => themeData[t.file]?.dark !== false);
-  const light = THEMES.filter((t) => themeData[t.file]?.dark === false);
+  const sortedThemes = sortThemesByDisplayName(THEMES, themeData);
+  const dark = sortedThemes.filter((t) => themeData[t.file]?.dark !== false);
+  const light = sortedThemes.filter((t) => themeData[t.file]?.dark === false);
   const group = (label, themes) => themes.length
     ? `<div class="theme-group"><div class="theme-group-label">${label}</div>${themes.map(rowFor).join('')}</div>`
     : '';
   return group('Dark', dark) + group('Light', light);
 }
+
+const BROWSABLE_CATEGORIES = THEME_CATEGORIES.filter(({ id }) =>
+  THEMES.some((theme) => getThemeCategory(theme.file) === id));
 
 const app = document.querySelector('#app');
 
@@ -141,10 +147,19 @@ function renderApp() {
         <div class="showcase-controls">
           <div class="showcase-picker">
             <label for="theme-list">Theme</label>
+            <div class="theme-library">
+              <div class="theme-library-controls">
+              <select id="theme-category-filter" aria-label="Theme category">
+                <option value="all">All styles</option>
+                ${BROWSABLE_CATEGORIES.map(({ id, label }) => `<option value="${id}">${escapeHtml(label)}</option>`).join('')}
+              </select>
+              <input id="theme-search" type="search" placeholder="Find theme…" aria-label="Search themes" autocomplete="off" />
+            </div>
             <div class="theme-list-container">
               <div id="theme-list" class="theme-list" role="listbox">
                 <!-- Theme list will be rendered here -->
               </div>
+            </div>
             </div>
           </div>
           <div class="showcase-picker">
@@ -171,7 +186,7 @@ function renderApp() {
                 aria-pressed="false"
                 title="Pause slideshow"
               >
-                <span class="pause-icon" aria-hidden="true">❚❚</span>
+                <span class="pause-icon" aria-hidden="true"></span>
               </button>
             </div>
             <div
@@ -308,33 +323,33 @@ function renderApp() {
           <div class="card-header">List Items</div>
           <div class="card-body lists-demo">
             <div class="demo-list-item" role="option" tabindex="0" aria-selected="false">
-              <img class="list-icon" src="/icons/colorway/iconamoon/normal/display.svg" alt="" aria-hidden="true" />
+              <img class="list-icon" src="/icons/colorway/mingcute/normal/display.svg" alt="" aria-hidden="true" />
               <span class="list-label">Normal item</span>
               <span class="list-actions">
-                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" aria-hidden="true" />
-                <img class="list-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="" aria-hidden="true" />
+                <img class="list-action" src="/icons/colorway/mingcute/normal/eye.svg" alt="" aria-hidden="true" />
+                <img class="list-action" src="/icons/colorway/mingcute/normal/lock.svg" alt="" aria-hidden="true" />
               </span>
             </div>
             <div class="demo-list-item selected" role="option" tabindex="0" aria-selected="true">
-              <img class="list-icon" src="/icons/colorway/iconamoon/normal/default.svg" alt="" aria-hidden="true" />
+              <img class="list-icon" src="/icons/colorway/mingcute/normal/default.svg" alt="" aria-hidden="true" />
               <span class="list-label">Selected item</span>
               <span class="list-actions">
-                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" aria-hidden="true" />
-                <img class="list-action" src="/icons/colorway/iconamoon/normal/lock.svg" alt="" aria-hidden="true" />
+                <img class="list-action" src="/icons/colorway/mingcute/normal/eye.svg" alt="" aria-hidden="true" />
+                <img class="list-action" src="/icons/colorway/mingcute/normal/lock.svg" alt="" aria-hidden="true" />
               </span>
             </div>
             <div class="demo-list-item inactive" role="option" tabindex="0" aria-selected="false">
-              <img class="list-icon" src="/icons/colorway/iconamoon/normal/group.svg" alt="" aria-hidden="true" />
+              <img class="list-icon" src="/icons/colorway/mingcute/normal/group.svg" alt="" aria-hidden="true" />
               <span class="list-label">Inactive item</span>
               <span class="list-actions">
-                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" aria-hidden="true" />
+                <img class="list-action" src="/icons/colorway/mingcute/normal/eye.svg" alt="" aria-hidden="true" />
               </span>
             </div>
             <div class="demo-list-item" role="option" tabindex="0" aria-selected="false">
-              <img class="list-icon" src="/icons/colorway/iconamoon/normal/globe.svg" alt="" aria-hidden="true" />
+              <img class="list-icon" src="/icons/colorway/mingcute/normal/globe.svg" alt="" aria-hidden="true" />
               <span class="list-label">Hover me</span>
               <span class="list-actions">
-                <img class="list-action" src="/icons/colorway/iconamoon/normal/eye.svg" alt="" aria-hidden="true" />
+                <img class="list-action" src="/icons/colorway/mingcute/normal/eye.svg" alt="" aria-hidden="true" />
               </span>
             </div>
           </div>
@@ -398,7 +413,8 @@ function renderApp() {
           <input type="checkbox" id="theme-download-base" checked />
           <span>Include base theme (.obt)</span>
         </label>
-        <button type="button" class="theme-download-go" id="theme-download-go">Download .ovt + assets</button>
+        <button type="button" class="theme-download-go" id="theme-download-go">Download ZIP package</button>
+        <p id="theme-download-status" role="status" aria-live="polite"></p>
       </div>
     </div>
   `;
@@ -428,6 +444,7 @@ function applyThemeState(file, theme, patternFile) {
     row.classList.toggle('active', active);
     row.setAttribute('aria-selected', String(active));
   });
+  updateThemeFilter();
 }
 
 function crossfadeShowcase(commit, reduceMotion) {
@@ -689,6 +706,25 @@ function updateStatusDemo() {
 renderApp();
 const themeList = document.querySelector('#theme-list');
 const patternSelect = document.querySelector('#pattern-select');
+const themeCategoryFilter = document.querySelector('#theme-category-filter');
+const themeSearch = document.querySelector('#theme-search');
+
+function updateThemeFilter() {
+  const visibleFiles = new Set(filterThemeCatalog(THEMES, {
+    category: themeCategoryFilter.value,
+    query: themeSearch.value,
+  }).map((theme) => theme.file));
+
+  for (const row of themeList.querySelectorAll('.theme-row')) {
+    // Keep the applied theme visible even when shuffle changes it mid-filter.
+    row.hidden = !visibleFiles.has(row.dataset.file) && !row.classList.contains('active');
+  }
+  for (const group of themeList.querySelectorAll('.theme-group')) {
+    group.hidden = !group.querySelector('.theme-row:not([hidden])');
+  }
+}
+themeCategoryFilter.addEventListener('change', updateThemeFilter);
+themeSearch.addEventListener('input', updateThemeFilter);
 patternSelect.addEventListener('change', () => applyCurrentPattern());
 
 // Theme list event listeners
@@ -703,22 +739,6 @@ function positionDownloadMenu(anchor) {
   const left = Math.min(rect.right - menuWidth, window.innerWidth - menuWidth - 8);
   downloadMenu.style.left = `${Math.max(8, left)}px`;
   downloadMenu.style.top = `${rect.bottom + 6}px`;
-}
-
-function downloadUrl(url, filename) {
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-}
-
-function downloadThemeBundle(file, includeBase) {
-  downloadUrl(`/themes/${encodeURIComponent(file)}`, file);
-  if (includeBase) downloadUrl('/themes/Colorway.obt', 'Colorway.obt');
-  downloadUrl('/fonts/BricolageGrotesqueVariable.ttf', 'BricolageGrotesqueVariable.ttf');
-  PATTERNS.forEach((p) => downloadUrl(`/patterns/${encodeURIComponent(p.file)}`, p.file));
 }
 
 document.addEventListener('click', (e) => {
@@ -740,22 +760,37 @@ document.addEventListener('click', (e) => {
   }
 });
 
-downloadGo?.addEventListener('click', () => {
-  if (!downloadForFile) return;
-  downloadThemeBundle(downloadForFile, downloadBase.checked);
-  downloadMenu.hidden = true;
+downloadGo?.addEventListener('click', async () => {
+  if (!downloadForFile || downloadGo.disabled) return;
+  const status = document.querySelector('#theme-download-status');
+  downloadGo.disabled = true;
+  status.textContent = 'Preparing package…';
+  try {
+    await downloadThemePackage(downloadForFile, downloadBase.checked);
+    status.textContent = '';
+    downloadMenu.hidden = true;
+  } catch (error) {
+    status.textContent = error.message;
+    downloadMenu.hidden = false;
+  } finally {
+    downloadGo.disabled = false;
+  }
 });
 
 // Keyboard navigation
 document.addEventListener('keydown', (e) => {
   if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(e.key)) return;
+  if (e.target.matches('input, select, textarea')) return;
   const activeRow = document.querySelector('.theme-row.active');
   if (!activeRow) return;
 
+  const visibleRows = Array.from(themeList.querySelectorAll('.theme-row:not([hidden])'));
+  const current = document.activeElement.closest('.theme-row') || activeRow;
+  const position = visibleRows.indexOf(current);
   const row = e.key === 'ArrowDown'
-    ? activeRow.nextElementSibling
+    ? visibleRows[position + 1]
     : e.key === 'ArrowUp'
-      ? activeRow.previousElementSibling
+      ? visibleRows[position - 1]
       : null;
 
   if (row) {
@@ -854,7 +889,7 @@ function setShufflePaused(paused) {
 
   const icon = slideshowPause.querySelector('.pause-icon');
   if (icon) {
-    icon.textContent = paused ? '▶' : '❚❚';
+    icon.style.setProperty('--cw-browser-icon', `url('/icons/colorway/mingcute/normal/${paused ? 'media-play' : 'pause'}.svg')`);
   }
 
   emitShuffleState();

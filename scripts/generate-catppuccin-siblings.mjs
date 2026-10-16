@@ -1,8 +1,10 @@
-import { readdirSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { buildPaletteComment } from './theme-palette-comments.mjs';
+import { renderStateOverrides, injectStateOverrides } from './theme-state-tokens.mjs';
+import { parseOVT } from '../src/theme-loader.js';
 
 const repoRoot = fileURLToPath(new URL('../', import.meta.url));
 const themesDir = path.join(repoRoot, 'themes');
@@ -576,7 +578,8 @@ export function renderTheme(config) {
     '',
   );
 
-  return lines.join('\n');
+  return injectStateOverrides(lines.join('\n'), renderStateOverrides(resolved,
+    new Map(Object.entries(parseOVT(readFileSync(path.join(themesDir, 'Colorway.obt'), 'utf8')).vars))));
 }
 
 function generatedOutputs() {

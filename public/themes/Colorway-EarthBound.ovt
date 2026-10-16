@@ -1,5 +1,5 @@
 @OBSThemeMeta {
-    name: 'Earthbound';
+    name: 'EarthBound';
     id: 'com.myrqyry.Colorway.EarthBound';
     extends: 'com.myrqyry.Colorway';
     author: 'myrqyry';
@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    /* Official palette reference: Earthbound
+    /* Official palette reference: EarthBound
        Hex colors:
        --bg_window: #1c0037;
        --bg_base: #1c0037;

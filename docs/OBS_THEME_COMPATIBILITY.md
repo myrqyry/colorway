@@ -9,7 +9,9 @@ Compatibility was audited against:
 - `obsproject/obs-studio@ea7536c49cb84420296d3831cda526c232fed3bc`
 - `frontend/data/themes/Yami.obt`
 
-OBS currently recommends using Yami as a base for custom themes because standalone `.obt` base themes do not automatically receive new widget styling. Colorway intentionally remains a base theme for now because it has substantial custom QSS, icon, surface, mixer, and layout behavior. A future Yami-inheritance migration should be tested in OBS before changing that architecture.
+OBS's wiki recommends using Yami as a base for custom themes, on the grounds that standalone `.obt` base themes do not automatically receive new widget styling. **Colorway deliberately does not follow that recommendation.** It is its own base theme (`themes/Colorway.obt`) and its 159 variants extend `com.myrqyry.Colorway`.
+
+**This is settled and not up for reconsideration.** Colorway's standalone base carries substantial custom QSS, its own icon set, custom surfaces, mixer, and layout behavior; that is the product, not an accident to be migrated away. Do not propose a `Yami.obt` base, a `Yami.obt → Colorway.ovt → Colorway-*.ovt` inheritance chain, or copying Yami rules into Colorway. Upstream Yami is tracked **only** as a format-drift reference for `pnpm check:obs-upstream`; it is not an architectural target. The cost of owning the base theme is tracked-upstream maintenance, and that is accepted deliberately.
 
 ## Current compatibility cuttings
 
@@ -56,7 +58,7 @@ Colorway follows these constraints:
 - `calc()` is evaluated by the OBS theme parser only inside `@OBSThemeVars`; widget QSS consumes precomputed variables instead.
 - Current OBS source also supports `min()` and `max()` in the variable parser, even though the wiki currently documents only `calc()`.
 
-The wiki explicitly permits a variant to extend another variant as long as the dependency chain ends at a base theme. That makes a future `Yami.obt → Colorway.ovt → Colorway-*.ovt` migration a supported architecture. It still needs OBS runtime testing before replacing Colorway's standalone base because variant QSS is appended after its parent and specificity determines which rule wins.
+The wiki permits a variant to extend another variant as long as the dependency chain ends at a base theme, and OBS's parser confirms it: `PrepareQSS` concatenates the chain base-first, so a variant's rules are appended after its parent's and win at equal specificity. Colorway uses exactly this — every variant extends `com.myrqyry.Colorway`, and light variants append their own icon `url()` overrides after the base's. No inheritance change is planned or wanted; see the settled decision in *Upstream baseline* above.
 
 
 ## Automated upstream watch

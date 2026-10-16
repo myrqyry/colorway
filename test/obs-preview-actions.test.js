@@ -25,8 +25,10 @@ test('Settings footer exposes Import and split Download actions', () => {
   assert.match(styles, /display: flex !important/);
 });
 
-test('Colorway remains the default download while Yami is an optional compatibility export', () => {
-  assert.match(actions, /downloadCurrent\('colorway'\)/);
+test('catalog themes default to a complete Colorway package while external snapshots and raw exports stay explicit', () => {
+  assert.match(actions, /externalThemeIsActive\(\) \? 'colorway' : 'package'/);
+  assert.match(actions, /data-colorway-download-kind="package"/);
+  assert.match(actions, /return downloadThemePackage\(file\)/);
   assert.match(actions, /<strong>Colorway \.ovt<\/strong><small>Native variant<\/small>/);
   assert.match(actions, /<strong>Yami-compatible \.ovt<\/strong><small>Compatibility export<\/small>/);
   assert.match(actions, /kind === 'yami'/);

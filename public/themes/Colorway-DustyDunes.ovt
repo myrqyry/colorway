@@ -1,5 +1,5 @@
 @OBSThemeMeta {
-    name: 'Dusty Dunes';
+    name: 'EarthBound — Dusty Dunes';
     id: 'com.myrqyry.Colorway.DustyDunes';
     extends: 'com.myrqyry.Colorway';
     author: 'myrqyry';
@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    /* Official palette reference: Dusty Dunes
+    /* Official palette reference: EarthBound — Dusty Dunes
        Hex colors:
        --bg_window: #0e0900;
        --bg_base: #0e0900;

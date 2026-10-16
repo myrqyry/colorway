@@ -1,5 +1,5 @@
 @OBSThemeMeta {
-    name: 'Moonside';
+    name: 'EarthBound — Moonside';
     id: 'com.myrqyry.Colorway.Moonside';
     extends: 'com.myrqyry.Colorway';
     author: 'myrqyry';
@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    /* Official palette reference: Moonside
+    /* Official palette reference: EarthBound — Moonside
        Hex colors:
        --bg_window: #000000;
        --bg_base: #000000;

@@ -149,7 +149,13 @@ test('palette sync preserves real light-theme source-value annotations verbatim'
   assert.equal(injectCommentBlock(solarizedLight, replacement), solarizedLight);
 });
 
-test('every frozen light-theme palette comment still names its current theme', () => {
+test('frozen light-theme comments retain source identity when a display name is intentionally aliased', () => {
+  // These names were changed for browsing; the frozen comments still record
+  // the untouched upstream palette provenance, not the OBS display labels.
+  const sourceNameAliases = new Map([
+    ['Colorway-CaveOfThePast.ovt', ['Cave of the Past', 'EarthBound — Cave of the Past']],
+    ['Colorway-Magicant.ovt', ['Magicant', 'EarthBound — Magicant']],
+  ]);
   const lightFiles = themeFiles().filter((file) => isLightTheme(readTheme(file)));
   assert.ok(lightFiles.length > 0, 'no light themes found to check');
 
@@ -163,11 +169,15 @@ test('every frozen light-theme palette comment still names its current theme', (
     }
 
     const name = frozen[1].trim();
-    assert.equal(
-      name,
-      parseMeta(source).name,
-      `${file} preserves a frozen palette comment naming "${name}" — re-sync after renaming`,
-    );
+    const displayName = parseMeta(source).name;
+    const alias = sourceNameAliases.get(file);
+    if (alias) {
+      assert.equal(name, alias[0], `${file}: original palette label changed`);
+      assert.equal(displayName, alias[1], `${file}: explicit EarthBound display alias changed`);
+    } else {
+      assert.equal(name, displayName,
+        `${file} preserves a frozen palette comment naming "${name}" — re-sync after renaming`);
+    }
   }
 
   assert.deepEqual(

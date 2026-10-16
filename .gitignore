@@ -7,6 +7,8 @@
 !public/
 !scripts/
 !docs/
+!themes/
+!fonts/
 !.meristem/
 docs/superpowers/
 .vercel

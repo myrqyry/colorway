@@ -65,7 +65,7 @@ Existing authority, preferred over duplicating it here:
 
 ```bash
 pnpm install --frozen-lockfile   # CI's install; pnpm 11.17.0 is the pinned packageManager
-pnpm test                        # 589 tests, 588 pass, 0 fail, 1 skipped (network-gated)
+pnpm test                        # Node suite; optional offscreen Qt tests when PyQt6 is available
 pnpm build                       # vite build
 pnpm sync:themes                 # regenerate public/ mirror from themes/
 pnpm generate:siblings           # regenerate the 8 sibling themes, then sync
@@ -101,3 +101,56 @@ modules under `test/` are not collected as tests that pass on containing no asse
 - `patterns/` has a `public/patterns/` mirror that, unlike the themes mirror, has no generator
   script and no parity assertion. Whether that unguarded duplicate should be brought under the
   same contract as `themes/` is undecided.
+- **The five OBS preview-layer modules have no behavioral test coverage.** `obs-preview.js`,
+  `obs-preview-refine.js`, `obs-preview-actions.js`, `obs-preview-ambient.js`, and
+  `page-shell-sync.js` export nothing, so their tests assert on source text via regex. A green suite
+  proves those literals are present, not that the UI works. Documented in `docs/ARCHITECTURE.md` §3.6
+  as of 2026-10-04; whether to add a DOM-based harness is undecided.
+
+## Closed 2026-10-04
+
+- **`docs/ARCHITECTURE.md` §3 omitted the entire OBS preview layer.** It documented only the theme
+  engine while `index.html` loads five more modules totalling 2,048 of the 3,859 lines of JS in `src/`.
+  Added §3.6–§3.11 covering the side-effect module contract, the `boot()`/`MutationObserver` retry,
+  DOM-based state sharing, and the source-text testing limitation; added the layer to the §1 diagram.
+- **Stale figures in `docs/ARCHITECTURE.md`.** Corrected against measurement: `PALETTE_VARS` is 40
+  (was "~25"), the base theme declares 274 variables (was "~150"), there are 159 variants
+  (was "~150"), `Colorway.obt` is 3,659 lines (was 3,293), `styles.css` is 1,163 lines (was 679).
+  The "~25 vs all 150" framing in §7.5 was wrong on all three numbers and is now explained: 40 is the
+  tracked *palette* vocabulary, while a shipped variant declares 72 custom properties in total.
+- **`npm run` in documentation.** Seven invocations in `docs/ARCHITECTURE.md` corrected to `pnpm`. The
+  repo pins `pnpm@11.17.0` and CI uses pnpm; the lockfile is pnpm's, so the two are not interchangeable.
+- **`.gitignore` allowlist omitted `!themes/` and `!fonts/`.** A new theme or font file was silently
+  ignored and never appeared in `git status`, while tracked files were unaffected so the repository
+  looked healthy. Fixed by adding both entries. This closed an instance of the failure class already
+   recorded in `LEARNINGS.md` (2026-09-27), which had fixed only `.meristem/`.
+
+## State contrast and asset delivery (2026-10-06)
+
+- `scripts/theme-state-tokens.mjs` owns the marked generated state-token blocks in the
+  base/variants and render-time button-icon block in the base. Edit palette/QSS inputs,
+  then run `pnpm sync:themes`; do not hand-edit these generated blocks. It derives
+  on-accent ink and fixed-color SVG polarity without changing palette seeds or frozen
+  palette comments. The sibling generator uses the same helper, preserving its contract.
+- `pnpm sync:themes` also mirrors `Colorway.obt`, icons, patterns, and font/license assets,
+  and produces `public/theme-assets.json` plus `public/INSTALL.md`. Repeat runs must be
+  byte-idempotent across source themes and public artifacts.
+- `src/theme-package.js` creates complete catalog ZIPs with `fflate`. Both the legacy
+  Browse action and the visible Settings action call it. The visible catalog default is
+  now ZIP; raw `.ovt`/external snapshot exports remain explicit. Required asset fetch
+  failures reject the package and must surface in the UI rather than download partial output.
+- `docs/INSTALL.md` owns installation layout/font instructions. `copy-themes.sh` accepts
+  an explicit destination and includes icons/patterns. QSS cannot load bundled fonts via
+  `@font-face`; Bricolage must be OS-installed or the tested Qt fallback list is used.
+- Qt's render-time `icon:` property supports QPushButton state changes; `qproperty-icon`
+  in hover pseudo-states is not an equivalent mechanism. QToolButton/source-indicator
+  surfaces stay neutral where reliable dynamic icon/child-palette propagation is absent.
+  Valid OBS Idian runtime class/repolish mechanisms remain intact.
+- `test/theme-state-contrast.test.js` independently checks composed corpus contrast and
+  generated fixed points; `test/theme-package.test.js` exercises real asset bytes and
+  failure paths. `test/theme-qt-render.test.js` adds optional offscreen PyQt6 behavior
+  checks with known-bad controls. No Python package is required for the normal Node path.
+
+Delivery evidence and OBS-specific verification limits: `docs/COLORWAY_BASE_REVIEW.md`
+§Delivery update. Its test counts/measurements are an observation of that verified change,
+not a permanent inventory; recover current counts by running the suite.

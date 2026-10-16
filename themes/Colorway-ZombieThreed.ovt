@@ -1,5 +1,5 @@
 @OBSThemeMeta {
-    name: 'Zombie Threed';
+    name: 'EarthBound — Zombie Threed';
     id: 'com.myrqyry.Colorway.ZombieThreed';
     extends: 'com.myrqyry.Colorway';
     author: 'myrqyry';
@@ -7,7 +7,7 @@
 }
 
 @OBSThemeVars {
-    /* Official palette reference: Zombie Threed
+    /* Official palette reference: EarthBound — Zombie Threed
        Hex colors:
        --bg_window: #303454;
        --bg_base: #303454;

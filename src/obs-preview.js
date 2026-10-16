@@ -10,12 +10,12 @@ function escapeHtml(value) {
 }
 
 const ICON_ROOTS = {
-  colorway: '/icons/colorway/iconamoon/normal',
-  obsDesign: '/icons/obs-design',
+  colorway: '/icons/colorway/mingcute/normal',
+  status: '/icons/colorway/mingcute/status',
 };
 
 function iconPath(name, source = 'colorway') {
-  const root = source === 'obs-design' ? ICON_ROOTS.obsDesign : ICON_ROOTS.colorway;
+  const root = source === 'mingcute-status' ? ICON_ROOTS.status : ICON_ROOTS.colorway;
   return `${root}/${name}.svg`;
 }
 
@@ -389,13 +389,13 @@ function previewMarkup() {
         <div class="obs-sim-statusbar">
           <div class="obs-sim-status-left">
             <span class="obs-sim-status-item obs-sim-stream-indicator" data-stream-indicator data-state="inactive" title="Streaming status">
-              ${iconMarkup('streaming-inactive', 'obs-design', 'obs-sim-status-icon obs-sim-status-icon-inactive')}
-              ${iconMarkup('streaming-active', 'obs-design', 'obs-sim-status-icon obs-sim-status-icon-active')}
+              ${iconMarkup('streaming-inactive', 'mingcute-status', 'obs-sim-status-icon obs-sim-status-icon-inactive')}
+              ${iconMarkup('streaming-active', 'mingcute-status', 'obs-sim-status-icon obs-sim-status-icon-active')}
               <span data-stream-status>00:00:00</span>
             </span>
             <span class="obs-sim-status-item obs-sim-record-indicator" data-record-indicator data-state="inactive" title="Recording status">
-              ${iconMarkup('recording-inactive', 'obs-design', 'obs-sim-status-icon obs-sim-status-icon-inactive')}
-              ${iconMarkup('recording-active', 'obs-design', 'obs-sim-status-icon obs-sim-status-icon-active')}
+              ${iconMarkup('recording-inactive', 'mingcute-status', 'obs-sim-status-icon obs-sim-status-icon-inactive')}
+              ${iconMarkup('recording-active', 'mingcute-status', 'obs-sim-status-icon obs-sim-status-icon-active')}
               <span data-record-status>00:00:00</span>
             </span>
           </div>
@@ -403,8 +403,8 @@ function previewMarkup() {
             <strong>CPU: 0.4%</strong>
             <strong>60.00 / 60.00 FPS</strong>
             <span class="obs-sim-status-item obs-sim-network-indicator" data-network-indicator data-state="inactive" title="Network status">
-              ${iconMarkup('network-inactive', 'obs-design', 'obs-sim-status-icon obs-sim-status-icon-inactive')}
-              ${iconMarkup('network-good', 'obs-design', 'obs-sim-status-icon obs-sim-status-icon-active')}
+              ${iconMarkup('network-inactive', 'mingcute-status', 'obs-sim-status-icon obs-sim-status-icon-inactive')}
+              ${iconMarkup('network-good', 'mingcute-status', 'obs-sim-status-icon obs-sim-status-icon-active')}
               <span data-bitrate>0 kb/s</span>
             </span>
           </div>

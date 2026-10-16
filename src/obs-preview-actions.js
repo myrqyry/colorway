@@ -1,5 +1,6 @@
 import './obs-preview-actions.css';
 import { applyTheme } from './theme-loader.js';
+import { downloadThemePackage } from './theme-package.js';
 import {
   downloadThemeText,
   importThemeFile,
@@ -88,6 +89,11 @@ function downloadAppliedExternal(kind = 'colorway') {
 }
 
 function downloadCurrent(kind = 'colorway') {
+  if (kind === 'package') {
+    const file = activeThemeFile();
+    if (!file || externalThemeIsActive()) throw new Error('Select a catalog theme to download its package.');
+    return downloadThemePackage(file);
+  }
   if (externalThemeIsActive()) return downloadAppliedExternal(kind);
   return kind === 'yami' ? downloadBuiltInYami() : downloadBuiltInColorway();
 }
@@ -100,6 +106,11 @@ function syncBrand(root) {
   const actionTheme = root.querySelector('[data-colorway-action-theme]');
   if (brandTheme && brandTheme.textContent !== name) brandTheme.textContent = name;
   if (actionTheme && actionTheme.textContent !== name) actionTheme.textContent = name;
+  const download = root.querySelector('[data-colorway-download-main]');
+  const label = externalThemeIsActive() ? 'Download .ovt' : 'Download ZIP';
+  if (download && download.textContent !== label) download.textContent = label;
+  const packageOption = root.querySelector('[data-colorway-download-kind="package"]');
+  if (packageOption) packageOption.disabled = externalThemeIsActive() || root.dataset.colorwayDownloadBusy === 'true';
   document.title = `${name} · Colorway OBS Theme`;
 }
 
@@ -135,6 +146,26 @@ function closeDownloadMenu(root) {
   const toggle = root.querySelector('[data-colorway-download-toggle]');
   if (menu) menu.hidden = true;
   toggle?.setAttribute('aria-expanded', 'false');
+}
+
+async function triggerDownload(root, kind) {
+  const status = root.querySelector('[data-colorway-download-status]');
+  const buttons = [...root.querySelectorAll('[data-colorway-download-main], [data-colorway-download-kind]')];
+  if (root.dataset.colorwayDownloadBusy === 'true') return;
+  root.dataset.colorwayDownloadBusy = 'true';
+  buttons.forEach((button) => { button.disabled = true; });
+  status.textContent = kind === 'package' ? 'Preparing ZIP…' : '';
+  try {
+    await downloadCurrent(kind);
+    status.textContent = '';
+    closeDownloadMenu(root);
+  } catch (error) {
+    status.textContent = error.message;
+  } finally {
+    root.dataset.colorwayDownloadBusy = 'false';
+    buttons.forEach((button) => { button.disabled = false; });
+    syncBrand(root);
+  }
 }
 
 function clearCatalogSelection() {
@@ -324,6 +355,10 @@ function ensureActions(root) {
           aria-label="Download options"
         >⌄</button>
         <div class="colorway-download-menu" data-colorway-download-menu role="menu" hidden>
+          <button type="button" role="menuitem" data-colorway-download-kind="package">
+            <span><strong>Colorway ZIP package</strong><small>Base, variant, icons, patterns, font</small></span>
+            <span aria-hidden="true">↓</span>
+          </button>
           <button type="button" role="menuitem" data-colorway-download-kind="colorway">
             <span><strong>Colorway .ovt</strong><small>Native variant</small></span>
             <span aria-hidden="true">↓</span>
@@ -334,6 +369,7 @@ function ensureActions(root) {
           </button>
         </div>
       </div>
+      <span data-colorway-download-status role="status" aria-live="polite"></span>
     `;
     dialog.append(actions);
 
@@ -341,8 +377,7 @@ function ensureActions(root) {
     settingsFile?.addEventListener('change', () => importFromSettings(root, settingsFile.files?.[0]));
     actions.querySelector('[data-colorway-import]')?.addEventListener('click', () => triggerImport(root));
     actions.querySelector('[data-colorway-download-main]')?.addEventListener('click', () => {
-      downloadCurrent('colorway');
-      closeDownloadMenu(root);
+      triggerDownload(root, externalThemeIsActive() ? 'colorway' : 'package');
     });
 
     const toggle = actions.querySelector('[data-colorway-download-toggle]');
@@ -356,8 +391,7 @@ function ensureActions(root) {
 
     actions.querySelectorAll('[data-colorway-download-kind]').forEach((button) => {
       button.addEventListener('click', () => {
-        downloadCurrent(button.dataset.colorwayDownloadKind);
-        closeDownloadMenu(root);
+        triggerDownload(root, button.dataset.colorwayDownloadKind);
       });
     });
   }
