@@ -1,6 +1,42 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Latest continuation — native OBS surface legibility audit (2026-10-16)
+
+A Settings screenshot exposed an incomplete prior Colorway fix: the page
+background was repaired, but disabled labels and unchecked checkboxes were
+still nearly invisible in some variants, and muted navigation ink lacked
+contrast. This is a surface-pairing failure, not missing base color tokens.
+
+Audited all 160 variants plus the base for text and control contrasts on the
+actual dock, base, button, input/focus/hover, preview, list-hover, and heading
+surfaces. Derived additional legibility roles from the original palettes;
+preserved variant identities, seed colors, annotated historical comments, and
+the intentional standalone Colorway base. Extended sibling generation to
+include inherited inputs, and accounted for RGBA palette colors against their
+backing surfaces. Fixed shared OBS selectors for Settings group labels,
+checkbox indicators, tabs, tooltips, menus, headers, button states, and input
+states. Generated all 160 variant overrides and public mirrors with
+`pnpm sync:themes`.
+
+**Verified:** `pnpm test` 643 total / 642 pass / 0 fail / 1 existing skip;
+`pnpm check:obs-native` base, Latte, Monokai; `pnpm check:preview`
+including Chromium parity and build; independent all-corpus contrast contract;
+Qt pixel and palette probes with deliberately broken variants rejected.
+An isolated real OBS 32.2 Settings window using SLSO8 Pixels confirmed the
+disabled-label/checkbox/sidebar improvements; the validation captured the
+actual Settings window ID. The corrected 161 installed theme files were all
+confirmed byte-identical to their source counterparts, after backing up the
+pre-change installed files. OBS user configuration, scene collections, pattern
+SVG, and selected theme were not modified by installation.
+
+**Remaining boundary:** The small black native Settings outer frame/gutters
+persist. Modifying generic QDialog background rules did not fix the actual
+captured Settings window, so those speculative rules were reverted rather
+than credited as repairs. Do not confuse a successful Qt fixture or main-window
+screenshot with verification of the actual dialog. The narrower issue is
+documented in `docs/OBS_THEME_COMPATIBILITY.md` and `.meristem/ERRORS.md`.
+
 ## Latest continuation — Colorway optional OBS companion (2026-10-16)
 
 User requested easier pattern changes, theme previews in OBS, and a web

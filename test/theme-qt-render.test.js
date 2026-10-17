@@ -21,7 +21,7 @@ for (const file of [null, 'Colorway-CatppuccinLatte-Teal.ovt', 'Colorway-RosePin
   });
 }
 
-for (const file of [null, 'Colorway-Carbonfox.ovt', 'Colorway-CatppuccinLatte-Blue.ovt']) {
+for (const file of [null, 'Colorway-Carbonfox.ovt', 'Colorway-SLSO8Pixels.ovt', 'Colorway-CatppuccinLatte-Blue.ovt', 'Colorway-Cursor.ovt', 'Colorway-Everforest-Light-Soft.ovt']) {
   test(`real Qt paints Settings scroll content using the variant background: ${file || 'base'}`, { skip: !available }, () => {
     const variant = file ? readFileSync(new URL('themes/' + file, root), 'utf8') : '';
     const result = probe(base, variant, ['settings']);
@@ -35,9 +35,12 @@ test('Qt probe rejects deliberate reintroductions of the reviewed defects', { sk
     ['focus', 'QComboBox:focus { border-color: var(--input_border_hover); }', 'combo focus border'],
     ['scroll', 'QScrollBar::add-page:vertical { background: var(--scrollbar_down); }', 'scroll page'],
     ['settings', 'OBSBasicSettings QScrollArea > QWidget > QWidget { background: transparent; }', 'settings background'],
+    ['settings', 'OBSBasicSettings QGroupBox QCheckBox:disabled { color: var(--text_disabled); }', 'settings disabled checkbox ink'],
+    ['settings', 'OBSBasicSettings QGroupBox QCheckBox::indicator:unchecked { border: 1px solid var(--border_base); }', 'unchecked checkbox outline'],
     ['group', 'QGroupBox { margin-top: 0px; }', 'group title reservation'],
   ]) {
-    const result = probe(base + '\n' + mutation, '', [check]);
+    const variant = check === 'settings' ? readFileSync(new URL('themes/Colorway-SLSO8Pixels.ovt', root), 'utf8') : '';
+    const result = probe(base + '\n' + mutation, variant, [check]);
     assert.notEqual(result.status, 0, `probe failed to detect ${check} mutant`);
     assert.match(result.stderr, new RegExp(message));
   }

@@ -3,6 +3,18 @@
 
 Preserve costly, recurring, or non-obvious failures that future agents could plausibly repeat.
 
+## 2026-10-16 — OBS theme contrast validation checked ink without its actual surface
+
+**Observed failure:** Native OBS Settings showed invisible disabled labels and unchecked checkbox outlines and barely legible sidebar items. 94/161 palettes had disabled text below 3:1 on their dock/group background; all 161 had unchecked checkbox base fill below 3:1 there. Generic state-token tests still passed because they checked foreground on the *base* or *selected* background, not the rendered control's background. There were also button, header, tab, and hover surface contrast failures.
+
+**Root mechanism:** A palette contains multiple surfaces with different luminances. Generic `--text_muted` and `--text_disabled` values do not guarantee contrast on `--bg_dock`, `--button_bg`, `--bg_preview`, or hover surfaces. Disabled/hover text and the checkbox border cannot be tested by a palette-only token presence check.
+
+**Correction:** Derive specific ink tokens from each effective foreground/background pair, including separately for focus and hover, compose 8-digit alpha colors over their backing surfaces, and check the shipped tokens for every base/variant with an independent contrast oracle. Add Qt paint/palette tests for actual disabled widgets and indicator borders, plus mutations that would re-break them. Preserve curated palette seeds and frozen source comments.
+
+**False-positive test found during verification:** A disposable native-OBS screenshot script clicked a stale Settings coordinate, failed to open the dialog, and nevertheless sampled nonblack pixels from the OBS main window. A passing RGB assertion did not prove the requested window was visible. Future native probes must locate the actual `Settings` window ID, capture that window, and fail if it is absent. The narrow black dialog gutters persist despite QDialog-only QSS variations and are unresolved rather than asserted fixed.
+
+**Evidence:** `test/theme-surface-legibility.test.js`, `test/theme-qt-render.test.js`, `test/helpers/qss-probe.py`, `docs/OBS_THEME_COMPATIBILITY.md`. Confirm source/runtime again before generalizing across OBS versions.
+
 ## 2026-09-27 — Sync silently deleted light-theme palette comments
 
 **Observed failure:** Running theme sync replaced a light theme's `/* Official palette

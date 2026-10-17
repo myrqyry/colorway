@@ -579,8 +579,13 @@ export function renderTheme(config) {
     '',
   );
 
-  return quoteObsThemeFunctions(injectStateOverrides(lines.join('\n'), renderStateOverrides(resolved,
-    new Map(Object.entries(parseOVT(readFileSync(path.join(themesDir, 'Colorway.obt'), 'utf8')).vars)))));
+  // Derived surface roles may depend on base-only aliases. Calculate against
+  // the complete inherited palette, matching sync-theme-mirrors rather than
+  // treating this variant's sparse semantic map as the whole theme.
+  const baseVars = new Map(Object.entries(parseOVT(readFileSync(path.join(themesDir, 'Colorway.obt'), 'utf8')).vars));
+  const composed = new Map([...baseVars, ...resolved]);
+  return quoteObsThemeFunctions(injectStateOverrides(lines.join('\n'),
+    renderStateOverrides(composed, baseVars)));
 }
 
 function generatedOutputs() {

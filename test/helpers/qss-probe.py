@@ -14,7 +14,7 @@ from PyQt6.QtCore import QDir, QPoint, Qt
 from PyQt6.QtGui import QColor, QPalette, QPainter
 from PyQt6.QtTest import QTest
 from PyQt6.QtWidgets import (QApplication, QWidget, QDialog, QVBoxLayout, QPushButton, QToolButton,
-                            QComboBox, QScrollBar, QScrollArea, QStackedWidget, QFrame, QGroupBox, QLabel, QStyle,
+                            QComboBox, QCheckBox, QListWidget, QScrollBar, QScrollArea, QStackedWidget, QFrame, QGroupBox, QLabel, QStyle,
                             QStyleOptionSlider, QStyleOptionGroupBox, QAbstractButton,
                             QStyleOptionButton)
 
@@ -222,6 +222,17 @@ if 'settings' in checks:
     contents.setObjectName('appearancePageContents')
     contents_layout = QVBoxLayout(contents)
     contents_layout.addWidget(QLabel('Appearance'))
+    group_panel = QGroupBox('Controls', contents)
+    group_layout = QVBoxLayout(group_panel)
+    enabled_checkbox = QCheckBox('Enabled option')
+    disabled_checkbox = QCheckBox('Disabled option')
+    disabled_checkbox.setEnabled(False)
+    disabled_label = QLabel('Disabled text')
+    disabled_label.setEnabled(False)
+    group_layout.addWidget(enabled_checkbox)
+    group_layout.addWidget(disabled_checkbox)
+    group_layout.addWidget(disabled_label)
+    contents_layout.addWidget(group_panel)
     contents_layout.addStretch()
     area.setWidget(contents)
     settings.show()
@@ -232,6 +243,24 @@ if 'settings' in checks:
               for x in range(8, image.width() - 8)}
     assert background in pixels, ('settings background', sorted(pixels), background)
     assert len(pixels) > 1, ('settings background pattern missing', sorted(pixels))
+    # In the historical failure this label's ink equalled the group fill.
+    # Assert Qt's styled, disabled palette on the actual child, not only QSS text.
+    expected_disabled = QColor(token('--on_panel_disabled')).name()
+    observed_disabled = disabled_checkbox.palette().color(
+        QPalette.ColorGroup.Disabled, QPalette.ColorRole.WindowText).name()
+    assert observed_disabled == expected_disabled, (
+        'settings disabled checkbox ink', observed_disabled, expected_disabled)
+    label_disabled = disabled_label.palette().color(
+        QPalette.ColorGroup.Disabled, QPalette.ColorRole.WindowText).name()
+    assert label_disabled == expected_disabled, (
+        'settings disabled label ink', label_disabled, expected_disabled)
+    # The unchecked indicator must expose its visible outline in the raster.
+    ink = QColor(token('--on_panel_outline')).name()
+    checkbox_image = enabled_checkbox.grab().toImage()
+    indicator_inks = {checkbox_image.pixelColor(x, y).name()
+                      for y in range(min(24, checkbox_image.height()))
+                      for x in range(min(24, checkbox_image.width()))}
+    assert ink in indicator_inks, ('unchecked checkbox outline', ink, sorted(indicator_inks))
 
 print(json.dumps({'qt': 'passed', 'icon_states': ['normal', 'pressed', 'checked', 'checked-hover', 'checked-tool'],
                   'combo_focus_border': border, 'scroll_page': page_color,

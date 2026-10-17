@@ -96,6 +96,45 @@ not change scroll areas in other OBS dialogs. The real Qt regression in
 base, Carbonfox and Catppuccin Latte palettes and rejects a deliberate return
 to transparent. Native OBS theme parsing is checked separately.
 
+## Surface-aware legibility roles — 2026-10-16
+
+A real OBS 32.2 Settings screenshot exposed unreadable disabled labels,
+unselected category labels, and checkbox outlines. These were not absent
+palette tokens: the styled controls were painted on a different surface from
+the one their source foregrounds had been chosen for.
+
+An audit of the 160 variants plus base found, before repair:
+- 94/161 with disabled text below 3:1 on group panels;
+- 83/161 with sidebar muted text below 4.5:1 on dock surfaces;
+- 20/161 with ordinary button text below 4.5:1 on button surfaces;
+- 161/161 with unchecked checkbox base fill below 3:1 on group panels.
+
+`scripts/theme-state-tokens.mjs` now derives background-specific inks for
+dock/base/preview panels, headings, buttons, inputs (normal/hover/focus),
+interactive list hover, and subdued and disabled states. Normal readable
+text targets 4.5:1; deliberately disabled text and checkbox outlines target
+3:1. Derived token values are produced for each variant using its actual
+resolved palette; the source palette seeds, annotated historical comments,
+and theme identities are preserved. Eight-digit RGBA ink and translucent
+list-hover backgrounds are composited over their intended backing surfaces
+before contrast is evaluated. The sparse Catppuccin sibling generator
+inherits base variables before computing these roles.
+
+`test/theme-surface-legibility.test.js` independently checks the shipped
+roles against their surfaces across all 161 files.
+`test/helpers/qss-probe.py` now checks the Settings group children through
+real Qt painting/palette state, and its deliberately broken controls are
+rejected. An isolated OBS 32.2 Settings window with SLSO8 Pixels visibly
+confirmed that disabled labels and unchecked control outlines had returned,
+and that unselected sidebar labels were readable.
+
+**Remaining boundary:** The narrow black outer frame/gutters of OBS Settings
+persist in the actual native dialog even after changing top-level
+`QDialog` background-image and background shorthand rules. The isolated Qt
+fixture does not reproduce that behavior. Do not present a QSS-only gutter
+change as verified without an actual native window capture. The speculative
+top-level changes were discarded to preserve the established window artwork.
+
 ## OBS 32.2 parser boundary — verified 2026-10-16
 
 OBS's `@OBSThemeVars` parser (`frontend/OBSApp_Themes.cpp`) evaluates

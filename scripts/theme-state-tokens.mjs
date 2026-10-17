@@ -38,8 +38,79 @@ export function contrast(a, b) {
   return (values[0] + 0.05) / (values[1] + 0.05);
 }
 
+/* Palette colors remain the authored source values. These are derived ink roles
+ * for concrete Qt surfaces: unlike a generic "muted" or "disabled" token, the
+ * role includes the background it must actually be legible on. */
+function mixHex(source, target, fraction) {
+  const channels = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  const from = channels(source), to = channels(target);
+  return '#' + from.map((n, i) => Math.round(n + (to[i] - n) * fraction)
+    .toString(16).padStart(2, '0')).join('');
+}
+
+export function legibleInk(preferred, surfaces, minimum) {
+  if (!/^#[\da-f]{6}(?:[\da-f]{2})?$/i.test(preferred)) throw new Error('invalid ink seed: ' + preferred);
+  if (!Array.isArray(surfaces) || !surfaces.length) throw new Error('ink needs surfaces');
+  // #RRGGBBAA is legal in curated palettes. Resolve translucent ink against
+  // its actual surface before checking or improving contrast; treating it as
+  // opaque would substantially overstate legibility.
+  if (preferred.length === 9) {
+    const alpha = parseInt(preferred.slice(7), 16) / 255;
+    preferred = mixHex(surfaces[0], preferred.slice(0, 7), alpha);
+  }
+  const passes = (color) => surfaces.every((background) => contrast(color, background) >= minimum);
+  if (passes(preferred)) return preferred;
+  const candidates = ['#000000', '#ffffff'].flatMap((target) => {
+    if (!passes(target)) return [];
+    let lo = 0, hi = 1;
+    for (let i = 0; i < 22; i++) {
+      const t = (lo + hi) / 2;
+      if (passes(mixHex(preferred, target, t))) hi = t;
+      else lo = t;
+    }
+    return [{ color: mixHex(preferred, target, hi), amount: hi }];
+  });
+  if (!candidates.length) throw new Error('no shared accessible ink for ' + surfaces.join(','));
+  candidates.sort((a, b) => a.amount - b.amount);
+  return candidates[0].color;
+}
+
+export const LEGIBILITY_ROLES = [
+  ['--on_panel', '--text', ['--bg_dock'], 4.5],
+  ['--on_panel_muted', '--text_muted', ['--bg_dock'], 4.5],
+  ['--on_base_muted', '--text_muted', ['--bg_base'], 4.5],
+  ['--on_preview_muted', '--text_muted', ['--bg_preview'], 4.5],
+  ['--on_preview', '--text_light', ['--bg_preview'], 4.5],
+  ['--on_list_hover', '--text_light', ['--list_item_bg_hover'], 4.5],
+  ['--on_hover', '--text_light', ['--bg_hover'], 4.5],
+  ['--on_panel_disabled', '--text_disabled', ['--bg_dock'], 3],
+  ['--on_base_disabled', '--text_disabled', ['--bg_base'], 3],
+  ['--on_panel_outline', '--border_color', ['--bg_dock'], 3],
+  ['--on_section_heading', '--primary', ['--bg_window'], 4.5],
+  ['--on_panel_accent', '--primary', ['--bg_dock'], 4.5],
+  ['--on_button', '--text', ['--button_bg'], 4.5],
+  ['--on_button_disabled', '--text_disabled', ['--button_bg_disabled'], 3],
+  ['--on_input', '--text', ['--input_bg'], 4.5],
+  ['--on_input_hover', '--text', ['--input_bg_hover'], 4.5],
+  ['--on_input_focus', '--text', ['--input_bg_focus'], 4.5],
+  ['--on_nav_hover', '--text_light', ['--bg_preview'], 4.5],
+];
+
+export function flattenSurface(vars, key) {
+  const color = resolveAlias(vars, key);
+  if (!/^#[\da-f]{8}$/i.test(color)) return color;
+  // A translucent list hover overlays the list's base background; do not
+  // pretend the RGBA token's RGB channels are an opaque visible surface.
+  const under = resolveAlias(vars, '--bg_base');
+  return mixHex(under, color.slice(0, 7), parseInt(color.slice(7), 16) / 255);
+}
+
 export function stateTokens(vars) {
   const tokens = new Map();
+  for (const [name, foreground, backgrounds, minimum] of LEGIBILITY_ROLES) {
+    tokens.set(name, legibleInk(resolveAlias(vars, foreground),
+      backgrounds.map((key) => flattenSurface(vars, key)), minimum));
+  }
   for (const [role, background] of [
     ['primary', '--primary'], ['primary_hover', '--primary_light'],
     ['primary_dark', '--primary_dark'], ['base', '--bg_base'],
@@ -112,7 +183,7 @@ export function renderButtonIconRules(base) {
       `${button}, ${button}:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_${name}_base); }`,
       `${button}:checked, ${button}:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_${name}_primary); }`,
       `${button}:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_${name}_primary_hover); }`,
-      `${button}:disabled { background: var(--button_bg_disabled); color: var(--text_disabled); }`,
+      `${button}:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }`,
       `${tool}, ${tool}:hover, ${tool}:checked, ${tool}:pressed { background: var(--bg_base); color: var(--text); }`,
       `${tool}:checked, ${tool}:pressed { border-color: var(--primary); }`,
     );
