@@ -2591,6 +2591,15 @@ QScrollArea, QScrollArea > QWidget, QScrollArea > QWidget > QWidget {
     background: transparent;
 }
 
+/* Settings scroll contents have autoFillBackground enabled by Qt. Leaving
+   their stylesheet background transparent paints black instead of showing
+   the dialog's theme surface, especially on light variants. Paint the
+   actual page contents; leave unrelated OBS scroll areas untouched. */
+OBSBasicSettings QScrollArea > QWidget > QWidget {
+    background-color: var(--bg_window);
+    background-image: var(--pattern_eyes);
+}
+
 QMenu,
 QMenu > QMenu {
     background-color: var(--bg_dock);

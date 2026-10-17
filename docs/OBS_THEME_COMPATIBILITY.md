@@ -80,6 +80,22 @@ offscreen PyQt6 to require multiple background pixel colors (not a uniform
 fill). The native isolated `pnpm check:obs-native` gate continues to verify
 the actual OBS stylesheet, whereas this test adds rendered-pixel coverage.
 
+## Settings scroll surfaces — 2026-10-16
+
+The OBS Settings dialog's pages include `QScrollArea` contents that Qt sets
+to `autoFillBackground`. Our general `QScrollArea > QWidget > QWidget {
+background: transparent; }` rule made those pages paint **black** regardless
+of the selected variant, even while `--bg_window` resolved correctly. The
+transparent SVG tile then painted its ink over black rather than the theme's
+background. This affected light variants too.
+
+The base now overrides only `OBSBasicSettings QScrollArea > QWidget > QWidget`
+with `background-color: var(--bg_window)` and the existing SVG image; it does
+not change scroll areas in other OBS dialogs. The real Qt regression in
+`test/theme-qt-render.test.js` exercises the Settings scroll hierarchy under
+base, Carbonfox and Catppuccin Latte palettes and rejects a deliberate return
+to transparent. Native OBS theme parsing is checked separately.
+
 ## OBS 32.2 parser boundary — verified 2026-10-16
 
 OBS's `@OBSThemeVars` parser (`frontend/OBSApp_Themes.cpp`) evaluates

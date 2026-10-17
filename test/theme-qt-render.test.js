@@ -21,11 +21,20 @@ for (const file of [null, 'Colorway-CatppuccinLatte-Teal.ovt', 'Colorway-RosePin
   });
 }
 
+for (const file of [null, 'Colorway-Carbonfox.ovt', 'Colorway-CatppuccinLatte-Blue.ovt']) {
+  test(`real Qt paints Settings scroll content using the variant background: ${file || 'base'}`, { skip: !available }, () => {
+    const variant = file ? readFileSync(new URL('themes/' + file, root), 'utf8') : '';
+    const result = probe(base, variant, ['settings']);
+    assert.equal(result.status, 0, result.stderr + '\n' + result.stdout);
+  });
+}
+
 test('Qt probe rejects deliberate reintroductions of the reviewed defects', { skip: !available }, () => {
   for (const [check, mutation, message] of [
     ['icons', 'QPushButton.icon-plus:pressed { icon: var(--cw_icon_plus_base); }', 'pressed icon'],
     ['focus', 'QComboBox:focus { border-color: var(--input_border_hover); }', 'combo focus border'],
     ['scroll', 'QScrollBar::add-page:vertical { background: var(--scrollbar_down); }', 'scroll page'],
+    ['settings', 'OBSBasicSettings QScrollArea > QWidget > QWidget { background: transparent; }', 'settings background'],
     ['group', 'QGroupBox { margin-top: 0px; }', 'group title reservation'],
   ]) {
     const result = probe(base + '\n' + mutation, '', [check]);

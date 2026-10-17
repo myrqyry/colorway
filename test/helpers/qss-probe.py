@@ -13,8 +13,8 @@ os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 from PyQt6.QtCore import QDir, QPoint, Qt
 from PyQt6.QtGui import QColor, QPalette, QPainter
 from PyQt6.QtTest import QTest
-from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QPushButton, QToolButton,
-                            QComboBox, QScrollBar, QGroupBox, QLabel, QStyle,
+from PyQt6.QtWidgets import (QApplication, QWidget, QDialog, QVBoxLayout, QPushButton, QToolButton,
+                            QComboBox, QScrollBar, QScrollArea, QStackedWidget, QFrame, QGroupBox, QLabel, QStyle,
                             QStyleOptionSlider, QStyleOptionGroupBox, QAbstractButton,
                             QStyleOptionButton)
 
@@ -197,6 +197,41 @@ picker.setChecked(True)
 app.processEvents()
 if 'picker' in checks:
     assert picker_name.palette().color(QPalette.ColorRole.WindowText).name() == QColor(token('--text')).name(), 'checked source label'
+
+# OBS Settings pages use a QScrollArea with an auto-filled contents widget.
+# A transparent stylesheet background can paint as black instead of showing the
+# parent QDialog's palette. Check the real nested Qt widget arrangement.
+if 'settings' in checks:
+    class OBSBasicSettings(QDialog):
+        pass
+
+    settings = OBSBasicSettings()
+    settings.resize(700, 550)
+    pages_layout = QVBoxLayout(settings)
+    pages = QStackedWidget(settings)
+    pages_layout.addWidget(pages)
+    appearance = QWidget()
+    appearance.setObjectName('appearancePage')
+    pages.addWidget(appearance)
+    appearance_layout = QVBoxLayout(appearance)
+    area = QScrollArea(appearance)
+    area.setFrameShape(QFrame.Shape.NoFrame)
+    area.setWidgetResizable(True)
+    appearance_layout.addWidget(area)
+    contents = QWidget()
+    contents.setObjectName('appearancePageContents')
+    contents_layout = QVBoxLayout(contents)
+    contents_layout.addWidget(QLabel('Appearance'))
+    contents_layout.addStretch()
+    area.setWidget(contents)
+    settings.show()
+    app.processEvents()
+    image = contents.grab().toImage()
+    background = QColor(token('--bg_window')).name()
+    pixels = {image.pixelColor(x, image.height() - 40).name()
+              for x in range(8, image.width() - 8)}
+    assert background in pixels, ('settings background', sorted(pixels), background)
+    assert len(pixels) > 1, ('settings background pattern missing', sorted(pixels))
 
 print(json.dumps({'qt': 'passed', 'icon_states': ['normal', 'pressed', 'checked', 'checked-hover', 'checked-tool'],
                   'combo_focus_border': border, 'scroll_page': page_color,
