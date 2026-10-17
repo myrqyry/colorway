@@ -1,6 +1,31 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Latest continuation — OBS Compact Settings dropdown height (2026-10-16)
+
+User-provided Advanced Settings screenshot showed cramped dropdowns. With
+FontScale=10 and Density=-3 (Compact), native OBS 32.2 instrumentation
+demonstrated `QComboBox` sizeHint=26px but the Settings form layout
+compressed instances to 16px because the effective `minimumHeight`
+was only 8px. The shared base now adds a scoped `OBSBasicSettings QComboBox`
+minimum via font-relative `--settings_combo_min_height`. In an isolated
+native OBS Settings window, Color Format, Color Space, Color Range,
+IP Family, and Bind to IP all retained 26px heights/minima, without
+changing global density or the variant palettes.
+
+Regression coverage: `test/helpers/qss-probe.py` verifies the real
+minimum rather than the hint; `test/theme-qt-render.test.js` covers
+EvondevDracula, Catppuccin Latte and a deliberately broken zero minimum.
+The regression failed on the old theme and passed on the patch.
+Latest integration: 645 tests, 644 passed, 0 failed, 1 existing skip;
+native OBS base/Latte/Monokai checks and Chromium preview parity passed.
+Source/public base files synchronized and the existing installation
+updated by a backed-up, byte-verified copy. Selected theme, user.ini and
+pattern assets were left alone.
+
+Separate existing issue: the thin black Settings outer gutters remain
+unresolved; no new claim about them follows from the combo-height fix.
+
 ## Latest continuation — native OBS surface legibility audit (2026-10-16)
 
 A Settings screenshot exposed an incomplete prior Colorway fix: the page

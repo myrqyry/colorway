@@ -29,12 +29,21 @@ for (const file of [null, 'Colorway-Carbonfox.ovt', 'Colorway-SLSO8Pixels.ovt', 
   });
 }
 
+for (const file of ['Colorway-EvondevDracula.ovt', 'Colorway-CatppuccinLatte-Blue.ovt']) {
+  test(`Settings combo stays tall enough for the font in compact layout: ${file}`, { skip: !available }, () => {
+    const variant = readFileSync(new URL('themes/' + file, root), 'utf8');
+    const result = probe(base, variant, ['combo-size']);
+    assert.equal(result.status, 0, result.stderr + '\\n' + result.stdout);
+  });
+}
+
 test('Qt probe rejects deliberate reintroductions of the reviewed defects', { skip: !available }, () => {
   for (const [check, mutation, message] of [
     ['icons', 'QPushButton.icon-plus:pressed { icon: var(--cw_icon_plus_base); }', 'pressed icon'],
     ['focus', 'QComboBox:focus { border-color: var(--input_border_hover); }', 'combo focus border'],
     ['scroll', 'QScrollBar::add-page:vertical { background: var(--scrollbar_down); }', 'scroll page'],
     ['settings', 'OBSBasicSettings QScrollArea > QWidget > QWidget { background: transparent; }', 'settings background'],
+    ['combo-size', 'OBSBasicSettings QComboBox { min-height: 0px; }', 'settings combo minimum height'],
     ['settings', 'OBSBasicSettings QGroupBox QCheckBox:disabled { color: var(--text_disabled); }', 'settings disabled checkbox ink'],
     ['settings', 'OBSBasicSettings QGroupBox QCheckBox::indicator:unchecked { border: 1px solid var(--border_base); }', 'unchecked checkbox outline'],
     ['group', 'QGroupBox { margin-top: 0px; }', 'group title reservation'],

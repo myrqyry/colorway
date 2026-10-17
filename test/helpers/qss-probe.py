@@ -201,7 +201,7 @@ if 'picker' in checks:
 # OBS Settings pages use a QScrollArea with an auto-filled contents widget.
 # A transparent stylesheet background can paint as black instead of showing the
 # parent QDialog's palette. Check the real nested Qt widget arrangement.
-if 'settings' in checks:
+if 'settings' in checks or 'combo-size' in checks:
     class OBSBasicSettings(QDialog):
         pass
 
@@ -232,11 +232,21 @@ if 'settings' in checks:
     group_layout.addWidget(enabled_checkbox)
     group_layout.addWidget(disabled_checkbox)
     group_layout.addWidget(disabled_label)
+    settings_combo = QComboBox(group_panel)
+    settings_combo.addItems(['NV12 (8-bit, 4:2:0, 2 planes)', 'I444'])
+    group_layout.addWidget(settings_combo)
     contents_layout.addWidget(group_panel)
     contents_layout.addStretch()
     area.setWidget(contents)
     settings.show()
     app.processEvents()
+    if 'combo-size' in checks:
+        # Native OBS Compact density had QComboBox sizeHint=26 but minHeight=8;
+        # its form layout subsequently squeezed the widget to 16 pixels.
+        # Assert the real minimum, not only the nominal size hint.
+        required = max(24, settings_combo.fontMetrics().height() + 8)
+        minimum = settings_combo.minimumHeight()
+        assert minimum >= required, ('settings combo minimum height', minimum, required)
     image = contents.grab().toImage()
     background = QColor(token('--bg_window')).name()
     pixels = {image.pixelColor(x, image.height() - 40).name()

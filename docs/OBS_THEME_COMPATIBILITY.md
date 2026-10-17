@@ -96,6 +96,27 @@ not change scroll areas in other OBS dialogs. The real Qt regression in
 base, Carbonfox and Catppuccin Latte palettes and rejects a deliberate return
 to transparent. Native OBS theme parsing is checked separately.
 
+## OBS Settings combo-box geometry under Compact density — 2026-10-16
+
+The Advanced page's Qt `QComboBox` widgets were squeezed to **16 px**
+despite a **26 px sizeHint** with FontScale=10 and Density=-3 (Compact).
+Native OBS's Settings form layouts compressed the rows because the generic
+QSS `min-height: var(--input_min_height)` produced only a nominal size hint
+and left the widget's effective `minimumHeight` at **8 px**.
+
+A targeted `OBSBasicSettings QComboBox` rule uses
+`--settings_combo_min_height` (a font-scaled token, 18px at scale 10).
+In native OBS 32.2 with the unchanged Compact density this forces an actual
+minimum and rendered height of **26 px** for Color Format, Color Space,
+Color Range, IP Family and Bind to IP. It leaves combos outside Settings,
+their icons, and OBS's density preference untouched.
+
+`test/theme-qt-render.test.js` and `test/helpers/qss-probe.py` check
+the **actual Qt minimumHeight**, not only sizeHint. The test fails on the
+original QSS (`minimumHeight=8`) and on a deliberately regressed rule
+setting the Settings combo minimum to zero. The final variable-driven rule
+was also verified in an isolated native OBS Settings window.
+
 ## Surface-aware legibility roles — 2026-10-16
 
 A real OBS 32.2 Settings screenshot exposed unreadable disabled labels,

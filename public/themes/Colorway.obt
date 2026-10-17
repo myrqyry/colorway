@@ -148,6 +148,7 @@
     --button_min_height: calc(1.8pt * var(--font_base_value));
     --compact_control_min_height: calc(1.6pt * var(--font_base_value));
     --input_min_height: calc(2.0pt * var(--font_base_value));
+    --settings_combo_min_height: calc(1.8px * var(--font_base_value));
     --spinbox_min_height: calc(2.6pt * var(--font_base_value));
 
     --spinbox_min_width: calc(var(--input_height) * 2.5);
@@ -3639,6 +3640,14 @@ QComboBox::down-arrow:editable,
 QDateTimeEdit::down-arrow:editable {
     image: var(--cw_icon_chevron_down_base);
     width: 100%;
+}
+
+/* OBS Compact density can compress Settings form rows below QComboBox's
+   sizeHint (26px -> 16px at font scale 10). The generic min-height only
+   affected sizeHint; this scoped rule sets Qt's actual minimumHeight.
+   Keep other OBS combo boxes and the user's density setting untouched. */
+OBSBasicSettings QComboBox {
+    min-height: var(--settings_combo_min_height);
 }
 
 /* Controls Dock */
