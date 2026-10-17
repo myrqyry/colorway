@@ -117,6 +117,34 @@ original QSS (`minimumHeight=8`) and on a deliberately regressed rule
 setting the Settings combo minimum to zero. The final variable-driven rule
 was also verified in an isolated native OBS Settings window.
 
+## OBS Settings numeric/text input geometry — 2026-10-16
+
+The Impeccable-focused review of the native Settings UI found an additional
+Compact-density mismatch after the dropdown repair: `QSpinBox`,
+`QDoubleSpinBox`, and `QLineEdit` instances in Settings could be compressed
+to 16 px while the font's line height was 16 px and the control sizeHint was
+26 px. The existing generic input height rule did not constrain their actual
+minimumHeight (8 px).
+
+The base theme now applies a **Settings-scoped** minimum to
+`OBSBasicSettings QAbstractSpinBox` and `OBSBasicSettings QLineEdit`.
+`--settings_form_min_height` shares the existing font-scaled
+`--settings_combo_min_height`; the fix does **not** change global OBS
+density, icons, variant colors, or non-Settings widgets.
+
+The offscreen Qt regression in `test/theme-qt-render.test.js` failed on
+the old source (`QSpinBox minimumHeight=8`) and passed with this rule,
+including a deliberate invalid-minimum mutation. A separate real OBS 32.2
+capture of the Advanced page confirmed actual 26 px heights **and actual
+minimumHeight=26** for `colorFormat`, `colorSpace`, `colorRange`,
+`sdrWhiteLevel`, `hdrNominalPeakLevel`, `filenameFormatting`,
+`simpleRBPrefix`, `reconnectRetryDelay`, and `reconnectMaxRetries`.
+All captures used FontScale=10, Density=-3 in an isolated OBS profile.
+
+This is a bounded interface-polish change. The wider Settings layout is
+owned by OBS forms; no global typography, panel, or navigation redesign
+is implied by this result.
+
 ## Surface-aware legibility roles — 2026-10-16
 
 A real OBS 32.2 Settings screenshot exposed unreadable disabled labels,

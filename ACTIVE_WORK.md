@@ -1,6 +1,34 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Latest continuation — Settings input-size polish (2026-10-16)
+
+After the dropdown and native-window backdrop fixes, reviewed the live
+OBS Settings interface using a bounded Impeccable-style critique and a
+native Qt geometry pass. The full Impeccable CLI was not installed in
+this project; no automated design-detector or dual-agent critique was
+claimed. The user-approved focus was the existing OBS Settings screen,
+not a redesign of the Colorway web workbench.
+
+Found the related numeric/text input regression at FontScale=10 and
+Density=-3: `QSpinBox`, `QDoubleSpinBox`, and `QLineEdit` had
+`minimumHeight=8` and could render at 16px alongside already-correct
+26px dropdowns. Added Settings-only `--settings_form_min_height`
+and an `OBSBasicSettings QAbstractSpinBox, OBSBasicSettings QLineEdit`
+selector to preserve the same font-relative 26px control rhythm.
+A Qt regression was red before the patch and green afterward.
+The actual isolated OBS 32.2 Advanced form measured 26px rendered
+height/minimum for nine combo, spin, and text controls. `pnpm test`,
+`pnpm check:obs-native`, and `pnpm check:preview` passed (647 passed,
+0 failed, 1 skipped). Source/public mirrors match; no palette changes.
+The installed base theme was backed up and replaced with the verified copy;
+the selected variant, density, scenes, and pattern remained untouched.
+
+The API Documentation Checker was invoked separately on the existing
+Lospec response schema in `docs/ARCHITECTURE.md`. It returned success
+with zero extracted endpoints, so no completeness/correctness conclusion
+follows. It does not inspect QSS or Qt geometry.
+
 ## Latest continuation — OBS Compact Settings dropdown height (2026-10-16)
 
 User-provided Advanced Settings screenshot showed cramped dropdowns. With

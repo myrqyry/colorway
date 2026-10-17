@@ -14,7 +14,7 @@ from PyQt6.QtCore import QDir, QPoint, Qt
 from PyQt6.QtGui import QColor, QPalette, QPainter
 from PyQt6.QtTest import QTest
 from PyQt6.QtWidgets import (QApplication, QWidget, QDialog, QVBoxLayout, QPushButton, QToolButton,
-                            QComboBox, QCheckBox, QListWidget, QScrollBar, QScrollArea, QStackedWidget, QFrame, QGroupBox, QLabel, QStyle,
+                            QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox, QCheckBox, QListWidget, QScrollBar, QScrollArea, QStackedWidget, QFrame, QGroupBox, QLabel, QStyle,
                             QStyleOptionSlider, QStyleOptionGroupBox, QAbstractButton,
                             QStyleOptionButton)
 
@@ -201,7 +201,7 @@ if 'picker' in checks:
 # OBS Settings pages use a QScrollArea with an auto-filled contents widget.
 # A transparent stylesheet background can paint as black instead of showing the
 # parent QDialog's palette. Check the real nested Qt widget arrangement.
-if 'settings' in checks or 'combo-size' in checks:
+if any(x in checks for x in ('settings', 'combo-size', 'form-size')):
     class OBSBasicSettings(QDialog):
         pass
 
@@ -235,11 +235,24 @@ if 'settings' in checks or 'combo-size' in checks:
     settings_combo = QComboBox(group_panel)
     settings_combo.addItems(['NV12 (8-bit, 4:2:0, 2 planes)', 'I444'])
     group_layout.addWidget(settings_combo)
+    spin = QSpinBox(group_panel)
+    double_spin = QDoubleSpinBox(group_panel)
+    line = QLineEdit('Filename formatting', group_panel)
+    group_layout.addWidget(spin)
+    group_layout.addWidget(double_spin)
+    group_layout.addWidget(line)
     contents_layout.addWidget(group_panel)
     contents_layout.addStretch()
     area.setWidget(contents)
     settings.show()
     app.processEvents()
+    if 'form-size' in checks:
+        # Compact OBS native form layouts compress these fields to 16 pixels
+        # unless the minimumHeight is applied to the actual control class.
+        for field in (spin, double_spin, line):
+            minimum = field.minimumHeight()
+            required = max(24, field.fontMetrics().height() + 8)
+            assert minimum >= required, ('settings form minimum height', field.metaObject().className(), minimum, required)
     if 'combo-size' in checks:
         # Native OBS Compact density had QComboBox sizeHint=26 but minHeight=8;
         # its form layout subsequently squeezed the widget to 16 pixels.

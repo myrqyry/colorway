@@ -149,6 +149,7 @@
     --compact_control_min_height: calc(1.6pt * var(--font_base_value));
     --input_min_height: calc(2.0pt * var(--font_base_value));
     --settings_combo_min_height: calc(1.8px * var(--font_base_value));
+    --settings_form_min_height: var(--settings_combo_min_height);
     --spinbox_min_height: calc(2.6pt * var(--font_base_value));
 
     --spinbox_min_width: calc(var(--input_height) * 2.5);
@@ -3648,6 +3649,14 @@ QDateTimeEdit::down-arrow:editable {
    Keep other OBS combo boxes and the user's density setting untouched. */
 OBSBasicSettings QComboBox {
     min-height: var(--settings_combo_min_height);
+}
+
+/* Keep text and numeric fields aligned with Settings dropdowns in Compact.
+   Qt's form layout otherwise squeezes QSpinBox/QDoubleSpinBox/QLineEdit down
+   to 16px despite their larger sizeHint. Limit this to the Settings dialog. */
+OBSBasicSettings QAbstractSpinBox,
+OBSBasicSettings QLineEdit {
+    min-height: var(--settings_form_min_height);
 }
 
 /* Controls Dock */
