@@ -23,8 +23,10 @@ Source/public base files synchronized and the existing installation
 updated by a backed-up, byte-verified copy. Selected theme, user.ini and
 pattern assets were left alone.
 
-Separate existing issue: the thin black Settings outer gutters remain
-unresolved; no new claim about them follows from the combo-height fix.
+Follow-up during the same investigation closed the separate black
+Settings frame issue: a late-generated opaque `OBSBasicSettings` backdrop
+must override the native root widget, which otherwise retains a black
+palette. Both a dark and a light native OBS window were inspected.
 
 ## Latest continuation — native OBS surface legibility audit (2026-10-16)
 
@@ -55,12 +57,13 @@ confirmed byte-identical to their source counterparts, after backing up the
 pre-change installed files. OBS user configuration, scene collections, pattern
 SVG, and selected theme were not modified by installation.
 
-**Remaining boundary:** The small black native Settings outer frame/gutters
-persist. Modifying generic QDialog background rules did not fix the actual
-captured Settings window, so those speculative rules were reverted rather
-than credited as repairs. Do not confuse a successful Qt fixture or main-window
-screenshot with verification of the actual dialog. The narrower issue is
-documented in `docs/OBS_THEME_COMPATIBILITY.md` and `.meristem/ERRORS.md`.
+**Closed by later follow-up (2026-10-16):** The small black Settings
+outer frame was not a QDialog class styling problem. Native widget inspection
+located the owning `OBSBasicSettings` QWidget with a black palette. An
+opaque window rule at the absolute end of the generated QSS fixes it while
+preserving patterned child surfaces. The light variant required end-of-QSS
+ordering; an earlier placement passed on one dark theme but failed on Latte.
+See `docs/OBS_THEME_COMPATIBILITY.md` and `.meristem/ERRORS.md` for evidence.
 
 ## Latest continuation — Colorway optional OBS companion (2026-10-16)
 

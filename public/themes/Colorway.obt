@@ -3854,4 +3854,6 @@ QPushButton[themeID="refreshIconSmall"]:checked:hover:!pressed { background: var
 QPushButton[themeID="refreshIconSmall"]:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
 QToolButton[themeID="refreshIconSmall"], QToolButton[themeID="refreshIconSmall"]:hover, QToolButton[themeID="refreshIconSmall"]:checked, QToolButton[themeID="refreshIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
 QToolButton[themeID="refreshIconSmall"]:checked, QToolButton[themeID="refreshIconSmall"]:pressed { border-color: var(--primary); }
+/* Native Settings window backdrop — order matters in Qt */
+OBSBasicSettings { background: var(--bg_window); }
 /* colorway:button-icons:end */

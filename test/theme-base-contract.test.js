@@ -68,6 +68,20 @@ test('Colorway covers current OBS widget hooks without dropping legacy compatibi
   }
 });
 
+test('native OBS Settings frame uses an opaque variant surface, not a transparent image over black', () => {
+  // Verified in actual OBS 32.2: the outer Settings QWidget had a black
+  // palette until its own opaque background was explicitly styled.
+  const blocks = [...uncommentedBase.matchAll(/([^{}]+)\{([^{}]*)\}/g)];
+  const rule = blocks.findLast((match) =>
+    match[1].trim() === 'OBSBasicSettings')?.[2];
+  assert.ok(rule, 'missing native OBS Settings window rule');
+  assert.equal(blocks.at(-1)?.[1].trim(), 'OBSBasicSettings',
+    'native Settings background must be the final QSS selector, after generated icon rules');
+  assert.match(rule, /background:\s*var\(--bg_window\)\s*;/);
+  assert.doesNotMatch(rule, /background-image:/,
+    'the window itself must be opaque; its child pages carry the pattern');
+});
+
 test('live and recording controls inherit each variant semantic colors', () => {
   assert.match(base, /--live:\s*var\(--primary\);/);
   assert.match(base, /--recording:\s*var\(--danger\);/);

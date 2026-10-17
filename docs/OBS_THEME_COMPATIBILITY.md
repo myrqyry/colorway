@@ -149,12 +149,21 @@ rejected. An isolated OBS 32.2 Settings window with SLSO8 Pixels visibly
 confirmed that disabled labels and unchecked control outlines had returned,
 and that unselected sidebar labels were readable.
 
-**Remaining boundary:** The narrow black outer frame/gutters of OBS Settings
-persist in the actual native dialog even after changing top-level
-`QDialog` background-image and background shorthand rules. The isolated Qt
-fixture does not reproduce that behavior. Do not present a QSS-only gutter
-change as verified without an actual native window capture. The speculative
-top-level changes were discarded to preserve the established window artwork.
+**Native Settings outer frame — closed 2026-10-16:** The earlier
+QDialog-level attempts did not fix the black gutters. Direct native OBS 32.2
+widget inspection via `QApplication::widgetAt` found that the actual
+`OBSBasicSettings` top-level QWidget had `QPalette::Window = #000000`,
+even while its scroll pages were correctly themed. An opaque
+`OBSBasicSettings { background: var(--bg_window); }` rule corrects the
+actual owner, but **its ordering is significant**: applying it before the
+generated icon rules still left light variants black. The final rule emitted
+by `renderButtonIconRules` is now the opaque Settings background, keeping
+the behavior stable across `pnpm sync:themes`. Native captures of the actual
+Settings window verified dark EvondevDracula (`#191a2e`) and light
+Catppuccin Latte Blue (`#eff1f5`) margins instead of black, without
+removing SVG patterns from the child panes. The smaller offscreen Qt fixture
+did not reproduce the failing native window, so the source-level contract
+and actual native capture are complementary evidence, not interchangeable.
 
 ## OBS 32.2 parser boundary — verified 2026-10-16
 

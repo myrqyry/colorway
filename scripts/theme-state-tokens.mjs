@@ -188,8 +188,16 @@ export function renderButtonIconRules(base) {
       `${tool}:checked, ${tool}:pressed { border-color: var(--primary); }`,
     );
   }
+  // OBS 32.2 Qt applies the effective Settings window backdrop only when
+  // its concrete class rule is the final QSS declaration. Earlier placements
+  // leave QPalette::Window black in light variants despite resolved tokens.
+  // Keep this footer inside the generated region so theme sync always leaves
+  // it after all icon selectors. Child pages still paint their SVG patterns.
   return '/* colorway:button-icons:start — generated render-time QPushButton icons */\n'
-    + rules.join('\n') + '\n/* colorway:button-icons:end */\n';
+    + rules.join('\n')
+    + '\n/* Native Settings window backdrop — order matters in Qt */\n'
+    + 'OBSBasicSettings { background: var(--bg_window); }\n'
+    + '/* colorway:button-icons:end */\n';
 }
 
 export function injectButtonIconRules(base) {

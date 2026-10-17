@@ -3,6 +3,35 @@
 
 Preserve costly, recurring, or non-obvious failures that future agents could plausibly repeat.
 
+## 2026-10-16 — OBS Settings native backdrop requires the owning widget AND final QSS order
+
+**Observed failure:** In an actual OBS 32.2 Settings window, the thin outer
+frame/gutters remained black across variants after scroll-page backgrounds
+and text/control contrast had been fixed. Generic `QDialog` background
+changes did not affect this frame. A scoped `OBSBasicSettings` backdrop
+worked in a dark experimental stylesheet appended at end, but failed in
+a light theme when the rule was placed earlier in the QSS.
+
+**Root mechanism:** Native widget inspection showed the owning top-level
+`OBSBasicSettings` QWidget retained `QPalette::Window = #000000`.
+The final Qt stylesheet declaration order was consequential: even an
+otherwise correct opaque `OBSBasicSettings` declaration placed before the
+large generated icon block did not reliably paint the root on a light variant.
+
+**Verified correction:** Emit `OBSBasicSettings { background:
+var(--bg_window); }` as the final declaration of the generated button-icon
+block in `scripts/theme-state-tokens.mjs`. This preserves the required
+cascade position through regeneration while leaving child scroll-page and
+sidebar SVG patterns intact. The actual captured Settings outer-frame pixels
+matched `#191a2e` for dark EvondevDracula and `#eff1f5` for light
+Catppuccin Latte Blue. The root QWidget palette also matched.
+
+**How to detect:** Do not substitute an isolated Qt mimic for a native
+OBS dialog: the mock can report correctly themed pixels even when OBS has
+a black root window. Verify the actual Settings window ID and widget palette
+and sample known margin pixels in the screenshot. A source contract pins the
+final opaque declaration, but the native visual gate is the stronger evidence.
+
 ## 2026-10-16 — OBS theme contrast validation checked ink without its actual surface
 
 **Observed failure:** Native OBS Settings showed invisible disabled labels and unchecked checkbox outlines and barely legible sidebar items. 94/161 palettes had disabled text below 3:1 on their dock/group background; all 161 had unchecked checkbox base fill below 3:1 there. Generic state-token tests still passed because they checked foreground on the *base* or *selected* background, not the rendered control's background. There were also button, header, tab, and hover surface contrast failures.
@@ -11,7 +40,7 @@ Preserve costly, recurring, or non-obvious failures that future agents could pla
 
 **Correction:** Derive specific ink tokens from each effective foreground/background pair, including separately for focus and hover, compose 8-digit alpha colors over their backing surfaces, and check the shipped tokens for every base/variant with an independent contrast oracle. Add Qt paint/palette tests for actual disabled widgets and indicator borders, plus mutations that would re-break them. Preserve curated palette seeds and frozen source comments.
 
-**False-positive test found during verification:** A disposable native-OBS screenshot script clicked a stale Settings coordinate, failed to open the dialog, and nevertheless sampled nonblack pixels from the OBS main window. A passing RGB assertion did not prove the requested window was visible. Future native probes must locate the actual `Settings` window ID, capture that window, and fail if it is absent. The narrow black dialog gutters persist despite QDialog-only QSS variations and are unresolved rather than asserted fixed.
+**False-positive test found during verification:** A disposable native-OBS screenshot script clicked a stale Settings coordinate, failed to open the dialog, and nevertheless sampled nonblack pixels from the OBS main window. A passing RGB assertion did not prove the requested window was visible. Future native probes must locate the actual `Settings` window ID, capture that window, and fail if it is absent. The narrow black dialog gutters were still unresolved at this checkpoint; they were closed later the same day by targeting the actual native Settings widget and ensuring the rule is last in the generated QSS (see the next entry).
 
 **Evidence:** `test/theme-surface-legibility.test.js`, `test/theme-qt-render.test.js`, `test/helpers/qss-probe.py`, `docs/OBS_THEME_COMPATIBILITY.md`. Confirm source/runtime again before generalizing across OBS versions.
 
