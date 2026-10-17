@@ -9,11 +9,17 @@ a network server, or a native plugin.
 1. Install a Colorway base and one or more variants normally.
 2. Open OBS **Tools → Scripts**, click **+**, and choose
    `colorway-patterns.lua` from this folder.
-3. In the script's properties confirm **Colorway themes directory**, select a
-   pattern, and click **Apply pattern**. The script makes a recoverable
-   `patterns/.colorway-original.svg` copy on first change.
-4. **Restore original** writes those exact original bytes back.
-5. Without live auto-reload, restart OBS to see the selected pattern.
+3. In the script's properties confirm **Colorway themes directory**,
+   choose **Background pattern**, and adjust **Pattern strength (%)**.
+   Click **Apply pattern** to save both choices. The first change preserves
+   the exact starting SVG at `patterns/.colorway-original.svg`.
+4. The slider runs from **0% (hidden)** through **100% (original visibility,
+   the default)** to **300% (three times the authored ink opacity)**.
+   For example, 50% makes the original 12% SVG artwork 6% opaque; 200%
+   raises it to 24%. It adjusts only the pattern artwork, not the widgets.
+5. **Restore original** writes the backed-up original SVG byte-for-byte and
+   resets the selected pattern and strength to Original / 100%.
+6. Without live auto-reload, restart OBS to see the adjusted pattern.
 
 The script edits **only** the installed theme's `patterns/pattern.svg`. It
 never changes theme IDs, switches OBS palettes, changes scenes, or writes OBS

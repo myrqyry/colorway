@@ -17,7 +17,7 @@ local patterns = {
   { file = "tiny-checkers.svg", label = "Tiny Checkers" },
   { file = "zig-zag.svg", label = "Zig Zag" },
 }
-local selected, themes_dir, current_settings = "pattern.svg", "", nil
+local selected, themes_dir, strength, current_settings = "pattern.svg", "", 100, nil
 
 local function join(dir, name)
   local separator = package.config:sub(1, 1)
@@ -95,8 +95,31 @@ local function request_reload()
   f:close()
   return done ~= nil
 end
+-- Strength scales the shipped artwork's existing alpha rather than fading the
+-- whole Qt widget. Read a fresh source each Apply: never multiply an already
+-- modified installed pattern, which would accumulate rounding and drift.
+local function scale_pattern_alpha(bytes, percent)
+  if percent == 100 then return bytes end
+  local invalid = false
+  local output, count = bytes:gsub('fill%-opacity="([%d%.]+)"', function(alpha)
+    local value = tonumber(alpha)
+    if not value or value < 0 or value > 1 then invalid = true; return 'fill-opacity="' .. alpha .. '"' end
+    local scaled = math.min(1, value * percent / 100)
+    local formatted = string.format("%.4f", scaled):gsub("0+$", ""):gsub("%.$", "")
+    return 'fill-opacity="' .. formatted .. '"'
+  end)
+  if invalid or count == 0 then
+    return nil, "Pattern lacks supported fill-opacity artwork (nothing changed)"
+  end
+  return output
+end
+
 local function apply(name)
   if not allowed(name) then report("Unsupported pattern (nothing changed)", true); return false end
+  if type(strength) ~= "number" or strength < 0 or strength > 300 or strength ~= math.floor(strength) then
+    report("Pattern strength must be between 0 and 300% (nothing changed)", true)
+    return false
+  end
   if themes_dir == "" or not valid_theme(themes_dir) then
     report("Choose the folder containing Colorway.obt and patterns/", true)
     return false
@@ -124,33 +147,49 @@ local function apply(name)
     report("Selected SVG missing or unsafe (nothing changed)", true)
     return false
   end
-  if existing == next_bytes then report("Already showing " .. name); return true end
+  local scaled, reason = scale_pattern_alpha(next_bytes, strength)
+  if not scaled then report(reason, true); return false end
+  next_bytes = scaled
+  if existing == next_bytes then report("Already showing " .. name .. " at " .. strength .. "%"); return true end
   local ok, err = atomic_write(target, next_bytes)
   if not ok then report("Could not save pattern: " .. tostring(err), true); return false end
   if request_reload() then
-    report("Applied " .. name .. "; requested OBS theme reload")
+    report("Applied " .. name .. " at " .. strength .. "%; requested OBS theme reload")
   else
-    report("Applied " .. name .. "; restart OBS (or enable Appearance.AutoReload once)")
+    report("Applied " .. name .. " at " .. strength .. "%; restart OBS (or enable Appearance.AutoReload once)")
   end
   return true
 end
 
 function script_description()
   return "Colorway Pattern Manager — pick among the installed patterns and restore the original. "
-    .. "Backs up your exact starting SVG. Does not change the current OBS theme. "
-    .. "Live refresh requires AutoReload=true in the OBS user.ini [Appearance] section before OBS starts."
+    .. "Pattern strength is 0-300%; 100% preserves original artwork, 0% hides it. "
+    .. "Use Apply pattern to save selection and strength. Backs up your exact starting SVG. "
+    .. "Does not change the current OBS theme. Live refresh requires AutoReload=true "
+    .. "in the OBS user.ini [Appearance] section before OBS starts."
 end
 function script_defaults(settings)
   obs.obs_data_set_default_string(settings, "themes_dir", default_dir())
   obs.obs_data_set_default_string(settings, "pattern", "pattern.svg")
+  obs.obs_data_set_default_int(settings, "strength", 100)
 end
 function script_update(settings)
   current_settings = settings
   themes_dir = obs.obs_data_get_string(settings, "themes_dir")
   selected = obs.obs_data_get_string(settings, "pattern")
+  strength = obs.obs_data_get_int(settings, "strength")
 end
 function script_apply() return apply(selected) end
-function script_restore() return apply("pattern.svg") end
+function script_restore()
+  -- Restore the exact unmodified original, and make the visible controls
+  -- reflect it instead of leaving stale selection and intensity values.
+  selected, strength = "pattern.svg", 100
+  if current_settings then
+    obs.obs_data_set_string(current_settings, "pattern", selected)
+    obs.obs_data_set_int(current_settings, "strength", strength)
+  end
+  return apply(selected)
+end
 function script_properties()
   local props = obs.obs_properties_create()
   obs.obs_properties_add_path(props, "themes_dir", "Colorway themes directory",
@@ -158,6 +197,7 @@ function script_properties()
   local list = obs.obs_properties_add_list(props, "pattern", "Background pattern",
     obs.OBS_COMBO_TYPE_LIST, obs.OBS_COMBO_FORMAT_STRING)
   for _, entry in ipairs(patterns) do obs.obs_property_list_add_string(list, entry.label, entry.file) end
+  obs.obs_properties_add_int_slider(props, "strength", "Pattern strength (%)", 0, 300, 5)
   obs.obs_properties_add_button(props, "apply", "Apply pattern", script_apply)
   obs.obs_properties_add_button(props, "restore", "Restore original", script_restore)
   obs.obs_properties_add_text(props, "message", "Last action", obs.OBS_TEXT_INFO)

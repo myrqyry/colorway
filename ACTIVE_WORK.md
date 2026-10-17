@@ -1,6 +1,33 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Latest continuation — adjustable OBS background-pattern strength (2026-10-16)
+
+Added a `Pattern strength (%)` 0–300 slider to the existing Colorway
+OBS Lua Pattern Manager in Tools → Scripts. Default 100 preserves the exact
+authored SVG; 0 hides the ink, 50 halves alpha, 200 doubles it, and 300
+triples it. All 14 bundled patterns use original `fill-opacity="0.12"`
+so scaling those source attributes changes actual QtSvg-rendered visibility,
+rather than applying Qt widget opacity and fading labels/controls.
+
+Changes are applied only on **Apply pattern**, using the fresh original SVG
+or unmodified named SVG on every apply to prevent cumulative drift.
+Restore Original copies the exact preserved source and resets the UI selection
+and strength to Original/100. Invalid strength and disallowed paths are
+rejected without writes. Live refresh still requires OBS's preexisting
+AutoReload preference; the script never edits user.ini or theme QSS.
+
+Verified the old Lua script failed the new regression; the extended LuaJIT
+file-I/O harness passes 0/50/100/200/300 strengths, restore, invalid input,
+and auto-reload opt-in. Offscreen real QtSvg rendering confirmed monotonic
+visibility for all 14 patterns (max alpha 0 → 30 → 92 at strengths
+0/100/300). `pnpm test`: 649 total / 648 pass / 0 fail / 1 existing skip;
+`pnpm build` and real Chromium `pnpm check:companion` passed.
+Regenerated public companion mirrors, installed the updated optional
+companion through its backup-preserving installer, and left the selected OBS
+theme, actual pattern, and OBS settings unchanged. Repo changes committed
+locally; no push.
+
 ## Latest continuation — Settings input-size polish (2026-10-16)
 
 After the dropdown and native-window backdrop fixes, reviewed the live

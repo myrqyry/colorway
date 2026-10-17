@@ -20,6 +20,16 @@ test('OBS Lua pattern names stay in sync with real Colorway assets', () => {
   assert.doesNotMatch(text, /os\.execute|io\.popen|obs_frontend_set_theme/, 'no shell commands or unsupported frontend actions');
 });
 
+test('every bundled pattern has adjustable SVG artwork alpha', () => {
+  for (const { file } of PATTERNS) {
+    const source = readFileSync(resolve('patterns', file), 'utf8');
+    assert.match(source, /^<svg\s/, file + ' SVG opening');
+    assert.match(source, /fill-opacity="[0-9.]+"/, file + ' has ink opacity');
+    assert.doesNotMatch(source, /<\s*(?:script|foreignObject)\b|<\s*!DOCTYPE/i, file + ' remains safe SVG');
+    assert.doesNotMatch(source, /\bstroke="/, file + ' must not contain unscaled strokes');
+  }
+});
+
 test('real LuaJIT script applies, restores, rejects traversal, and preserves existing user files', { skip:!available }, () => {
   const temp = mkdtempSync(join(tmpdir(),'colorway-lua-'));
   try {
@@ -37,6 +47,14 @@ obslua = {
   OBS_LOG_INFO=200, LOG_INFO=200, LOG_WARNING=300, LOG_ERROR=400,
   OBS_PATH_DIRECTORY=2, OBS_COMBO_TYPE_LIST=0, OBS_COMBO_FORMAT_STRING=0,
   OBS_TEXT_INFO=4,
+  obs_data_get_int=function(settings,key) return settings[key] or 0 end,
+  obs_data_set_default_int=function(settings,key,val) if settings[key]==nil then settings[key]=val end end,
+  obs_data_set_int=function(settings,key,val) settings[key]=val end,
+  obs_properties_add_int_slider=function(p,key,label,min,max,step)
+    assert(key=="strength" and label=="Pattern strength (%)")
+    assert(min==0 and max==300 and step==5)
+    return {}
+  end,
   obs_data_get_string=function(settings,key) return settings[key] or "" end,
   obs_data_set_default_string=function(settings,key,val) if settings[key]==nil then settings[key]=val end end,
   obs_data_set_string=function(settings,key,val) settings[key]=val end,
@@ -53,11 +71,50 @@ local config = { themes_dir=arg[2],pattern="tiny-checkers.svg" }
 script_defaults(config)
 script_update(config)
 script_properties()
+assert(config.strength==100)
 assert(script_apply(nil,nil) == true)
 local f=assert(io.open(arg[2].."/patterns/pattern.svg","rb"))
 local chosen=f:read("*a");f:close()
 f=assert(io.open(arg[2].."/patterns/tiny-checkers.svg","rb"));assert(chosen==f:read("*a"));f:close()
 f=assert(io.open(arg[2].."/patterns/.colorway-original.svg","rb"));local original=f:read("*a");f:close()
+-- Strength is relative to the authored SVG's 12% alpha, so it must
+-- support both a dimmer pattern and a stronger one without accumulation.
+config.strength=50
+script_update(config)
+assert(script_apply(nil,nil)==true)
+f=assert(io.open(arg[2].."/patterns/pattern.svg","rb"))
+local half=f:read("*a");f:close()
+assert(half:find('fill-opacity="0.06"',1,true),half)
+config.strength=200
+script_update(config)
+assert(script_apply(nil,nil)==true)
+f=assert(io.open(arg[2].."/patterns/pattern.svg","rb"))
+local double=f:read("*a");f:close()
+assert(double:find('fill-opacity="0.24"',1,true),double)
+assert(double~=half and double~=chosen)
+config.strength=300
+script_update(config)
+assert(script_apply(nil,nil)==true)
+f=assert(io.open(arg[2].."/patterns/pattern.svg","rb"))
+local triple=f:read("*a");f:close()
+assert(triple:find('fill-opacity="0.36"',1,true),triple)
+-- Never scale an already modified active pattern a second time.
+config.strength=0
+script_update(config)
+assert(script_apply(nil,nil)==true)
+f=assert(io.open(arg[2].."/patterns/pattern.svg","rb"))
+local hidden=f:read("*a");f:close()
+assert(hidden:find('fill-opacity="0"',1,true),hidden)
+config.strength=301
+script_update(config)
+assert(script_apply(nil,nil)==false)
+f=assert(io.open(arg[2].."/patterns/pattern.svg","rb"))
+assert(f:read("*a")==hidden);f:close()
+config.strength=100
+script_update(config)
+assert(script_apply(nil,nil)==true)
+f=assert(io.open(arg[2].."/patterns/pattern.svg","rb"))
+assert(f:read("*a")==chosen);f:close()
 config.pattern="../user.ini"
 script_update(config)
 assert(script_apply(nil,nil) == false)
@@ -66,6 +123,7 @@ config.pattern="pixel-dots.svg"
 script_update(config)
 assert(script_apply(nil,nil) == true)
 assert(script_restore(nil,nil) == true)
+assert(config.strength==100 and config.pattern=="pattern.svg")
 f=assert(io.open(arg[2].."/patterns/pattern.svg","rb"));assert(f:read("*a")==original);f:close()
 -- Opted-in OBS auto-reload must touch the same base contents, never re-write user.ini.
 local ini=assert(io.open(os.getenv("XDG_CONFIG_HOME").."/obs-studio/user.ini","wb"))
