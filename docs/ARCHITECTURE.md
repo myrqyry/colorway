@@ -459,7 +459,7 @@ This repo pins `pnpm@11.17.0` via `packageManager`, and CI installs and runs wit
 - `pnpm dev` — Vite dev server (host 0.0.0.0)
 - `pnpm build` — Vite build to `dist/`
 - `pnpm sync:themes` — Mirror themes to `public/themes/` with palette comments
-- `pnpm test` — Node test runner, 589 tests, ~350ms (0 fail, 1 skipped: the network-gated `fromLospecPalette`)
+- `pnpm test` — Node test runner for `test/**/*.test.js`; test count and duration evolve with the suite. See the latest `ACTIVE_WORK.md` checkpoint for current totals; `fromLospecPalette` remains network-gated and skipped.
 - `pnpm preview` — Vite preview of built output
 
 Deployed on Vercel via `vercel.json` using pnpm as package manager.

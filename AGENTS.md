@@ -37,8 +37,9 @@ re-deriving the layout. This file intentionally does not restate those invariant
   is the domain glossary and its terms should be used in code and discussion.
 - **Deciding what to work on** — `ACTIVE_WORK.md`, then `.meristem/FEATURE_REQUESTS.md`.
 
-Verify with `pnpm test` (589 tests, ~300ms). It is the only quality gate; there is no lint
-script, so do not report a lint result.
+Verify with `pnpm test` and read its current pass/skip summary; the test count and
+runtime grow as native Qt checks are added. There is no lint script, so do not report a
+lint result. CI also builds with `pnpm build`.
 
 No nested `AGENTS.md` files are used. `src/`, `scripts/`, `test/`, and `themes/` are distinct
 enough to be worth describing, but each one's gotchas already live in `.meristem/PROJECT.md`,

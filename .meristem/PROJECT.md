@@ -79,7 +79,7 @@ modules under `test/` are not collected as tests that pass on containing no asse
 
 ## Verification
 
-- Before claiming a change works, run `pnpm test`. The suite is fast (~300ms) and is the gate.
+- Before claiming a change works, run `pnpm test` and inspect the current pass/skip summary. Qt/native coverage now takes several seconds; do not rely on historical test counts or timing.
 - The one skipped test (`fromLospecPalette`) is network-gated by design; it is not a failure.
 - For generator work, assert the checked-in artifacts still equal generator output — the
   contract already does this, so a green suite is the proof.
