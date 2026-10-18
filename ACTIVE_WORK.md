@@ -1,7 +1,34 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
-## Latest continuation — Colorway provenance and active palette parsing (2026-10-17)
+## Latest continuation — pattern placement hierarchy in native OBS (2026-10-17)
+
+User requested a better application of patterns after the theme-provenance
+review. Inspected the real OBS 32.2 window and Settings screenshots at the
+user's active 300% pattern strength (current SVG unchanged). The diagonal
+tile covered data-heavy scene/source trees, filter lists, Settings navigation,
+plugin and regular dock bodies, and every generic item view. This made the
+same texture compete with nearly every interactive control.
+
+Kept the chosen SVG on the broader window shell and the Settings page
+backdrop, but removed `background-image: var(--pattern_eyes)` from dense
+list/table/tree views, the Settings/Filters navigation lists, and
+`OBSDock > QWidget`. All these are now solid semantic theme surfaces.
+A targeted test failed before the change and passed afterward; offscreen
+QtSVG confirms the Settings backdrop still tiles. Before/after screenshots
+in isolated real OBS dark EvondevDracula capture show calm navigation,
+scenes, sources, dock bodies and mixer with decorative texture still around
+the content. A light Catppuccin Latte snapshot was also checked. No theme
+palette changes, user.ini edits, pattern SVG modifications, or user-scene
+changes. Tests and native probes passed; previous installed base backed
+up before replacement, with current OBS session left running.
+
+Pattern ink remains statically authored #908caa in bundled SVGs; true
+automatic tint adaptation on theme switch is a separate unresolved design
+problem (Qt does not resolve widget QSS colors into external SVG files).
+See `docs/OBS_THEME_COMPATIBILITY.md` for selectors and evidence.
+
+## Previous continuation — Colorway provenance and active palette parsing (2026-10-17)
 
 User reported themes had been damaged by prior polishing and requested a full
 review with original-source attribution and correct OBS palette adaptation.

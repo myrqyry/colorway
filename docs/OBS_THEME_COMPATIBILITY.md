@@ -80,6 +80,40 @@ offscreen PyQt6 to require multiple background pixel colors (not a uniform
 fill). The native isolated `pnpm check:obs-native` gate continues to verify
 the actual OBS stylesheet, whereas this test adds rendered-pixel coverage.
 
+## Pattern placement hierarchy — 2026-10-17
+
+The old stylesheet repeated the same SVG across the window, Settings page,
+Settings navigation, dense scenes/sources trees, every `QAbstractItemView`,
+filters lists, and whole plugin-dock content surfaces. On the user's real OBS
+capture at 300% pattern strength, the same diagonal texture competed with
+scene labels, mixer controls and embedded shader-browser content.
+
+**Verified placement update:** Retain the repeating pattern on the larger
+window/shell and Settings page background, where it creates visual depth
+outside controls. Use solid theme palette colors instead for
+`SceneTree`, `SourceTree`, `QListWidget`, `QTreeView`, `QTableView`,
+`QAbstractItemView`, `OBSBasicSettings QListWidget`,
+`OBSBasicFilters QListWidget`, and `OBSDock > QWidget`.
+These surfaces are for reading and editing, not decoration. Native OBS
+before/after screenshots show clean scene lists, source lists, audio
+controls, Settings sidebar, and dock bodies while the pattern remains
+visible around them and behind the Settings groups.
+
+The test now pins **which Qt selectors may carry the artwork**, rather than
+merely counting repeated background rules. An actual QtSVG probe renders the
+remaining Settings page tile (the original probe targeted a now-solid
+SceneTree). Do not add `background-repeat`; the Linux Qt renderer omits
+the pattern with CSS-style repeat overrides.
+
+Pattern choice and strength remain wholly owned by the Lua Pattern Manager.
+This patch does not replace `pattern.svg`, alter its authored color,
+reduce a user's selected intensity, or change `user.ini`. A separate
+unresolved limitation: bundled SVGs use a common hardcoded ink color,
+not a per-palette semantic tint. Qt does not interpolate QSS variables
+inside external SVGs. Avoid claiming palette-aware pattern recoloring
+until an asset-generation/selection path exists and is verified across
+variant changes.
+
 ## Settings scroll surfaces — 2026-10-16
 
 The OBS Settings dialog's pages include `QScrollArea` contents that Qt sets

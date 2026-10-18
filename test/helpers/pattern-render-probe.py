@@ -1,5 +1,5 @@
-"""Render Colorway's actual SceneTree pattern QSS in offscreen Qt.
-Input JSON: {base, root}. Fails when Qt flattens the repeating image.
+"""Render Colorway's actual Settings page background SVG in offscreen Qt.
+Input JSON: {base, root}. Fails when Qt flattens the ambient tiling.
 """
 import json
 import os
@@ -13,14 +13,14 @@ from PyQt6.QtGui import QColor
 
 payload = json.load(sys.stdin)
 source = re.sub(r"/\*[\s\S]*?\*/", "", payload["base"])
-match = re.search(r"SceneTree\s*,\s*SourceTree\s*\{([^}]*)\}", source)
-assert match, "SceneTree/SourceTree pattern QSS missing"
+match = re.search(r"OBSBasicSettings\s+QScrollArea\s*>\s*QWidget\s*>\s*QWidget\s*\{([^}]*)\}", source)
+assert match, "Settings scroll page pattern QSS missing"
 declarations = match[1]
 assert "background-image: var(--pattern_eyes)" in declarations
-assert "background-color: var(--bg_base)" in declarations
+assert "background-color: var(--bg_window)" in declarations
 # OBS resolves these lexical variables before handing the QSS to Qt.
 declarations = declarations.replace("var(--pattern_eyes)", "url(theme:patterns/pattern.svg)")
-declarations = declarations.replace("var(--bg_base)", "#5A5475")
+declarations = declarations.replace("var(--bg_window)", "#5A5475")
 QDir.addSearchPath("theme", payload["root"])
 app = QApplication([])
 tile = QWidget()
