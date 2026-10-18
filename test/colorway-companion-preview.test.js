@@ -11,7 +11,10 @@ test('standalone OBS dock preview is built from the complete real theme and patt
  assert.match(html, /id="pattern-list"/);
  assert.match(html, /id="theme-workspace"/);
  assert.match(html, /Preview only/);
- assert.doesNotMatch(html,/Status Indicators|setInterval|https?:\/\//i);
+ // Origin links are inert metadata until the user opens one. Ignore the
+ // embedded JSON when checking for network-dependent preview code.
+ const pageWithoutData = html.replace(/<script id="colorway-data" type="application\/json">[\s\S]*?<\/script>/, '');
+ assert.doesNotMatch(pageWithoutData,/Status Indicators|setInterval|fetch\s*\(|XMLHttpRequest/i);
  const match=html.match(/<script id="colorway-data" type="application\/json">([\s\S]*?)<\/script>/);
  assert.ok(match,'offline preview JSON must be embedded, not fetched');
  assert.equal(html,read('public/companion/colorway-preview.html'),
@@ -25,6 +28,9 @@ test('standalone OBS dock preview is built from the complete real theme and patt
    assert.match(item.colors.bg_window,/^#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$/);
    assert.match(item.colors.text,/^#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$/);
    assert.match(item.id,/^com\.myrqyry\.Colorway/);
+   assert.ok(item.credit,'missing upstream source metadata: '+item.file);
+   if(item.credit.url)assert.ok(item.credit.url.startsWith('https://'));
+   else assert.equal(item.credit.relation,'unverified');
  }
  for(const p of data.patterns){
    assert.ok(p.image.startsWith('data:image/svg+xml,'),p.file);

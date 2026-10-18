@@ -95,7 +95,11 @@ export function parseOVT(text) {
 
   const blockMatch = text.match(/@OBSThemeVars\s*\{([\s\S]*?)\}/);
   if (blockMatch) {
-    for (const line of blockMatch[1].split('\n')) {
+    // Comments can contain a complete historical palette snapshot. They
+    // are documentation, not active OBS declarations: parsing them as vars
+    // injects stale or unrelated colors into previews and exported themes.
+    const active = blockMatch[1].replace(/\/\*[\s\S]*?\*\//g, '');
+    for (const line of active.split('\n')) {
       const match = line.match(/^\s*(--[\w-]+)\s*:\s*(.+?);/);
       if (match) vars[match[1]] = decodeObsFunctionValue(match[2].trim());
     }

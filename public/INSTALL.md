@@ -23,7 +23,10 @@ Flatpak, portable mode, and other packaging can move the configuration root. Use
 theme directory of the OBS installation you actually run. Installed duplicate IDs can
 take precedence over user themes; ensure you are testing the updated Colorway files.
 
-The package includes both icon polarities, all patterns, and the selected `.ovt`.
+The package includes both icon polarities, all patterns, the selected `.ovt`,
+and **`THEME_CREDITS.md`** with original palette/source attribution and any
+unverified or historically diverging adaptations. Colorway creates the OBS
+port; it does not claim to have authored upstream palettes.
 The base expects `patterns/pattern.svg`. For easy pattern changes, **use the optional
 Colorway Pattern Manager** instead of replacing SVG files manually.
 
@@ -39,6 +42,8 @@ the OBS themes directory). It contains two working, offline tools:
   Docks...** with a `file:///...` URL to the extracted HTML file. Browse
   all Colorway theme palettes, preview scene/source/audio-mixer styling,
   compare installed background patterns, search and favorite themes.
+  The selected theme also displays its original creator/source link when
+  verified, or explicitly says when the origin is unresolved.
 
 The dock is **preview-only**; choose the actual theme in Settings → Appearance.
 The Lua script changes only `patterns/pattern.svg`, and does not alter OBS's

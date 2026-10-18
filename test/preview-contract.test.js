@@ -82,6 +82,13 @@ test('extractPalettePreview extracts correct variables', () => {
   assert.match(main, /'--border_color'/);
 });
 
+test('selected web theme displays attribution without claiming unknown source identities', () => {
+  assert.match(main, /id="active-theme-credit"/);
+  assert.match(main, /originalSources\.themes\[file\]/);
+  assert.match(main, /Original source not yet verified/);
+  assert.match(main, /link\.rel = 'noopener noreferrer'/);
+});
+
 test('public patterns mirror the root patterns', () => {
   const rootFiles = readdirSync(rootPatternsDir, { withFileTypes: true })
     .filter((entry) => entry.isFile() && entry.name.endsWith('.svg'))

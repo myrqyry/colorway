@@ -318,6 +318,19 @@
   color: var(--text_muted); font-size: 10px;
 }
 
+.active-theme-credit {
+  max-width: 310px;
+  font-size: 10px;
+  line-height: 1.25;
+  color: var(--text_muted);
+  text-align: right;
+}
+.active-theme-credit a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .showcase-grid {
   position: relative;
   isolation: isolate;

@@ -172,5 +172,6 @@ assets.push(...readdirSync(patternsDir).filter((name) => name.endsWith('.svg')).
 assets.push('fonts/BricolageGrotesqueVariable.ttf', 'fonts/OFL.txt');
 writeFileSync(path.join(repoRoot, 'public', 'theme-assets.json'), JSON.stringify(assets, null, 2) + '\n');
 writeFileSync(path.join(repoRoot, 'public', 'INSTALL.md'), readFileSync(path.join(repoRoot, 'docs', 'INSTALL.md')));
+writeFileSync(path.join(repoRoot, 'public', 'THEME_CREDITS.md'), readFileSync(path.join(repoRoot, 'docs', 'THEME_CREDITS.md')));
 
 console.log(`synced base, ${graph.themeFiles.length} variants, and ${assets.length} package assets`);

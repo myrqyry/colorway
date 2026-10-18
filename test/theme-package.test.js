@@ -17,7 +17,7 @@ for (const includeBase of [true, false]) {
     assert.equal(Object.hasOwn(zip, 'themes/Colorway.obt'), includeBase);
     assert.equal(strFromU8(zip['themes/' + variant]), readFileSync(new URL('themes/' + variant, root), 'utf8'));
     const manifest = JSON.parse(readFileSync(new URL('public/theme-assets.json', root), 'utf8'));
-    assert.equal(Object.keys(zip).length, manifest.length + (includeBase ? 6 : 5));
+    assert.equal(Object.keys(zip).length, manifest.length + (includeBase ? 7 : 6));
     for (const path of manifest) {
       const target = path.startsWith('fonts/') ? path : 'themes/' + path;
       assert.deepEqual(Buffer.from(zip[target]), readFileSync(new URL(path, root)), target);
@@ -30,6 +30,8 @@ for (const includeBase of [true, false]) {
     assert.ok(zip['themes/icons/colorway/mingcute/normal/check.svg']);
     assert.ok(zip['themes/icons/colorway/mingcute/selected/check.svg']);
     assert.match(strFromU8(zip['INSTALL.md']), /OS font/);
+    assert.match(strFromU8(zip['THEME_CREDITS.md']), /Colorway theme provenance and credits/);
+    assert.match(strFromU8(zip['THEME_CREDITS.md']), /Catppuccin contributors/);
     assert.ok(zip['fonts/OFL.txt']);
   });
 }

@@ -1,0 +1,1125 @@
+{
+  "reviewed": "2026-10-17",
+  "themes": {
+    "Colorway-90sAnime.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-AMOLED.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-AdaptaEvergreen.ovt": {
+      "creator": "Sagar Paul",
+      "url": "https://marketplace.visualstudio.com/items?itemName=SagarPaul.adapta-evergreen-theme",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": "Original VS Code palette, not the underlying Adapta GTK theme"
+    },
+    "Colorway-Aura.ovt": {
+      "creator": "Dalton Menezes / Aura Theme",
+      "url": "https://github.com/daltonmenezes/aura-theme",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Source dark background #15141b, primary #a277ff and foreground #edecee match Colorway"
+    },
+    "Colorway-Ayu.ovt": {
+      "creator": "ayu theme contributors",
+      "url": "https://github.com/ayu-theme/ayu-colors",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-BerryNebula.ovt": {
+      "creator": "LostInIndigo",
+      "url": "https://lospec.com/palette-list/berry-nebula",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": ""
+    },
+    "Colorway-Carbonfox.ovt": {
+      "creator": "EdenEast / Nightfox",
+      "url": "https://github.com/edeneast/nightfox.nvim",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-CatppuccinFrappe-Blue.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinFrappe-Green.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinFrappe-Lavender.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinFrappe-Maroon.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinFrappe-Peach.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinFrappe-Pink.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinFrappe-Red.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinFrappe-Rosewater.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinFrappe-Teal.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinFrappe-Yellow.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinLatte-Blue.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinLatte-Green.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinLatte-Lavender.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinLatte-Maroon.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinLatte-Peach.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinLatte-Pink.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinLatte-Red.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinLatte-Rosewater.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinLatte-Teal.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinLatte-Yellow.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMacchiato-Blue.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMacchiato-Green.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMacchiato-Lavender.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMacchiato-Maroon.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMacchiato-Peach.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMacchiato-Pink.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMacchiato-Red.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMacchiato-Rosewater.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMacchiato-Teal.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMacchiato-Yellow.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMocha-Blue.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMocha-Green.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMocha-Lavender.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMocha-Maroon.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMocha-Peach.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMocha-Pink.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMocha-Red.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMocha-Rosewater.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMocha-Teal.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMocha-Yellow.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinMocha.ovt": {
+      "creator": "Catppuccin contributors",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Four standard flavors; named accents, base and foreground checked against official palette 1.8.0"
+    },
+    "Colorway-CatppuccinSibling-Affogato.ovt": {
+      "creator": "Colorway (inspired by Catppuccin contributors)",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "inspired",
+      "verification": "source identified",
+      "note": "Original Colorway sister palettes; not official Catppuccin flavors"
+    },
+    "Colorway-CatppuccinSibling-Garnet.ovt": {
+      "creator": "Colorway (inspired by Catppuccin contributors)",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "inspired",
+      "verification": "source identified",
+      "note": "Original Colorway sister palettes; not official Catppuccin flavors"
+    },
+    "Colorway-CatppuccinSibling-Lichen.ovt": {
+      "creator": "Colorway (inspired by Catppuccin contributors)",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "inspired",
+      "verification": "source identified",
+      "note": "Original Colorway sister palettes; not official Catppuccin flavors"
+    },
+    "Colorway-CatppuccinSibling-Matcha.ovt": {
+      "creator": "Colorway (inspired by Catppuccin contributors)",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "inspired",
+      "verification": "source identified",
+      "note": "Original Colorway sister palettes; not official Catppuccin flavors"
+    },
+    "Colorway-CatppuccinSibling-Petal.ovt": {
+      "creator": "Colorway (inspired by Catppuccin contributors)",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "inspired",
+      "verification": "source identified",
+      "note": "Original Colorway sister palettes; not official Catppuccin flavors"
+    },
+    "Colorway-CatppuccinSibling-Sesame.ovt": {
+      "creator": "Colorway (inspired by Catppuccin contributors)",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "inspired",
+      "verification": "source identified",
+      "note": "Original Colorway sister palettes; not official Catppuccin flavors"
+    },
+    "Colorway-CatppuccinSibling-Terracotta.ovt": {
+      "creator": "Colorway (inspired by Catppuccin contributors)",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "inspired",
+      "verification": "source identified",
+      "note": "Original Colorway sister palettes; not official Catppuccin flavors"
+    },
+    "Colorway-CatppuccinSibling-Ube.ovt": {
+      "creator": "Colorway (inspired by Catppuccin contributors)",
+      "url": "https://github.com/catppuccin/catppuccin",
+      "relation": "inspired",
+      "verification": "source identified",
+      "note": "Original Colorway sister palettes; not official Catppuccin flavors"
+    },
+    "Colorway-CaveOfThePast.ovt": {
+      "creator": "Ben Busby / EarthBound Themes",
+      "url": "https://github.com/earthbound-themes/vscode/tree/main/themes",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-ClaudeCode.ovt": {
+      "creator": "Anthropic / Claude",
+      "url": "https://github.com/anthropics/claude-code",
+      "relation": "inspired",
+      "verification": "brand inspiration only",
+      "note": "No exact original palette identified"
+    },
+    "Colorway-ClaudeCodeWarm.ovt": {
+      "creator": "Anthropic / Claude",
+      "url": "https://github.com/anthropics/claude-code",
+      "relation": "inspired",
+      "verification": "brand inspiration only",
+      "note": "No exact original palette identified"
+    },
+    "Colorway-ClaudeDark.ovt": {
+      "creator": "Anthropic / Claude",
+      "url": "https://github.com/anthropics/claude-code",
+      "relation": "inspired",
+      "verification": "brand inspiration only",
+      "note": "No exact original palette identified"
+    },
+    "Colorway-Cobalt2.ovt": {
+      "creator": "Wes Bos",
+      "url": "https://github.com/wesbos/cobalt2-vscode",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Cursor.ovt": {
+      "creator": "Cursor",
+      "url": "https://cursor.com/",
+      "relation": "inspired",
+      "verification": "brand inspiration only",
+      "note": "No exact original palette identified"
+    },
+    "Colorway-Cyclope6.ovt": {
+      "creator": "Naym",
+      "url": "https://lospec.com/palette-list/cyclope6",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": ""
+    },
+    "Colorway-DarkHorizon.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-DarkMagic.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-DevilsMachine.ovt": {
+      "creator": "Ben Busby / EarthBound Themes",
+      "url": "https://github.com/earthbound-themes/vscode/tree/main/themes",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Dracula.ovt": {
+      "creator": "Dracula Theme contributors",
+      "url": "https://github.com/dracula/dracula-theme",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-DraculaRefined.ovt": {
+      "creator": "Dracula Theme contributors",
+      "url": "https://github.com/dracula/dracula-theme",
+      "relation": "inspired",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-DustyDunes-Darker.ovt": {
+      "creator": "Ben Busby / EarthBound Themes",
+      "url": "https://github.com/earthbound-themes/vscode/tree/main/themes",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-DustyDunes.ovt": {
+      "creator": "Ben Busby / EarthBound Themes",
+      "url": "https://github.com/earthbound-themes/vscode/tree/main/themes",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EarthBound-Darker.ovt": {
+      "creator": "Ben Busby / EarthBound Themes",
+      "url": "https://github.com/earthbound-themes/vscode/tree/main/themes",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EarthBound.ovt": {
+      "creator": "Ben Busby / EarthBound Themes",
+      "url": "https://github.com/earthbound-themes/vscode/tree/main/themes",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EtherealDefault.ovt": {
+      "creator": "Ethereal Lemons",
+      "url": "https://marketplace.visualstudio.com/items?itemName=Ethereal-Lemons.ethereal-theme",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EtherealFallenAngel.ovt": {
+      "creator": "Ethereal Lemons",
+      "url": "https://marketplace.visualstudio.com/items?itemName=Ethereal-Lemons.ethereal-theme",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EtherealFrutiger.ovt": {
+      "creator": "Ethereal Lemons",
+      "url": "https://marketplace.visualstudio.com/items?itemName=Ethereal-Lemons.ethereal-theme",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EtherealGothicAngel.ovt": {
+      "creator": "Ethereal Lemons",
+      "url": "https://marketplace.visualstudio.com/items?itemName=Ethereal-Lemons.ethereal-theme",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EtherealKerubin.ovt": {
+      "creator": "Ethereal Lemons",
+      "url": "https://marketplace.visualstudio.com/items?itemName=Ethereal-Lemons.ethereal-theme",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EtherealLuminousSpace.ovt": {
+      "creator": "Ethereal Lemons",
+      "url": "https://marketplace.visualstudio.com/items?itemName=Ethereal-Lemons.ethereal-theme",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EtherealWindows7.ovt": {
+      "creator": "Ethereal Lemons",
+      "url": "https://marketplace.visualstudio.com/items?itemName=Ethereal-Lemons.ethereal-theme",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EtherealY2KAero.ovt": {
+      "creator": "Ethereal Lemons",
+      "url": "https://marketplace.visualstudio.com/items?itemName=Ethereal-Lemons.ethereal-theme",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Everforest-Hard.ovt": {
+      "creator": "sainnhe / Everforest",
+      "url": "https://github.com/sainnhe/everforest/blob/master/palette.md",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Everforest-Light-Hard.ovt": {
+      "creator": "sainnhe / Everforest",
+      "url": "https://github.com/sainnhe/everforest/blob/master/palette.md",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Everforest-Light-Soft.ovt": {
+      "creator": "sainnhe / Everforest",
+      "url": "https://github.com/sainnhe/everforest/blob/master/palette.md",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Everforest-Light.ovt": {
+      "creator": "sainnhe / Everforest",
+      "url": "https://github.com/sainnhe/everforest/blob/master/palette.md",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Everforest-Soft.ovt": {
+      "creator": "sainnhe / Everforest",
+      "url": "https://github.com/sainnhe/everforest/blob/master/palette.md",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EvondevDracula-Author.ovt": {
+      "creator": "evondev",
+      "url": "https://github.com/evondev/evondev-dracula",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EvondevDracula-New.ovt": {
+      "creator": "evondev",
+      "url": "https://github.com/evondev/evondev-dracula",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EvondevDracula-Night.ovt": {
+      "creator": "evondev",
+      "url": "https://github.com/evondev/evondev-dracula",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-EvondevDracula.ovt": {
+      "creator": "evondev",
+      "url": "https://github.com/evondev/evondev-dracula",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Fairyfloss.ovt": {
+      "creator": "sailorhg",
+      "url": "https://github.com/sailorhg/fairyfloss",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-FireSpring-Darker.ovt": {
+      "creator": "Ben Busby / EarthBound Themes",
+      "url": "https://github.com/earthbound-themes/vscode/tree/main/themes",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-FireSpring.ovt": {
+      "creator": "Ben Busby / EarthBound Themes",
+      "url": "https://github.com/earthbound-themes/vscode/tree/main/themes",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Flexoki.ovt": {
+      "creator": "Steph Ango / kepano",
+      "url": "https://github.com/kepano/flexoki",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-FluffyDark.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-GitHub.ovt": {
+      "creator": "GitHub Primer contributors",
+      "url": "https://github.com/primer/primitives",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Gruvbox.ovt": {
+      "creator": "Pavel Pertsev / morhetz",
+      "url": "https://github.com/morhetz/gruvbox",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-HatsuneMiku.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-Hydrangea11.ovt": {
+      "creator": "Dinchenix",
+      "url": "https://lospec.com/palette-list/hydrangea-11",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": ""
+    },
+    "Colorway-InkCrimson.ovt": {
+      "creator": "Inkpendude",
+      "url": "https://lospec.com/palette-list/ink-crimson",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": ""
+    },
+    "Colorway-Kanagawa.ovt": {
+      "creator": "rebelot",
+      "url": "https://github.com/rebelot/kanagawa.nvim",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Kawaii.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-KickDark.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-LoFiGreenDark.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-LucentOrng.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-Macaroon.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-Magicant.ovt": {
+      "creator": "Ben Busby / EarthBound Themes",
+      "url": "https://github.com/earthbound-themes/vscode/tree/main/themes",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Material.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-Matrix.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-Mercury.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-MikuBetter.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-ModernPurple.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-Monokai.ovt": {
+      "creator": "Wimer Hazenberg / Monokai",
+      "url": "https://monokai.pro",
+      "relation": "inspired",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Moonside.ovt": {
+      "creator": "Ben Busby / EarthBound Themes",
+      "url": "https://github.com/earthbound-themes/vscode/tree/main/themes",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-NOPAL12.ovt": {
+      "creator": "BurakoIRL",
+      "url": "https://lospec.com/palette-list/nopal-12",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": ""
+    },
+    "Colorway-NightOwl.ovt": {
+      "creator": "Sarah Drasner",
+      "url": "https://github.com/sdras/night-owl-vscode-theme",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Nord.ovt": {
+      "creator": "Sven Greb / Nord",
+      "url": "https://github.com/nordtheme/nord",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-OC2.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-OneDark.ovt": {
+      "creator": "Atom One Dark contributors",
+      "url": "https://github.com/atom/one-dark-syntax",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-OneDarkPro.ovt": {
+      "creator": "Binaryify / One Dark Pro",
+      "url": "https://github.com/Binaryify/OneDark-Pro",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-OpenCode.ovt": {
+      "creator": "Anomaly / OpenCode",
+      "url": "https://github.com/anomalyco/opencode",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Orng.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-OsakaJade.ovt": {
+      "creator": "Omarchy contributors / Osaka Jade",
+      "url": "https://omarchy.gallery/themes/osaka-jade",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": "Source background #111c18 and foreground #C1C497 match; Colorway accent #2DD5B7 differs from the documented upstream #509475. Needs intentional-adaptation decision; do not claim exact match."
+    },
+    "Colorway-Palenight.ovt": {
+      "creator": "Olaolu Olawuyi",
+      "url": "https://github.com/whizkydee/vscode-palenight-theme",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": "Material-inspired original Palenight VS Code theme"
+    },
+    "Colorway-PastelPixels.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-RosePine-Foam.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Base, named accent and foreground compared against official palette"
+    },
+    "Colorway-RosePine-Gold.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Base, named accent and foreground compared against official palette"
+    },
+    "Colorway-RosePine-Iris.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Base, named accent and foreground compared against official palette"
+    },
+    "Colorway-RosePine-Love.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Base, named accent and foreground compared against official palette"
+    },
+    "Colorway-RosePine-Pine.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Base, named accent and foreground compared against official palette"
+    },
+    "Colorway-RosePine-Rose.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Base, named accent and foreground compared against official palette"
+    },
+    "Colorway-RosePineDawn-Foam.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Dawn uses historical #575279 foreground; newer upstream snapshot reports #464261"
+    },
+    "Colorway-RosePineDawn-Gold.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Dawn uses historical #575279 foreground; newer upstream snapshot reports #464261"
+    },
+    "Colorway-RosePineDawn-Iris.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Dawn uses historical #575279 foreground; newer upstream snapshot reports #464261"
+    },
+    "Colorway-RosePineDawn-Love.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Dawn uses historical #575279 foreground; newer upstream snapshot reports #464261"
+    },
+    "Colorway-RosePineDawn-Pine.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Dawn uses historical #575279 foreground; newer upstream snapshot reports #464261"
+    },
+    "Colorway-RosePineDawn-Rose.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Dawn uses historical #575279 foreground; newer upstream snapshot reports #464261"
+    },
+    "Colorway-RosePineMoon-Foam.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Base, named accent and foreground compared against official palette"
+    },
+    "Colorway-RosePineMoon-Gold.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Base, named accent and foreground compared against official palette"
+    },
+    "Colorway-RosePineMoon-Iris.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Base, named accent and foreground compared against official palette"
+    },
+    "Colorway-RosePineMoon-Love.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Base, named accent and foreground compared against official palette"
+    },
+    "Colorway-RosePineMoon-Pine.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Base, named accent and foreground compared against official palette"
+    },
+    "Colorway-RosePineMoon-Rose.ovt": {
+      "creator": "Rosé Pine contributors",
+      "url": "https://github.com/rose-pine/rose-pine-palette",
+      "relation": "adapted",
+      "verification": "palette roles checked",
+      "note": "Base, named accent and foreground compared against official palette"
+    },
+    "Colorway-SLSO8Pixels.ovt": {
+      "creator": "Luis Miguel Maldonado (SoloSalsero)",
+      "url": "https://lospec.com/palette-list/slso8",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": ""
+    },
+    "Colorway-SailorMoonBackground.ovt": {
+      "creator": "OldNinjaCat",
+      "url": "https://lospec.com/palette-list/sailor-moon-background",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": ""
+    },
+    "Colorway-Seafoam.ovt": {
+      "creator": "Jimison3",
+      "url": "https://lospec.com/palette-list/seafoam",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": ""
+    },
+    "Colorway-ShadesofPurple.ovt": {
+      "creator": "Ahmad Awais",
+      "url": "https://github.com/ahmadawais/shades-of-purple-vscode",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Soapy10.ovt": {
+      "creator": "green guy",
+      "url": "https://lospec.com/palette-list/soapy-10",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": ""
+    },
+    "Colorway-SolarizedDark.ovt": {
+      "creator": "Ethan Schoonover",
+      "url": "https://github.com/altercation/solarized",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-SolarizedLight.ovt": {
+      "creator": "Ethan Schoonover",
+      "url": "https://github.com/altercation/solarized",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-SpiritedAway.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-Synthwave84.ovt": {
+      "creator": "Rob Owen",
+      "url": "https://github.com/robb0wen/synthwave-vscode",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-Tokyonight.ovt": {
+      "creator": "folke",
+      "url": "https://github.com/folke/tokyonight.nvim",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-TwitchDark.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-Vercel.ovt": {
+      "creator": "Vercel / Geist",
+      "url": "https://vercel.com/geist/colors",
+      "relation": "inspired",
+      "verification": "brand inspiration only",
+      "note": "No exact original palette identified"
+    },
+    "Colorway-Vesper.ovt": {
+      "creator": "Rauno Freiberg",
+      "url": "https://github.com/raunofreiberg/vesper",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-YouTubeDark.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-Zenburn.ovt": {
+      "creator": "Jani Nurminen / Zenburn",
+      "url": "https://github.com/jnurmine/Zenburn",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-ZombieThreed-Darker.ovt": {
+      "creator": "Ben Busby / EarthBound Themes",
+      "url": "https://github.com/earthbound-themes/vscode/tree/main/themes",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-ZombieThreed.ovt": {
+      "creator": "Ben Busby / EarthBound Themes",
+      "url": "https://github.com/earthbound-themes/vscode/tree/main/themes",
+      "relation": "adapted",
+      "verification": "source identified",
+      "note": ""
+    },
+    "Colorway-matchalk.ovt": {
+      "creator": null,
+      "url": null,
+      "relation": "unverified",
+      "verification": "original source not established",
+      "note": "Do not claim an official palette, license, or upstream author without evidence"
+    }
+  }
+}

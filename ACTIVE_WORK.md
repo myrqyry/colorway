@@ -1,6 +1,53 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Latest continuation — Colorway provenance and active palette parsing (2026-10-17)
+
+User reported themes had been damaged by prior polishing and requested a full
+review with original-source attribution and correct OBS palette adaptation.
+Compared all 160 authored `.ovt` palette variable values against the last
+pre-fix checkpoint `946a2bf`: **zero changes to authored palette seed
+values**. This does not validate every QSS/widget state; the existing native
+stylesheet passes still require visual scrutiny. Osaka Jade also has
+source base/text identity but an adapted accent (#2DD5B7 in Colorway
+versus #509475 documented upstream); this difference is recorded and
+not changed without an intentional palette decision.
+
+**Actual bug discovered:** `src/theme-loader.js` `parseOVT` was reading
+`--variable` lines inside `/* Official palette reference ... */` comments
+as active declarations. This injected old Rosé Pine meter and selected-row
+colors into unrelated palettes in the **web workbench and generated offline
+OBS library**; no corresponding 142/143 `--meter_fg_nom` overrides were active
+in the installed OBS variants. Do not "repair" these real theme files based
+on comment-only values. Added an independent active-variable contract that
+checks all 160 variants and confirmed Carbonfox no longer receives the
+comment-only colors.
+
+**Attribution:** `data/theme-provenance.json` now tracks all 160 variants,
+original source/creator URLs and evidence level. Current coverage:
+60 with palette roles checked (including Aura), 10 source palettes
+identified (nine Lospec plus Osaka Jade), 62 named sources identified
+but without complete palette verification, 5 brand-inspired without exact
+palette verification, and 23 still unresolved. `data/official-palette-checkpoints.json` stores
+hash-identified source colors (Catppuccin 1.8.0, Rosé Pine and Lospec).
+All 41 standard Catppuccin variants use official named accents, original
+surface tiers and foregrounds. All 18 Rosé Pine variants match source
+surface and named accents; six Dawn variants retain historical `#575279`
+text rather than the snapshot's `#464261`; intentionally not altered.
+
+`scripts/build-theme-credits.py` generates the complete
+`docs/THEME_CREDITS.md`; `pnpm sync:themes` mirrors it to `public/`.
+Each downloaded theme ZIP now includes credits. The offline OBS library
+displays original creator and source links or an explicit unknown status.
+No new native OBS theme colors, scene configurations or installed patterns
+were overwritten. See `test/theme-provenance.test.js`,
+`test/obs-theme-parser-contract.test.js` and `docs/THEME_CREDITS.md`.
+
+Verified at this checkpoint: complete suite, Chromium parity, real offline
+companion controls, native base/Latte/Monokai acceptance. Installed companion
+preview backed up before replacing; no OBS process/theme settings touched.
+Meaningful work locally committed; **do not push without a reason**.
+
 ## Latest continuation — adjustable OBS background-pattern strength (2026-10-16)
 
 Added a `Pattern strength (%)` 0–300 slider to the existing Colorway

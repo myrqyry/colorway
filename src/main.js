@@ -5,6 +5,7 @@ import { THEME_CATEGORIES, getThemeCategory, filterThemeCatalog, sortThemesByDis
 import { PALETTE_VARS, PALETTE_GROUPS, applyTheme, loadTheme } from './theme-loader.js';
 import { toNormalizedTheme, serializeOVT, toYamiOVT, downloadThemeText, importThemeFile, fromLospecPalette, lospecSlugFromUrl } from './theme-workbench.js';
 import { downloadThemePackage } from './theme-package.js';
+import originalSources from '../data/theme-provenance.json';
 
 function escapeHtml(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -200,6 +201,7 @@ function renderApp() {
               <span id="slideshow-progress-fill"></span>
             </div>
             <span id="theme-status" aria-live="polite">Fetching theme variables</span>
+            <span id="active-theme-credit" class="active-theme-credit"></span>
           </div>
         </div>
       </header>
@@ -411,6 +413,23 @@ function applyThemeState(file, theme, patternFile) {
   const status = document.querySelector('#theme-status');
   name.textContent = theme._name || file;
   status.textContent = theme._dark === false ? 'Light variant' : 'Dark variant';
+  const credit = document.querySelector('#active-theme-credit');
+  const source = originalSources.themes[file];
+  credit?.replaceChildren();
+  if (credit) {
+    if (!source || source.relation === 'unverified') credit.textContent = 'Original source not yet verified';
+    else {
+      credit.textContent = `${source.relation === 'inspired' ? 'Inspired by' : 'Adapted from'} ${source.creator}`;
+      if (source.url) {
+        const link = document.createElement('a');
+        link.href = source.url;
+        link.textContent = 'Source ↗';
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        credit.append(' · ', link);
+      }
+    }
+  }
 
   document.querySelector('#palette-grid').innerHTML = renderPalette();
 

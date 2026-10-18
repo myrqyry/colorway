@@ -7,6 +7,7 @@ import { parseOVT } from '../src/theme-loader.js';
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const read = (name) => readFileSync(join(root, name), 'utf8');
 const base = parseOVT(read('themes/Colorway.obt'));
+const provenance = JSON.parse(read('data/theme-provenance.json')).themes;
 const required = ['--bg_window', '--bg_base', '--bg_dock', '--bg_hover', '--primary', '--primary_light',
   '--border_color', '--text', '--text_muted', '--text_inverse', '--button_bg', '--meter_fg_nom',
   '--on_primary', '--on_base'];
@@ -46,7 +47,8 @@ function resolvedTokens(theme, seen = new Set()) {
 const themes = sourceThemes.map(({ file, name, id, variant }) => {
   const vars = resolvedTokens(byId.get(id));
   const colors = Object.fromEntries(required.map((key) => [key.slice(2), resolveColor(vars, key)]));
-  return { file, id, name, dark: variant.meta._dark, colors };
+  if (!provenance[file]) throw new Error('Missing original source credit: ' + file);
+  return { file, id, name, dark: variant.meta._dark, colors, credit: provenance[file] };
 });
 const patterns = PATTERNS.map(({ file, name }) => ({
   file, name, image: 'data:image/svg+xml,' + encodeURIComponent(read('patterns/' + file)),

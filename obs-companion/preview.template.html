@@ -38,6 +38,8 @@ button{cursor:pointer}
 .panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
 .panel-head h1{font-size:18px;line-height:1.2;margin:0 0 5px}
 .panel-head p{font-size:11px;color:#a9a3b3;margin:0}
+.origin{margin-top:4px!important}
+.origin a{color:#c5aedf;text-decoration:underline;text-underline-offset:2px}
 .theme-tag{font-size:10px;border:1px solid #48444f;border-radius:12px;padding:4px 7px;color:#b5aebe;white-space:nowrap}
 .obs{border:1px solid var(--border);border-radius:11px;overflow:hidden;background:var(--canvas);color:var(--ink)}
 .obs-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;background:var(--canvas);border-bottom:1px solid var(--border)}
@@ -99,7 +101,7 @@ button{cursor:pointer}
 </aside>
 <main class="panel">
   <div class="panel-head">
-    <div><h1 id="theme-name">Colorway</h1><p id="theme-id"></p></div>
+    <div><h1 id="theme-name">Colorway</h1><p id="theme-id"></p><p id="theme-credit" class="origin"></p></div>
     <span id="theme-kind" class="theme-tag">Dark</span>
   </div>
   <div id="theme-workspace" class="obs">
@@ -158,6 +160,21 @@ function setTheme(theme){
   for(const [color,prop] of Object.entries(labels))root.style.setProperty(prop,theme.colors[color]);
   byId('theme-name').textContent=theme.name;
   byId('theme-id').textContent=theme.id;
+  const credit=byId('theme-credit');
+  credit.replaceChildren();
+  const source=theme.credit;
+  if(source?.relation==='unverified') credit.textContent='Original palette source not yet verified';
+  else {
+    const kind=source?.relation==='inspired'?'Inspired by':'Adapted from';
+    credit.textContent=kind+' '+source.creator;
+    if(source?.url){
+      const link=node('a','origin-link','Original source ↗');
+      link.href=source.url;link.rel='noopener noreferrer';link.target='_blank';
+      credit.append(' · ',link);
+    }
+    if(source?.verification==='brand inspiration only')
+      credit.append(' · exact palette not verified');
+  }
   byId('theme-kind').textContent=theme.dark?'Dark theme':'Light theme';
   updateThemeList();
 }

@@ -3,6 +3,30 @@
 
 Preserve costly, recurring, or non-obvious failures that future agents could plausibly repeat.
 
+## 2026-10-17 — Commented historical colors parsed as active OBS palette declarations
+
+**Observed failure:** A source audit seemed to show 142/143 unrelated Colorway
+variants using Rosé Pine meter and selected-row colors. The generated
+`/* Official palette reference ... */` snapshots in those `.ovt` files
+indeed contain those values. But they are *comments*, not executable theme
+overrides. The actual native OBS theme variables for Carbonfox, for example,
+have no `--meter_fg_nom` override and inherit the semantic base default.
+
+**Root cause:** `src/theme-loader.js` `parseOVT` extracted variables by
+line without removing block comments, unlike the sync script's native parser.
+The browser preview/workbench and generated offline dock could therefore
+render and export phantom palette values. Even "Official palette reference"
+was a misleading name for locally generated resolved snapshots, not proof
+of an official external color.
+
+**Fix:** Strip block comments inside the vars block before parsing and test
+the complete 160-file corpus against an independent active-declaration
+inventory. A failing Carbonfox regression went green. Never mutate all the
+real `.ovt` themes to "fix" a parsed list before confirming that the values
+are actually active in native OBS. Credit upstream creators separately,
+with an evidence-level registry and unverified unknowns, in packaged
+`THEME_CREDITS.md` and the offline dock.
+
 ## 2026-10-16 — OBS Settings native backdrop requires the owning widget AND final QSS order
 
 **Observed failure:** In an actual OBS 32.2 Settings window, the thin outer

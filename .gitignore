@@ -8,6 +8,7 @@
 !public/
 !scripts/
 !docs/
+!data/
 !themes/
 !fonts/
 !.meristem/

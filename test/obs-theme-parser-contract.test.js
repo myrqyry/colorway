@@ -31,6 +31,29 @@ test('the entire shipped corpus uses OBS-lexable complete quoted function string
   assert.ok(count > 2000, 'guard must cover the full MingCute asset and opacity corpus');
 });
 
+test('web parser ignores source palette comments rather than treating them as OBS overrides', () => {
+  const carbonfox = parseOVT(read('themes/Colorway-Carbonfox.ovt')).vars;
+  assert.equal(carbonfox['--primary'], '#33b1ff');
+  assert.equal(carbonfox['--list_item_bg_selected'], undefined,
+    'Rosé Pine selection exists only in a historical reference comment');
+  assert.equal(carbonfox['--meter_fg_nom'], undefined,
+    'Rosé Pine meter color exists only in a reference comment');
+  assert.equal(carbonfox['--success'], undefined,
+    'neon fallback was not authored as a Carbonfox override');
+  const literal = '@OBSThemeVars {\n  /* --primary: #ff0000; */\n  --primary: #00ff00;\n  /*\n  --success: #123456;\n  */\n}';
+  assert.deepEqual(parseOVT(literal).vars, { '--primary': '#00ff00' });
+  // Verify the whole real catalog against an independent comment-stripped
+  // line parser, not a second call to parseOVT with pre-stripped text.
+  for (const file of files.filter(name => name.endsWith('.ovt'))) {
+    const source = read('themes/' + file);
+    const varsBlock = source.match(/@OBSThemeVars\s*\{([\s\S]*?)\}/)?.[1] || '';
+    const actual = varsBlock.replace(/\/\*[\s\S]*?\*\//g, '');
+    const active = new Set([...actual.matchAll(/^\s*(--[\w-]+)\s*:/gm)].map(x => x[1]));
+    const observed = Object.keys(parseOVT(source).vars);
+    assert.deepEqual(observed.sort(), [...active].sort(), file + ': parser included comment-only declarations');
+  }
+});
+
 test('web importer and serializer expose browser-safe values while preserving OBS-compatible disk syntax', () => {
   const input = "@OBSThemeVars {\n    --cw_icon_eye_base: 'url(theme:icons/colorway/mingcute/normal/eye.svg)';\n    --accent_bg_start: 'rgba(1, 2, 3, 0.3)';\n}";
   const vars = parseOVT(input).vars;

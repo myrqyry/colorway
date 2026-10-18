@@ -32,6 +32,9 @@ export async function buildThemePackage(file, includeBase = true, fetcher = fetc
   }
   const instructions = await (await get('INSTALL.md')).text();
   entries['INSTALL.md'] = strToU8(instructions);
+  // Attribution ships with the actual original palette rather than relying
+  // on a website or a misleading locally generated comment.
+  entries['THEME_CREDITS.md'] = strToU8(await (await get('THEME_CREDITS.md')).text());
   return zipSync(entries, { level: 6 });
 }
 

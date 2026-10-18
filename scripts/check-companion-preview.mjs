@@ -60,9 +60,11 @@ try{
   return {count, name:document.querySelector('#theme-name').textContent,
           bg:getComputedStyle(document.documentElement).getPropertyValue('--canvas'),
           selectedBackground:getComputedStyle(document.querySelector('.item.selected')).backgroundColor,
-          patternChanged:before!==after,patternName:tiles[8].textContent}
+          patternChanged:before!==after,patternName:tiles[8].textContent,
+          credit:document.querySelector('#theme-credit').textContent,
+          source:document.querySelector('#theme-credit .origin-link')?.getAttribute('href')}
  })()`);
- if(selected.count!==1||selected.name!=='Catppuccin Latte — Blue'||selected.bg.toLowerCase()!=='#eff1f5'||!selected.patternChanged)
+ if(selected.count!==1||selected.name!=='Catppuccin Latte — Blue'||selected.bg.toLowerCase()!=='#eff1f5'||!selected.patternChanged||!selected.credit.includes('Catppuccin contributors')||selected.source!=='https://github.com/catppuccin/catppuccin')
   throw Error('Actual theme/pattern interaction failed '+JSON.stringify(selected));
  const filter=await evaluate(`(()=>{
   document.querySelector('#theme-search').value='';
