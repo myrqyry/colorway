@@ -1,7 +1,8 @@
+import { cleanupBrowserProfile } from './browser-profile-cleanup.mjs';
 // Runtime gate: compare browser paint with OBS QSS-derived roles and asset URLs.
 // Run via pnpm check:preview; requires local Chromium, no external network.
 import { spawn } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
 import { setTimeout as delay } from 'node:timers/promises';
 
 const chromium = process.env.CHROMIUM_PATH || '/usr/bin/chromium';
@@ -140,7 +141,6 @@ try {
   console.log('Chromium preview parity PASS');
 } finally {
   ws?.close();
-  browser.kill('SIGTERM');
   server.kill('SIGTERM');
-  rmSync(profile, { recursive: true, force: true });
+  await cleanupBrowserProfile(browser, profile);
 }

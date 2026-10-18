@@ -1,6 +1,16 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Independent verification checkpoint — 2026-10-18
+
+- **Scope:** audited the current `main` with nine existing unpublished commits above public `origin/main` (no remote-only commits). The changes cover native OBS Settings contrast/geometry/focus, source-attributed palettes, pattern placement and adjustable pattern strength. The prior authored source theme corpus and user OBS settings were not changed by this pass.
+- **Real checks:** `pnpm test` **662 total / 661 passed / 0 failed / 1 intentional network-gated Lospec skip** after a new 3-case regression. `pnpm build` passed. Isolated OBS 32.2/QSS test passed base, light Catppuccin Latte and Monokai (fully resolved QSS and MingCute icons). Actual Chromium Vite preview parity passed Latte/Monokai selected-ink, icons, active-status styling and patterns. Offline Chromium dock preview passed 160 themes/14 patterns, selection, palette and pattern interaction, light filter, upstream credit link.
+- **Generator fixed point:** `pnpm sync:themes` completed and left no tracked generated changes. All **161** authored theme files (160 variants + Colorway base) match `public/themes/` byte-for-byte; all **14** pattern SVGs match public mirrors. Separately, all 161 installed OBS themes and the three installed optional companion files already match source **byte-for-byte**. There is no need to install or restart anything; the running OBS theme remains 90s Anime.
+- **Reproduced and repaired a test-harness bug:** after successful offline Chromium interaction, `check-companion-preview.mjs` returned ENOTEMPTY on profile deletion because it immediately removed files after terminating Chrome. New shared `scripts/browser-profile-cleanup.mjs` waits for browser process exit (bounded timeout, cleared on prompt exit), then retries transient removal failures without hiding unrelated errors. Both Chromium parity scripts now use it. Three new red-first tests verify exit ordering, ENOTEMPTY retry/error propagation and absence of lingering timeout. Focused tests and the real Chromium checks passed after repair.
+- **Publication safety:** this is a **public repository**; outbound commits were inspected for leaked credential material, private paths and source changes. No obvious credentials, user home paths or tailnet addresses detected in the 1 MB diff; this is a scoped scan, not a full forensic history audit. The normal global SafeShip hook initially found the word "mock" in an existing documented Qt-only-replica failure; clarified the wording without dropping its warning. SafeShip now passes without bypass.
+- **Boundaries:** representative real OBS/QSS and browser checks are not a manual visual approval of every theme or an installation test of every optional control. Provenance registry retains unverified/unknown source origins; automatic pattern ink tinting on theme switch remains unresolved. Do not alter handcrafted theme seed values or overwrite current OBS profile for convenience. Preserve authored patterns and frozen light-theme palette comments.
+- **Private receipt:** `.meristem/local/verification-2026-10-18.md` (machine-specific local test logs and install comparison).
+
 ## Latest continuation — traced and fixed Settings sidebar focus frame (2026-10-17)
 
 User's 90s Anime Settings screenshot still showed a pink outline around the

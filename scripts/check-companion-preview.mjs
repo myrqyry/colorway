@@ -1,7 +1,8 @@
+import { cleanupBrowserProfile } from './browser-profile-cleanup.mjs';
 // Verify the offline single-file Colorway dock in a real Chromium renderer.
 // Run after build-obs-companion. No localhost server or external network.
 import { spawn } from 'node:child_process';
-import { mkdtempSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { setTimeout as wait } from 'node:timers/promises';
@@ -87,4 +88,7 @@ try{
    writeFileSync(process.env.COLORWAY_COMPANION_SCREENSHOT,Buffer.from(shot.data,'base64'));
  console.log('PASS offline dock: 160 theme cards, 14 patterns, palette change, pattern change, light filter; no network server');
  console.log('Selected palette',JSON.stringify(selected));
-}finally{ws?.close();chrome.kill('SIGTERM');rmSync(profile,{recursive:true,force:true});}
+} finally {
+ ws?.close();
+ await cleanupBrowserProfile(chrome, profile);
+}

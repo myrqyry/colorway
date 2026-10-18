@@ -51,7 +51,7 @@ matched `#191a2e` for dark EvondevDracula and `#eff1f5` for light
 Catppuccin Latte Blue. The root QWidget palette also matched.
 
 **How to detect:** Do not substitute an isolated Qt mimic for a native
-OBS dialog: the mock can report correctly themed pixels even when OBS has
+OBS dialog: that Qt-only replica can report correctly themed pixels even when OBS has
 a black root window. Verify the actual Settings window ID and widget palette
 and sample known margin pixels in the screenshot. A source contract pins the
 final opaque declaration, but the native visual gate is the stronger evidence.
