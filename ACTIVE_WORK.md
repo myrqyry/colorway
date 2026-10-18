@@ -1,6 +1,28 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Latest continuation — traced and fixed Settings sidebar focus frame (2026-10-17)
+
+User's 90s Anime Settings screenshot still showed a pink outline around the
+entire left navigation after the earlier pattern-placement pass. Rather than
+guessing, compared `fadaf55^` with `fadaf55`: the last change removed
+`--pattern_eyes` from six types of content surfaces, including the Settings
+sidebar, but left the main Settings scroll pattern. The focus frame was
+**not** the pattern. A generic `QListWidget:focus` rule dating to July
+sets `border: 2px solid var(--border_focus)`, overriding the Settings
+navigation's nonfocused `border: none`.
+
+Reproduced in real Qt against 90s Anime: inactive border `#13062b`,
+focused border `#ff3864`; narrow Settings-specific focused border rule
+restores the correct `#13062b`. Qt regression tests were red before and
+green afterward for dark 90s Anime and light Catppuccin Latte. In a
+disposable native OBS 32.2 instance, compared 90s Anime screenshots using
+the old/updated base: pink full-sidebar frame count on left edge dropped
+from 1180 to zero, with patterned Settings page and row styles retained.
+No wallpaper rearrangement or global focus styling changed. Installed base
+backed up and verified against source; running OBS and user settings left
+untouched. See `docs/OBS_THEME_COMPATIBILITY.md`.
+
 ## Latest continuation — pattern placement hierarchy in native OBS (2026-10-17)
 
 User requested a better application of patterns after the theme-provenance

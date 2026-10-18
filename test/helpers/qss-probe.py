@@ -285,6 +285,31 @@ if any(x in checks for x in ('settings', 'combo-size', 'form-size')):
                       for x in range(min(24, checkbox_image.width()))}
     assert ink in indicator_inks, ('unchecked checkbox outline', ink, sorted(indicator_inks))
 
+if 'sidebar-focus' in checks:
+    # The Settings nav was patterned before fadaf55; removing the SVG made
+    # a pre-existing generic QListWidget:focus accent frame glaringly visible.
+    class OBSBasicSettings(QDialog):
+        pass
+    dialog = OBSBasicSettings()
+    dialog.resize(320, 420)
+    layout = QVBoxLayout(dialog)
+    nav = QListWidget(dialog)
+    nav.addItems(['General', 'Appearance', 'Stream', 'Output'])
+    nav.setCurrentRow(1)
+    layout.addWidget(nav)
+    alternate = QLineEdit('Other control', dialog)
+    layout.addWidget(alternate)
+    dialog.show()
+    alternate.setFocus()
+    app.processEvents()
+    inactive = nav.grab().toImage().pixelColor(1, nav.height() // 2).name()
+    nav.setFocus()
+    app.processEvents()
+    active = nav.grab().toImage().pixelColor(1, nav.height() // 2).name()
+    expected = QColor(token('--bg_dock')).name()
+    assert inactive == expected, ('settings sidebar idle edge', inactive, expected)
+    assert active == expected, ('settings sidebar focus frame', active, expected)
+
 print(json.dumps({'qt': 'passed', 'icon_states': ['normal', 'pressed', 'checked', 'checked-hover', 'checked-tool'],
                   'combo_focus_border': border, 'scroll_page': page_color,
                   'group_frame_top': frame.top()}))

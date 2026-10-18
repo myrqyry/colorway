@@ -3057,6 +3057,15 @@ OBSBasicSettings QListWidget {
     min-width: 140px;
 }
 
+/* The generic QListWidget:focus rule paints an accent frame around the
+   whole Settings navigation, obscuring its intended subdued separator.
+   Keep keyboard focus and row selection behavior; omit only that frame. */
+OBSBasicSettings QListWidget:focus {
+    border: none;
+    border-right: 1px solid var(--border_base);
+    outline: none;
+}
+
 OBSBasicSettings {
     qproperty-generalIcon: var(--cw_icon_settings_base);
     qproperty-appearanceIcon: var(--cw_icon_brush_base);

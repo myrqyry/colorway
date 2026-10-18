@@ -45,6 +45,14 @@ for (const file of ['Colorway-EvondevDracula.ovt', 'Colorway-CatppuccinLatte-Blu
   });
 }
 
+for (const file of ['Colorway-90sAnime.ovt', 'Colorway-CatppuccinLatte-Blue.ovt']) {
+  test(`Settings sidebar focus does not draw an accent frame: ${file}`, { skip: !available }, () => {
+    const variant = readFileSync(new URL('themes/' + file, root), 'utf8');
+    const result = probe(base, variant, ['sidebar-focus']);
+    assert.equal(result.status, 0, result.stderr + '\n' + result.stdout);
+  });
+}
+
 test('Qt probe rejects deliberate reintroductions of the reviewed defects', { skip: !available }, () => {
   for (const [check, mutation, message] of [
     ['icons', 'QPushButton.icon-plus:pressed { icon: var(--cw_icon_plus_base); }', 'pressed icon'],
@@ -53,6 +61,7 @@ test('Qt probe rejects deliberate reintroductions of the reviewed defects', { sk
     ['settings', 'OBSBasicSettings QScrollArea > QWidget > QWidget { background: transparent; }', 'settings background'],
     ['combo-size', 'OBSBasicSettings QComboBox { min-height: 0px; }', 'settings combo minimum height'],
     ['form-size', 'OBSBasicSettings QAbstractSpinBox, OBSBasicSettings QLineEdit { min-height: 0px; }', 'settings form minimum height'],
+    ['sidebar-focus', 'OBSBasicSettings QListWidget:focus { border: 2px solid var(--primary); }', 'settings sidebar focus frame'],
     ['settings', 'OBSBasicSettings QGroupBox QCheckBox:disabled { color: var(--text_disabled); }', 'settings disabled checkbox ink'],
     ['settings', 'OBSBasicSettings QGroupBox QCheckBox::indicator:unchecked { border: 1px solid var(--border_base); }', 'unchecked checkbox outline'],
     ['group', 'QGroupBox { margin-top: 0px; }', 'group title reservation'],

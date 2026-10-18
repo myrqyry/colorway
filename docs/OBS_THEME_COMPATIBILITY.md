@@ -80,6 +80,29 @@ offscreen PyQt6 to require multiple background pixel colors (not a uniform
 fill). The native isolated `pnpm check:obs-native` gate continues to verify
 the actual OBS stylesheet, whereas this test adds rendered-pixel coverage.
 
+## Settings navigation focus frame — 2026-10-17
+
+Reviewing the exact pre/post pattern placement in commit `fadaf55`
+found that `OBSBasicSettings QListWidget` used to render
+`--pattern_eyes` across the Settings sidebar, while the main scroll page
+retained its own SVG background. Removing the pattern from the sidebar
+made a *separate*, older generic `QListWidget:focus` rule especially
+obvious: it paints a 2px `--border_focus` accent around the entire
+navigation pane despite the Settings-specific idle rule declaring
+`border: none`. The 90s Anime screenshot shows a pink outer sidebar frame
+rather than a selected-row border or an SVG tile edge.
+
+A scoped `OBSBasicSettings QListWidget:focus` rule now removes only that
+outer focus frame while retaining its muted right-hand divider and the
+existing item selection styling. Before/after screenshots of the actual
+OBS 32.2 Settings window with 90s Anime confirm that the full pink frame
+disappears. The 90s Anime focused-sidebar pink-pixel count on the left
+edge dropped from 1180 to zero in the isolated native capture, with the
+large Settings-page pattern unchanged. A Qt-focused widget test verifies
+normal and focused edges in 90s Anime and Catppuccin Latte, and rejects
+a deliberately reintroduced accent frame. No pattern locations, variants,
+user patterns, or density settings are changed by this correction.
+
 ## Pattern placement hierarchy — 2026-10-17
 
 The old stylesheet repeated the same SVG across the window, Settings page,
