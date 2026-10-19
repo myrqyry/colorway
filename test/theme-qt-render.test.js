@@ -13,7 +13,7 @@ const probe = (source, variant = '', checks) => spawnSync(python,
     input: JSON.stringify({ base: source, variant, checks, root: fileURLToPath(root) }),
     encoding: 'utf8', timeout: 15000, env: { ...process.env, QT_QPA_PLATFORM: 'offscreen' },
   });
-for (const file of [null, 'Colorway-CatppuccinLatte-Teal.ovt', 'Colorway-RosePine-Pine.ovt']) {
+for (const file of [null, 'Colorway-CatppuccinLatte-Teal.ovt', 'Colorway-RosePine-Pine.ovt', 'Colorway-Fairyfloss.ovt', 'Colorway-TwitchDark.ovt', 'Colorway-Vercel.ovt']) {
   test(`real Qt renders the corrected state/cascade rules: ${file || 'base'}`, { skip: !available }, () => {
     const result = probe(base, file ? readFileSync(new URL('themes/' + file, root), 'utf8') : '');
     assert.equal(result.status, 0, result.stderr + '\n' + result.stdout);

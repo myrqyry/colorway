@@ -3066,16 +3066,19 @@ OBSBasicSettings QListWidget:focus {
     outline: none;
 }
 
+/* Settings QListWidgetItem icons have one QIcon for idle and selected states,
+   so fixed single-color assets can disappear when the row turns accent-colored.
+   These nine dual-ink MingCute assets remain readable on both backgrounds. */
 OBSBasicSettings {
-    qproperty-generalIcon: var(--cw_icon_settings_base);
-    qproperty-appearanceIcon: var(--cw_icon_brush_base);
-    qproperty-streamIcon: var(--cw_icon_output_base);
-    qproperty-outputIcon: var(--cw_icon_media_play_base);
-    qproperty-audioIcon: var(--cw_icon_audio_base);
-    qproperty-videoIcon: var(--cw_icon_display_base);
-    qproperty-hotkeysIcon: var(--cw_icon_gamepad_base);
-    qproperty-accessibilityIcon: var(--cw_icon_eye_base);
-    qproperty-advancedIcon: var(--cw_icon_cogs_base);
+    qproperty-generalIcon: url(theme:icons/colorway/mingcute/nav/settings.svg);
+    qproperty-appearanceIcon: url(theme:icons/colorway/mingcute/nav/brush.svg);
+    qproperty-streamIcon: url(theme:icons/colorway/mingcute/nav/output.svg);
+    qproperty-outputIcon: url(theme:icons/colorway/mingcute/nav/media-play.svg);
+    qproperty-audioIcon: url(theme:icons/colorway/mingcute/nav/audio.svg);
+    qproperty-videoIcon: url(theme:icons/colorway/mingcute/nav/display.svg);
+    qproperty-hotkeysIcon: url(theme:icons/colorway/mingcute/nav/gamepad.svg);
+    qproperty-accessibilityIcon: url(theme:icons/colorway/mingcute/nav/eye.svg);
+    qproperty-advancedIcon: url(theme:icons/colorway/mingcute/nav/cogs.svg);
 }
 
 OBSBasicSettings QListWidget::item {

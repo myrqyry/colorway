@@ -164,7 +164,7 @@ cpSync(iconsDir, publicIconsDir, { recursive: true });
 // Drop obsolete generated assets; installed user themes and settings are never modified.
 rmSync(path.join(repoRoot, 'public', 'icons', 'colorway', 'iconamoon'), { recursive: true, force: true });
 rmSync(path.join(repoRoot, 'public', 'icons', 'obs-design'), { recursive: true, force: true });
-const assets = ['normal', 'selected', 'status'].flatMap((polarity) =>
+const assets = ['normal', 'selected', 'status', 'nav'].flatMap((polarity) =>
   readdirSync(path.join(iconsDir, polarity)).filter((name) => name.endsWith('.svg')).sort()
     .map((name) => `icons/colorway/mingcute/${polarity}/${name}`));
 assets.push('icons/colorway/mingcute/LICENSE');

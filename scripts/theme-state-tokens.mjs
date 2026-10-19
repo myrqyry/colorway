@@ -121,7 +121,22 @@ export function stateTokens(vars) {
       .find(([, color]) => contrast(color, bg) >= 4.5);
     tokens.set(`--on_${role}`, ink ? `var(${ink[0]})`
       : contrast('#000000', bg) >= contrast('#ffffff', bg) ? '#000000' : '#ffffff');
-    const polarity = contrast('#e0def4', bg) >= contrast('#191724', bg) ? 'normal' : 'selected';
+    // A glyph that contrasts with a button can still be the *opposite*
+    // color from its label (Fairyfloss, Twitch Dark, Vercel). Prefer the
+    // polarity closest to the actual foreground when it remains readable;
+    // fall back to maximal surface contrast only when necessary.
+    const foreground = tokens.get(`--on_${role}`);
+    const visibleInk = foreground.startsWith('var(')
+      ? resolveAlias(vars, foreground.slice(4, -1)) : foreground;
+    const candidates = [
+      ['normal', '#e0def4'],
+      ['selected', '#191724'],
+    ];
+    const matching = candidates
+      .filter(([, color]) => contrast(color, bg) >= 3)
+      .sort((a, b) => contrast(a[1], visibleInk) - contrast(b[1], visibleInk));
+    const polarity = matching.length ? matching[0][0]
+      : candidates.sort((a, b) => contrast(b[1], bg) - contrast(a[1], bg))[0][0];
     if (role === 'primary_dark') continue;
     // State glyphs use existing fixed-color assets; no SVG currentColor assumption.
     for (const file of ICON_FILES) {

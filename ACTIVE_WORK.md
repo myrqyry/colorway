@@ -1,6 +1,48 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Latest continuation — MingCute icon color coherence (2026-10-18)
+
+User requested a focused real OBS icon-color review and explicitly trusted
+us to make the icons look good, without changing unrelated styling.
+Observed current Fairyfloss theme and reviewed authored MingCute SVG inks,
+the semantic state-token generator, actual Qt icon state rendering, and
+disposable native OBS Settings captures.
+
+**Two verified problems, two targeted corrections:**
+
+1. Colorway previously chose normal/selected MingCute icon polarity based
+   *only* on maximum background contrast. This produced dark pressed/checked
+   button glyphs beside white text in Fairyfloss, Twitch Dark, and Vercel.
+   `scripts/theme-state-tokens.mjs` now prefers the polarity visually
+   matching the semantic button text ink, when it preserves at least 3:1
+   icon-silhouette contrast; otherwise it falls back to maximum surface
+   contrast. Only those three variant state-token blocks changed.
+2. Settings navigation exposes nine **single QIcons** shared between
+   ordinary and selected rows; a single light/dark glyph can get lost
+   when an accent-selected row uses the opposite luminance. The original
+   MingCute geometry is now baked into nine small dedicated
+   `icons/colorway/mingcute/nav/` glyphs with a subtle two-tone edge.
+   The base QSS uses them solely for Settings categories. Fairyfloss
+   and Catppuccin Latte Blue were rendered and visually inspected
+   in separate, isolated native OBS 32.2 Settings instances.
+   No changes to the pink focus border, selected-row fill, patterns,
+   fonts, sizing, or any user's scenes/profile.
+
+**Verification:** 667 tests / 666 passed / 0 failed / 1 existing skip;
+native OBS base/Latte/Monokai stylesheet acceptance passed;
+Chromium parity passed; nine navigation glyphs checked against pinned
+upstream MingCute paths and distributed asset manifest, including light
+and dark ink. Source/public mirrors synchronized and byte-verified.
+Installed the four modified theme files and nine SVGs with a prechange
+backup, without modifying user.ini, currently selected theme,
+custom pattern SVG, or active OBS process. Changes committed locally,
+not pushed.
+
+See `docs/MINGCUTE_MIGRATION.md`. The fixed-color nature of Qt QIcon
+remains a platform limitation; this is a tested design solution for
+the Settings navbar, not a general claim of dynamic SVG colorization.
+
 ## Independent verification checkpoint — 2026-10-18
 
 - **Scope:** audited the current `main` with nine existing unpublished commits above public `origin/main` (no remote-only commits). The changes cover native OBS Settings contrast/geometry/focus, source-attributed palettes, pattern placement and adjustable pattern strength. The prior authored source theme corpus and user OBS settings were not changed by this pass.

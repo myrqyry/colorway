@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { parseOVT } from '../src/theme-loader.js';
-import { injectStateOverrides, renderStateOverrides, normalizeBaseIcons, injectButtonIconRules } from '../scripts/theme-state-tokens.mjs';
+import { stateTokens, injectStateOverrides, renderStateOverrides, normalizeBaseIcons, injectButtonIconRules } from '../scripts/theme-state-tokens.mjs';
 
 const root = new URL('../', import.meta.url);
 const read = (file) => readFileSync(new URL(file, root), 'utf8');
@@ -48,6 +48,21 @@ test('state foregrounds and baked glyphs remain legible across the whole compose
       if (['--obsFontScale', '--obsPadding'].includes(match[1])) continue;
       assert.ok(vars[match[1]], `${file}: undefined ${match[1]}`);
     }
+  }
+});
+
+test('primary-button icons follow the intended readable text polarity instead of contrasting in the opposite direction', () => {
+  for (const [file, expected] of [
+    ['Colorway-Fairyfloss.ovt', 'normal'],
+    ['Colorway-TwitchDark.ovt', 'normal'],
+    ['Colorway-Vercel.ovt', 'normal'],
+    ['Colorway-Carbonfox.ovt', 'selected'],
+    ['Colorway-CatppuccinLatte-Blue.ovt', 'normal'],
+  ]) {
+    const vars = new Map(Object.entries({ ...baseVars, ...varsOf(read('themes/' + file)) }));
+    const roleTokens = stateTokens(vars);
+    const icon = roleTokens.get('--cw_icon_plus_primary');
+    assert.ok(icon.includes('/' + expected + '/'), file + ': icon does not match button text ink');
   }
 });
 

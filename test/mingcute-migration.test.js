@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import { ICON_FILES, stateTokens } from '../scripts/theme-state-tokens.mjs';
+import { ICON_FILES, stateTokens, contrast } from '../scripts/theme-state-tokens.mjs';
+import { SETTINGS_NAV_ICONS } from '../scripts/build-mingcute-icons.mjs';
 import { parseOVT } from '../src/theme-loader.js';
 
 const root = new URL('../', import.meta.url);
@@ -12,7 +13,7 @@ const mapping = JSON.parse(read('icons/mingcute-map.json'));
 
 test('every Colorway icon shipped to OBS is a real MingCute SVG with both contrasting variants', () => {
   const manifest = assets();
-  assert.equal(manifest.filter((path) => path.startsWith('icons/colorway/mingcute/') && path.endsWith('.svg')).length, ICON_FILES.length * 2 + 6);
+  assert.equal(manifest.filter((path) => path.startsWith('icons/colorway/mingcute/') && path.endsWith('.svg')).length, ICON_FILES.length * 2 + 6 + SETTINGS_NAV_ICONS.length);
   assert.equal(manifest.filter((path) => path.includes('iconamoon')).length, 0);
   assert.ok(manifest.includes('icons/colorway/mingcute/LICENSE'));
   assert.match(read('icons/colorway/mingcute/LICENSE'), /Apache License/);
@@ -35,6 +36,35 @@ test('every Colorway icon shipped to OBS is a real MingCute SVG with both contra
     assert.equal(read('public/icons/colorway/mingcute/selected/' + file), selected);
     assert.ok(manifest.includes('icons/colorway/mingcute/normal/' + file));
     assert.ok(manifest.includes('icons/colorway/mingcute/selected/' + file));
+  }
+});
+
+test('Settings navigation glyphs have a calm two-tone keyline for neutral and accent selected rows', () => {
+  const manifest = assets();
+  for (const name of SETTINGS_NAV_ICONS) {
+    const path = 'icons/colorway/mingcute/nav/' + name + '.svg';
+    assert.ok(manifest.includes(path), name + ': navigation icon missing from installs');
+    const svg = read(path);
+    const source = read('icons/vendor/mingcute/' + mapping.icons[name] + '.svg');
+    assert.match(svg, /viewBox="0 0 24 24"/);
+    assert.ok(svg.includes('#191724') && svg.includes('#f8f8f2'), name + ': requires both ink colors');
+    assert.equal((svg.match(/<path\b/g) || []).length, 2 * (source.match(/<path\b/g) || []).length,
+      name + ': preserve pinned MingCute geometry in two layers');
+    assert.doesNotMatch(svg, /currentColor/);
+    assert.equal(read('public/' + path), svg, name + ': mirror drift');
+    assert.match(base(), new RegExp('theme:icons/colorway/mingcute/nav/' + name + '\\.svg'));
+  }
+  // Light and dark parts offer a legible silhouette on both the Settings
+  // navigation surface and the per-variant selected accent background.
+  const baseVars = parseOVT(base()).vars;
+  for (const name of readdirSync(new URL('themes/', root)).filter(x => x.endsWith('.ovt'))) {
+    const vars = { ...baseVars, ...parseOVT(read('themes/' + name)).vars };
+    for (const role of ['--bg_dock', '--primary']) {
+      const surface = vars[role];
+      if (!/^#[0-9a-f]{6}$/i.test(surface)) continue;
+      assert.ok(Math.max(contrast('#191724', surface), contrast('#f8f8f2', surface)) >= 3,
+        name + ': navigation icon has no contrasting edge on ' + role);
+    }
   }
 });
 

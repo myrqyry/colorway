@@ -10,8 +10,16 @@ export const MINGCUTE_ICON_FILES = Object.keys(meta.icons)
 const base = path.join(root, 'icons/colorway/mingcute');
 const vendor = path.join(root, 'icons/vendor/mingcute');
 
+// OBS Settings keeps one QIcon per category for both ordinary and selected
+// QListWidget rows. A restrained dual-ink keyline makes that same glyph
+// readable on both the neutral navigation pane and the accent selection.
+export const SETTINGS_NAV_ICONS = [
+  'settings', 'brush', 'output', 'media-play', 'audio', 'display',
+  'gamepad', 'eye', 'cogs',
+];
+
 export function buildMingcuteIcons() {
-  for (const part of ['normal', 'selected', 'status']) {
+  for (const part of ['normal', 'selected', 'status', 'nav']) {
     const directory = path.join(base, part);
     mkdirSync(directory, { recursive: true });
     for (const name of readdirSync(directory)) {
@@ -32,6 +40,24 @@ export function buildMingcuteIcons() {
       const file = path.join(base, polarity + name + '.svg');
       writeFileSync(file, output(ink));
     }
+  }
+  for (const name of SETTINGS_NAV_ICONS) {
+    const upstream = readFileSync(path.join(vendor, meta.icons[name] + '.svg'), 'utf8');
+    if (!upstream.startsWith('<svg ') || !upstream.includes('viewBox="0 0 24 24"')
+      || /<script|<image|onload=|href=/i.test(upstream)) {
+      throw new Error('Unexpected Settings navigation glyph: ' + name);
+    }
+    const paths = upstream.slice(upstream.indexOf('>') + 1, upstream.lastIndexOf('</svg>'));
+    // The dark 0.6–0.7px keyline remains visible on light/bright accents;
+    // the original-width light path remains visible on dark dock surfaces.
+    const keyline = paths.replaceAll('currentColor', meta.selectedInk)
+      .replace(/stroke-width="2"/g, 'stroke-width="3.4"')
+      .replace(/fill="#191724"/g,
+        'fill="#191724" stroke="#191724" stroke-width="1.2" stroke-linejoin="round"');
+    const face = paths.replaceAll('currentColor', '#f8f8f2');
+    const output = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" '
+      + 'viewBox="0 0 24 24">' + keyline + face + '</svg>';
+    writeFileSync(path.join(base, 'nav', name + '.svg'), output);
   }
   cpSync(path.join(vendor, 'LICENSE'), path.join(base, 'LICENSE'));
 }
