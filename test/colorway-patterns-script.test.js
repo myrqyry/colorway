@@ -25,6 +25,9 @@ test('every bundled pattern has adjustable SVG artwork alpha', () => {
     const source = readFileSync(resolve('patterns', file), 'utf8');
     assert.match(source, /^<svg\s/, file + ' SVG opening');
     assert.match(source, /fill-opacity="[0-9.]+"/, file + ' has ink opacity');
+    assert.doesNotMatch(source, /<rect\b[^>]*fill=/, file + ' must not paint an opaque tile background');
+    const inkColors = [...source.matchAll(/\bfill="(#[0-9a-fA-F]{6})"/g)].map((m) => m[1].toLowerCase());
+    assert.equal(new Set(inkColors).size, 1, file + ' uses exactly one Hero Patterns ink color');
     assert.doesNotMatch(source, /<\s*(?:script|foreignObject)\b|<\s*!DOCTYPE/i, file + ' remains safe SVG');
     assert.doesNotMatch(source, /\bstroke="/, file + ' must not contain unscaled strokes');
   }
@@ -46,7 +49,7 @@ local logs = {}
 obslua = {
   OBS_LOG_INFO=200, LOG_INFO=200, LOG_WARNING=300, LOG_ERROR=400,
   OBS_PATH_DIRECTORY=2, OBS_COMBO_TYPE_LIST=0, OBS_COMBO_FORMAT_STRING=0,
-  OBS_TEXT_INFO=4,
+  OBS_TEXT_INFO=4, OBS_TEXT_DEFAULT=0,
   obs_data_get_int=function(settings,key) return settings[key] or 0 end,
   obs_data_set_default_int=function(settings,key,val) if settings[key]==nil then settings[key]=val end end,
   obs_data_set_int=function(settings,key,val) settings[key]=val end,
@@ -85,6 +88,22 @@ assert(script_apply(nil,nil)==true)
 f=assert(io.open(arg[2].."/patterns/pattern.svg","rb"))
 local half=f:read("*a");f:close()
 assert(half:find('fill-opacity="0.06"',1,true),half)
+-- Hero Patterns: preserve geometry and transparency while changing a single ink.
+config.ink_color="#12aBcD"
+script_update(config)
+assert(script_apply(nil,nil)==true)
+f=assert(io.open(arg[2].."/patterns/pattern.svg","rb"))
+local tinted=f:read("*a");f:close()
+assert(tinted:find('fill="#12abcd"',1,true),tinted)
+assert(tinted:find('fill-opacity="0.06"',1,true),tinted)
+assert(not tinted:find('fill="#908caa"',1,true),tinted)
+config.ink_color="javascript:invalid"
+script_update(config)
+assert(script_apply(nil,nil)==false)
+f=assert(io.open(arg[2].."/patterns/pattern.svg","rb"))
+assert(f:read("*a")==tinted);f:close()
+config.ink_color="#908caa"
+script_update(config)
 config.strength=200
 script_update(config)
 assert(script_apply(nil,nil)==true)

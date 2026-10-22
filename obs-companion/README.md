@@ -10,7 +10,9 @@ a network server, or a native plugin.
 2. Open OBS **Tools → Scripts**, click **+**, and choose
    `colorway-patterns.lua` from this folder.
 3. In the script's properties confirm **Colorway themes directory**,
-   choose **Background pattern**, and adjust **Pattern strength (%)**.
+   choose **Background pattern**, adjust **Pattern strength (%)**, and optionally
+   set **Pattern ink (#RRGGBB)**. The SVG remains transparent except for its
+   single colored motif; the underlying OBS theme supplies the background.
    Click **Apply pattern** to save both choices. The first change preserves
    the exact starting SVG at `patterns/.colorway-original.svg`.
 4. The slider runs from **0% (hidden)** through **100% (original visibility,
