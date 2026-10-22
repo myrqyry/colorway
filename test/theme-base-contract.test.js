@@ -77,9 +77,9 @@ test('native OBS Settings frame uses an opaque variant surface, not a transparen
   assert.ok(rule, 'missing native OBS Settings window rule');
   assert.equal(blocks.at(-1)?.[1].trim(), 'OBSBasicSettings',
     'native Settings background must be the final QSS selector, after generated icon rules');
-  assert.match(rule, /background:\s*var\(--bg_window\)\s*;/);
-  assert.doesNotMatch(rule, /background-image:/,
-    'the window itself must be opaque; its child pages carry the pattern');
+  assert.match(rule, /background-color:\s*var\(--bg_window\)\s*;/);
+  assert.match(rule, /background-image:\s*var\(--pattern_eyes\)\s*;/);
+  assert.doesNotMatch(rule, /background-repeat\s*:/, 'Qt must retain implicit image tiling');
 });
 
 test('live and recording controls inherit each variant semantic colors', () => {

@@ -26,12 +26,26 @@ test('patterns decorate structural surfaces, not dense lists, tree data, or dock
     assert.ok(rulesFor(name).some(({style}) => /background-image:\s*var\(--pattern_eyes\)/.test(style)), name + ' lost decorative texture');
   }
   for (const name of ['SceneTree', 'SourceTree', 'QListWidget', 'QTreeView', 'QTableView',
-    'OBSBasicSettings QListWidget', 'OBSBasicFilters QListWidget', 'QAbstractItemView',
+    'OBSBasicFilters QListWidget', 'QAbstractItemView',
     'OBSDock > QWidget']) {
     assert.ok(rulesFor(name).length, name + ' is missing from the theme');
     for (const {style} of rulesFor(name))
       assert.doesNotMatch(style, /background-image:\s*var\(--pattern_eyes\)/, name + ' must have a calm readable content surface');
   }
+});
+
+test('Settings outer shell and navigation carry the decorative pattern without flattening its background', () => {
+  const qss = base.replace(/\/\*[\s\S]*?\*\//g, '');
+  const rules = [...qss.matchAll(/([^{}]+)\{([^{}]*)\}/g)];
+  const exact = (selector) => rules.filter(([, selectors]) => selectors.split(',').some((x) => x.trim() === selector)).map(([, , body]) => body);
+  const shell = exact('OBSBasicSettings');
+  assert.ok(shell.length, 'native Settings shell rule exists');
+  const lastShell = shell.at(-1);
+  assert.match(lastShell, /background-image:\s*var\(--pattern_eyes\)/, 'final Settings rule must retain the image');
+  assert.match(lastShell, /background-color:\s*var\(--bg_window\)/, 'final Settings rule must supply theme color');
+  const navigation = exact('OBSBasicSettings QListWidget').join('\n');
+  assert.match(navigation, /background-image:\s*var\(--pattern_eyes\)/, 'Settings sidebar should show artwork too');
+  assert.doesNotMatch(navigation, /background-repeat\s*:/, 'Qt does not support CSS pattern tiling override');
 });
 
 test('real Qt paints contrasting pixels from the authored Settings page pattern SVG', { skip: !qtAvailable }, () => {

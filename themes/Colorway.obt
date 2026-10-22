@@ -3049,6 +3049,7 @@ OBSPropertiesView QSlider:horizontal {
 
 OBSBasicSettings QListWidget {
     background-color: var(--bg_dock);
+    background-image: var(--pattern_eyes);
     border: none;
     border-right: 1px solid var(--border_base);
     outline: none;
@@ -3874,5 +3875,5 @@ QPushButton[themeID="refreshIconSmall"]:disabled { background: var(--button_bg_d
 QToolButton[themeID="refreshIconSmall"], QToolButton[themeID="refreshIconSmall"]:hover, QToolButton[themeID="refreshIconSmall"]:checked, QToolButton[themeID="refreshIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
 QToolButton[themeID="refreshIconSmall"]:checked, QToolButton[themeID="refreshIconSmall"]:pressed { border-color: var(--primary); }
 /* Native Settings window backdrop — order matters in Qt */
-OBSBasicSettings { background: var(--bg_window); }
+OBSBasicSettings { background-color: var(--bg_window); background-image: var(--pattern_eyes); }
 /* colorway:button-icons:end */

@@ -211,7 +211,7 @@ export function renderButtonIconRules(base) {
   return '/* colorway:button-icons:start — generated render-time QPushButton icons */\n'
     + rules.join('\n')
     + '\n/* Native Settings window backdrop — order matters in Qt */\n'
-    + 'OBSBasicSettings { background: var(--bg_window); }\n'
+    + 'OBSBasicSettings { background-color: var(--bg_window); background-image: var(--pattern_eyes); }\n'
     + '/* colorway:button-icons:end */\n';
 }
 

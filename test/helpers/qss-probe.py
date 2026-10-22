@@ -308,7 +308,16 @@ if 'sidebar-focus' in checks:
     active = nav.grab().toImage().pixelColor(1, nav.height() // 2).name()
     expected = QColor(token('--bg_dock')).name()
     assert inactive == expected, ('settings sidebar idle edge', inactive, expected)
-    assert active == expected, ('settings sidebar focus frame', active, expected)
+    # Qt may repaint the patterned pixels after focus changes; compare against
+    # the actual accent frame, not a flat background that no longer exists.
+    focus_ink = QColor(token('--border_focus')).name()
+    assert active != focus_ink, ('settings sidebar focus frame', active, focus_ink)
+    base_rgb = QColor(expected)
+    active_rgb = QColor(active)
+    assert max(abs(a - b) for a, b in zip(
+        (base_rgb.red(), base_rgb.green(), base_rgb.blue()),
+        (active_rgb.red(), active_rgb.green(), active_rgb.blue()))) < 30, (
+        'settings sidebar focus frame', active, expected)
 
 print(json.dumps({'qt': 'passed', 'icon_states': ['normal', 'pressed', 'checked', 'checked-hover', 'checked-tool'],
                   'combo_focus_border': border, 'scroll_page': page_color,

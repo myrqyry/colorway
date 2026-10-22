@@ -137,6 +137,24 @@ inside external SVGs. Avoid claiming palette-aware pattern recoloring
 until an asset-generation/selection path exists and is verified across
 variant changes.
 
+## Settings outer-shell pattern repair — 2026-10-21
+
+The native Settings screenshot showed the diagonal texture on the large scroll
+page but not the surrounding dialog shell and left navigation. The generated
+button-icon footer ended with `OBSBasicSettings { background: var(--bg_window); }`,
+which cleared the earlier `background-image` on that same Qt widget. The footer
+now explicitly supplies both `background-color` and `background-image`, while
+remaining the final rule for the Settings class. The navigation's list viewport
+receives the same tiled pattern behind its rows; selection and focus borders
+remain governed by their existing rules. Dense OBS scene/source lists and
+other tool views remain solid as before.
+
+This is a placement fix, not a pattern SVG change or an opacity adjustment.
+A focused regression rejects removal of the final background image, and native
+Qt checks continue to exercise sidebar focus and Settings page paints. Qt's
+window-manager titlebar and any outside-the-client decorations may not be
+controlled by QSS and require a live visual check.
+
 ## Settings scroll surfaces — 2026-10-16
 
 The OBS Settings dialog's pages include `QScrollArea` contents that Qt sets
