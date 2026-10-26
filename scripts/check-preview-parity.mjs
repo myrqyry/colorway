@@ -138,6 +138,40 @@ try {
     if (data.statusActive.some((value) => value !== 'active')) fail('Status states did not react', data);
     console.log('PASS', file, polarity, 'icon, ink, QSS active roles, pattern, statuses');
   }
+  // The playful element gallery is still a real interaction surface. Verify
+  // its controls respond in Chromium and never try to change OBS settings.
+  const playground = await evaluate(`(async () => {
+    document.querySelector('[data-permanent-open-state-lab]')?.click();
+    const lab = document.querySelector('[data-state-lab]');
+    const gallery = lab?.querySelector('[data-component-showcase]');
+    if (!gallery || lab.hidden) return { mounted: false };
+    const spin = gallery.querySelector('[data-showcase-spin]');
+    const initialSpin = spin.value;
+    gallery.querySelector('[data-showcase-step="up"]').click();
+    const toggle = gallery.querySelector('[data-showcase-toggle]');
+    toggle.click();
+    const track = gallery.querySelector('input[name="showcase-track"][value="2"]');
+    track.click();
+    const monitor = gallery.querySelector('[data-showcase-monitor]');
+    monitor.click();
+    gallery.querySelector('[data-showcase-zoom="in"]').click();
+    const arrowImage = getComputedStyle(gallery.querySelector('.obs-sim-showcase-step.up')).backgroundImage;
+    const url = arrowImage.match(/^url\(["']?(.*?)["']?\)$/)?.[1];
+    return {
+      mounted: true, initialSpin, spin: spin.value,
+      pressed: toggle.getAttribute('aria-pressed'),
+      track: track.checked, monitor: monitor.getAttribute('aria-pressed'),
+      zoom: gallery.querySelector('[data-showcase-zoom-value]').textContent,
+      arrowImage, arrowLoads: !!url && (await fetch(url)).ok,
+    };
+  })()`);
+  if (!playground.mounted || playground.initialSpin !== '6000' || playground.spin !== '6500'
+      || playground.pressed !== 'true' || !playground.track || playground.monitor !== 'true'
+      || playground.zoom !== '125%' || !playground.arrowLoads
+      || !playground.arrowImage.includes('/icons/colorway/mingcute/spin/'))
+    fail('Colorway element playground failed in Chromium', playground);
+  console.log('PASS interactive Colorway elements, spinner SVG, and isolated demo states');
+
   console.log('Chromium preview parity PASS');
 } finally {
   ws?.close();

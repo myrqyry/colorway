@@ -13,6 +13,14 @@ test('browser resolves only real local OBS theme assets without mutating theme s
     'url("/icons/colorway/mingcute/normal/eye.svg")');
   assert.equal(browserThemeAssetValue('url(theme:icons/colorway/mingcute/selected/eye.svg)'),
     'url("/icons/colorway/mingcute/selected/eye.svg")');
+  assert.equal(browserThemeAssetValue('url(theme:icons/colorway/mingcute/spin/up-small-fill-normal.svg)'),
+    'url("/icons/colorway/mingcute/spin/up-small-fill-normal.svg")');
+  assert.equal(browserThemeAssetValue('url(theme:icons/colorway/mingcute/spin/down-small-fill-selected.svg)'),
+    'url("/icons/colorway/mingcute/spin/down-small-fill-selected.svg")');
+  assert.equal(browserThemeAssetValue('url(theme:icons/colorway/mingcute/mixer/headphone-37d247.svg)'),
+    'url("/icons/colorway/mingcute/mixer/headphone-37d247.svg")');
+  assert.equal(browserThemeAssetValue('url(theme:icons/colorway/mingcute/zoom/plus-selected.svg)'),
+    'url("/icons/colorway/mingcute/zoom/plus-selected.svg")');
   assert.equal(browserThemeAssetValue('url(theme:patterns/pattern.svg)'),
     'url("/patterns/pattern.svg")');
   assert.equal(browserThemeAssetValue('var(--primary)'), 'var(--primary)');

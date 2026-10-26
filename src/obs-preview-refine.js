@@ -320,7 +320,7 @@ function populateStateLabControl(root) {
     row.innerHTML = `
       <span>States</span>
       <button type="button" class="obs-sim-state-test-button" data-permanent-open-state-lab>
-        <span>Test UI states</span>
+        <span>Explore elements</span>
         <span class="obs-sim-state-test-dots" aria-hidden="true">
           <i class="info"></i><i class="warning"></i><i class="error"></i><i class="success"></i>
         </span>

@@ -175,7 +175,7 @@ export async function loadTheme(file) {
 export function browserThemeAssetValue(value) {
   if (typeof value !== 'string') return value;
   const unquoted = decodeObsFunctionValue(value);
-  const match = unquoted.match(/^url\(theme:((?:icons\/colorway\/mingcute\/(?:normal|selected|status)\/[\w-]+\.svg)|(?:patterns\/[\w-]+\.svg))\)$/);
+  const match = unquoted.match(/^url\(theme:((?:icons\/colorway\/mingcute\/(?:normal|selected|status|spin|mixer|zoom)\/[\w-]+\.svg)|(?:patterns\/[\w-]+\.svg))\)$/);
   return match ? `url("/${match[1]}")` : unquoted;
 }
 

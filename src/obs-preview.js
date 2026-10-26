@@ -189,11 +189,83 @@ function stateLabMarkup() {
       <section class="obs-sim-state-lab" role="dialog" aria-modal="true" aria-labelledby="obs-state-lab-title">
         <header class="obs-sim-state-lab-header">
           <div>
-            <span>Theme stress test</span>
-            <strong id="obs-state-lab-title">OBS interface states</strong>
+            <span>Theme playground</span>
+            <strong id="obs-state-lab-title">Colorway elements & states</strong>
           </div>
-          <button type="button" data-close-state-lab aria-label="Close state stress test">${iconMarkup('close')}</button>
+          <button type="button" data-close-state-lab aria-label="Close element playground">${iconMarkup('close')}</button>
         </header>
+
+        <section class="obs-sim-showcase" data-component-showcase aria-labelledby="obs-sim-showcase-title">
+          <header class="obs-sim-showcase-heading">
+            <div>
+              <span>TRY THE CONTROLS</span>
+              <h3 id="obs-sim-showcase-title">Little color playground</h3>
+            </div>
+            <p>Preview only · Change things freely, nothing touches OBS.</p>
+          </header>
+          <div class="obs-sim-showcase-grid">
+            <section class="obs-sim-showcase-card" aria-label="Selection controls">
+              <h4>Pick & choose</h4>
+              <p>Rounded choices, different meanings.</p>
+              <div class="obs-sim-showcase-choice-row">
+                <label class="obs-sim-showcase-option"><input type="checkbox" data-showcase-check checked> Show overlay</label>
+                <label class="obs-sim-showcase-option"><input type="checkbox" data-showcase-check> Lock source</label>
+              </div>
+              <fieldset class="obs-sim-showcase-tracks">
+                <legend>Audio track</legend>
+                <div class="obs-sim-showcase-choice-row">
+                  <label class="obs-sim-showcase-option"><input type="radio" name="showcase-track" value="1" checked> 1</label>
+                  <label class="obs-sim-showcase-option"><input type="radio" name="showcase-track" value="2"> 2</label>
+                  <label class="obs-sim-showcase-option"><input type="radio" name="showcase-track" value="3"> 3</label>
+                </div>
+              </fieldset>
+            </section>
+
+            <section class="obs-sim-showcase-card" aria-label="Text and numeric controls">
+              <h4>Fields & steps</h4>
+              <p>Try a different transition or spin the number.</p>
+              <div class="obs-sim-showcase-field">
+                <label for="showcase-preset">Transition</label>
+                <select id="showcase-preset" class="obs-sim-select"><option>Fade</option><option>Cut</option><option>Swipe</option></select>
+              </div>
+              <div class="obs-sim-showcase-field">
+                <label for="showcase-bitrate">Bitrate</label>
+                <div class="obs-sim-showcase-spinner">
+                  <input id="showcase-bitrate" type="number" min="500" max="20000" step="500" value="6000" data-showcase-spin aria-label="Demo bitrate">
+                  <div class="obs-sim-showcase-stepper">
+                    <button type="button" class="obs-sim-showcase-step up" data-showcase-step="up" aria-label="Increase demo bitrate"></button>
+                    <button type="button" class="obs-sim-showcase-step down" data-showcase-step="down" aria-label="Decrease demo bitrate"></button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="obs-sim-showcase-card" aria-label="Icon button states">
+              <h4>Little actions</h4>
+              <p>Hover, focus, and press to compare states.</p>
+              <div class="obs-sim-showcase-icons">
+                <button type="button" class="obs-sim-showcase-icon" data-showcase-toggle aria-pressed="false" aria-label="Toggle add button">${iconMarkup('plus')}</button>
+                <button type="button" class="obs-sim-showcase-icon" data-showcase-toggle aria-pressed="true" aria-label="Toggle settings button">${iconMarkup('settings')}</button>
+                <button type="button" class="obs-sim-showcase-icon" data-showcase-toggle aria-pressed="false" aria-label="Toggle refresh button">${iconMarkup('refresh')}</button>
+                <button type="button" class="obs-sim-showcase-icon" disabled aria-label="Unavailable action">${iconMarkup('trash')}</button>
+              </div>
+              <div class="obs-sim-showcase-hint">Idle · selected · hover · disabled</div>
+            </section>
+
+            <section class="obs-sim-showcase-card" aria-label="Audio and zoom states">
+              <h4>Monitor & zoom</h4>
+              <p>Two more tiny controls with personality.</p>
+              <div class="obs-sim-showcase-audio-row">
+                <button type="button" class="obs-sim-showcase-icon" data-showcase-monitor aria-pressed="false" aria-label="Toggle demo audio monitoring">${iconMarkup('headphone-off')}</button>
+                <span data-showcase-monitor-label>Monitoring off</span>
+                <span class="obs-sim-showcase-flex"></span>
+                <button type="button" class="obs-sim-showcase-icon" data-showcase-zoom="out" aria-label="Zoom demo out">${iconMarkup('minus')}</button>
+                <output data-showcase-zoom-value aria-live="polite">100%</output>
+                <button type="button" class="obs-sim-showcase-icon" data-showcase-zoom="in" aria-label="Zoom demo in">${iconMarkup('plus')}</button>
+              </div>
+            </section>
+          </div>
+        </section>
 
         <div class="obs-sim-state-grid">
           <article class="obs-sim-state-card info" data-state-kind="info">
@@ -292,7 +364,7 @@ function previewMarkup() {
         </div>
         <div class="obs-preview-legend">
           <span><i class="obs-preview-legend-dot"></i> live theme</span>
-          <button type="button" class="obs-preview-open-settings obs-preview-state-test" data-open-state-lab>Test UI states</button>
+          <button type="button" class="obs-preview-open-settings obs-preview-state-test" data-open-state-lab>Explore elements</button>
           <button type="button" class="obs-preview-open-settings" data-open-settings>Open Appearance settings</button>
         </div>
       </div>
@@ -458,7 +530,49 @@ function setAppearancePanel(root) {
   syncStyleName(root);
 }
 
+function wireShowcase(root) {
+  const showcase = root.querySelector('[data-component-showcase]');
+  if (!showcase) return;
+
+  showcase.querySelectorAll('[data-showcase-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const pressed = button.getAttribute('aria-pressed') !== 'true';
+      button.setAttribute('aria-pressed', String(pressed));
+    });
+  });
+
+  const spin = showcase.querySelector('[data-showcase-spin]');
+  showcase.querySelectorAll('[data-showcase-step]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (!spin) return;
+      if (button.dataset.showcaseStep === 'up') spin.stepUp();
+      else spin.stepDown();
+      spin.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  });
+
+  const monitor = showcase.querySelector('[data-showcase-monitor]');
+  monitor?.addEventListener('click', () => {
+    const enabled = monitor.getAttribute('aria-pressed') !== 'true';
+    monitor.setAttribute('aria-pressed', String(enabled));
+    setIcon(monitor.querySelector('.obs-sim-svg-icon'), enabled ? 'headphone' : 'headphone-off');
+    const label = showcase.querySelector('[data-showcase-monitor-label]');
+    if (label) label.textContent = enabled ? 'Monitoring on' : 'Monitoring off';
+  });
+
+  const zoomValue = showcase.querySelector('[data-showcase-zoom-value]');
+  showcase.querySelectorAll('[data-showcase-zoom]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const current = Number.parseInt(zoomValue?.textContent || '100', 10);
+      const delta = button.dataset.showcaseZoom === 'in' ? 25 : -25;
+      const next = Math.max(50, Math.min(200, current + delta));
+      if (zoomValue) zoomValue.textContent = `${next}%`;
+    });
+  });
+}
+
 function wirePreview(root) {
+  wireShowcase(root);
   root.querySelectorAll('[data-scene-row]').forEach((row) => {
     row.addEventListener('click', () => {
       root.querySelectorAll('[data-scene-row]').forEach((item) => item.classList.remove('selected'));

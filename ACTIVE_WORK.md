@@ -1,6 +1,47 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+
+## Browser element playground — focused showcase (2026-10-26)
+
+**Intent:** User clarified the Colorway web preview is meant to be a **fun
+interface that showcases elements**, not a literal clone of OBS Settings.
+Keep the existing OBS-themed scene and theme switching. Avoid building an
+entire fake Output Settings page.
+
+**Implementation:** The existing accessible `data-state-lab` overlay,
+reachable from the permanent Appearance controller, now contains a compact
+interactive Colorway playground. It showcases independent checkboxes, circular
+audio-track radio selectors, a transition select, a bitrate spinbox with
+the generated MingCute compact arrow SVGs, icon tool buttons including
+hover/checked/disabled, an audio monitoring toggle, and bounded zoom controls.
+The labels explicitly mark these as preview-only. All changes stay inside
+the browser simulator, never in OBS config. Existing alerts and crash recovery
+specimens remain below the new playground. The launcher is labeled
+"Explore elements" instead of the utilitarian "Test UI states".
+Standard simulated dropdowns now have a 27px minimum height and gallery
+tool buttons use theme hover/border/foreground tokens.
+
+**Asset mapping correction:** `browserThemeAssetValue` only recognized
+`normal|selected|status` MingCute icon subdirectories, while the new
+spinbox arrows and recently generated mixer/zoom assets live in
+`spin|mixer|zoom`. Browsers cannot fetch literal `theme:` URLs. The
+existing safe path translation was extended only to those packaged asset
+directories, preserving source `.obt/.ovt` and rejecting traversal.
+
+**Verification:** Added red-first `test/obs-preview-showcase.test.js`
+and expanded `test/obs-preview-parity.test.js`. `pnpm test`:
+706 total, **705 passed, 0 failed, 1 intentional network skip**.
+`pnpm check:preview`: production Vite build and Chromium parity passed,
+including real interactions, zoom/monitor/track/bitrate state and HTTP-loaded
+spinner SVG. A Chromium settled-state screenshot verified layout with no
+ghosted intro animation. The site is a showcase, not a functional OBS
+configuration frontend; interactions only affect demo DOM state.
+
+**Checkpoint:** local git commit is appropriate after final verification.
+No push or deployment requested in this turn. Preserve existing project
+state and do not treat a tested simulator as proof of all native OBS surfaces.
+
 ## Hover affordance fixes — generated tool icons and AdaptaEvergreen (2026-10-26)
 
 **Request and causal context:** User approved fixes for the two verified issues
