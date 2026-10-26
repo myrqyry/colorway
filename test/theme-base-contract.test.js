@@ -195,14 +195,16 @@ test('light palette comments distinguish source values from accessibility overri
   }
 });
 
-test('monitor checked states keep success on the contrast-tested surface', () => {
+test('monitor checked states keep derived success ink on the contrast-tested neutral surface', () => {
+  // Mixer assets now bake derived semantic ink for bg_base. Keep hover and
+  // checked-hover on that same surface, not a generic primary-button fill.
   assert.match(
     base,
-    /\.btn-monitor\.checked\s*\{[^}]*background:\s*var\(--bg_hover\);[^}]*color:\s*var\(--success\);[^}]*\}/,
+    /\.btn-monitor:checked,\s*\.btn-monitor\.checked\s*\{[^}]*icon:\s*var\(--cw_mixer_monitor\);[^}]*color:\s*var\(--on_mixer_monitor\);[^}]*border-color:\s*var\(--on_mixer_monitor\);[^}]*\}/,
   );
   assert.match(
     base,
-    /\.btn-monitor\.checked:focus,\s*\.btn-monitor:checked:focus,\s*\.btn-monitor\.checked:hover\s*\{[^}]*background:\s*var\(--bg_hover\);[^}]*color:\s*var\(--success\);[^}]*\}/,
+    /\.btn-monitor:checked:hover,[^{}]*\.btn-monitor\.checked:hover,[^{}]*\{[^}]*background:\s*var\(--bg_base\);[^}]*\}/,
   );
 });
 

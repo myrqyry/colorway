@@ -26,7 +26,7 @@
        --primary_dark: #6ba22e;
        --primary_darker: #4a7a24;
        --input_bg: #29353b;
-       --input_bg_hover: #29353b;
+       --input_bg_hover: #38444a;
        --input_bg_focus: #38444a;
        --input_border: #85c036;
        --input_border_hover: #85c036;
@@ -79,7 +79,7 @@
     --border_color: #85c036;
 
     --input_bg: #29353b;
-    --input_bg_hover: #29353b;
+    --input_bg_hover: #38444a;
     --input_bg_focus: #38444a;
 
     --list_item_bg_hover: #222d32;
@@ -118,6 +118,12 @@
     --on_input_hover: #d4d4d4;
     --on_input_focus: #d4d4d4;
     --on_nav_hover: #d4d4d4;
+    --on_mixer_muted: #f48771;
+    --on_mixer_warning: #cca700;
+    --cw_icon_cogs_button: 'url(theme:icons/colorway/mingcute/selected/cogs.svg)';
+    --cw_icon_filter_button: 'url(theme:icons/colorway/mingcute/selected/filter.svg)';
+    --cw_mixer_muted: 'url(theme:icons/colorway/mingcute/mixer/volume-mute-f48771.svg)';
+    --cw_mixer_warning: 'url(theme:icons/colorway/mingcute/mixer/warning-cca700.svg)';
     /* colorway:state-tokens:end */
 
 }

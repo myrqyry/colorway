@@ -124,6 +124,7 @@
     --font_heading: calc(2.5pt * var(--font_base_value));
 
     --icon_base: calc(calc(max(2, var(--obsPadding)) * 1px) + 12px);
+    --source_toggle_icon_size: 12px;
     --icon_small: calc(4px + var(--font_base_value));
 
     --spacing_base: min(max(1px, calc(0.4 * var(--spacing_base_value))), 2px);
@@ -149,11 +150,14 @@
     --compact_control_min_height: calc(1.6pt * var(--font_base_value));
     --input_min_height: calc(2.0pt * var(--font_base_value));
     --settings_combo_min_height: calc(1.8px * var(--font_base_value));
+    --shared_combo_min_height: calc(1.9px * var(--font_base_value));
     --settings_form_min_height: var(--settings_combo_min_height);
     --spinbox_min_height: calc(2.6pt * var(--font_base_value));
 
     --spinbox_min_width: calc(var(--input_height) * 2.5);
-    --spinbox_button_height: calc(var(--input_height_half) - 1px);
+    --spinbox_arrow_size: 9px;
+    --checkbox_corner_radius: 7px;
+    --radio_indicator_radius: calc(var(--icon_base) / 2);
 
     --volume_slider: calc(calc(4px + var(--font_base_value)) / 4);
     --volume_slider_box: calc(var(--volume_slider) * 4);
@@ -396,6 +400,9 @@
     --on_input_hover: #e0def4;
     --on_input_focus: #e0def4;
     --on_nav_hover: #ffffff;
+    --on_mixer_muted: #eb6f92;
+    --on_mixer_monitor: #37d247;
+    --on_mixer_warning: #f6c177;
     --on_primary: var(--text_inverse);
     --cw_icon_arrow_down_primary: 'url(theme:icons/colorway/mingcute/selected/arrow-down.svg)';
     --cw_icon_arrow_up_primary: 'url(theme:icons/colorway/mingcute/selected/arrow-up.svg)';
@@ -418,6 +425,9 @@
     --cw_icon_gamepad_primary: 'url(theme:icons/colorway/mingcute/selected/gamepad.svg)';
     --cw_icon_globe_primary: 'url(theme:icons/colorway/mingcute/selected/globe.svg)';
     --cw_icon_group_primary: 'url(theme:icons/colorway/mingcute/selected/group.svg)';
+    --cw_icon_headphone_primary: 'url(theme:icons/colorway/mingcute/selected/headphone.svg)';
+    --cw_icon_headphone_off_primary: 'url(theme:icons/colorway/mingcute/selected/headphone-off.svg)';
+    --cw_icon_warning_primary: 'url(theme:icons/colorway/mingcute/selected/warning.svg)';
     --cw_icon_image_primary: 'url(theme:icons/colorway/mingcute/selected/image.svg)';
     --cw_icon_interact_primary: 'url(theme:icons/colorway/mingcute/selected/interact.svg)';
     --cw_icon_layout_horizontal_primary: 'url(theme:icons/colorway/mingcute/selected/layout-horizontal.svg)';
@@ -470,6 +480,9 @@
     --cw_icon_gamepad_primary_hover: 'url(theme:icons/colorway/mingcute/selected/gamepad.svg)';
     --cw_icon_globe_primary_hover: 'url(theme:icons/colorway/mingcute/selected/globe.svg)';
     --cw_icon_group_primary_hover: 'url(theme:icons/colorway/mingcute/selected/group.svg)';
+    --cw_icon_headphone_primary_hover: 'url(theme:icons/colorway/mingcute/selected/headphone.svg)';
+    --cw_icon_headphone_off_primary_hover: 'url(theme:icons/colorway/mingcute/selected/headphone-off.svg)';
+    --cw_icon_warning_primary_hover: 'url(theme:icons/colorway/mingcute/selected/warning.svg)';
     --cw_icon_image_primary_hover: 'url(theme:icons/colorway/mingcute/selected/image.svg)';
     --cw_icon_interact_primary_hover: 'url(theme:icons/colorway/mingcute/selected/interact.svg)';
     --cw_icon_layout_horizontal_primary_hover: 'url(theme:icons/colorway/mingcute/selected/layout-horizontal.svg)';
@@ -523,6 +536,9 @@
     --cw_icon_gamepad_base: 'url(theme:icons/colorway/mingcute/normal/gamepad.svg)';
     --cw_icon_globe_base: 'url(theme:icons/colorway/mingcute/normal/globe.svg)';
     --cw_icon_group_base: 'url(theme:icons/colorway/mingcute/normal/group.svg)';
+    --cw_icon_headphone_base: 'url(theme:icons/colorway/mingcute/normal/headphone.svg)';
+    --cw_icon_headphone_off_base: 'url(theme:icons/colorway/mingcute/normal/headphone-off.svg)';
+    --cw_icon_warning_base: 'url(theme:icons/colorway/mingcute/normal/warning.svg)';
     --cw_icon_image_base: 'url(theme:icons/colorway/mingcute/normal/image.svg)';
     --cw_icon_interact_base: 'url(theme:icons/colorway/mingcute/normal/interact.svg)';
     --cw_icon_layout_horizontal_base: 'url(theme:icons/colorway/mingcute/normal/layout-horizontal.svg)';
@@ -553,6 +569,15 @@
     --cw_icon_volume_mute_base: 'url(theme:icons/colorway/mingcute/normal/volume-mute.svg)';
     --cw_icon_window_base: 'url(theme:icons/colorway/mingcute/normal/window.svg)';
     --cw_icon_download_base: 'url(theme:icons/colorway/mingcute/normal/download.svg)';
+    --cw_icon_cogs_button: 'url(theme:icons/colorway/mingcute/normal/cogs.svg)';
+    --cw_icon_filter_button: 'url(theme:icons/colorway/mingcute/normal/filter.svg)';
+    --cw_spin_chevron_up: 'url(theme:icons/colorway/mingcute/spin/up-small-fill-normal.svg)';
+    --cw_spin_chevron_down: 'url(theme:icons/colorway/mingcute/spin/down-small-fill-normal.svg)';
+    --cw_mixer_muted: 'url(theme:icons/colorway/mingcute/mixer/volume-mute-eb6f92.svg)';
+    --cw_mixer_monitor: 'url(theme:icons/colorway/mingcute/mixer/headphone-37d247.svg)';
+    --cw_mixer_warning: 'url(theme:icons/colorway/mingcute/mixer/warning-f6c177.svg)';
+    --cw_zoom_plus: 'url(theme:icons/colorway/mingcute/zoom/plus-normal.svg)';
+    --cw_zoom_minus: 'url(theme:icons/colorway/mingcute/zoom/minus-normal.svg)';
     /* colorway:state-tokens:end */
 
 }
@@ -881,89 +906,73 @@ QPushButton:focus {
 .btn-monitor {
     width: var(--icon_small);
     height: var(--icon_small);
-    background-color: transparent;
+    /* Keep all mixer states on one neutral surface. State-colored SVG ink
+       is derived against this exact surface, including hover and press. */
+    background: var(--bg_base);
     padding: var(--padding_base_border) var(--padding_base_border);
     margin: 0px var(--spacing_small);
     border: var(--highlight_width) solid transparent;
     border-radius: var(--border_radius);
     icon-size: var(--icon_small);
+    color: var(--on_base);
 }
 
 .btn-mute:checked,
 .btn-monitor:checked {
-    background-color: transparent;
+    background: var(--bg_base);
     border-color: transparent;
 }
 
 .btn-mute:hover,
-.btn-monitor:hover {
-    background-color: var(--button_bg_hover);
-    border-color: transparent;
+.btn-monitor:hover,
+.btn-mute:checked:hover,
+.btn-monitor:checked:hover,
+.btn-mute.checked:hover,
+.btn-monitor.checked:hover,
+.btn-mute:focus,
+.btn-monitor:focus {
+    background: var(--bg_base);
+    border-color: var(--primary_lighter);
 }
 
 .btn-mute:pressed,
 .btn-monitor:pressed {
-    background-color: var(--button_bg_down);
+    background: var(--bg_base);
 }
 
 /* Mute Button */
 
 .btn-mute {
-    color: var(--text);
+    icon: var(--cw_icon_volume_high_base);
 }
 
+.btn-mute:checked,
 .btn-mute.checked {
-    color: var(--danger);
-    background: transparent;
-}
-
-.btn-mute.checked.hover {
-    color: var(--danger);
-    background: var(--bg_hover);
-    border-color: var(--danger);
-}
-
-.btn-mute.checked:focus {
-    border-color: var(--danger);
+    icon: var(--cw_mixer_muted);
+    color: var(--on_mixer_muted);
+    border-color: var(--on_mixer_muted);
 }
 
 /* OBS renamed mute-unassigned to mute-warning for Monitor Only warnings.
    Keep both selectors so Colorway remains usable across OBS versions. */
 .btn-mute.mute-warning,
 .btn-mute.mute-unassigned {
-    color: var(--warning);
-    background: var(--bg_hover);
-}
-
-.btn-mute.mute-warning.hover,
-.btn-mute.mute-warning:focus,
-.btn-mute.mute-unassigned.hover,
-.btn-mute.mute-unassigned:focus {
-    border-color: var(--warning);
+    icon: var(--cw_mixer_warning);
+    color: var(--on_mixer_warning);
+    border-color: var(--on_mixer_warning);
 }
 
 /* Monitor Button */
 
 .btn-monitor {
-    background: transparent;
+    icon: var(--cw_icon_headphone_off_base);
 }
 
-.btn-monitor:focus {
-    border-color: var(--success);
-}
-
+.btn-monitor:checked,
 .btn-monitor.checked {
-    background: var(--bg_hover);
-    color: var(--success);
-    border-color: var(--success);
-}
-
-.btn-monitor.checked:focus,
-.btn-monitor:checked:focus,
-.btn-monitor.checked:hover {
-    background: var(--bg_hover);
-    color: var(--success);
-    border-color: var(--success);
+    icon: var(--cw_mixer_monitor);
+    color: var(--on_mixer_monitor);
+    border-color: var(--on_mixer_monitor);
 }
 
 /* Toggle hidden button */
@@ -1596,13 +1605,23 @@ OBSBasicAdvAudio #scrollAreaWidgetContents {
 }
 
 #previewZoomInButton {
-    border: none;
+    icon: var(--cw_zoom_plus);
+    padding: 0;
+    margin: 0;
+    min-width: 18px;
+    min-height: 14px;
+    border: 1px solid transparent;
     border-radius: var(--border_radius_small);
     outline: none;
 }
 
 #previewZoomOutButton {
-    border: none;
+    icon: var(--cw_zoom_minus);
+    padding: 0;
+    margin: 0;
+    min-width: 18px;
+    min-height: 14px;
+    border: 1px solid transparent;
     border-radius: var(--border_radius_small);
     outline: none;
 }
@@ -1614,7 +1633,13 @@ OBSBasicAdvAudio #scrollAreaWidgetContents {
 
 #previewZoomInButton:pressed,
 #previewZoomOutButton:pressed {
-    background-color: var(--button_bg);
+    background-color: var(--bg_base);
+    border-color: var(--primary);
+}
+
+#previewZoomInButton:hover,
+#previewZoomOutButton:hover {
+    background: var(--bg_base);
 }
 
 #previewZoomInButton:focus,
@@ -2280,6 +2305,19 @@ QComboBox, QDateTimeEdit, QSpinBox, QDoubleSpinBox, QLineEdit, QPlainTextEdit, Q
     selection-color: var(--on_primary);
 }
 
+/* Shared minimum for standard QComboBox widgets. Their sizeHint alone
+   doesn't prevent cramped dock/layout rows collapsing the selector. */
+QComboBox {
+    min-height: var(--shared_combo_min_height);
+}
+
+/* OBSPreviewScalingComboBox is an intentionally compact preview overlay.
+   Qt includes style insets in its effective 16px minimum; 10px here
+   preserves the original native 16px instead of inheriting dock sizing. */
+QComboBox#previewScalingMode {
+    min-height: 10px;
+}
+
 QSpinBox, QDoubleSpinBox {
     min-height: var(--spinbox_min_height);
     min-width: var(--spinbox_min_width);
@@ -2353,7 +2391,7 @@ QSpinBox::up-button, QDoubleSpinBox::up-button {
     subcontrol-origin: border;
     subcontrol-position: top right;
     width: var(--icon_small);
-    height: var(--spinbox_button_height);
+    /* Leave height to Qt: half of the available control, even in Compact. */
     border: none;
     background: transparent;
 }
@@ -2362,7 +2400,7 @@ QSpinBox::down-button, QDoubleSpinBox::down-button {
     subcontrol-origin: border;
     subcontrol-position: bottom right;
     width: var(--icon_small);
-    height: var(--spinbox_button_height);
+    /* Leave height to Qt: half of the available control, even in Compact. */
     border: none;
     background: transparent;
 }
@@ -2394,16 +2432,18 @@ QDoubleSpinBox::down-button:off {
 
 QSpinBox::up-arrow,
 QDoubleSpinBox::up-arrow {
-    image: var(--cw_icon_arrow_up_base);
-    width: 100%;
-    margin: 2px;
+    image: var(--cw_spin_chevron_up);
+    width: var(--spinbox_arrow_size);
+    height: var(--spinbox_arrow_size);
+    padding: 0px;
 }
 
 QSpinBox::down-arrow,
 QDoubleSpinBox::down-arrow {
-    image: var(--cw_icon_arrow_down_base);
-    width: 100%;
-    padding: 2px;
+    image: var(--cw_spin_chevron_down);
+    width: var(--spinbox_arrow_size);
+    height: var(--spinbox_arrow_size);
+    padding: 0px;
 }
 
 QSlider {
@@ -2426,13 +2466,21 @@ QSlider::groove:horizontal {
 
 QSlider::sub-page:horizontal {
     background: var(--primary);
-    border-radius: var(--slider_groove_radius);
+    /* The short page beneath an endpoint thumb must round only its outer
+       end. Rounding both ends collapses the radius and paints a square cap. */
+    border-top-left-radius: var(--slider_groove_radius);
+    border-bottom-left-radius: var(--slider_groove_radius);
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
 QSlider::add-page:horizontal {
     background: var(--button_bg);
     height: var(--slider_groove_thickness);
-    border-radius: var(--slider_groove_radius);
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: var(--slider_groove_radius);
+    border-bottom-right-radius: var(--slider_groove_radius);
 }
 
 QSlider::handle:horizontal {
@@ -2513,13 +2561,15 @@ QCheckBox, QRadioButton {
 QCheckBox::indicator, QRadioButton::indicator {
     width: var(--icon_base);
     height: var(--icon_base);
-    border: 1px solid var(--border_base);
-    border-radius: var(--shape_sm);
+    border: 2px solid var(--border_base);
+    border-radius: var(--checkbox_corner_radius);
     background: var(--bg_base);
 }
 
+/* Qt renders 999px on a 20px radio indicator as a square. Use its
+   actual half-width so single-choice tracks render as circles. */
 QRadioButton::indicator {
-    border-radius: var(--shape_full);
+    border-radius: var(--radio_indicator_radius);
 }
 
  QCheckBox::indicator:hover, QRadioButton::indicator:hover {
@@ -2624,6 +2674,21 @@ QScrollArea, QScrollArea > QWidget, QScrollArea > QWidget > QWidget {
    the dialog's theme surface, especially on light variants. Paint the
    actual page contents; leave unrelated OBS scroll areas untouched. */
 OBSBasicSettings QScrollArea > QWidget > QWidget {
+    background-color: var(--bg_window);
+    background-image: var(--pattern_eyes);
+}
+
+/* The Filters page uses the same auto-filled contents surface. Paint it
+   opaque instead of letting Qt paint black over the pattern. */
+OBSBasicFilters OBSPropertiesView > QWidget > QWidget {
+    background-color: var(--bg_window);
+    background-image: var(--pattern_eyes);
+}
+
+/* The Filters page's own scroll surface must match the page surface; the
+   viewport and scroll area itself otherwise stay black. */
+OBSBasicFilters QScrollArea,
+OBSBasicFilters QScrollArea > QWidget {
     background-color: var(--bg_window);
     background-image: var(--pattern_eyes);
 }
@@ -2917,40 +2982,46 @@ QGroupBox::title {
     font-size: var(--font_small);
 }
 
+/* Checkable headings (e.g. Replay Buffer) are QGroupBox indicators.
+   Use the same empty/checked language as QCheckBox, rather than two SVGs
+   that both depict a check mark. */
 QGroupBox::indicator {
     width: var(--icon_base);
     height: var(--icon_base);
     margin-right: var(--spacing_large);
+    border: 2px solid var(--border_base);
+    border-radius: var(--checkbox_corner_radius);
     background: var(--bg_base);
 }
 
 QGroupBox::indicator:unchecked {
-    image: var(--cw_icon_checkbox_line_base);
+    image: none;
 }
 
 QGroupBox::indicator:unchecked:hover {
-    image: var(--cw_icon_checkbox_line_base);
-    border: 1px solid var(--primary);
+    border-color: var(--primary);
+    background: var(--bg_hover);
 }
 
 QGroupBox::indicator:checked {
-    image: var(--cw_icon_checkbox_fill_base);
+    image: var(--checkbox_check_icon);
+    border-color: var(--primary);
 }
 
 QGroupBox::indicator:checked:hover {
-    image: var(--cw_icon_checkbox_fill_base);
-    background: var(--bg_base);
+    border-color: var(--primary_light);
 }
 
 QGroupBox::indicator:unchecked:disabled {
-    image: var(--cw_icon_checkbox_line_base);
-    border: 1px solid var(--button_bg_disabled);
+    image: none;
+    border-color: var(--button_bg_disabled);
+    background: var(--button_bg_disabled);
 }
 
 QGroupBox::indicator:checked:disabled {
-    image: var(--cw_icon_checkbox_fill_base);
+    image: var(--checkbox_check_icon);
     background: var(--button_bg_disabled);
-    border: 1px solid var(--button_bg_disabled);
+    border-color: var(--button_bg_disabled);
 }
 
 QToolTip {
@@ -3049,7 +3120,6 @@ OBSPropertiesView QSlider:horizontal {
 
 OBSBasicSettings QListWidget {
     background-color: var(--bg_dock);
-    background-image: var(--pattern_eyes);
     border: none;
     border-right: 1px solid var(--border_base);
     outline: none;
@@ -3334,6 +3404,26 @@ SourceTreeItem {
 SourceTreeItem .checkbox-icon {
     margin-right: 0;
     margin-left: var(--spacing_large);
+    padding: 0;
+    border: none;
+}
+
+/* Native SourceTree rows can remain 14px tall independently of OBS density.
+   Keep the 12px glyph plus its one-pixel outline inside that slot.
+   Focus/hover use that same outline instead of a second outer frame. */
+SourceTreeItem .checkbox-icon::indicator {
+    width: var(--source_toggle_icon_size);
+    height: var(--source_toggle_icon_size);
+    border: var(--highlight_width) solid var(--border_base);
+}
+
+SourceTreeItem .checkbox-icon::indicator:checked {
+    border-color: var(--primary);
+}
+
+SourceTreeItem .checkbox-icon:focus::indicator,
+SourceTreeItem .checkbox-icon:hover::indicator {
+    border-color: var(--primary_lighter);
 }
 
 SourceTree .indicator-expand {
@@ -3680,200 +3770,277 @@ QPushButton.icon-plus, QPushButton.icon-plus:hover { background: var(--bg_base);
 QPushButton.icon-plus:checked, QPushButton.icon-plus:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_plus_primary); }
 QPushButton.icon-plus:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_plus_primary_hover); }
 QPushButton.icon-plus:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-plus, QToolButton.icon-plus:hover, QToolButton.icon-plus:checked, QToolButton.icon-plus:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-plus, QToolButton.icon-plus:checked, QToolButton.icon-plus:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-plus:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-plus:checked, QToolButton.icon-plus:pressed { border-color: var(--primary); }
+QToolButton.icon-plus:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-minus, QPushButton.icon-minus:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_minus_base); }
 QPushButton.icon-minus:checked, QPushButton.icon-minus:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_minus_primary); }
 QPushButton.icon-minus:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_minus_primary_hover); }
 QPushButton.icon-minus:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-minus, QToolButton.icon-minus:hover, QToolButton.icon-minus:checked, QToolButton.icon-minus:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-minus, QToolButton.icon-minus:checked, QToolButton.icon-minus:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-minus:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-minus:checked, QToolButton.icon-minus:pressed { border-color: var(--primary); }
+QToolButton.icon-minus:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-trash, QPushButton.icon-trash:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_trash_base); }
 QPushButton.icon-trash:checked, QPushButton.icon-trash:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_trash_primary); }
 QPushButton.icon-trash:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_trash_primary_hover); }
 QPushButton.icon-trash:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-trash, QToolButton.icon-trash:hover, QToolButton.icon-trash:checked, QToolButton.icon-trash:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-trash, QToolButton.icon-trash:checked, QToolButton.icon-trash:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-trash:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-trash:checked, QToolButton.icon-trash:pressed { border-color: var(--primary); }
+QToolButton.icon-trash:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-clear, QPushButton.icon-clear:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_close_base); }
 QPushButton.icon-clear:checked, QPushButton.icon-clear:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_close_primary); }
 QPushButton.icon-clear:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_close_primary_hover); }
 QPushButton.icon-clear:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-clear, QToolButton.icon-clear:hover, QToolButton.icon-clear:checked, QToolButton.icon-clear:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-clear, QToolButton.icon-clear:checked, QToolButton.icon-clear:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-clear:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-clear:checked, QToolButton.icon-clear:pressed { border-color: var(--primary); }
+QToolButton.icon-clear:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-gear, QPushButton.icon-gear:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_settings_base); }
 QPushButton.icon-gear:checked, QPushButton.icon-gear:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_settings_primary); }
 QPushButton.icon-gear:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_settings_primary_hover); }
 QPushButton.icon-gear:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-gear, QToolButton.icon-gear:hover, QToolButton.icon-gear:checked, QToolButton.icon-gear:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-gear, QToolButton.icon-gear:checked, QToolButton.icon-gear:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-gear:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-gear:checked, QToolButton.icon-gear:pressed { border-color: var(--primary); }
+QToolButton.icon-gear:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-dots-vert, QPushButton.icon-dots-vert:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_dots_vert_base); }
 QPushButton.icon-dots-vert:checked, QPushButton.icon-dots-vert:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_dots_vert_primary); }
 QPushButton.icon-dots-vert:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_dots_vert_primary_hover); }
 QPushButton.icon-dots-vert:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-dots-vert, QToolButton.icon-dots-vert:hover, QToolButton.icon-dots-vert:checked, QToolButton.icon-dots-vert:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-dots-vert, QToolButton.icon-dots-vert:checked, QToolButton.icon-dots-vert:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-dots-vert:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-dots-vert:checked, QToolButton.icon-dots-vert:pressed { border-color: var(--primary); }
+QToolButton.icon-dots-vert:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-refresh, QPushButton.icon-refresh:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_refresh_base); }
 QPushButton.icon-refresh:checked, QPushButton.icon-refresh:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_refresh_primary); }
 QPushButton.icon-refresh:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_refresh_primary_hover); }
 QPushButton.icon-refresh:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-refresh, QToolButton.icon-refresh:hover, QToolButton.icon-refresh:checked, QToolButton.icon-refresh:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-refresh, QToolButton.icon-refresh:checked, QToolButton.icon-refresh:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-refresh:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-refresh:checked, QToolButton.icon-refresh:pressed { border-color: var(--primary); }
+QToolButton.icon-refresh:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-cogs, QPushButton.icon-cogs:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_cogs_base); }
 QPushButton.icon-cogs:checked, QPushButton.icon-cogs:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_cogs_primary); }
 QPushButton.icon-cogs:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_cogs_primary_hover); }
 QPushButton.icon-cogs:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-cogs, QToolButton.icon-cogs:hover, QToolButton.icon-cogs:checked, QToolButton.icon-cogs:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-cogs, QToolButton.icon-cogs:checked, QToolButton.icon-cogs:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-cogs:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-cogs:checked, QToolButton.icon-cogs:pressed { border-color: var(--primary); }
+QToolButton.icon-cogs:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-touch, QPushButton.icon-touch:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_interact_base); }
 QPushButton.icon-touch:checked, QPushButton.icon-touch:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_interact_primary); }
 QPushButton.icon-touch:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_interact_primary_hover); }
 QPushButton.icon-touch:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-touch, QToolButton.icon-touch:hover, QToolButton.icon-touch:checked, QToolButton.icon-touch:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-touch, QToolButton.icon-touch:checked, QToolButton.icon-touch:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-touch:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-touch:checked, QToolButton.icon-touch:pressed { border-color: var(--primary); }
+QToolButton.icon-touch:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-up, QPushButton.icon-up:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_chevron_up_base); }
 QPushButton.icon-up:checked, QPushButton.icon-up:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_chevron_up_primary); }
 QPushButton.icon-up:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_chevron_up_primary_hover); }
 QPushButton.icon-up:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-up, QToolButton.icon-up:hover, QToolButton.icon-up:checked, QToolButton.icon-up:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-up, QToolButton.icon-up:checked, QToolButton.icon-up:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-up:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-up:checked, QToolButton.icon-up:pressed { border-color: var(--primary); }
+QToolButton.icon-up:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-down, QPushButton.icon-down:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_chevron_down_base); }
 QPushButton.icon-down:checked, QPushButton.icon-down:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_chevron_down_primary); }
 QPushButton.icon-down:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_chevron_down_primary_hover); }
 QPushButton.icon-down:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-down, QToolButton.icon-down:hover, QToolButton.icon-down:checked, QToolButton.icon-down:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-down, QToolButton.icon-down:checked, QToolButton.icon-down:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-down:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-down:checked, QToolButton.icon-down:pressed { border-color: var(--primary); }
+QToolButton.icon-down:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-pause, QPushButton.icon-pause:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_pause_base); }
 QPushButton.icon-pause:checked, QPushButton.icon-pause:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_pause_primary); }
 QPushButton.icon-pause:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_pause_primary_hover); }
 QPushButton.icon-pause:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-pause, QToolButton.icon-pause:hover, QToolButton.icon-pause:checked, QToolButton.icon-pause:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-pause, QToolButton.icon-pause:checked, QToolButton.icon-pause:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-pause:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-pause:checked, QToolButton.icon-pause:pressed { border-color: var(--primary); }
+QToolButton.icon-pause:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-filter, QPushButton.icon-filter:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_filter_base); }
 QPushButton.icon-filter:checked, QPushButton.icon-filter:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_filter_primary); }
 QPushButton.icon-filter:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_filter_primary_hover); }
 QPushButton.icon-filter:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-filter, QToolButton.icon-filter:hover, QToolButton.icon-filter:checked, QToolButton.icon-filter:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-filter, QToolButton.icon-filter:checked, QToolButton.icon-filter:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-filter:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-filter:checked, QToolButton.icon-filter:pressed { border-color: var(--primary); }
+QToolButton.icon-filter:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-revert, QPushButton.icon-revert:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_revert_base); }
 QPushButton.icon-revert:checked, QPushButton.icon-revert:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_revert_primary); }
 QPushButton.icon-revert:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_revert_primary_hover); }
 QPushButton.icon-revert:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-revert, QToolButton.icon-revert:hover, QToolButton.icon-revert:checked, QToolButton.icon-revert:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-revert, QToolButton.icon-revert:checked, QToolButton.icon-revert:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-revert:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-revert:checked, QToolButton.icon-revert:pressed { border-color: var(--primary); }
+QToolButton.icon-revert:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-save, QPushButton.icon-save:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_save_base); }
 QPushButton.icon-save:checked, QPushButton.icon-save:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_save_primary); }
 QPushButton.icon-save:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_save_primary_hover); }
 QPushButton.icon-save:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-save, QToolButton.icon-save:hover, QToolButton.icon-save:checked, QToolButton.icon-save:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-save, QToolButton.icon-save:checked, QToolButton.icon-save:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-save:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-save:checked, QToolButton.icon-save:pressed { border-color: var(--primary); }
+QToolButton.icon-save:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-close, QPushButton.icon-close:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_close_base); }
 QPushButton.icon-close:checked, QPushButton.icon-close:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_close_primary); }
 QPushButton.icon-close:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_close_primary_hover); }
 QPushButton.icon-close:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-close, QToolButton.icon-close:hover, QToolButton.icon-close:checked, QToolButton.icon-close:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-close, QToolButton.icon-close:checked, QToolButton.icon-close:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-close:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-close:checked, QToolButton.icon-close:pressed { border-color: var(--primary); }
+QToolButton.icon-close:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-pin, QPushButton.icon-pin:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_pin_base); }
 QPushButton.icon-pin:checked, QPushButton.icon-pin:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_pin_primary); }
 QPushButton.icon-pin:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_pin_primary_hover); }
 QPushButton.icon-pin:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-pin, QToolButton.icon-pin:hover, QToolButton.icon-pin:checked, QToolButton.icon-pin:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-pin, QToolButton.icon-pin:checked, QToolButton.icon-pin:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-pin:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-pin:checked, QToolButton.icon-pin:pressed { border-color: var(--primary); }
+QToolButton.icon-pin:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-layout-vertical, QPushButton.icon-layout-vertical:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_layout_vertical_base); }
 QPushButton.icon-layout-vertical:checked, QPushButton.icon-layout-vertical:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_layout_vertical_primary); }
 QPushButton.icon-layout-vertical:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_layout_vertical_primary_hover); }
 QPushButton.icon-layout-vertical:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-layout-vertical, QToolButton.icon-layout-vertical:hover, QToolButton.icon-layout-vertical:checked, QToolButton.icon-layout-vertical:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-layout-vertical, QToolButton.icon-layout-vertical:checked, QToolButton.icon-layout-vertical:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-layout-vertical:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-layout-vertical:checked, QToolButton.icon-layout-vertical:pressed { border-color: var(--primary); }
+QToolButton.icon-layout-vertical:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-layout-horizontal, QPushButton.icon-layout-horizontal:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_layout_horizontal_base); }
 QPushButton.icon-layout-horizontal:checked, QPushButton.icon-layout-horizontal:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_layout_horizontal_primary); }
 QPushButton.icon-layout-horizontal:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_layout_horizontal_primary_hover); }
 QPushButton.icon-layout-horizontal:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-layout-horizontal, QToolButton.icon-layout-horizontal:hover, QToolButton.icon-layout-horizontal:checked, QToolButton.icon-layout-horizontal:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-layout-horizontal, QToolButton.icon-layout-horizontal:checked, QToolButton.icon-layout-horizontal:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-layout-horizontal:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-layout-horizontal:checked, QToolButton.icon-layout-horizontal:pressed { border-color: var(--primary); }
+QToolButton.icon-layout-horizontal:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-media-play, QPushButton.icon-media-play:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_media_play_base); }
 QPushButton.icon-media-play:checked, QPushButton.icon-media-play:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_media_play_primary); }
 QPushButton.icon-media-play:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_media_play_primary_hover); }
 QPushButton.icon-media-play:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-media-play, QToolButton.icon-media-play:hover, QToolButton.icon-media-play:checked, QToolButton.icon-media-play:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-media-play, QToolButton.icon-media-play:checked, QToolButton.icon-media-play:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-media-play:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-media-play:checked, QToolButton.icon-media-play:pressed { border-color: var(--primary); }
+QToolButton.icon-media-play:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-media-pause, QPushButton.icon-media-pause:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_pause_base); }
 QPushButton.icon-media-pause:checked, QPushButton.icon-media-pause:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_pause_primary); }
 QPushButton.icon-media-pause:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_pause_primary_hover); }
 QPushButton.icon-media-pause:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-media-pause, QToolButton.icon-media-pause:hover, QToolButton.icon-media-pause:checked, QToolButton.icon-media-pause:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-media-pause, QToolButton.icon-media-pause:checked, QToolButton.icon-media-pause:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-media-pause:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-media-pause:checked, QToolButton.icon-media-pause:pressed { border-color: var(--primary); }
+QToolButton.icon-media-pause:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-media-restart, QPushButton.icon-media-restart:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_refresh_base); }
 QPushButton.icon-media-restart:checked, QPushButton.icon-media-restart:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_refresh_primary); }
 QPushButton.icon-media-restart:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_refresh_primary_hover); }
 QPushButton.icon-media-restart:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-media-restart, QToolButton.icon-media-restart:hover, QToolButton.icon-media-restart:checked, QToolButton.icon-media-restart:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-media-restart, QToolButton.icon-media-restart:checked, QToolButton.icon-media-restart:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-media-restart:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-media-restart:checked, QToolButton.icon-media-restart:pressed { border-color: var(--primary); }
+QToolButton.icon-media-restart:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-media-stop, QPushButton.icon-media-stop:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_media_stop_base); }
 QPushButton.icon-media-stop:checked, QPushButton.icon-media-stop:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_media_stop_primary); }
 QPushButton.icon-media-stop:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_media_stop_primary_hover); }
 QPushButton.icon-media-stop:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-media-stop, QToolButton.icon-media-stop:hover, QToolButton.icon-media-stop:checked, QToolButton.icon-media-stop:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-media-stop, QToolButton.icon-media-stop:checked, QToolButton.icon-media-stop:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-media-stop:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-media-stop:checked, QToolButton.icon-media-stop:pressed { border-color: var(--primary); }
+QToolButton.icon-media-stop:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-media-next, QPushButton.icon-media-next:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_skip_forward_base); }
 QPushButton.icon-media-next:checked, QPushButton.icon-media-next:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_skip_forward_primary); }
 QPushButton.icon-media-next:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_skip_forward_primary_hover); }
 QPushButton.icon-media-next:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-media-next, QToolButton.icon-media-next:hover, QToolButton.icon-media-next:checked, QToolButton.icon-media-next:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-media-next, QToolButton.icon-media-next:checked, QToolButton.icon-media-next:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-media-next:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-media-next:checked, QToolButton.icon-media-next:pressed { border-color: var(--primary); }
+QToolButton.icon-media-next:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.icon-media-prev, QPushButton.icon-media-prev:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_skip_previous_base); }
 QPushButton.icon-media-prev:checked, QPushButton.icon-media-prev:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_skip_previous_primary); }
 QPushButton.icon-media-prev:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_skip_previous_primary_hover); }
 QPushButton.icon-media-prev:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.icon-media-prev, QToolButton.icon-media-prev:hover, QToolButton.icon-media-prev:checked, QToolButton.icon-media-prev:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-media-prev, QToolButton.icon-media-prev:checked, QToolButton.icon-media-prev:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.icon-media-prev:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.icon-media-prev:checked, QToolButton.icon-media-prev:pressed { border-color: var(--primary); }
+QToolButton.icon-media-prev:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton[themeID="propertiesIconSmall"], QPushButton[themeID="propertiesIconSmall"]:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_cogs_base); }
 QPushButton[themeID="propertiesIconSmall"]:checked, QPushButton[themeID="propertiesIconSmall"]:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_cogs_primary); }
 QPushButton[themeID="propertiesIconSmall"]:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_cogs_primary_hover); }
 QPushButton[themeID="propertiesIconSmall"]:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton[themeID="propertiesIconSmall"], QToolButton[themeID="propertiesIconSmall"]:hover, QToolButton[themeID="propertiesIconSmall"]:checked, QToolButton[themeID="propertiesIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="propertiesIconSmall"], QToolButton[themeID="propertiesIconSmall"]:checked, QToolButton[themeID="propertiesIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="propertiesIconSmall"]:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton[themeID="propertiesIconSmall"]:checked, QToolButton[themeID="propertiesIconSmall"]:pressed { border-color: var(--primary); }
+QToolButton[themeID="propertiesIconSmall"]:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton[themeID="configIconSmall"], QPushButton[themeID="configIconSmall"]:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_cogs_base); }
 QPushButton[themeID="configIconSmall"]:checked, QPushButton[themeID="configIconSmall"]:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_cogs_primary); }
 QPushButton[themeID="configIconSmall"]:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_cogs_primary_hover); }
 QPushButton[themeID="configIconSmall"]:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton[themeID="configIconSmall"], QToolButton[themeID="configIconSmall"]:hover, QToolButton[themeID="configIconSmall"]:checked, QToolButton[themeID="configIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="configIconSmall"], QToolButton[themeID="configIconSmall"]:checked, QToolButton[themeID="configIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="configIconSmall"]:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton[themeID="configIconSmall"]:checked, QToolButton[themeID="configIconSmall"]:pressed { border-color: var(--primary); }
+QToolButton[themeID="configIconSmall"]:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton.btn-create-new, QPushButton.btn-create-new:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_plus_base); }
 QPushButton.btn-create-new:checked, QPushButton.btn-create-new:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_plus_primary); }
 QPushButton.btn-create-new:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_plus_primary_hover); }
 QPushButton.btn-create-new:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton.btn-create-new, QToolButton.btn-create-new:hover, QToolButton.btn-create-new:checked, QToolButton.btn-create-new:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.btn-create-new, QToolButton.btn-create-new:checked, QToolButton.btn-create-new:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton.btn-create-new:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton.btn-create-new:checked, QToolButton.btn-create-new:pressed { border-color: var(--primary); }
+QToolButton.btn-create-new:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton[themeID="addIconSmall"], QPushButton[themeID="addIconSmall"]:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_plus_base); }
 QPushButton[themeID="addIconSmall"]:checked, QPushButton[themeID="addIconSmall"]:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_plus_primary); }
 QPushButton[themeID="addIconSmall"]:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_plus_primary_hover); }
 QPushButton[themeID="addIconSmall"]:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton[themeID="addIconSmall"], QToolButton[themeID="addIconSmall"]:hover, QToolButton[themeID="addIconSmall"]:checked, QToolButton[themeID="addIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="addIconSmall"], QToolButton[themeID="addIconSmall"]:checked, QToolButton[themeID="addIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="addIconSmall"]:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton[themeID="addIconSmall"]:checked, QToolButton[themeID="addIconSmall"]:pressed { border-color: var(--primary); }
+QToolButton[themeID="addIconSmall"]:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton[themeID="removeIconSmall"], QPushButton[themeID="removeIconSmall"]:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_minus_base); }
 QPushButton[themeID="removeIconSmall"]:checked, QPushButton[themeID="removeIconSmall"]:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_minus_primary); }
 QPushButton[themeID="removeIconSmall"]:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_minus_primary_hover); }
 QPushButton[themeID="removeIconSmall"]:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton[themeID="removeIconSmall"], QToolButton[themeID="removeIconSmall"]:hover, QToolButton[themeID="removeIconSmall"]:checked, QToolButton[themeID="removeIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="removeIconSmall"], QToolButton[themeID="removeIconSmall"]:checked, QToolButton[themeID="removeIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="removeIconSmall"]:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton[themeID="removeIconSmall"]:checked, QToolButton[themeID="removeIconSmall"]:pressed { border-color: var(--primary); }
+QToolButton[themeID="removeIconSmall"]:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton[themeID="upArrowIconSmall"], QPushButton[themeID="upArrowIconSmall"]:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_chevron_up_base); }
 QPushButton[themeID="upArrowIconSmall"]:checked, QPushButton[themeID="upArrowIconSmall"]:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_chevron_up_primary); }
 QPushButton[themeID="upArrowIconSmall"]:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_chevron_up_primary_hover); }
 QPushButton[themeID="upArrowIconSmall"]:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton[themeID="upArrowIconSmall"], QToolButton[themeID="upArrowIconSmall"]:hover, QToolButton[themeID="upArrowIconSmall"]:checked, QToolButton[themeID="upArrowIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="upArrowIconSmall"], QToolButton[themeID="upArrowIconSmall"]:checked, QToolButton[themeID="upArrowIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="upArrowIconSmall"]:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton[themeID="upArrowIconSmall"]:checked, QToolButton[themeID="upArrowIconSmall"]:pressed { border-color: var(--primary); }
+QToolButton[themeID="upArrowIconSmall"]:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton[themeID="downArrowIconSmall"], QPushButton[themeID="downArrowIconSmall"]:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_chevron_down_base); }
 QPushButton[themeID="downArrowIconSmall"]:checked, QPushButton[themeID="downArrowIconSmall"]:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_chevron_down_primary); }
 QPushButton[themeID="downArrowIconSmall"]:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_chevron_down_primary_hover); }
 QPushButton[themeID="downArrowIconSmall"]:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton[themeID="downArrowIconSmall"], QToolButton[themeID="downArrowIconSmall"]:hover, QToolButton[themeID="downArrowIconSmall"]:checked, QToolButton[themeID="downArrowIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="downArrowIconSmall"], QToolButton[themeID="downArrowIconSmall"]:checked, QToolButton[themeID="downArrowIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="downArrowIconSmall"]:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton[themeID="downArrowIconSmall"]:checked, QToolButton[themeID="downArrowIconSmall"]:pressed { border-color: var(--primary); }
+QToolButton[themeID="downArrowIconSmall"]:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
 QPushButton[themeID="refreshIconSmall"], QPushButton[themeID="refreshIconSmall"]:hover { background: var(--bg_base); color: var(--text); icon: var(--cw_icon_refresh_base); }
 QPushButton[themeID="refreshIconSmall"]:checked, QPushButton[themeID="refreshIconSmall"]:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_refresh_primary); }
 QPushButton[themeID="refreshIconSmall"]:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_refresh_primary_hover); }
 QPushButton[themeID="refreshIconSmall"]:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }
-QToolButton[themeID="refreshIconSmall"], QToolButton[themeID="refreshIconSmall"]:hover, QToolButton[themeID="refreshIconSmall"]:checked, QToolButton[themeID="refreshIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="refreshIconSmall"], QToolButton[themeID="refreshIconSmall"]:checked, QToolButton[themeID="refreshIconSmall"]:pressed { background: var(--bg_base); color: var(--text); }
+QToolButton[themeID="refreshIconSmall"]:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }
 QToolButton[themeID="refreshIconSmall"]:checked, QToolButton[themeID="refreshIconSmall"]:pressed { border-color: var(--primary); }
+QToolButton[themeID="refreshIconSmall"]:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }
+QPushButton#sourcePropertiesButton, QPushButton#sourcePropertiesButton:hover { icon: var(--cw_icon_cogs_button); color: var(--on_button); }
+QPushButton#sourcePropertiesButton:checked, QPushButton#sourcePropertiesButton:pressed { icon: var(--cw_icon_cogs_primary); color: var(--on_primary); }
+QPushButton#sourcePropertiesButton:checked:hover:!pressed { icon: var(--cw_icon_cogs_primary_hover); color: var(--on_primary_hover); }
+QPushButton#sourcePropertiesButton:disabled { color: var(--on_button_disabled); }
+QPushButton#sourceFiltersButton, QPushButton#sourceFiltersButton:hover { icon: var(--cw_icon_filter_button); color: var(--on_button); }
+QPushButton#sourceFiltersButton:checked, QPushButton#sourceFiltersButton:pressed { icon: var(--cw_icon_filter_primary); color: var(--on_primary); }
+QPushButton#sourceFiltersButton:checked:hover:!pressed { icon: var(--cw_icon_filter_primary_hover); color: var(--on_primary_hover); }
+QPushButton#sourceFiltersButton:disabled { color: var(--on_button_disabled); }
+/* Native Filters window and its auto-filled property area need an opaque palette. */
+OBSBasicFilters { background-color: var(--bg_window); background-image: var(--pattern_eyes); }
+
 /* Native Settings window backdrop — order matters in Qt */
 OBSBasicSettings { background-color: var(--bg_window); background-image: var(--pattern_eyes); }
 /* colorway:button-icons:end */

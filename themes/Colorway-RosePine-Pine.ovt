@@ -115,6 +115,9 @@
     --cw_icon_gamepad_primary: 'url(theme:icons/colorway/mingcute/normal/gamepad.svg)';
     --cw_icon_globe_primary: 'url(theme:icons/colorway/mingcute/normal/globe.svg)';
     --cw_icon_group_primary: 'url(theme:icons/colorway/mingcute/normal/group.svg)';
+    --cw_icon_headphone_primary: 'url(theme:icons/colorway/mingcute/normal/headphone.svg)';
+    --cw_icon_headphone_off_primary: 'url(theme:icons/colorway/mingcute/normal/headphone-off.svg)';
+    --cw_icon_warning_primary: 'url(theme:icons/colorway/mingcute/normal/warning.svg)';
     --cw_icon_image_primary: 'url(theme:icons/colorway/mingcute/normal/image.svg)';
     --cw_icon_interact_primary: 'url(theme:icons/colorway/mingcute/normal/interact.svg)';
     --cw_icon_layout_horizontal_primary: 'url(theme:icons/colorway/mingcute/normal/layout-horizontal.svg)';

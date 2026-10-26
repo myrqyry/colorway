@@ -34,7 +34,7 @@ test('patterns decorate structural surfaces, not dense lists, tree data, or dock
   }
 });
 
-test('Settings outer shell and navigation carry the decorative pattern without flattening its background', () => {
+test('Settings outer shell keeps the decorative pattern, navigation sidebar stays readable', () => {
   const qss = base.replace(/\/\*[\s\S]*?\*\//g, '');
   const rules = [...qss.matchAll(/([^{}]+)\{([^{}]*)\}/g)];
   const exact = (selector) => rules.filter(([, selectors]) => selectors.split(',').some((x) => x.trim() === selector)).map(([, , body]) => body);
@@ -44,7 +44,7 @@ test('Settings outer shell and navigation carry the decorative pattern without f
   assert.match(lastShell, /background-image:\s*var\(--pattern_eyes\)/, 'final Settings rule must retain the image');
   assert.match(lastShell, /background-color:\s*var\(--bg_window\)/, 'final Settings rule must supply theme color');
   const navigation = exact('OBSBasicSettings QListWidget').join('\n');
-  assert.match(navigation, /background-image:\s*var\(--pattern_eyes\)/, 'Settings sidebar should show artwork too');
+  assert.doesNotMatch(navigation, /background-image:\s*var\(--pattern_eyes\)/, 'Settings sidebar pattern removed for a calm readable surface');
   assert.doesNotMatch(navigation, /background-repeat\s*:/, 'Qt does not support CSS pattern tiling override');
 });
 

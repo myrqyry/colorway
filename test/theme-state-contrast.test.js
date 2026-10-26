@@ -28,7 +28,7 @@ const ratio = (a, b) => (Math.max(luminance(a), luminance(b)) + 0.05)
 test('state foregrounds and baked glyphs remain legible across the whole composed corpus', () => {
   for (const file of readdirSync(new URL('themes/', root)).filter((name) => /\.(obt|ovt)$/.test(name))) {
     const vars = { ...baseVars, ...varsOf(read('themes/' + file)) };
-    for (const [role, bg] of [['base', '--bg_base'], ['primary', '--primary'],
+    for (const [role, bg] of [['base', '--bg_base'], ['button', '--button_bg'], ['primary', '--primary'],
       ['primary_hover', '--primary_light'], ['primary_dark', '--primary_dark']]) {
       assert.ok(ratio(resolve(vars, `--on_${role}`), resolve(vars, bg)) >= 4.5, `${file}: ${role} ink`);
       if (role === 'primary_dark') continue;

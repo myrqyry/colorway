@@ -148,6 +148,12 @@
     --on_input_hover: #cedcca;
     --on_input_focus: #cedcca;
     --on_nav_hover: #f2e2dc;
+    --on_mixer_muted: #eb939e;
+    --on_mixer_monitor: #b5dfa5;
+    --on_mixer_warning: #efe5ba;
+    --cw_mixer_muted: 'url(theme:icons/colorway/mingcute/mixer/volume-mute-eb939e.svg)';
+    --cw_mixer_monitor: 'url(theme:icons/colorway/mingcute/mixer/headphone-b5dfa5.svg)';
+    --cw_mixer_warning: 'url(theme:icons/colorway/mingcute/mixer/warning-efe5ba.svg)';
     /* colorway:state-tokens:end */
 
 }

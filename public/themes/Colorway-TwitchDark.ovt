@@ -110,6 +110,7 @@
     --on_input: #efeff1;
     --on_input_hover: #efeff1;
     --on_input_focus: #efeff1;
+    --on_mixer_warning: #ffb000;
     --cw_icon_arrow_down_primary: 'url(theme:icons/colorway/mingcute/normal/arrow-down.svg)';
     --cw_icon_arrow_up_primary: 'url(theme:icons/colorway/mingcute/normal/arrow-up.svg)';
     --cw_icon_audio_primary: 'url(theme:icons/colorway/mingcute/normal/audio.svg)';
@@ -131,6 +132,9 @@
     --cw_icon_gamepad_primary: 'url(theme:icons/colorway/mingcute/normal/gamepad.svg)';
     --cw_icon_globe_primary: 'url(theme:icons/colorway/mingcute/normal/globe.svg)';
     --cw_icon_group_primary: 'url(theme:icons/colorway/mingcute/normal/group.svg)';
+    --cw_icon_headphone_primary: 'url(theme:icons/colorway/mingcute/normal/headphone.svg)';
+    --cw_icon_headphone_off_primary: 'url(theme:icons/colorway/mingcute/normal/headphone-off.svg)';
+    --cw_icon_warning_primary: 'url(theme:icons/colorway/mingcute/normal/warning.svg)';
     --cw_icon_image_primary: 'url(theme:icons/colorway/mingcute/normal/image.svg)';
     --cw_icon_interact_primary: 'url(theme:icons/colorway/mingcute/normal/interact.svg)';
     --cw_icon_layout_horizontal_primary: 'url(theme:icons/colorway/mingcute/normal/layout-horizontal.svg)';
@@ -162,6 +166,7 @@
     --cw_icon_window_primary: 'url(theme:icons/colorway/mingcute/normal/window.svg)';
     --cw_icon_download_primary: 'url(theme:icons/colorway/mingcute/normal/download.svg)';
     --on_primary_hover: var(--bg_base);
+    --cw_mixer_warning: 'url(theme:icons/colorway/mingcute/mixer/warning-ffb000.svg)';
     /* colorway:state-tokens:end */
 
 }

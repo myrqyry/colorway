@@ -125,6 +125,9 @@
     --on_input_hover: #575279;
     --on_input_focus: #575279;
     --on_nav_hover: #747474;
+    --on_mixer_muted: #b4637a;
+    --on_mixer_monitor: #286983;
+    --on_mixer_warning: #955c0f;
     --on_primary: #000000;
     --on_primary_hover: #000000;
     --on_primary_dark: #000000;
@@ -149,6 +152,9 @@
     --cw_icon_gamepad_base: 'url(theme:icons/colorway/mingcute/selected/gamepad.svg)';
     --cw_icon_globe_base: 'url(theme:icons/colorway/mingcute/selected/globe.svg)';
     --cw_icon_group_base: 'url(theme:icons/colorway/mingcute/selected/group.svg)';
+    --cw_icon_headphone_base: 'url(theme:icons/colorway/mingcute/selected/headphone.svg)';
+    --cw_icon_headphone_off_base: 'url(theme:icons/colorway/mingcute/selected/headphone-off.svg)';
+    --cw_icon_warning_base: 'url(theme:icons/colorway/mingcute/selected/warning.svg)';
     --cw_icon_image_base: 'url(theme:icons/colorway/mingcute/selected/image.svg)';
     --cw_icon_interact_base: 'url(theme:icons/colorway/mingcute/selected/interact.svg)';
     --cw_icon_layout_horizontal_base: 'url(theme:icons/colorway/mingcute/selected/layout-horizontal.svg)';
@@ -179,6 +185,15 @@
     --cw_icon_volume_mute_base: 'url(theme:icons/colorway/mingcute/selected/volume-mute.svg)';
     --cw_icon_window_base: 'url(theme:icons/colorway/mingcute/selected/window.svg)';
     --cw_icon_download_base: 'url(theme:icons/colorway/mingcute/selected/download.svg)';
+    --cw_icon_cogs_button: 'url(theme:icons/colorway/mingcute/selected/cogs.svg)';
+    --cw_icon_filter_button: 'url(theme:icons/colorway/mingcute/selected/filter.svg)';
+    --cw_spin_chevron_up: 'url(theme:icons/colorway/mingcute/spin/up-small-fill-selected.svg)';
+    --cw_spin_chevron_down: 'url(theme:icons/colorway/mingcute/spin/down-small-fill-selected.svg)';
+    --cw_mixer_muted: 'url(theme:icons/colorway/mingcute/mixer/volume-mute-b4637a.svg)';
+    --cw_mixer_monitor: 'url(theme:icons/colorway/mingcute/mixer/headphone-286983.svg)';
+    --cw_mixer_warning: 'url(theme:icons/colorway/mingcute/mixer/warning-955c0f.svg)';
+    --cw_zoom_plus: 'url(theme:icons/colorway/mingcute/zoom/plus-selected.svg)';
+    --cw_zoom_minus: 'url(theme:icons/colorway/mingcute/zoom/minus-selected.svg)';
     /* colorway:state-tokens:end */
 
 }

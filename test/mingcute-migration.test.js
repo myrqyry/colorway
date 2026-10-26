@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import { ICON_FILES, stateTokens, contrast } from '../scripts/theme-state-tokens.mjs';
-import { SETTINGS_NAV_ICONS } from '../scripts/build-mingcute-icons.mjs';
+import { ICON_FILES, stateTokens, contrast, resolveAlias } from '../scripts/theme-state-tokens.mjs';
+import { SETTINGS_NAV_ICONS, referencedMixerIcons, HEADPHONE_OFF_MARK } from '../scripts/build-mingcute-icons.mjs';
 import { parseOVT } from '../src/theme-loader.js';
 
 const root = new URL('../', import.meta.url);
@@ -13,7 +13,8 @@ const mapping = JSON.parse(read('icons/mingcute-map.json'));
 
 test('every Colorway icon shipped to OBS is a real MingCute SVG with both contrasting variants', () => {
   const manifest = assets();
-  assert.equal(manifest.filter((path) => path.startsWith('icons/colorway/mingcute/') && path.endsWith('.svg')).length, ICON_FILES.length * 2 + 6 + SETTINGS_NAV_ICONS.length);
+  assert.equal(manifest.filter((path) => path.startsWith('icons/colorway/mingcute/') && path.endsWith('.svg')).length,
+    ICON_FILES.length * 2 + 6 + SETTINGS_NAV_ICONS.length + 8 + referencedMixerIcons().length);
   assert.equal(manifest.filter((path) => path.includes('iconamoon')).length, 0);
   assert.ok(manifest.includes('icons/colorway/mingcute/LICENSE'));
   assert.match(read('icons/colorway/mingcute/LICENSE'), /Apache License/);
@@ -27,7 +28,8 @@ test('every Colorway icon shipped to OBS is a real MingCute SVG with both contra
       assert.doesNotMatch(svg, /currentColor/);
     }
     assert.notEqual(normal, selected, file + ': state ink must differ');
-    const pinned = read('icons/vendor/mingcute/' + mapping.icons[file.slice(0, -4)] + '.svg');
+    const original = read('icons/vendor/mingcute/' + mapping.icons[file.slice(0, -4)] + '.svg');
+    const pinned = file === 'headphone-off.svg' ? original.replace('</svg>', HEADPHONE_OFF_MARK + '</svg>') : original;
     assert.equal(normal, pinned.replaceAll('currentColor', mapping.normalInk)
       .replace('<svg ', '<svg width="16" height="16" '), file + ': real pinned normal glyph');
     assert.equal(selected, pinned.replaceAll('currentColor', mapping.selectedInk)
@@ -37,6 +39,50 @@ test('every Colorway icon shipped to OBS is a real MingCute SVG with both contra
     assert.ok(manifest.includes('icons/colorway/mingcute/normal/' + file));
     assert.ok(manifest.includes('icons/colorway/mingcute/selected/' + file));
   }
+});
+
+test('spinboxes use real MingCute up-small-fill/down-small-fill, not altered generic chevrons', () => {
+  const manifest = assets();
+  const vars = new Map(Object.entries(parseOVT(base()).vars));
+  const generated = stateTokens(vars);
+  for (const direction of ['up', 'down']) {
+    const polarity = generated.get('--cw_icon_chevron_' + direction + '_base').includes('/normal/') ? 'normal' : 'selected';
+    assert.equal(generated.get('--cw_spin_chevron_' + direction),
+      `url(theme:icons/colorway/mingcute/spin/${direction}-small-fill-${polarity}.svg)`);
+    for (const ink of ['normal', 'selected']) {
+      const path = `icons/colorway/mingcute/spin/${direction}-small-fill-${ink}.svg`;
+      const svg = read(path);
+      const original = read(`icons/vendor/mingcute/${direction}-small-fill.svg`);
+      assert.match(original, /fill-rule="evenodd"/);
+      assert.match(original, /fill="currentColor"/);
+      assert.equal(svg, original.replaceAll('currentColor', mapping[ink + 'Ink'])
+        .replace('width="1em" height="1em"', 'width="9" height="9"')
+        .replace('viewBox="0 0 24 24"', 'viewBox="8 8 8 8"'));
+      assert.equal(read('public/' + path), svg);
+      assert.ok(manifest.includes(path));
+    }
+  }
+});
+
+test('mixer semantic assets preserve pinned geometry, correct ink, and complete distribution', () => {
+  const manifest = assets();
+  const baseVars = parseOVT(base().replace(/\/\*[^]*?\*\//g, '')).vars;
+  for (const file of ['Colorway.obt', ...readdirSync(new URL('themes/', root)).filter(x => x.endsWith('.ovt'))]) {
+    const vars = { ...baseVars, ...parseOVT(read('themes/' + file).replace(/\/\*[^]*?\*\//g, '')).vars };
+    for (const [role, glyph] of [['muted', 'volume-mute'], ['monitor', 'headphone'], ['warning', 'warning']]) {
+      const url = vars['--cw_mixer_' + role].replace(/^['"]|['"]$/g, '');
+      const path = url.match(/^url\(theme:([^)]*)\)$/)?.[1];
+      assert.ok(path, file + ': invalid mixer asset URL');
+      const ink = vars['--on_mixer_' + role];
+      assert.ok(contrast(ink, resolveAlias(new Map(Object.entries(vars)), '--bg_base')) >= 3, file + ': ' + role + ' ink');
+      assert.equal(read(path), read('icons/vendor/mingcute/' + mapping.icons[glyph] + '.svg')
+        .replaceAll('currentColor', ink.toLowerCase()).replace('<svg ', '<svg width="16" height="16" '));
+      assert.equal(read('public/' + path), read(path));
+      assert.ok(manifest.includes(path));
+    }
+  }
+  assert.notEqual(read('icons/colorway/mingcute/normal/headphone-off.svg'), read('icons/colorway/mingcute/normal/headphone.svg'));
+  assert.match(read('icons/colorway/mingcute/normal/headphone-off.svg'), /d="M3 3l18 18"/);
 });
 
 test('Settings navigation glyphs have a calm two-tone keyline for neutral and accent selected rows', () => {

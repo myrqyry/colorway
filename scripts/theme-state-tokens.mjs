@@ -7,7 +7,7 @@ export const ICON_FILES = [
   'checkbox_fill.svg', 'checkbox_line.svg', 'chevron-down.svg', 'chevron-right.svg',
   'chevron-up.svg', 'close.svg', 'cogs.svg', 'default.svg', 'display.svg',
   'dots-vert.svg', 'eye-off.svg', 'eye.svg', 'filter.svg', 'gamepad.svg', 'globe.svg',
-  'group.svg', 'image.svg', 'interact.svg', 'layout-horizontal.svg',
+  'group.svg', 'headphone.svg', 'headphone-off.svg', 'warning.svg', 'image.svg', 'interact.svg', 'layout-horizontal.svg',
   'layout-vertical.svg', 'lock.svg', 'media-play.svg', 'media-stop.svg', 'microphone.svg',
   'minus.svg', 'output.svg', 'pause.svg', 'pin.svg', 'plus.svg', 'popout.svg',
   'refresh.svg', 'revert.svg', 'save.svg', 'scene.svg', 'settings.svg', 'slideshow.svg',
@@ -94,6 +94,9 @@ export const LEGIBILITY_ROLES = [
   ['--on_input_hover', '--text', ['--input_bg_hover'], 4.5],
   ['--on_input_focus', '--text', ['--input_bg_focus'], 4.5],
   ['--on_nav_hover', '--text_light', ['--bg_preview'], 4.5],
+  ['--on_mixer_muted', '--danger', ['--bg_base'], 3],
+  ['--on_mixer_monitor', '--success', ['--bg_base'], 3],
+  ['--on_mixer_warning', '--warning', ['--bg_base'], 3],
 ];
 
 export function flattenSurface(vars, key) {
@@ -113,14 +116,16 @@ export function stateTokens(vars) {
   }
   for (const [role, background] of [
     ['primary', '--primary'], ['primary_hover', '--primary_light'],
-    ['primary_dark', '--primary_dark'], ['base', '--bg_base'],
+    ['primary_dark', '--primary_dark'], ['base', '--bg_base'], ['button', '--button_bg'],
   ]) {
     const bg = resolveAlias(vars, background);
     const preferred = role === 'base' ? ['--text'] : ['--text_inverse', '--text', '--bg_base'];
     const ink = preferred.map((key) => [key, resolveAlias(vars, key)])
       .find(([, color]) => contrast(color, bg) >= 4.5);
-    tokens.set(`--on_${role}`, ink ? `var(${ink[0]})`
-      : contrast('#000000', bg) >= contrast('#ffffff', bg) ? '#000000' : '#ffffff');
+    if (role !== 'button') {
+      tokens.set(`--on_${role}`, ink ? `var(${ink[0]})`
+        : contrast('#000000', bg) >= contrast('#ffffff', bg) ? '#000000' : '#ffffff');
+    }
     // A glyph that contrasts with a button can still be the *opposite*
     // color from its label (Fairyfloss, Twitch Dark, Vercel). Prefer the
     // polarity closest to the actual foreground when it remains readable;
@@ -139,9 +144,25 @@ export function stateTokens(vars) {
       : candidates.sort((a, b) => contrast(b[1], bg) - contrast(a[1], bg))[0][0];
     if (role === 'primary_dark') continue;
     // State glyphs use existing fixed-color assets; no SVG currentColor assumption.
-    for (const file of ICON_FILES) {
+    for (const file of role === 'button' ? ['cogs.svg', 'filter.svg'] : ICON_FILES) {
       tokens.set(iconToken(file, role), `url(theme:icons/colorway/mingcute/${polarity}/${file})`);
     }
+  }
+  // Spinboxes use the real MingCute small-fill glyphs, with the palette's
+  // selected base-glyph polarity and a compact 9px view.
+  for (const direction of ['up', 'down']) {
+    const polarity = tokens.get(iconToken('chevron-' + direction + '.svg'))
+      .includes('/normal/') ? 'normal' : 'selected';
+    tokens.set('--cw_spin_chevron_' + direction,
+      `url(theme:icons/colorway/mingcute/spin/${direction}-small-fill-${polarity}.svg)`);
+  }
+  for (const [role, glyph] of [['muted', 'volume-mute'], ['monitor', 'headphone'], ['warning', 'warning']]) {
+    const ink = tokens.get('--on_mixer_' + role).slice(1).toLowerCase();
+    tokens.set('--cw_mixer_' + role, `url(theme:icons/colorway/mingcute/mixer/${glyph}-${ink}.svg)`);
+  }
+  for (const glyph of ['plus', 'minus']) {
+    const polarity = tokens.get(iconToken(glyph + '.svg')).includes('/normal/') ? 'normal' : 'selected';
+    tokens.set('--cw_zoom_' + glyph, `url(theme:icons/colorway/mingcute/zoom/${glyph}-${polarity}.svg)`);
   }
   return tokens;
 }
@@ -199,8 +220,22 @@ export function renderButtonIconRules(base) {
       `${button}:checked, ${button}:pressed { background: var(--primary); color: var(--on_primary); icon: var(--cw_icon_${name}_primary); }`,
       `${button}:checked:hover:!pressed { background: var(--primary_light); color: var(--on_primary_hover); icon: var(--cw_icon_${name}_primary_hover); }`,
       `${button}:disabled { background: var(--button_bg_disabled); color: var(--on_button_disabled); }`,
-      `${tool}, ${tool}:hover, ${tool}:checked, ${tool}:pressed { background: var(--bg_base); color: var(--text); }`,
+      `${tool}, ${tool}:checked, ${tool}:pressed { background: var(--bg_base); color: var(--text); }`,
+      `${tool}:hover:!pressed:!disabled { background: var(--button_bg_hover); border-color: var(--input_border_hover); }`,
       `${tool}:checked, ${tool}:pressed { border-color: var(--primary); }`,
+      `${tool}:checked:hover:!pressed { background: var(--button_bg_hover); border-color: var(--primary_lighter); }`,
+    );
+  }
+  // OBSBasic.ui supplies these native resource icons without an icon class or
+  // themeID. Bind their actual object names; leave the normal button geometry
+  // and backgrounds intact instead of applying the neutral toolbar rules.
+  for (const [id, name] of [['sourcePropertiesButton', 'cogs'], ['sourceFiltersButton', 'filter']]) {
+    const button = `QPushButton#${id}`;
+    rules.push(
+      `${button}, ${button}:hover { icon: var(--cw_icon_${name}_button); color: var(--on_button); }`,
+      `${button}:checked, ${button}:pressed { icon: var(--cw_icon_${name}_primary); color: var(--on_primary); }`,
+      `${button}:checked:hover:!pressed { icon: var(--cw_icon_${name}_primary_hover); color: var(--on_primary_hover); }`,
+      `${button}:disabled { color: var(--on_button_disabled); }`,
     );
   }
   // OBS 32.2 Qt applies the effective Settings window backdrop only when
@@ -209,8 +244,10 @@ export function renderButtonIconRules(base) {
   // Keep this footer inside the generated region so theme sync always leaves
   // it after all icon selectors. Child pages still paint their SVG patterns.
   return '/* colorway:button-icons:start — generated render-time QPushButton icons */\n'
-    + rules.join('\n')
-    + '\n/* Native Settings window backdrop — order matters in Qt */\n'
+     + rules.join('\n')
+     + '\n/* Native Filters window and its auto-filled property area need an opaque palette. */\n'
+     + 'OBSBasicFilters { background-color: var(--bg_window); background-image: var(--pattern_eyes); }\n'
+     + '\n/* Native Settings window backdrop — order matters in Qt */\n'
     + 'OBSBasicSettings { background-color: var(--bg_window); background-image: var(--pattern_eyes); }\n'
     + '/* colorway:button-icons:end */\n';
 }

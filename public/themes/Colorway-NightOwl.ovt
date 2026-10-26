@@ -116,9 +116,13 @@
     --on_input: #d6deeb;
     --on_input_hover: #d6deeb;
     --on_input_focus: #d6deeb;
+    --on_mixer_muted: #ef5350;
+    --on_mixer_warning: #ecc48d;
     --on_primary: var(--bg_base);
     --on_primary_hover: var(--bg_base);
     --on_primary_dark: var(--bg_base);
+    --cw_mixer_muted: 'url(theme:icons/colorway/mingcute/mixer/volume-mute-ef5350.svg)';
+    --cw_mixer_warning: 'url(theme:icons/colorway/mingcute/mixer/warning-ecc48d.svg)';
     /* colorway:state-tokens:end */
 
 }

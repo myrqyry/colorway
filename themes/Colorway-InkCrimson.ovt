@@ -110,6 +110,8 @@
     --on_input: #ffd9e8;
     --on_input_hover: #ffd9e8;
     --on_input_focus: #ffd9e8;
+    --on_mixer_muted: #ff0546;
+    --on_mixer_warning: #245b9f;
     --on_primary_hover: var(--text);
     --cw_icon_arrow_down_primary_hover: 'url(theme:icons/colorway/mingcute/normal/arrow-down.svg)';
     --cw_icon_arrow_up_primary_hover: 'url(theme:icons/colorway/mingcute/normal/arrow-up.svg)';
@@ -132,6 +134,9 @@
     --cw_icon_gamepad_primary_hover: 'url(theme:icons/colorway/mingcute/normal/gamepad.svg)';
     --cw_icon_globe_primary_hover: 'url(theme:icons/colorway/mingcute/normal/globe.svg)';
     --cw_icon_group_primary_hover: 'url(theme:icons/colorway/mingcute/normal/group.svg)';
+    --cw_icon_headphone_primary_hover: 'url(theme:icons/colorway/mingcute/normal/headphone.svg)';
+    --cw_icon_headphone_off_primary_hover: 'url(theme:icons/colorway/mingcute/normal/headphone-off.svg)';
+    --cw_icon_warning_primary_hover: 'url(theme:icons/colorway/mingcute/normal/warning.svg)';
     --cw_icon_image_primary_hover: 'url(theme:icons/colorway/mingcute/normal/image.svg)';
     --cw_icon_interact_primary_hover: 'url(theme:icons/colorway/mingcute/normal/interact.svg)';
     --cw_icon_layout_horizontal_primary_hover: 'url(theme:icons/colorway/mingcute/normal/layout-horizontal.svg)';
@@ -162,6 +167,8 @@
     --cw_icon_volume_mute_primary_hover: 'url(theme:icons/colorway/mingcute/normal/volume-mute.svg)';
     --cw_icon_window_primary_hover: 'url(theme:icons/colorway/mingcute/normal/window.svg)';
     --cw_icon_download_primary_hover: 'url(theme:icons/colorway/mingcute/normal/download.svg)';
+    --cw_mixer_muted: 'url(theme:icons/colorway/mingcute/mixer/volume-mute-ff0546.svg)';
+    --cw_mixer_warning: 'url(theme:icons/colorway/mingcute/mixer/warning-245b9f.svg)';
     /* colorway:state-tokens:end */
 
 }
