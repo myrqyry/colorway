@@ -1,6 +1,21 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Remove unused OBS state-test popup and launcher (2026-10-26)
+
+The user explicitly rejected the fake alert/crash-recovery stress-test popup
+and asked to remove the button that opens it. Removed the entire popup
+(including the nested recently added control playground) and both launchers
+(the hidden heading button and the dynamically injected Appearance button),
+plus event, focus-management and modal inert wiring, obsolete CSS, and tests
+that treated this feature as required. The existing main Colorway sample
+widgets, OBS mock controls, status indicators, Appearance controller, and
+shared 27px dropdown minimum are preserved. The old feature and prior
+implementation remain in repository history only. The Chromium preview parity
+check asserts there is no modal or launcher after mounting. Do not revive the
+removed popup without a specific request.
+
+
 
 ## Browser element playground — focused showcase (2026-10-26)
 

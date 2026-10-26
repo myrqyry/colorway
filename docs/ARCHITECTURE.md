@@ -258,7 +258,7 @@ So for these five modules a green `pnpm test` proves the source still contains c
 
 The only module that *creates* the OBS UI. `mountObsPreview()` (line 638) is the entry point; everything else builds its markup.
 
-- **Markup builders** — `dock`, `controlsDock`, `settingsMarkup`, `previewMarkup`, `stateLabMarkup`, `sceneRows`, `sourceRows`, `mixerChannel`.
+- **Markup builders** — `dock`, `controlsDock`, `settingsMarkup`, `previewMarkup`, `sceneRows`, `sourceRows`, `mixerChannel`.
 - **Icon system** — `escapeHtml`, `iconPath`, `iconMarkup`, `setIcon`, `buttonIcon` resolve icons from `icons/` and inject them as inline SVG.
 - **Wiring** — `wirePreview` (docks, action buttons, menus), `wireDensity`, `setAppearancePanel`, `syncStyleName`, `toggleControl`.
 - Simulates the studio-mode controls (`data-control="stream" | "record" | "virtualcam" | "studio"`) with their status labels and the stream/network indicators and bitrate readout.
@@ -270,7 +270,7 @@ A `MutationObserver` inside `syncStyleName` keeps the displayed style name curre
 Replaces the page's default form controls with OBS-like equivalents. Imports `THEMES`, `PATTERNS`, and `DEFAULT_PATTERN` from `theme-catalog.js`.
 
 - **Theme picker** — `buildThemePicker`, `refreshThemeOptions`, `syncThemePicker`, `makeThemeOption`, `hasFullThemeList` turn theme selection into an OBS-style dropdown with a palette preview, delegating to `selectTheme` / `applyPattern`.
-- **State Lab** — `wireStateLabModality` implements the modal behavior: `inert` on everything outside while open, Escape to dismiss, and `returnFocus` to restore focus on close. `populateStateLabControl`, `syncVisibleControls`, and `ensureAppearanceControls` keep it in sync with the active theme.
+- **Appearance controls** — `syncVisibleControls` and `ensureAppearanceControls` keep the permanent theme/pattern picker aligned with the active theme. The obsolete state-test modal and launcher have been removed.
 - `makeSettingsPermanent` pins the Settings dock open; `removeTopYamiShortcut` strips a shortcut that should not be there.
 
 ### 3.9 `src/obs-preview-actions.js` — Import, export, branding (414 lines)

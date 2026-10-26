@@ -15,21 +15,15 @@ Colorway uses selected material from [obsproject/design](https://github.com/obsp
 - `mockups/sources-toolbar/sources-toolbar.svg`: static actions move to the end; Filters and Properties become icon actions; related controls stay grouped.
 - `icons/`: OBS status semantics (streaming, recording, network) informed the simulator; the artwork now uses the pinned MingCute icon set.
 - `resources/colors.md`: semantic roles (accent, destructive, layered backgrounds, controls, borders) are treated as validation targets, not literal palette values.
-- `resources/widgets.svg`: the labeled `Warning`, `Error`, and `Secondary information` specimens inform Colorway's state stress-test vocabulary.
-- `mockups/crash-recovery/crash-recovery.svg`: the `Crash Recovery`, `Run in Safe Mode`, and `Run Normally` language is represented in the stress test so themes are exercised against a consequential decision surface.
 
 The MingCute status SVGs are rendered as CSS masks. The indicator states remain OBS-informed, while Colorway's `.ovt` semantic variables determine visible color.
 
-## State stress test
+## Scope
 
-The preview's **Test UI states** control is intentionally a Colorway testing surface, not a claim about current OBS notification placement. It renders all semantic state roles at once:
-
-- informational UI uses `--primary` because Colorway does not define a separate info token,
-- warning uses `--warning`,
-- error/destructive uses `--danger`,
-- recovery/healthy uses `--success`.
-
-That makes theme changes expose semantic-color failures immediately instead of leaving those roles visible only as palette swatches.
+Colorway retains OBS design-source evidence for toolbar grouping and status
+indicators. The old fake notification/crash-recovery stress-test popup and its
+launcher were removed from the web preview; it was not part of the OBS theme
+format or a useful showcase surface.
 
 ## Maintenance rule
 
