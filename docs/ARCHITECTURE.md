@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-Colorway is a theme system for OBS Studio that distributes custom `.ovt` (OBS Variant Theme) files through a static preview site. A variant theme is a small text file that overrides the 40 tracked palette tokens — backgrounds, text colors, accent hues, borders — on top of a full base theme (`Colorway.obt`, 274 variables). Each variant also restates a handful of layout properties (72 custom properties per variant in total); everything else cascades from the base. The site provides real-time previews of all 159 variants, direct downloads, upload-based conversion from any `.ovt` into the Colorway format, and algorithmic generation of OBS themes from any Lospec palette.
+Colorway is a theme system for OBS Studio that distributes custom `.ovt` (OBS Variant Theme) files through a static preview site. A variant theme is a small text file that overrides the 40 tracked palette tokens — backgrounds, text colors, accent hues, borders — on top of a full base theme (`Colorway.obt`, 274 variables). Each variant also restates a handful of layout properties (72 custom properties per variant in total); everything else cascades from the base. The site provides real-time previews of all 160 variants, direct downloads, upload-based conversion from any `.ovt` into the Colorway format, and algorithmic generation of OBS themes from any Lospec palette.
 
 The system is entirely client-side (no server), deployed as a Vite-built static site on Vercel.
 
@@ -17,7 +17,7 @@ The system is entirely client-side (no server), deployed as a Vite-built static 
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────┐ │
 │  │  theme-       │  │  theme-      │  │  theme-              │ │
 │  │  catalog.js   │──│  loader.js   │  │  workbench.js        │ │
-│  │  (159 themes) │  │  (parse,     │  │  (normalize,         │ │
+│  │  (160 themes) │  │  (parse,     │  │  (normalize,         │ │
 │  │               │  │   resolve,   │  │   serialize,         │ │
 │  │               │  │   apply)     │  │   Lospec import)     │ │
 │  └──────────────┘  └──────┬───────┘  └──────────┬───────────┘ │
@@ -58,7 +58,7 @@ The system is entirely client-side (no server), deployed as a Vite-built static 
 
 ### Data flow
 
-1. **Page load**: `renderApp()` renders the shell, including a fixed full-viewport intro overlay (`#colorway-intro`) with a large per-character "Colorway" word (manual char spans, no SplitText). `runIntro()` starts `preloadAllThemes()` (chunks all 159 themes, fetches each `.ovt` from `public/themes/`, parses via `parseOVT()`, resolves inheritance chains, extracts a 6-color palette preview) and the GSAP `playColorwayIntroOpening()` concurrently. Only when both settle (`Promise.all`) does the app prepare the initial random theme under the overlay (`setTheme(initialTheme, { transition: false, animateTitle: false })`), init the workbench, then hand the settled word off into the sticky header title via `handoffColorway()` before `startShuffle()` begins. The handoff lands directly into the final header state; it does not trigger a second title animation.
+1. **Page load**: `renderApp()` renders the shell, including a fixed full-viewport intro overlay (`#colorway-intro`) with a large per-character "Colorway" word (manual char spans, no SplitText). `runIntro()` starts `preloadAllThemes()` (chunks all 160 themes, fetches each `.ovt` from `public/themes/`, parses via `parseOVT()`, resolves inheritance chains, extracts a 6-color palette preview) and the GSAP `playColorwayIntroOpening()` concurrently. Only when both settle (`Promise.all`) does the app prepare the initial random theme under the overlay (`setTheme(initialTheme, { transition: false, animateTitle: false })`), init the workbench, then hand the settled word off into the sticky header title via `handoffColorway()` before `startShuffle()` begins. The handoff lands directly into the final header state; it does not trigger a second title animation.
 2. **Theme selection**: Clicking a theme row calls `setTheme(file, { patternFile })` → `loadTheme(file)` → cache check → `resolveTheme(file)` → fetch raw `.ovt` → `parseOVT()` → recursively resolve `extends:` chain → merge variables → `applyThemeState(file, theme, patternFile)` applies the theme, updates the palette/status, syncs the pattern select (via a dispatched `change` event that also drives the OBS Appearance mirror and ambient generator), and toggles the active theme row. The swap is committed atomically through the View Transition API when available, with a GSAP fade (`crossfadeShowcase`, promise-based) as the fallback; `transition: false` skips animation entirely. After the transition, `animateHeaderColorway()` plays a full per-character 3D turn on the header title; retriggers queue one additional roll rather than snapping an in-flight animation back to its start. The slideshow advances through shuffle bags for both theme and pattern (current pick excluded, `pattern.svg` skipped) so neither repeats until the bag is exhausted. A 12s cadence (`SHUFFLE_MS`) drives it; the circular shuffle button skips to the next theme immediately, the `❚❚` button beside the theme name toggles pause/resume, and a thin linear progress bar (plus the ring) shows time until the next change.
 3. **Import**: Drop a `.ovt` file → `importThemeFile()` → `file.text()` → `toNormalizedTheme()` → `parseOVT()` → preview. "Apply" writes tokens to CSS. "Download" serializes via `serializeOVT()`.
 4. **Lospec generation**: Paste a slug → `fromLospecPalette(slug)` → fetch `https://lospec.com/palette-list/<slug>.json` → `assignRoles()` sorts hexes by OKLCH lightness → maps darkest→bg, lightest→text, most saturated→accent → derives ~30 OBS tokens → preview/download.
@@ -193,7 +193,7 @@ Single-page app with four screen regions:
 ### 3.4 `src/theme-catalog.js` — Registry
 
 Static catalog containing:
-- `THEMES` — Array of `{ file, name }` for all 159 built-in variants (generated by `scripts/sync-theme-mirrors.mjs`)
+- `THEMES` — Array of `{ file, name }` for all 160 built-in variants (generated by `scripts/sync-theme-mirrors.mjs`)
 - `PATTERNS` — 14 SVG background patterns for the preview backdrop
 - `DEFAULT_THEME` — `'Colorway-CatppuccinMocha.ovt'`
 - `DEFAULT_PATTERN` — `'pattern.svg'`
@@ -403,7 +403,7 @@ All matrix values are the standard OKLab constants from Björn Ottosson's 2020 p
 colorway/
 ├── themes/
 │   ├── Colorway.obt                       # Base theme (~3659 lines, 274 vars)
-│   └── Colorway-*.ovt                     # 159 variant themes (40 palette tokens each)
+│   └── Colorway-*.ovt                     # 160 variant themes (40 palette tokens each)
 ├── patterns/                              # 14 SVG background patterns (source of truth)
 ├── fonts/                                 # Bundled font (BricolageGrotesqueVariable.ttf) + OFL.txt
 ├── public/
@@ -430,27 +430,30 @@ colorway/
 └── vercel.json                            # pnpm build, dist/ output
 ```
 
-### Test coverage (589 tests) ✅ measured 2026-09-29
+### Test coverage
 
-> Per-file counts were measured by running `node --test` on each `test/*.test.js` file
-> individually (not inferred). Total: **589 tests, 588 pass, 0 fail, 1 skipped** — the skip is
-> `fromLospecPalette` in `lospec-import.test.js`, network-gated by design. Earlier figures in
-> this section (475 total, 452/8/8/5 per file) were stale and have been replaced.
+The Node suite lives under `test/**/*.test.js` and is run with `pnpm test`.
+Totals and duration change as Qt/native checks are added; read the current pass/skip/fail
+summary from the command output instead of treating a number in this document as current.
+`fromLospecPalette` in `lospec-import.test.js` remains the one network-gated skip by design.
 
-| Test file | Tests | What it validates |
-|---|---|---|
-| `test/new-themes-contract.test.js` | 477 | Every `.ovt` overrides required vars, passes WCAG contrast (text→bg, inverse→hover-button), sibling palettes keep the 12-neutral + 14-accent seed shape |
-| `test/preview-contract.test.js` | 29 | UI structure classes exist, theme pipeline functions present, public themes mirror root, public patterns mirror patterns/ |
-| `test/theme-base-contract.test.js` | 17 | Source and public theme distributions are byte-identical; `parseOVT` dark rule; `extends` resolution |
-| `test/workbench-engine.test.js` | 8 | Normalized theme shape, serializeOVT round-trip, toYamiOVT extends injection, full catalog round-trip |
-| `test/obs-preview-actions.test.js` | 8 | OBS preview action handlers |
-| `test/obs-preview-refine.test.js` | 9 | OBS preview refine path |
-| `test/catppuccin-siblings-contract.test.js` | 12 | Generated sibling palettes are exactly generator output; light-theme frozen-comment header names the current theme name (non-vacuity check) |
-| `test/obs-design-source-contract.test.js` | 7 | OBS design source contracts |
-| `test/obs-preview-ambient.test.js` | 5 | OBS preview ambient path |
-| `test/lospec-import.test.js` | 6 | Slug extraction, minimum-color guard, all 31 tokens present, hex format, dark mode detection (1 skipped: `fromLospecPalette`) |
-| `test/obs-upstream-watch.test.js` | 3 | OBS upstream format drift watch |
-| `test/page-shell-sync.test.js` | 8 | Page shell sync behavior |
+Representative contracts:
+
+| Test file | What it validates |
+|---|---|
+| `test/new-themes-contract.test.js` | Every `.ovt` overrides required vars, passes WCAG contrast (text→bg, inverse→hover-button), sibling palettes keep the 12-neutral + 14-accent seed shape |
+| `test/preview-contract.test.js` | UI structure classes, theme pipeline functions, public themes/patterns mirrors |
+| `test/theme-base-contract.test.js` | Source/public theme identity, `parseOVT` dark rule, `extends` resolution |
+| `test/workbench-engine.test.js` | Normalized theme shape, `serializeOVT` round-trip, `toYamiOVT`, full catalog round-trip |
+| `test/obs-preview-actions.test.js` | OBS preview action handlers |
+| `test/obs-preview-refine.test.js` | OBS preview refine behavior |
+| `test/catppuccin-siblings-contract.test.js` | Generated sibling sources exactly match the generator |
+| `test/obs-design-source-contract.test.js` | OBS design source contracts |
+| `test/obs-preview-ambient.test.js` | OBS preview ambient behavior |
+| `test/lospec-import.test.js` | Slug extraction, role/token guards, (1 skip: `fromLospecPalette`) |
+| `test/obs-upstream-watch.test.js` | OBS upstream format drift watch |
+| `test/page-shell-sync.test.js` | Page shell sync behavior |
+| `test/browser-profile-cleanup.test.js`, `test/mingcute-migration.test.js`, `test/pattern-qt-tiling.test.js`, `test/theme-qt-render.test.js`, `test/theme-state-contrast.test.js`, `test/theme-surface-legibility.test.js`, `test/theme-provenance.test.js`, `test/theme-package.test.js`, `test/colorway-patterns-script.test.js`, `test/colorway-companion-*.test.js`, `test/preview-emphasis.test.js`, `test/theme-categories.test.js`, `test/earthbound-family.test.js`, `test/obs-preview-parity.test.js`, `test/obs-theme-parser-contract.test.js` | Pattern/Qt/browser checks and additional theme-source contracts |
 
 ### Build & deploy
 

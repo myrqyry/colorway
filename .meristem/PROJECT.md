@@ -4,7 +4,7 @@
 ## Purpose
 
 Colorway is a browser-based workbench for authoring, previewing, and installing OBS Studio
-color themes (`.ovt`). It ships 159 curated themes plus a generator for Catppuccin-inspired
+color themes (`.ovt`). It ships 160 curated themes plus a generator for Catppuccin-inspired
 sibling palettes, a Lospec palette importer that distills an arbitrary palette into the full
 OBS token set, a live two-way OBS theme mirror, and a set of contracts that treat the theme
 files themselves as the product artifact rather than as generated noise.
@@ -114,7 +114,7 @@ modules under `test/` are not collected as tests that pass on containing no asse
   Added §3.6–§3.11 covering the side-effect module contract, the `boot()`/`MutationObserver` retry,
   DOM-based state sharing, and the source-text testing limitation; added the layer to the §1 diagram.
 - **Stale figures in `docs/ARCHITECTURE.md`.** Corrected against measurement: `PALETTE_VARS` is 40
-  (was "~25"), the base theme declares 274 variables (was "~150"), there are 159 variants
+  (was "~25"), the base theme declares 274 variables (was "~150"), there are 160 variants
   (was "~150"), `Colorway.obt` is 3,659 lines (was 3,293), `styles.css` is 1,163 lines (was 679).
   The "~25 vs all 150" framing in §7.5 was wrong on all three numbers and is now explained: 40 is the
   tracked *palette* vocabulary, while a shipped variant declares 72 custom properties in total.

@@ -204,7 +204,7 @@ upstream Yami theme (tracked by `scripts/check-obs-upstream.mjs`) bakes `fill="#
 
 **Recovery / fix:** None needed for the limitation itself — accept baked color and design around it.
 The follow-on consequence is the real defect: all 98 icons are baked to exactly two Catppuccin Mocha
-values, `#e0def4` and `#191724`, while the catalog spans 159 variants. The 22 light variants have
+values, `#e0def4` and `#191724`, while the catalog spans 160 variants. The 22 light variants have
 near-white icons on near-white surfaces, e.g. `#e0def4` on CatppuccinLatte `--bg_base: #e6e9ef`
 = **1.08:1**. Icons must be authored per polarity, or per variant, not once.
 

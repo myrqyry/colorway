@@ -122,7 +122,7 @@ distributions are byte-identical"; executed in `90bbbe4`.
 ## 2026-10-04 — Colorway stays its own base theme; no Yami migration
 
 **Decision:** Colorway remains a standalone base theme. `themes/Colorway.obt` is the base and all
-159 variants extend `com.myrqyry.Colorway`. We do **not** adopt Yami as a base theme, and we do
+160 variants extend `com.myrqyry.Colorway`. We do **not** adopt Yami as a base theme, and we do
 **not** restructure into a `Yami.obt → Colorway.ovt → Colorway-*.ovt` inheritance chain. We do not
 copy Yami rules into Colorway.
 

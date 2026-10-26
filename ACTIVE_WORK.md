@@ -1,6 +1,434 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Hover affordance fixes — generated tool icons and AdaptaEvergreen (2026-10-26)
+
+**Request and causal context:** User approved fixes for the two verified issues
+in the read-only audit below. Do not generalize into changing unrelated
+control semantics, palettes, or state styling.
+
+**Changes made:**
+- `scripts/theme-state-tokens.mjs:renderButtonIconRules`: 32 generated
+  icon/tool-button selector groups no longer alias idle and hover styles.
+  `QToolButton.icon-*` and `QToolButton[themeID=...]` use the variant's
+  `--button_bg_hover` and `--input_border_hover` when hovered; the checked
+  hover uses `--primary_lighter` for its border. Pressed and disabled
+  behavior remains separately defined. The generator was changed rather
+  than hand-editing its repeated generated base rules.
+- `themes/Colorway-AdaptaEvergreen.ovt`: `--input_bg_hover` now uses the
+  palette's *pre-existing* focus surface `#38444a` rather than repeating
+  the normal background `#29353b`. The border and text tokens are otherwise
+  untouched; combo boxes and line edits now visibly change on hover.
+- `pnpm sync:themes` regenerated authored/public theme mirrors.
+
+**Testing:** A new Qt paint-level `hover-feedback` probe verifies classed
+and themeID tool buttons in both unchecked and checked states, plus ordinary
+combo and line-edit input hovers. The fixture must be its own raised Qt window
+rather than obscured by earlier top-level test windows; its hover asserts
+`underMouse()` and a minimum pixel difference. Both original defects were
+reintroduced as isolated mutations and detected. Focused regression green
+on RosePineMoon Gold and AdaptaEvergreen. Full `pnpm test`: 703 total,
+702 passed, zero failed, one intentional skip. Production `pnpm build` passed.
+`pnpm check:obs-native` passed all five isolated native OBS theme profiles,
+which also validates generated theme references. The user's running OBS was
+not reloaded; the refreshed live result has not been visually confirmed.
+
+**Installation:** On yuzu-mint, byte-verified
+`~/.config/obs-studio/themes/Colorway.obt` and
+`~/.config/obs-studio/themes/Colorway-AdaptaEvergreen.ovt` against their
+authored/public counterparts. Old installed versions were backed up to
+`~/.config/obs-studio/theme-backups/` with suffix
+`.before-hover-feedback-20261026-145531`. SHA256 base:
+`40f66512498aba22145265c27c2487785d9d405197d260d35d9cc48384adcea3`,
+Evergreen:
+`c310d03cfccd9b9cb71c2c955350599ec964420acf5771ac2673977af4f887e9`.
+`user.ini` hash unchanged; running OBS deliberately left alone.
+
+**Preservation:** Many source, generated, test, and doc files had pre-existing
+uncommitted changes before this pass; no unrelated work was reset, staged, or
+pushed. No commit was created because these particular files already contain
+other uncommitted work not part of the hover fix.
+
+## Read-only hover affordance audit (2026-10-26)
+
+**Request:** Find hover states with no visual feedback in Colorway. This was an
+inspection, not an authorization to apply a new visual design. Do not
+automatically change the user theme or restart OBS on the basis of this audit.
+
+**Confirmed shared defect:** The generator in
+`scripts/theme-state-tokens.mjs:renderButtonIconRules` emits 32
+`QToolButton.icon-*` / `QToolButton[themeID=...]` class-selector groups where
+normal, hovered, checked, and pressed all share the same background/foreground
+declarations. The checked/pressed border remains primary but **hovering does
+not change it**. A Qt offscreen probe of the composed RosePineMoon Gold style
+found **0 changed pixels** for `QToolButton.icon-plus` in both unchecked and
+checked hover. In the same test, the generic QToolButton changed 5,457 pixels
+unchecked and 435 checked; the classed QPushButton changed 816 unchecked and
+5,564 checked. Fix belongs in the generator, followed by `pnpm sync:themes`,
+rather than manually editing its generated 32 blocks.
+
+**Confirmed palette defect:** Across all 161 base/variant token sets,
+`Colorway-AdaptaEvergreen.ovt` alone resolves the normal and hover values
+equal for all three common input feedback channels:
+`--input_bg == --input_bg_hover`,
+`--border_base == --input_border_hover`, and
+`--on_input == --on_input_hover`. An offscreen Qt probe confirmed **zero
+changed pixels** for a normal QComboBox and QLineEdit under hover in this
+variant. A correction should choose a palette-coherent distinct hover color,
+not a global hard-coded color.
+
+**Do not mistake for no-op:** The generic button border and button background
+changed in Qt; standard tool buttons did change. Ordinary QCheckBox
+`::indicator:hover` visibly changed when hovering the indicator itself,
+but not when hovering the label outside it. Some `:hover` rules intentionally
+keep an icon constant while other paint properties respond; this alone is not
+a visual failure. Input background matches hover in 15 palettes but other
+paint channels often still change; only AdaptaEvergreen had the whole
+three-channel match in the source audit. Sliders in NightOwl and OsakaJade
+share normal/hover accent tokens but showed some changed pixels in a quick
+probe, so their visual status remains unproven.
+
+**Status:** No theme, generator, or installed OBS files edited by this audit;
+no build or deployment claimed. Validated findings are ready for narrow
+TDD-backed fixes if requested.
+
+## Follow-up — shared QComboBox sizing instead of one-off transition rule (2026-10-26)
+
+**User correction:** The Scene Transitions minimum should follow the same
+normal dropdown behavior as other combos, not have a special `#transitions`
+fix. The earlier approach was too narrowly scoped.
+
+**Evidence:** Isolated native OBS 32.2 inspection showed the standard
+`QComboBox#transitions` (main dock) and wizard `QComboBox` rows behave as
+ordinary selectors, while `OBSPreviewScalingComboBox#previewScalingMode`
+is genuinely custom-sized at 16px. With a naive global 21px QSS minimum,
+that compact preview scaler enlarged to 23px. This exception is observed, not
+an inferred collection of hypothetical controls.
+
+**Change:** Remove special `QComboBox#transitions` rule and use shared
+`QComboBox { min-height: var(--shared_combo_min_height); }`, with a font-scaled
+theme variable `calc(1.9px * var(--font_base_value))`.
+Keep only the known preview scaling exception at a rendered 16px.
+Qt regression asserts ordinary dock and Scene Transitions combo minimums,
+and checks that preview scaling remains 16px; started RED, now GREEN.
+
+**Verified:** Final native OBS with current RosePineMoon Gold:
+Scene Transitions actual/min/sizeHint 27px; AutoConfig FPS and canvas
+combos 27px; preview scaling remains 16px. Focused Qt tests passed on Gold
+and Latte Blue. Full `pnpm test`: 700 tests, 699 passed, 0 failed,
+1 intentional skip. `pnpm build` passed, `pnpm check:obs-native` passed
+five isolated themes. `pnpm sync:themes` refreshed the base mirror.
+Installed corrected base on yuzu-mint with prior theme backup
+`~/.config/obs-studio/theme-backups/Colorway.obt.before-shared-combo-min-20261026-142856`.
+Source/public/installed SHA256:
+`34e22fa2a1b200899a3a1098b8596c773f3e3ed4daff5ee43b61a33d84e28d6f`.
+User `user.ini` unchanged. Live OBS was not restarted or reloaded.
+User's live screenshot after reload is not yet verified.
+
+**Preservation:** The pre-existing large dirty worktree is intact; no unrelated
+changes staged, committed, pushed, or reset.
+
+## Scene Transitions dock selector minimum-height fix (2026-10-26)
+
+**User-visible issue:** Scene Transitions dropdown collapsed to a thin strip in a
+compact dock despite appearing normal when the dock had room.
+
+**Root cause verified in isolated actual OBS 32.2 on yuzu-mint:** The visible
+`QComboBox#transitions` is a child of `QFrame#transitionsFrame` under
+`OBSDock#transitionsDock`. It had `sizeHint().height() == 26` but
+`minimumHeight() == 8`, allowing dock layout to squeeze it. The generic
+QComboBox size hint was not a meaningful minimum. The other preview scaling
+combo is `OBSPreviewScalingComboBox#previewScalingMode` with its own
+16px sizing and is intentionally outside this fix.
+
+**Scoped correction:** Add only
+`QComboBox#transitions { min-height: var(--settings_combo_min_height); }`
+below the existing `#transitionsFrame` rule in the authored
+`themes/Colorway.obt`. Avoid global QComboBox rules or changing dock dimensions.
+
+**Verification:** New red-first PyQt6 tests in
+`test/helpers/qss-probe.py` + `test/theme-qt-render.test.js` failed with
+minimumHeight=8 versus required 24 on Gold and light Latte, and passed after.
+They also assert an unrelated combo remains unchanged.
+`pnpm sync:themes` generated the matching public mirror.
+`pnpm test`: 700 tests; 699 passed; 0 failed; 1 intentional skip.
+`pnpm build` passed. `pnpm check:obs-native` passed five isolated themes.
+Another isolated *real OBS* subprocess using the new base + RosePineMoon Gold
+confirmed `transitions` geometry 175x26, minHeight=26, sizeHint=26, while
+`previewScalingMode` remains minHeight=16. This establishes the corrected
+minimum in native OBS, not necessarily the user's running dock after reload.
+
+**Installed:** Backed up previous installed base to
+`~/.config/obs-studio/theme-backups/Colorway.obt.before-transition-combo-height-20261026-134904`.
+Installed and byte-verified base against authored source and public mirror;
+SHA256 `ccd3822fe0c1d3400e701144149213d20dffda8387b3e1a7c503bb53d9ee44b2`.
+`user.ini` unchanged, live OBS deliberately not restarted or theme-reloaded.
+Large pre-existing shared dirty worktree retained, no broad commit or push.
+
+## Verified root cause — square Audio Track selectors in OBS Output (2026-10-25)
+
+**User's actual report:** Under OBS Output > Simple > Recording, Audio Track 1–6
+showed **square-cornered indicators**, unlike other rounded checkboxes.
+There was no report of disabled/uneditable controls. Earlier attempts misread
+this as a disabled-state issue and tested the wrong widget types.
+
+**Real native OBS evidence:** A disposable OBS 32.2.0 instance with Colorway
+RosePineMoon Gold and an injected diagnostic hook opened Settings > Output.
+The visible `simpleRecTrackWidget` stack page is `simpleFlvTracks`; its
+`simpleFlvTrack1` through `simpleFlvTrack6` are **QRadioButton** controls.
+Another hidden stack page `simpleRecTracks` holds different
+`simpleOutRecTrack1` through `simpleOutRecTrack6` **QCheckBox** controls.
+The previous probes accidentally targeted this hidden page. The native
+screenshot demonstrated all six visible audio radio indicators drawing as
+square despite the ordinary checkbox style being rounded.
+
+**Actual rendering defect:** `QRadioButton::indicator` inherited
+`border-radius: var(--shape_full)`, which resolves to 999px; Qt 6 draws
+this as a square on a roughly 20px radio subcontrol. In a native OBS
+stylesheet A/B test, overriding that rule with 10px rounded every audio
+radio (both selected and unselected); fixing only `:unchecked` left the
+selected track square. This was directly verified visually in the six-image
+comparison.
+
+**Smallest fix:** In authored `themes/Colorway.obt`, add
+`--radio_indicator_radius: calc(var(--icon_base) / 2)` and apply it to
+`QRadioButton::indicator` instead of `--shape_full`.
+Do **not** change `QCheckBox` shape or audio enabled states.
+Red-first `output-track-radio-shape` Qt probe tests assert circular
+actual rendered pixels for six OBS-named radios in Gold and Latte Blue;
+these failed before the fix and passed after. `pnpm sync:themes` updated
+mirror. `pnpm test`: 698 tests, 697 passed, 0 failed, 1 skipped.
+`pnpm build` passed; `pnpm check:obs-native` passed five isolated themes.
+A **second real OBS 32.2 Gold render with the authored fix** was captured and
+visually confirmed to show all six round radio indicators.
+User's running OBS was **not** reloaded or restarted.
+
+**Deployment:** Installed source-identical base theme in
+`~/.config/obs-studio/themes/Colorway.obt` on yuzu-mint; backed up its
+previous version to
+`~/.config/obs-studio/theme-backups/Colorway.obt.before-audio-radio-circles-20261025-232549`.
+SHA256 source+installed =
+`97443d91cf7702dea758b05b65a421bb9ac8fd11f03a992bbf448b24b7d0e97a`.
+`user.ini` was unchanged. The next live screenshot **after a theme reload**
+remains to be checked. Repository contains a large pre-existing shared dirty
+worktree; no broad commit/push made. Do not confuse this verified fix with the
+earlier incorrect assumption about disabled checkboxes.
+
+## Correction to earlier icon claims — exact MingCute small-fill arrows (2026-10-25)
+
+The user's critique was correct: the previous spinbox arrows were *not*
+MingCute small-fill icons or the same graphics as the dropdowns. They were
+bespoke viewport-cropped derivatives of MingCute's generic up/down icons.
+The description that they already used the appropriate icon was inaccurate,
+and geometric tests alone missed the visual mismatch.
+
+The user linked `https://icon-sets.iconify.design/mingcute/up-small-fill/`.
+The exact Iconify MingCute `up-small-fill` and `down-small-fill` SVGs were
+fetched to `icons/vendor/mingcute/`. The generator now preserves their path
+data (only recoloring and cropping the viewport for a 9px Qt slot), rather than
+altering strokes or drawing a new substitute. Both normal and selected
+polarity assets are generated under `icons/colorway/mingcute/spin/`.
+The test was red against the previous arrows, then passed; the Qt compact
+control tests passed. All 696 repo tests: 695 passed, 0 failed,
+1 intentional skip. Production build and native OBS checks across five themes
+passed. Installed updated base and four small-fill SVG assets on yuzu-mint;
+installed and source base SHA256:
+`f5f070d00ce449764317ecb671531ee6dc45a7a9ea0257cbd1b29c87ad5a5547`.
+Prior installed base was backed up in the user theme-backups folder;
+`user.ini` remained byte-identical. No active OBS restart/theme reload
+or modification to Output settings. The current live screenshot after reload
+has **not** been verified. Existing dirty user worktree remains preserved;
+no broad commit/push.
+
+The isolated OBS Settings inspection confirmed actual
+`simpleOutRecTrack1` through `simpleOutRecTrack6` QCheckBox widgets
+and a `simpleOutputVBitrate` QSpinBox; the six track checkboxes happened to be
+enabled in the disposable test profile. That **does not establish** why
+the user's specific track controls appear disabled under Same as stream.
+
+## Follow-up — visually rounded controls and symmetric spin chevrons (2026-10-25)
+
+**User feedback:** Source/test geometry was correct, but actual Output Settings
+still showed near-square Audio Track checkboxes and a down arrow resembling an
+asymmetric checkmark. The earlier 9px rendering of the unchanged 24x24 MingCute
+path lost too many pixels. A Qt offscreen comparison of 9px spin arrows showed
+that a tighter `4 6 16 12` viewport preserves the *original* pinned MingCute
+path while rendering both chevrons evenly. No new hand-drawn paths were used.
+
+**Correction:** QCheckBox and checkable QGroupBox indicator corners now use a
+distinct 7px radius, leaving QRadioButton geometry alone. The spinboxes use
+dedicated 9px, viewport-cropped MingCute SVGs in both resolved palette
+polarities. Their variant-specific URL tokens and distribution assets are
+generated by the existing pipelines. Installed four SVGs *before* replacing
+the base theme; backed up the previous base; OBS preferences unchanged. The
+running OBS process was not touched or restarted.
+
+**Evidence:** New Qt behavior tests initially failed on the prior compact
+checkbox/chevron rendering and passed after the correction for both
+RosePineMoon Gold and light Catppuccin Latte Blue. The pinned-source geometry
+and four shipped image assets are contract-tested. `pnpm test`: 696 tests,
+695 passed, zero failed, one intentional network skip. Production build passed.
+Isolated native OBS integration passed on all five supported test themes.
+`themes/Colorway.obt`, `public/themes/Colorway.obt`, and installed base
+were byte-verified equal. The user's actual refreshed live Output Settings
+appearance still requires theme reload and visual confirmation.
+
+**Preservation:** Previous changes in this shared dirty worktree are retained;
+no commit or push of unrelated work. Machine-specific restore receipt belongs
+in `.meristem/local/`, not in commit-safe project notes.
+
+## Current continuation — OBS Settings checkbox and spinbox repair (2026-10-25)
+
+**Observed failure:** In the user's Output Settings screenshot, compact QSpinBox/
+QDoubleSpinBox up/down controls overlapped. Direct PyQt6 reproduction showed 14px
+up/down button rectangles colliding in 20/24/28px-high fields. Checkable group
+headings (Replay Buffer) also used a separate MingCute checkbox glyph family:
+the unchecked asset itself included a check stroke, unlike ordinary QCheckBox.
+
+**Correction:** In authored `themes/Colorway.obt`, let Qt calculate half-height
+spin buttons instead of forcing the oversized `--spinbox_button_height`; use
+9px MingCute chevrons without extra arrow padding. Style QGroupBox indicators
+with ordinary empty/checked boxes and an accent border. The theme mirror was
+regenerated with `pnpm sync:themes`; neither custom palette seeds nor the
+installed selected variant was modified.
+
+**Verification:** New red-first native-Qt-style regressions passed after the
+fix for the user's selected RosePineMoon Gold and Catppuccin Latte Blue. Restoring
+the prior overlapping buttons, checked-looking unchecked group SVG, or missing
+checked accent all fails the new probe. `pnpm test`: 693 total, 692 passed,
+0 failed, 1 intentional skipped. `pnpm build` passed. `pnpm check:obs-native`
+passed five isolated native OBS 32.2 theme selections (base, Latte Blue,
+Monokai, Fairyfloss, 90s Anime). Offscreen Qt renders inspected visually.
+
+**Installation and boundary:** The source and public mirrored base theme were
+byte-verified; the installed OBS base `Colorway.obt` was backed up to
+`~/.config/obs-studio/theme-backups/Colorway.obt.before-checkbox-spinbox-20261025-220142`
+and replaced with an identical source copy. `user.ini` hash unchanged; user's
+running OBS process was not restarted or theme-reloaded. Its actual refreshed
+Output Settings screen remains to be confirmed after the user reloads the theme.
+The large prior uncommitted worktree remains intact; no commit or push made.
+
+## Current continuation — mixer state glyphs and crisp preview zoom (2026-10-25)
+
+**Outcome:** Implemented the native audit's mute/monitor icon repairs and zoom
+legibility improvement. See `docs/NATIVE_CONTROL_AUDIT.md` and
+`docs/MINGCUTE_MIGRATION.md` for the mechanism and verification boundaries.
+
+**Current state:** Uncommitted working-tree changes include the earlier docs,
+Properties/Filters, and source-outline fixes plus this delivery. No commit or
+push was requested. Existing branch context remains `main` at `618cbcb`.
+The mixer uses distinct speaker/mute, headphone/slashed-off, and warning glyphs.
+Palette-derived danger/success/warning inks are baked into deduplicated SVGs;
+all curated theme references and public mirrors are generated by `pnpm sync:themes`.
+Zoom uses pixel-aligned 8px artwork without enlarging its native 20×16 controls.
+
+**Locked decisions / constraints:** Mixer states stay on `--bg_base` so the
+derived semantic ink keeps its independently tested 3:1 contrast guarantee.
+Warning classes override checked mute imagery, including the legacy spelling.
+Preserve the prior context-button/source-outline corrections, authored palette
+seeds, frozen comments, user patterns, and audio-routing behavior. The native
+state-consumer probe does not emit `clicked()` or alter real OBS routing.
+
+**Verification:** 684 tests / 683 passed / 0 failed / 1 intentional skip;
+build passed. Native OBS base, Latte Blue, Monokai, Fairyfloss, and 90s Anime
+passed at compact and normal density. Each checks 21 mixer render/state cases
+and both zoom controls, alongside the earlier corrections. The same native
+probe rejects the pre-fix installed base for all mixer cases and both zoom
+glyphs. Native state captures were visually inspected. The complete corpus is
+checked for semantic ink contrast, pinned/derived SVG geometry, package assets,
+and source/public mirror parity.
+
+**Installation:** The 150 changed installed theme files were backed up before
+replacement; 190 new icon assets were installed first. All 161 installed themes
+and 308 required icon/license assets are byte-identical to source. OBS user.ini
+and the custom pattern SVG are hash-verified unchanged. Repeated theme sync is a
+fixed point across source/public themes and icon assets. Native delivery captures
+are in the ignored audit directory's `delivery/` subdirectory.
+
+**Remaining:** Reload the theme or restart the user's OBS instance to consume
+the installed files. Its refreshed UI is not yet manually verified.
+
+## Follow-up inspection — native control audit (2026-10-25)
+
+Completed a native control audit after the two installed icon fixes. See
+`docs/NATIVE_CONTROL_AUDIT.md` for evidence, repair directions, and coverage
+limits. Two open findings: actual mixer `.btn-mute` and `.btn-monitor`
+QPushButtons retain black resource glyphs on dark surfaces despite light text
+palettes; they are not covered by the generated icon-class bindings. No further
+clipping was confirmed in the inspected Sources and Settings controls.
+
+An apparent preview-zoom clipping issue was **not** confirmed: removing excess
+padding changed the reported content rectangle but not the rendered glyph.
+The tiny native 8px icon remains a legibility observation, not a proven padding
+defect or a verified theme-only fix. This pass changed no theme/installed files;
+its diagnostic captures are in the ignored local audit directory.
+
+## Previous continuation — source visibility outline clipping (2026-10-25)
+
+**Outcome:** Sources-row visibility and lock indicator outlines fit their native
+widget bounds at compact and normal OBS density. The source/public base and
+installed base contain the fix; the installed predecessor was backed up.
+
+**Mechanism:** Native OBS allocated a visibility control only 18×14px while its
+indicator occupied 16×16px at (3, -1), clipping the top, bottom, and right edge.
+Normal density also retained a 14px row while enlarging the indicator. The
+SourceTreeItem-only rule removes extra outer padding/frame and uses a 12px glyph
+plus its one-pixel indicator outline (14×14px total), independently of density.
+Pinned SVG geometry, other checkbox styles, source-row height, palette seeds,
+and the prior Properties/Filters fix are preserved.
+
+**Current state / constraints:** This is additional uncommitted working-tree
+work on top of the earlier icon fix and documentation reconciliation. Native
+test fixtures create a disposable color source only in their isolated OBS
+processes; never run fixture creation against the user's OBS instance.
+
+**Verification:** `pnpm test`: 674 tests / 673 passed / 0 failed / 1 intentional
+skip; build passed. Native OBS base, Latte Blue, Monokai, and Fairyfloss passed
+at Density=-2 and Density=1, with actual visibility/lock geometry and row captures.
+The native gate fails against the pre-fix installed base, reproducing the
+out-of-bounds indicator. Offscreen Qt tests cover OBS padding 1/4/8, both toggle
+states, and a deliberately restored oversized indicator. Captured native rows
+were visually inspected. Installation was byte-verified against source.
+
+**Remaining:** Reload the theme or restart the running OBS instance to pick up
+the installed base. Its refreshed UI has not been manually verified.
+
+## Previous continuation — source context button icon ink (2026-10-25)
+
+**Outcome:** Properties and Filters in the native OBS source context bar use
+readable MingCute glyphs matching their button text, including Fairyfloss.
+
+**Why it matters:** The existing icon-state checks covered class/themeID-bound
+buttons, but these two OBSBasic.ui controls have neither binding and retained
+their dark native resource icons.
+
+**Current state:** Branch context is `main` at `618cbcb`, matching the local
+`origin/main` tracking ref. The current working tree has earlier documentation
+reconciliation edits plus this uncommitted icon fix, regression probes, and
+generated source/public themes. The generator binds `sourcePropertiesButton`
+and `sourceFiltersButton` explicitly and derives two normal-button ink tokens
+from `--button_bg` / `--on_button`. Only 36 source theme files need new tokens
+or QSS; their public mirrors are regenerated.
+
+**Locked decisions / constraints:** Preserve palette seeds, frozen comments,
+button backgrounds and geometry, patterns, and OBS user settings. Native resource
+icons must be challenged at the actual object-name boundary, not inferred from
+an icon-class test. Existing documentation edits predate this fix.
+
+**Verification:** `pnpm test`: 671 tests / 670 passed / 0 failed / 1 intentional
+network-gated skip. `pnpm build` passed. The native OBS gate checks glyph pixels
+on both actual controls across five enabled states in base, Latte Blue, Monokai,
+and Fairyfloss. All passed; the same native probe fails on the previous base
+stylesheet. Offscreen Qt regressions and a deliberately dark-icon mutation also
+exercise the failure. The 36 changed installed theme files were backed up and
+byte-verified against source; existing icon assets already match.
+
+**Current objective / open uncertainty:** The running user instance still needs
+a theme reload or OBS restart to consume the installed fix. No interaction with
+that instance or manual approval of its refreshed screenshot is claimed. Older
+continuation entries below are historical receipts, including their publication
+and verification claims.
+
 ## Latest continuation — MingCute icon color coherence (2026-10-18)
 
 User requested a focused real OBS icon-color review and explicitly trusted

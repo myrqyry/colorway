@@ -20,9 +20,13 @@ under `icons/vendor/mingcute/`. These are the original upstream paths, not
 reconstructed or fabricated glyphs. Generated 16-pixel SVGs live under
 `icons/colorway/mingcute/` and are copied to the web distribution.
 
-`scripts/build-mingcute-icons.mjs` preserves the upstream 24×24 path geometry,
+`scripts/build-mingcute-icons.mjs` preserves the standard upstream 24×24 paths,
 adds 16×16 dimensions for Qt, and replaces `currentColor` with fixed, contrast-
-tested foregrounds (`#e0def4` and `#191724`). Qt does not re-tint the SVGs
+tested foregrounds (`#e0def4` and `#191724`). The monitoring-off derivative adds
+an explicit cancellation slash to the pinned headphone path. The dedicated
+`zoom/` assets use pixel-aligned 8×8 plus/minus geometry for the native preview
+toolbar; they are documented adaptations, not unchanged upstream SVGs.
+Qt does not re-tint the SVGs
 based on CSS variables. Function-valued OBS variables in `@OBSThemeVars` are written as quoted strings
 (`'url(theme:...)'`), as required by the OBS 32.2 lexer. The browser parser
 decodes these values for CSS; Qt/OBS receives unquoted CSS after theme substitution.
@@ -31,22 +35,34 @@ The generator runs automatically during
 
 ## Coverage
 
-- 51 semantic glyph names, two color polarities each (102 OBS-compatible SVGs)
+- Semantic glyph names and their pinned sources are listed in `icons/mingcute-map.json`
 - Six state indicator SVGs generated from MingCute filled/regular shapes
 - Nine Settings-only two-tone MingCute glyphs that remain visible on both
   ordinary navigation surfaces and selected accent rows
 - `Colorway.obt` uses only `theme:icons/colorway/mingcute/...` paths
 - Light-theme direct checkbox references and generated state tokens also use
   the new paths
-- Downloads package all 117 icons, patterns, font license, and MingCute license
+- Mixer muted/monitoring/warning assets bake palette-derived, surface-tested
+  semantic ink; themes with the same ink share the same generated SVG
+- Four dedicated pixel-aligned zoom assets cover both glyphs and ink polarities
+- Downloads package every asset in `public/theme-assets.json`, including patterns,
+  font license, and MingCute license
 - `scripts/copy-themes.sh` installs the MingCute tree without modifying OBS
   settings or deleting files from the user's active OBS installation
 
-For regeneration run `pnpm sync:themes`. The migration contract compares each
-shipped SVG byte-for-byte to its transformation from the pinned source,
-validates the public mirror and generated OBS references, and checks full ZIPs.
+For regeneration run `pnpm sync:themes`. The migration contract compares standard
+and mixer SVGs to their pinned-source transformations, validates the documented
+derivatives, public mirror, generated OBS references, and full ZIPs. Real Qt pixel
+checks cover the dedicated zoom artwork at its native size.
 
 ## Active icon color coherence — 2026-10-18
+
+The source context bar's Properties and Filters buttons are bound by their
+`sourcePropertiesButton` / `sourceFiltersButton` object names: OBS supplies
+resource icons without an icon class or `themeID`. Their normal/hover glyphs
+use the derived button-background ink role; pressed/checked states use the
+corresponding accent ink roles. The native OBS gate renders both actual
+controls, including Fairyfloss, instead of relying on class-bound test buttons.
 
 OBS SVG assets are fixed-color MingCute glyphs (light `#e0def4`, dark
 `#191724`); QSS does not recolor them at runtime. Previously, the
@@ -76,6 +92,33 @@ the visual treatment on dark and light navigation, without changing
 the existing selection fills, focus outline, or interface layout. All
 nine SVGs are shipped with the catalog; they are not runtime-generated
 or downloaded from a new provider.
+
+## Native mixer states and preview zoom
+
+OBS's real mixer controls are `.btn-mute` / `.btn-monitor` QPushButtons, not
+`QCheckBox[themeID="muteCheckBox"]`. Their render-time `icon:` rules select
+distinct unmuted, muted, monitoring-on/off, and warning glyphs. Both native
+`.checked` classes and Qt `:checked` states are supported. Monitor Only warning
+classes (`mute-warning` and legacy `mute-unassigned`) take precedence over a
+checked mute glyph.
+
+The mixer stays on `--bg_base` in normal, checked, hover, and pressed states.
+`--on_mixer_muted`, `--on_mixer_monitor`, and `--on_mixer_warning` derive readable
+ink from the original danger/success/warning seeds, with at least 3:1 contrast
+against that surface. The generator bakes matching `mixer/` SVGs and state-token
+URLs without changing palette seeds. Preserve this ink/surface pairing; a generic
+primary-button hover fill can invalidate its contrast guarantee.
+
+Preview zoom retains its native 20×16 button footprint and explicit 8px icon
+canvas. The `zoom/` glyphs have whole-pixel strokes instead of scaling 24-unit
+paths into faint fractional pixels. Padding is bounded without relying on an
+ineffective native icon-size override. The general toolbar add/remove assets
+remain unchanged.
+
+`pnpm check:obs-native` renders the actual mixer/zoom controls across representative
+dark/light variants and checks distinct state glyphs, warning precedence, crisp
+zoom strokes, and the retained source-context/visibility corrections. Mixer state
+consumers are tested without clicking controls or changing audio routing.
 
 ## Verification limits
 

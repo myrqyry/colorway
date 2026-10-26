@@ -9,7 +9,7 @@ Compatibility was audited against:
 - `obsproject/obs-studio@ea7536c49cb84420296d3831cda526c232fed3bc`
 - `frontend/data/themes/Yami.obt`
 
-OBS's wiki recommends using Yami as a base for custom themes, on the grounds that standalone `.obt` base themes do not automatically receive new widget styling. **Colorway deliberately does not follow that recommendation.** It is its own base theme (`themes/Colorway.obt`) and its 159 variants extend `com.myrqyry.Colorway`.
+OBS's wiki recommends using Yami as a base for custom themes, on the grounds that standalone `.obt` base themes do not automatically receive new widget styling. **Colorway deliberately does not follow that recommendation.** It is its own base theme (`themes/Colorway.obt`) and its 160 variants extend `com.myrqyry.Colorway`.
 
 **This is settled and not up for reconsideration.** Colorway's standalone base carries substantial custom QSS, its own icon set, custom surfaces, mixer, and layout behavior; that is the product, not an accident to be migrated away. Do not propose a `Yami.obt` base, a `Yami.obt → Colorway.ovt → Colorway-*.ovt` inheritance chain, or copying Yami rules into Colorway. Upstream Yami is tracked **only** as a format-drift reference for `pnpm check:obs-upstream`; it is not an architectural target. The cost of owning the base theme is tracked-upstream maintenance, and that is accepted deliberately.
 
