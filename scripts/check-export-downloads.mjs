@@ -15,6 +15,7 @@ const port = 5194;
 const server = spawn('./node_modules/.bin/vite', ['preview', '--host', '127.0.0.1', '--port', String(port), '--strictPort'], { stdio: 'ignore' });
 const browser = spawn(chromium, [
   '--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage',
+  '--window-size=1400,960',
   '--no-first-run', '--remote-debugging-port=0', '--remote-allow-origins=*',
   '--user-data-dir=' + profile, 'about:blank',
 ], { stdio: 'ignore' });
@@ -71,25 +72,78 @@ try {
   };
   await send('Page.enable');
   await send('Runtime.enable');
+  // UI hit-testing must not target a view-transition snapshot or intro overlay.
+  await send('Emulation.setEmulatedMedia', {features:[{name:'prefers-reduced-motion',value:'reduce'}]});
   await send('Browser.setDownloadBehavior', {behavior: 'allow', downloadPath: profile});
   await send('Page.navigate', {url: 'http://127.0.0.1:' + port + '/'});
   await until(() => evaluate('document.querySelectorAll(".theme-row").length >= 160'), 'theme catalog');
+  await until(() => evaluate('!document.querySelector("#colorway-intro")'), 'opening animation and handoff completed');
   await until(() => evaluate('!!document.querySelector("#workbench-export-list [data-export-kind]")'), 'export panel mount');
   await evaluate('document.querySelector("#slideshow-pause")?.getAttribute("aria-pressed") === "false" && document.querySelector("#slideshow-pause").click()');
   const chosen = 'Colorway-RosePineMoon-Love.ovt';
   await evaluate('document.querySelector('+JSON.stringify('.theme-row[data-file="'+chosen+'"]')+').click()');
   await until(() => evaluate('document.querySelector(".theme-row.active")?.dataset.file === '+JSON.stringify(chosen)), 'theme selection');
-  await evaluate('document.querySelector(".workbench-tab[data-tab=export]").click()');
-  assert.equal(await evaluate('document.querySelector("#panel-export").hidden'), false);
-  assert.equal(await evaluate('document.querySelectorAll("#panel-export [data-export-kind]").length'), 4);
-  assert.equal(await evaluate('document.querySelector("[data-export-kind=orchis]").disabled'), false);
+  // The real Colorway product surface hides workbench tabs. Require a
+  // pointer-reachable route through the visible Download ZIP split menu.
+  const visibleToggle = await evaluate(`(() => {
+    const el=document.querySelector('[data-colorway-download-toggle]');
+    if (!el) return false;
+    const rect=el.getBoundingClientRect();
+    return rect.width>0 && rect.height>0 && getComputedStyle(el).visibility==='visible';
+  })()`);
+  assert.ok(visibleToggle, 'visible product Download menu toggle missing');
+  const clickExportToggle = async () => {
+    await evaluate('document.querySelector("[data-colorway-download-toggle]").scrollIntoView({block:"center"})');
+    const hit = await evaluate(`(() => {
+      const button = document.querySelector('[data-colorway-download-toggle]');
+      const rect = button.getBoundingClientRect();
+      const x = Math.round(rect.left + rect.width / 2);
+      const y = Math.round(rect.top + rect.height / 2);
+      return {x, y, reachable:document.elementFromPoint(x,y)?.closest('[data-colorway-download-toggle]') === button};
+    })()`);
+    assert.equal(hit.reachable, true, 'Export button is not pointer-reachable');
+    await send('Input.dispatchMouseEvent', {type:'mousePressed',x:hit.x,y:hit.y,button:'left',clickCount:1});
+    await send('Input.dispatchMouseEvent', {type:'mouseReleased',x:hit.x,y:hit.y,button:'left',clickCount:1});
+  };
+  await clickExportToggle();
+  const realMenu = await evaluate(`(() => {
+    const menu=document.querySelector('[data-colorway-download-menu]');
+    return !!menu && !menu.hidden && getComputedStyle(menu).display !== 'none';
+  })()`);
+  assert.ok(realMenu, 'visible product Download menu did not open');
+  for (const kind of ['opencode-tui','opencode-desktop','orchis','bibata']) {
+    assert.ok(await evaluate('!!document.querySelector('+JSON.stringify('[data-colorway-download-kind="'+kind+'"]')+')'), 'missing visible Download option: '+kind);
+  }
+  await clickExportToggle();
+  assert.equal(await evaluate('getComputedStyle(document.querySelector(".workbench-tabs")).display'), 'none',
+    'real product surface should not depend on hidden workbench');
+  const pointerClick = async (kind) => {
+    await clickExportToggle();
+    const point = await evaluate(`(() => {
+      const menu=document.querySelector('[data-colorway-download-menu]');
+      const option=menu.querySelector('[data-colorway-download-kind="${kind}"]');
+      if (!option || menu.hidden || option.disabled) return { error: 'missing or disabled' };
+      option.scrollIntoView({block:'nearest'});
+      const rect=option.getBoundingClientRect();
+      const x=Math.round(rect.left+rect.width/2), y=Math.round(rect.top+rect.height/2);
+      const hit=document.elementFromPoint(x,y)?.closest('[data-colorway-download-kind]');
+      return {x,y,hit:hit?.dataset.colorwayDownloadKind,element:document.elementFromPoint(x,y)?.tagName};
+    })()`);
+    if (point.hit !== kind) {
+      const snap=await send('Page.captureScreenshot', {format:'png',captureBeyondViewport:false});
+      writeFileSync('/tmp/colorway-export-hit-failure.png',Buffer.from(snap.data,'base64'));
+    }
+    assert.equal(point.hit, kind, 'visible product option is not pointer-reachable: '+JSON.stringify(point));
+    await send('Input.dispatchMouseEvent', {type:'mousePressed',x:point.x,y:point.y,button:'left',clickCount:1});
+    await send('Input.dispatchMouseEvent', {type:'mouseReleased',x:point.x,y:point.y,button:'left',clickCount:1});
+  };
   for (const [kind, filename] of [
     ['opencode-tui', 'colorway-rose-pine-moon-love-opencode-tui.json'],
     ['opencode-desktop','colorway-rose-pine-moon-love-opencode-desktop.json'],
     ['orchis','colorway-rose-pine-moon-love-orchis-build-kit.zip'],
     ['bibata','colorway-rose-pine-moon-love-bibata-build-kit.zip'],
   ]) {
-    await evaluate('document.querySelector('+JSON.stringify('[data-export-kind="'+kind+'"]')+').click()');
+    await pointerClick(kind);
     const path = join(profile, filename);
     await until(() => existsSync(path) && readFileSync(path).length > 64, filename + ' download');
     if (filename.endsWith('.json')) {
@@ -112,7 +166,7 @@ try {
         assert.equal(check.status, 0, check.stderr);
       }
     }
-    console.log('PASS real browser download', filename);
+    console.log('PASS pointer-clicked visible product download', filename);
   }
   // Imported palettes replace the export source; don't silently export the
   // previously selected catalog item after Apply.
@@ -121,24 +175,23 @@ try {
     const custom = source.replace('Rose Pine Moon — Love', 'Imported Sandbox');
     const data = new DataTransfer();
     data.items.add(new File([custom], 'custom.ovt', { type: 'text/plain' }));
-    const input = document.querySelector('#workbench-file');
+    const input = document.querySelector('[data-colorway-settings-file]');
     input.files = data.files;
     input.dispatchEvent(new Event('change', { bubbles: true }));
   })()`);
-  await until(() => evaluate('document.querySelector("#workbench-apply").disabled === false'), 'custom import parse');
-  await evaluate('document.querySelector("#workbench-apply").click()');
-  assert.equal(await evaluate('document.querySelector("#workbench-active-name").textContent'), 'Imported Sandbox');
-  await evaluate('document.querySelector("[data-export-kind=opencode-tui]").click()');
+  await until(() => evaluate('document.querySelector("#theme-status")?.textContent?.startsWith("Imported")'), 'visible Settings import applied');
+  assert.equal(await evaluate('document.querySelector("#active-theme-name").textContent'), 'Imported Sandbox');
+  await pointerClick('opencode-tui');
   const importedFile = join(profile, 'colorway-imported-sandbox-opencode-tui.json');
   await until(() => existsSync(importedFile), 'imported Colorway TUI export');
   assert.equal(JSON.parse(readFileSync(importedFile, 'utf8')).defs.primary, '#eb6f92');
-  console.log('PASS imported palette replaces catalog export source');
+  console.log('PASS visible Settings import exports its applied palette');
 
   // The converter cannot build light GTK themes; don't offer a fake build.
   await evaluate('document.querySelector('+JSON.stringify('.theme-row[data-file="Colorway-CatppuccinLatte-Blue.ovt"]')+').click()');
   await until(() => evaluate('document.querySelector(".theme-row.active")?.dataset.file === "Colorway-CatppuccinLatte-Blue.ovt"'), 'light theme selection');
-  assert.equal(await evaluate('document.querySelector("[data-export-kind=orchis]").disabled'), true);
-  assert.equal(await evaluate('document.querySelector("[data-export-kind=bibata]").disabled'), false);
+  assert.equal(await evaluate('document.querySelector("[data-colorway-download-kind=orchis]").disabled'), true);
+  assert.equal(await evaluate('document.querySelector("[data-colorway-download-kind=bibata]").disabled'), false);
   console.log('PASS light palette disables unsupported Orchis export');
   console.log('Browser export smoke PASS');
 } finally {

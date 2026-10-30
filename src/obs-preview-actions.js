@@ -1,5 +1,7 @@
 import './obs-preview-actions.css';
-import { applyTheme } from './theme-loader.js';
+import { applyTheme, loadTheme } from './theme-loader.js';
+import { THEMES } from './theme-catalog.js';
+import { resolveExportPalette, toOpenCodeTui, toOpenCodeDesktop, createNativeBuildKit, exportSlug } from './theme-conversions.js';
 import { downloadThemePackage } from './theme-package.js';
 import {
   downloadThemeText,
@@ -88,6 +90,65 @@ function downloadAppliedExternal(kind = 'colorway') {
   return true;
 }
 
+async function resolvedAppliedPalette() {
+  if (!externalThemeIsActive()) {
+    const file = activeThemeFile();
+    if (!file) throw new Error('Select a theme before exporting.');
+    return { source: await loadTheme(file), sourceOVT: null, file };
+  }
+  const theme = appliedExternalTheme?.theme;
+  if (!theme) throw new Error('Apply an imported or generated theme before exporting.');
+  let base = {};
+  if (theme.extendsId === 'com.myrqyry.Colorway') {
+    base = await loadTheme('Colorway.obt');
+  } else if (theme.extendsId?.startsWith('com.myrqyry.Colorway.')) {
+    const file = 'Colorway-' + theme.extendsId.slice('com.myrqyry.Colorway.'.length).replaceAll('.', '-') + '.ovt';
+    if (!THEMES.some((t) => t.file === file)) {
+      throw new Error('Missing Colorway parent for imported palette: ' + theme.extendsId);
+    }
+    base = await loadTheme(file);
+  } else if (theme.extendsId) {
+    throw new Error('Unsupported imported parent theme: ' + theme.extendsId);
+  }
+  return {
+    source: { ...base, ...theme.tokens, _name: theme.name, _dark: theme.dark },
+    sourceOVT: serializeOVT(theme),
+    file: null,
+  };
+}
+
+async function downloadConvertedTheme(kind) {
+  const { source, sourceOVT, file } = await resolvedAppliedPalette();
+  const palette = resolveExportPalette(source);
+  const slug = exportSlug(palette.name);
+  if (kind === 'opencode-tui' || kind === 'opencode-desktop') {
+    const theme = kind === 'opencode-tui' ? toOpenCodeTui(palette) : toOpenCodeDesktop(palette);
+    downloadThemeText(JSON.stringify(theme, null, 2) + '\n', `colorway-${slug}-${kind}.json`);
+    return;
+  }
+  if (!['orchis', 'bibata'].includes(kind)) throw new Error('Unknown export format');
+  if (kind === 'orchis' && !palette.dark) {
+    throw new Error('Orchis Compact currently supports dark themes only.');
+  }
+  let original = sourceOVT;
+  if (!original) {
+    const response = await fetch(`/themes/${encodeURIComponent(file)}`);
+    if (!response.ok) throw new Error('Could not read source Colorway theme: HTTP ' + response.status);
+    original = await response.text();
+  }
+  const bytes = createNativeBuildKit(kind, palette, original);
+  const url = URL.createObjectURL(new Blob([bytes], { type: 'application/zip' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `colorway-${slug}-${kind}-build-kit.zip`;
+  document.body.append(link);
+  try { link.click(); }
+  finally {
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+}
+
 function downloadCurrent(kind = 'colorway') {
   if (kind === 'package') {
     const file = activeThemeFile();
@@ -109,8 +170,17 @@ function syncBrand(root) {
   const download = root.querySelector('[data-colorway-download-main]');
   const label = externalThemeIsActive() ? 'Download .ovt' : 'Download ZIP';
   if (download && download.textContent !== label) download.textContent = label;
+  const busy = root.dataset.colorwayDownloadBusy === 'true';
   const packageOption = root.querySelector('[data-colorway-download-kind="package"]');
-  if (packageOption) packageOption.disabled = externalThemeIsActive() || root.dataset.colorwayDownloadBusy === 'true';
+  if (packageOption) packageOption.disabled = externalThemeIsActive() || busy;
+  const orchisOption = root.querySelector('[data-colorway-download-kind="orchis"]');
+  if (orchisOption) {
+    const isLight = externalThemeIsActive()
+      ? appliedExternalTheme?.theme?.dark === false
+      : /^Light variant/i.test(themeStatus());
+    orchisOption.disabled = isLight || busy;
+    orchisOption.title = isLight ? 'Orchis Compact supports dark palettes only' : '';
+  }
   document.title = `${name} · Colorway OBS Theme`;
 }
 
@@ -156,7 +226,11 @@ async function triggerDownload(root, kind) {
   buttons.forEach((button) => { button.disabled = true; });
   status.textContent = kind === 'package' ? 'Preparing ZIP…' : '';
   try {
-    await downloadCurrent(kind);
+    if (['opencode-tui', 'opencode-desktop', 'orchis', 'bibata'].includes(kind)) {
+      await downloadConvertedTheme(kind);
+    } else {
+      await downloadCurrent(kind);
+    }
     status.textContent = '';
     closeDownloadMenu(root);
   } catch (error) {
@@ -352,8 +426,8 @@ function ensureActions(root) {
           data-colorway-download-toggle
           aria-haspopup="menu"
           aria-expanded="false"
-          aria-label="Download options"
-        >⌄</button>
+          aria-label="Export theme formats"
+        >Export ▾</button>
         <div class="colorway-download-menu" data-colorway-download-menu role="menu" hidden>
           <button type="button" role="menuitem" data-colorway-download-kind="package">
             <span><strong>Colorway ZIP package</strong><small>Base, variant, icons, patterns, font</small></span>
@@ -366,6 +440,24 @@ function ensureActions(root) {
           <button type="button" role="menuitem" data-colorway-download-kind="yami">
             <span><strong>Yami-compatible .ovt</strong><small>Compatibility export</small></span>
             <span aria-hidden="true">↗</span>
+          </button>
+          <div class="colorway-download-menu-label" role="presentation">OpenCode</div>
+          <button type="button" role="menuitem" data-colorway-download-kind="opencode-tui">
+            <span><strong>OpenCode Terminal .json</strong><small>Complete TUI theme</small></span>
+            <span aria-hidden="true">↓</span>
+          </button>
+          <button type="button" role="menuitem" data-colorway-download-kind="opencode-desktop">
+            <span><strong>OpenCode Desktop .json</strong><small>Light + dark theme</small></span>
+            <span aria-hidden="true">↓</span>
+          </button>
+          <div class="colorway-download-menu-label" role="presentation">Linux · local build required</div>
+          <button type="button" role="menuitem" data-colorway-download-kind="orchis">
+            <span><strong>Orchis Compact kit .zip</strong><small>GTK / Cinnamon · dark palettes</small></span>
+            <span aria-hidden="true">↓</span>
+          </button>
+          <button type="button" role="menuitem" data-colorway-download-kind="bibata">
+            <span><strong>Bibata cursors kit .zip</strong><small>XCursor · locally compiled</small></span>
+            <span aria-hidden="true">↓</span>
           </button>
         </div>
       </div>

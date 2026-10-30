@@ -67,10 +67,12 @@ install fonts or change OBS's selected theme/settings.
 
 ## Exporting the same palette to OpenCode, Orchis, and Bibata
 
-Open **Colorway → Export** after selecting a catalog theme, importing an `.ovt`,
-or applying a generated Lospec palette. The export uses the currently active
-palette (including a Colorway parent theme when declared), not the last
-catalog selection. Nothing is installed or applied automatically.
+In the visible Colorway OBS-style Settings preview, click **Export ▾** immediately beside **Download ZIP** at the lower right. Select a catalog theme or use the
+**Import** button in that Settings preview to apply your own `.ovt` first.
+The dropdown contains native OBS, OpenCode Terminal/Desktop, and Linux build-kit
+exports. It uses the currently applied palette (including its declared Colorway
+parent), never an older catalog selection. The hidden workbench is not a
+user-facing Export tab. Nothing is installed or applied automatically.
 
 - **OpenCode Terminal .json**: complete terminal/TUI theme including diff,
   Markdown, and syntax roles. Place it in the active OpenCode profile's

@@ -1,6 +1,30 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Visible export surface follow-up — verified (2026-10-29)
+
+**User-facing correction:** The previous implementation added exports to a
+workbench that `page-shell-sync.css` deliberately hides with
+`display:none!important`. The generated files were correct, but the actual
+Colorway product UI had no accessible Export tab. The earlier browser smoke
+tested hidden DOM controls and therefore falsely established completion.
+
+**Fix:** A visibly labeled **Export ▾** button immediately beside **Download ZIP**
+in the OBS-style Settings dialog now includes OpenCode Terminal/Desktop JSON and Orchis/Bibata
+build kits, alongside OBS ZIP, `.ovt`, and Yami exports. The dialog's
+`overflow:hidden` also clipped the footer menu; overflow was adjusted and
+the menu given bounded vertical scrolling and semantic grouping. Dark-only
+Orchis is disabled for light palettes. Applied imported palettes resolve
+Colorway parent colors before conversion.
+
+**Evidence:** Chromium waits for the opening animation and uses reduced motion
+to avoid hit-testing transitional compositing frames. It verifies pointer
+reachability with `elementFromPoint`, dispatches real mouse press/release to
+the **visible footer menu**, validates all four downloaded files, imports a
+custom `.ovt` through the **visible Settings file input**, and checks the
+light-mode Orchis boundary. Hidden DOM tests alone are not a valid user-path
+verification and must never again justify a completion claim.
+
 ## Multi-target palette exports (2026-10-29)
 
 **Intent:** The existing Colorway Export tab must export the palette currently

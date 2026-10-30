@@ -19,6 +19,8 @@ test('Settings footer exposes Import and split Download actions', () => {
   assert.match(actions, /data-colorway-import/);
   assert.match(actions, /data-colorway-download-main/);
   assert.match(actions, /data-colorway-download-toggle/);
+  assert.match(actions, /aria-label="Export theme formats"/);
+  assert.match(actions, />Export ▾<\/button>/);
   assert.match(actions, /data-colorway-download-kind="colorway"/);
   assert.match(actions, /data-colorway-download-kind="yami"/);
   assert.match(styles, /\.obs-sim-dialog-actions\.colorway-dialog-actions/);
