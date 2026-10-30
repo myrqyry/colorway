@@ -64,3 +64,44 @@ Run `pnpm sync:themes` after edits. Then run
 icons, and patterns to an explicitly chosen destination. Without an argument the script
 uses the ordinary Linux config root (`$XDG_CONFIG_HOME`, or `~/.config`). It does not
 install fonts or change OBS's selected theme/settings.
+
+## Exporting the same palette to OpenCode, Orchis, and Bibata
+
+Open **Colorway → Export** after selecting a catalog theme, importing an `.ovt`,
+or applying a generated Lospec palette. The export uses the currently active
+palette (including a Colorway parent theme when declared), not the last
+catalog selection. Nothing is installed or applied automatically.
+
+- **OpenCode Terminal .json**: complete terminal/TUI theme including diff,
+  Markdown, and syntax roles. Place it in the active OpenCode profile's
+  `themes/` folder (for example `~/.config/opencode/themes/`); select it
+  through OpenCode's terminal theme settings / `cli.json`. For the isolated
+  Meristem profile, use `~/.config/meristem/opencode/` rather than silently
+  changing the stock profile.
+- **OpenCode Desktop .json**: source-format desktop theme with named
+  `light`/`dark` semantic palettes. The original palette is retained in its
+  native mode; the opposite mode is a derived accessible approximation.
+  This is a schema-based export for OpenCode's desktop theme registration;
+  importing a loose JSON file is **not** a verified one-click desktop feature.
+- **Orchis Compact .zip**: *local build kit*, not a compiled GTK package.
+  The upstream Orchis Sass/asset pipeline and our `orchis-colorways` converter
+  are required on Linux. Only dark Colorway variants are supported; the
+  button is disabled for light themes.
+- **Bibata cursors .zip**: *local build kit*, not precompiled cursor binaries.
+  Requires official Bibata vectors, Inkscape, `uvx`/clickgen, and the
+  `orchis-colorways` cursor converter on Linux. Rebuilds normal and animated
+  XCursor forms with the selected accent and background.
+
+Each native kit contains `palette.json` (self-contained, flattened color
+roles), `source.ovt`, `README.md`, and `build.sh`. Extract the ZIP and run
+`bash build.sh` after installing the local builder dependencies. The runner
+uses `COLORWAY_CONVERTERS` if set, otherwise `~/loam/orchis-colorways`.
+Existing installed themes are never overwritten and the current desktop/cursor
+selection is untouched. This is intentionally not a server-side build: a
+public browser can't access the user's local Linux theme toolchains.
+
+Developer verification: `pnpm test`, `pnpm check:preview`, and
+`pnpm check:exports`. The latter opens Chromium and checks actual JSON and
+ZIP downloads, local shell syntax, imported palette selection, and light
+mode boundaries. It dry-runs the native converters when this local checkout
+provides them; it does not apply themes.

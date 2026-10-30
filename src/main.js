@@ -5,6 +5,7 @@ import { THEME_CATEGORIES, getThemeCategory, filterThemeCatalog, sortThemesByDis
 import { PALETTE_VARS, PALETTE_GROUPS, applyTheme, loadTheme } from './theme-loader.js';
 import { toNormalizedTheme, serializeOVT, toYamiOVT, downloadThemeText, importThemeFile, fromLospecPalette, lospecSlugFromUrl } from './theme-workbench.js';
 import { downloadThemePackage } from './theme-package.js';
+import { resolveExportPalette, toOpenCodeTui, toOpenCodeDesktop, createNativeBuildKit, exportSlug } from './theme-conversions.js';
 import originalSources from '../data/theme-provenance.json';
 
 function escapeHtml(str) {
@@ -254,8 +255,9 @@ function renderApp() {
       </section>
 
       <section id="panel-export" class="workbench-panel" role="tabpanel" data-panel="export" hidden>
-        <p class="workbench-help">The active Colorway theme can be downloaded as a native <code>.ovt</code> or as a Yami-compatible variant. Yami output forces <code>extends: 'com.myrqyry.Colorway'</code> so it layers on top of your installed Colorway base.</p>
+        <p class="workbench-help">Export the active palette for OBS, OpenCode, or Linux desktop theming. OpenCode themes download as JSON; Orchis and Bibata download local build kits because native compilers cannot run in this browser.</p>
         <div class="workbench-export-list" id="workbench-export-list"></div>
+        <p class="workbench-help" id="workbench-export-status" role="status" aria-live="polite"></p>
       </section>
 
       <div class="showcase-grid">
@@ -440,7 +442,7 @@ function applyThemeState(file, theme, patternFile) {
     applyCurrentPattern();
   }
 
-  setActiveWorkbenchTheme(file);
+  setActiveWorkbenchTheme(file, theme);
 
   document.querySelectorAll('.theme-row').forEach((row) => {
     const active = row.dataset.file === file;
@@ -983,18 +985,45 @@ let activeWorkbenchTheme = null;
 let importedTheme = null;
 let lospecTheme = null;
 
-function setActiveWorkbenchTheme(file) {
-  const meta = THEMES.find((t) => t.file === file);
+function setActiveWorkbenchTheme(file, activeTokens = null, customTheme = null) {
+  const meta = file ? THEMES.find((theme) => theme.file === file) : customTheme;
   if (!meta) return;
-  activeWorkbenchTheme = { file, name: meta.name };
+  const name = customTheme?.name || meta.name;
+  activeWorkbenchTheme = { file, name, customTheme };
   const nameEl = document.querySelector('#workbench-active-name');
-  if (nameEl) nameEl.textContent = meta.name;
+  if (nameEl) nameEl.textContent = name;
   const exportList = document.querySelector('#workbench-export-list');
   if (exportList) {
+    const selected = escapeHtml(file || '__custom__');
+    const light = activeTokens?._dark === false;
     exportList.innerHTML = `
-      <a class="workbench-btn" href="/themes/${encodeURIComponent(file)}" download="${escapeHtml(file)}">Download Colorway .ovt</a>
-      <button type="button" class="workbench-btn" data-yami-for="${escapeHtml(file)}">Download Yami-compatible .ovt</button>
+      <section class="workbench-export-group" aria-label="OBS theme exports">
+        <strong>OBS Studio</strong>
+        <div class="workbench-export-actions">
+          ${file
+            ? `<a class="workbench-btn" href="/themes/${encodeURIComponent(file)}" download="${selected}">Colorway .ovt</a>
+               <button type="button" class="workbench-btn" data-yami-for="${selected}">Yami .ovt</button>`
+            : `<button type="button" class="workbench-btn" data-export-kind="obs-custom" data-export-file="__custom__">Colorway .ovt</button>
+               <button type="button" class="workbench-btn" data-export-kind="yami-custom" data-export-file="__custom__">Yami .ovt</button>`}
+        </div>
+      </section>
+      <section class="workbench-export-group" aria-label="OpenCode theme exports">
+        <strong>OpenCode</strong>
+        <div class="workbench-export-actions">
+          <button type="button" class="workbench-btn" data-export-kind="opencode-tui" data-export-file="${selected}">Terminal theme .json</button>
+          <button type="button" class="workbench-btn" data-export-kind="opencode-desktop" data-export-file="${selected}">Desktop theme .json</button>
+        </div>
+      </section>
+      <section class="workbench-export-group" aria-label="Linux desktop exports">
+        <strong>Linux desktop · local build kits</strong>
+        <div class="workbench-export-actions">
+          <button type="button" class="workbench-btn" data-export-kind="orchis" data-export-file="${selected}" ${light ? 'disabled title="Orchis converter currently supports dark palettes only"' : ''}>Orchis Compact .zip</button>
+          <button type="button" class="workbench-btn" data-export-kind="bibata" data-export-file="${selected}">Bibata cursors .zip</button>
+        </div>
+      </section>
     `;
+    const status = document.querySelector('#workbench-export-status');
+    if (status) status.textContent = light ? 'Orchis Compact currently supports dark palettes only.' : '';
   }
 }
 
@@ -1046,7 +1075,8 @@ async function handleImportedFile(file) {
 }
 
 function initWorkbench() {
-  setActiveWorkbenchTheme(DEFAULT_THEME);
+  // The initial slideshow theme was already selected before this mounts.
+  if (!activeWorkbenchTheme) setActiveWorkbenchTheme(DEFAULT_THEME);
 
   document.querySelectorAll('.workbench-tab').forEach((tab) => {
     tab.addEventListener('click', () => switchWorkbenchTab(tab.dataset.tab));
@@ -1095,6 +1125,7 @@ function initWorkbench() {
     if (status) status.textContent = `Imported — ${Object.keys(importedTheme.tokens).length} vars`;
     const grid = document.querySelector('#palette-grid');
     if (grid) grid.innerHTML = renderPalette();
+    setActiveWorkbenchTheme(null, { ...importedTheme.tokens, _name: importedTheme.name, _dark: importedTheme.dark }, importedTheme);
   });
 
   const downloadImported = (kind) => {
@@ -1123,6 +1154,75 @@ function initWorkbench() {
       .then((r) => r.text())
       .then((text) => toYamiOVT(toNormalizedTheme(text)))
       .then((text) => downloadThemeText(text, file.replace(/\.ovt$/, '') + '-yami.ovt'));
+  });
+
+  document.addEventListener('click', async (e) => {
+    const button = e.target.closest('button[data-export-kind]');
+    if (!button || button.disabled) return;
+    const { exportFile: file, exportKind: kind } = button.dataset;
+    // The palette selection is the source of truth, never a separately
+    // maintained screenshot or CSS variable read from a transition.
+    if (file !== (activeWorkbenchTheme?.file || '__custom__')) return;
+    const status = document.querySelector('#workbench-export-status');
+    button.disabled = true;
+    if (status) status.textContent = 'Preparing ' + button.textContent.trim() + '…';
+    try {
+      const customTheme = activeWorkbenchTheme.customTheme;
+      let source;
+      if (customTheme) {
+        let parent = {};
+        const extendsId = customTheme.extendsId;
+        if (extendsId === 'com.myrqyry.Colorway') {
+          parent = await loadTheme('Colorway.obt');
+        } else if (extendsId?.startsWith('com.myrqyry.Colorway.')) {
+          const parentFile = 'Colorway-' + extendsId.slice('com.myrqyry.Colorway.'.length).replaceAll('.', '-') + '.ovt';
+          if (!THEMES.some((theme) => theme.file === parentFile)) {
+            throw new Error('Imported theme references an unavailable Colorway parent: ' + extendsId);
+          }
+          parent = await loadTheme(parentFile);
+        }
+        source = { ...parent, ...customTheme.tokens, _name: customTheme.name, _dark: customTheme.dark };
+      } else {
+        source = await loadTheme(file);
+      }
+      const snapshot = resolveExportPalette(source);
+      const slug = exportSlug(snapshot.name);
+      if (kind === 'obs-custom' || kind === 'yami-custom') {
+        const text = kind === 'yami-custom' ? toYamiOVT(customTheme) : serializeOVT(customTheme);
+        downloadThemeText(text, `colorway-${slug}${kind === 'yami-custom' ? '-yami' : ''}.ovt`);
+      } else if (kind === 'opencode-tui') {
+        downloadThemeText(JSON.stringify(toOpenCodeTui(snapshot), null, 2) + '\n', `colorway-${slug}-opencode-tui.json`);
+      } else if (kind === 'opencode-desktop') {
+        downloadThemeText(JSON.stringify(toOpenCodeDesktop(snapshot), null, 2) + '\n', `colorway-${slug}-opencode-desktop.json`);
+      } else if (kind === 'orchis' || kind === 'bibata') {
+        let original;
+        if (customTheme) original = serializeOVT(customTheme);
+        else {
+          const response = await fetch(`/themes/${encodeURIComponent(file)}`);
+          if (!response.ok) throw new Error(`Could not fetch original palette: HTTP ${response.status}`);
+          original = await response.text();
+        }
+        const bytes = createNativeBuildKit(kind, snapshot, original);
+        const url = URL.createObjectURL(new Blob([bytes], { type: 'application/zip' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `colorway-${slug}-${kind}-build-kit.zip`;
+        document.body.appendChild(link);
+        try {
+          link.click();
+        } finally {
+          link.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+      } else {
+        throw new Error('Unknown export format');
+      }
+      if (status) status.textContent = 'Export prepared. Downloads are never installed automatically.';
+    } catch (error) {
+      if (status) status.textContent = 'Export failed: ' + (error.message || String(error));
+    } finally {
+      button.disabled = false;
+    }
   });
 
   // ---- Lospec palette import ----
@@ -1166,6 +1266,7 @@ function initWorkbench() {
     if (status) status.textContent = 'Generated — ' + Object.keys(lospecTheme.tokens).length + ' vars';
     const grid = document.querySelector('#palette-grid');
     if (grid) grid.innerHTML = renderPalette();
+    setActiveWorkbenchTheme(null, { ...lospecTheme.tokens, _name: lospecTheme.name, _dark: lospecTheme.dark }, lospecTheme);
   });
 
   const downloadLospec = (kind) => {

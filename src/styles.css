@@ -1029,9 +1029,39 @@
 }
 
 .workbench-export-list {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
   gap: 10px;
+  margin-bottom: 12px;
+}
+
+.workbench-export-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border_color);
+  background: color-mix(in srgb, var(--bg_preview) 65%, transparent);
+}
+
+.workbench-export-group > strong {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.workbench-export-actions {
+  display: flex;
   flex-wrap: wrap;
+  gap: 7px;
+}
+
+.workbench-export-actions .workbench-btn {
+  padding: 7px 10px;
+  white-space: normal;
+  text-align: left;
 }
 
 .theme-download {

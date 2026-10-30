@@ -1,6 +1,44 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Multi-target palette exports (2026-10-29)
+
+**Intent:** The existing Colorway Export tab must export the palette currently
+being viewed or applied, including imported `.ovt` and generated Lospec inputs,
+to native OBS, OpenCode, Orchis Compact, and Bibata cursor outputs. No fake
+browser-side compilation of native theme binaries.
+
+**Implementation:** The new `src/theme-conversions.js` owns semantic palette
+resolution and typed conversions. OpenCode TUI JSON covers all required color
+roles from the checked-out `packages/tui/src/theme/index.ts`; the desktop
+JSON matches the checked-out `desktop-theme.schema.json` seed shape and keeps
+the selected appearance exact while deriving a contrasting companion mode.
+For GTK/Cursor targets, the browser downloads a frozen `palette.json`,
+original `.ovt`, a local `build.sh`, and honest dependency instructions in
+a ZIP. The existing `~/loam/orchis-colorways` converters now accept
+`--palette-json` without resolving a Colorway checkout. The export tab is
+responsive and grouped without horizontal scrolling.
+
+**Failure found and fixed:** After Apply, imported Colorway palettes declare
+only variant overrides, with needed colors inherited from `Colorway.obt`.
+Exporting `importedTheme.tokens` directly missed e.g. `--success`, or
+continued exporting the earlier catalog selection. The UI now tracks a custom
+applied source, resolves its declared Colorway parent before export, and
+fails explicitly for unavailable parents instead of guessing.
+
+**Boundaries:** Orchis supports dark variants only and the UI disables it for
+light variants. Browser ZIPs are reproducible build *inputs*, not native
+binaries; installed cursor/desktop selection is untouched. OpenCode TUI and
+Desktop exports are schema-shaped sources, not automatically registered in
+running OpenCode. No stock or Meristem profile is changed.
+
+**Verification:** `pnpm test`: 707 total, 706 pass, 0 fail, 1 intended skip.
+`pnpm check:preview`: Chromium parity passed. `pnpm check:exports`:
+Chromium downloaded and inspected both OpenCode JSONs, both native ZIPs,
+ran dry-run local converters on frozen palettes, verified custom applied
+imports and light Orchis disabled. All 160 current catalog palettes passed
+conversion tests. Source repositories were left intact; no push/deploy.
+
 ## Remove unused OBS state-test popup and launcher (2026-10-26)
 
 The user explicitly rejected the fake alert/crash-recovery stress-test popup
