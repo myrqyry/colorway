@@ -31,7 +31,7 @@ test('normalizes resolved Colorway tokens into self-contained opaque snapshot', 
 
 test('all catalog Colorway palettes have convertible semantic colors', () => {
   const base = parseOVT(readFileSync(new URL('../themes/Colorway.obt', import.meta.url), 'utf8'));
-  assert.equal(THEMES.length, 160);
+  assert.equal(THEMES.length, 163);
   for (const entry of THEMES) {
     const variant = parseOVT(readFileSync(new URL('../themes/' + entry.file, import.meta.url), 'utf8'));
     const snapshot = resolveExportPalette({

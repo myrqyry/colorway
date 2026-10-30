@@ -257,6 +257,30 @@
       ],
       "sha256": "639a0d9fc8630ada9e8ac4873b08d1eb0db2c53b8f17fa8ea6c17f899a86ddad"
     },
+    "Colorway-OminousOlives.ovt": {
+      "url": "https://lospec.com/palette-list/ominous-olives.json",
+      "name": "Ominous Olives",
+      "author": "StellarBee",
+      "colors": [
+        "#1f1b18",
+        "#322610",
+        "#4d3028",
+        "#623925",
+        "#0c1013",
+        "#212433",
+        "#333945",
+        "#50231d",
+        "#360e0f",
+        "#4a1a32",
+        "#2c2618",
+        "#8a7a22",
+        "#e6d472",
+        "#372058",
+        "#2d3951",
+        "#6f7897"
+      ],
+      "sha256": "b76904ac99d6287072a223e70536aa898d7f085ffa992bd330d845fc4edaa8e4"
+    },
     "Colorway-SLSO8Pixels.ovt": {
       "url": "https://lospec.com/palette-list/slso8.json",
       "name": "SLSO8",
@@ -309,6 +333,30 @@
       ],
       "sha256": "7682052ab044fd430aacb576530808544df44b242358a24a46d3c93fee194c94"
     },
+    "Colorway-ScreenBurnMonitor.ovt": {
+      "url": "https://lospec.com/palette-list/screen-burn-monitor.json",
+      "name": "Screen Burn Monitor",
+      "author": "SteelSoldier",
+      "colors": [
+        "#05090f",
+        "#19252e",
+        "#324d4b",
+        "#5f6b4b",
+        "#7f8a75",
+        "#aba89a",
+        "#cccbc2",
+        "#ededed",
+        "#208763",
+        "#5d8756",
+        "#87203f",
+        "#87423e",
+        "#204687",
+        "#4e7b87",
+        "#877920",
+        "#876e52"
+      ],
+      "sha256": "44589e8c83aa87b4d741932cd74c7464b018da9dbaa584f2ceba802596573a40"
+    },
     "Colorway-Seafoam.ovt": {
       "url": "https://lospec.com/palette-list/seafoam.json",
       "name": "Seafoam",
@@ -324,6 +372,38 @@
         "#5b4a68"
       ],
       "sha256": "f05a31931b571a1123d4dd0cb1738a299398fdea31bb3a2052d3aa819d26163e"
+    },
+    "Colorway-Silkpukian24.ovt": {
+      "url": "https://lospec.com/palette-list/silkpukian-24.json",
+      "name": "Silkpukian 24",
+      "author": "Chicknhawk ",
+      "colors": [
+        "#c2e8b2",
+        "#a2db8f",
+        "#6dbd5b",
+        "#399970",
+        "#17695b",
+        "#19525b",
+        "#193e4a",
+        "#191d42",
+        "#c77a91",
+        "#f0a8cc",
+        "#e8c5d8",
+        "#e0c143",
+        "#e8ddca",
+        "#c4a77c",
+        "#c47a24",
+        "#9a6a45",
+        "#8e4e2d",
+        "#331c18",
+        "#4d2a1d",
+        "#70242d",
+        "#a92a1c",
+        "#c83a12",
+        "#d95a12",
+        "#f07817"
+      ],
+      "sha256": "34cebc8a91598cc7154fb628cb20dff2eaec3429ef816aafacec0986abee2fad"
     },
     "Colorway-Soapy10.ovt": {
       "url": "https://lospec.com/palette-list/soapy-10.json",

@@ -22,7 +22,7 @@ check_theme() {
   local name="$1" id="$2" expected="$3"
   local ink='#e0def4' active_ink='#191724'
   case "$name" in
-    latte) ink='#191724'; active_ink='#e0def4' ;;
+    latte|silkpukian) ink='#191724'; active_ink='#e0def4' ;;
     fairyfloss) active_ink='#e0def4' ;;
   esac
   local cfg="$sandbox/$name"
@@ -33,6 +33,9 @@ check_theme() {
     monokai) cp themes/Colorway-Monokai.ovt "$cfg/obs-studio/themes/" ;;
     fairyfloss) cp themes/Colorway-Fairyfloss.ovt "$cfg/obs-studio/themes/" ;;
     ninety) cp themes/Colorway-90sAnime.ovt "$cfg/obs-studio/themes/" ;;
+    screenburn) cp themes/Colorway-ScreenBurnMonitor.ovt "$cfg/obs-studio/themes/" ;;
+    silkpukian) cp themes/Colorway-Silkpukian24.ovt "$cfg/obs-studio/themes/" ;;
+    olives) cp themes/Colorway-OminousOlives.ovt "$cfg/obs-studio/themes/" ;;
   esac
   cp -a "$sandbox/shared/icons/colorway/mingcute" "$cfg/obs-studio/themes/icons/colorway/"
   cp "$sandbox/shared/patterns/"*.svg "$cfg/obs-studio/themes/patterns/"
@@ -47,7 +50,7 @@ import { readFileSync } from 'node:fs';
 import { parseOVT } from './src/theme-loader.js';
 import { stateTokens, resolveAlias } from './scripts/theme-state-tokens.mjs';
 const parse = file => parseOVT(readFileSync('themes/' + file, 'utf8').replace(/\/\*[^]*?\*\//g, '')).vars;
-const variant = { latte: 'Colorway-CatppuccinLatte-Blue.ovt', monokai: 'Colorway-Monokai.ovt', fairyfloss: 'Colorway-Fairyfloss.ovt', ninety: 'Colorway-90sAnime.ovt' }[process.argv[2]];
+const variant = { latte: 'Colorway-CatppuccinLatte-Blue.ovt', monokai: 'Colorway-Monokai.ovt', fairyfloss: 'Colorway-Fairyfloss.ovt', ninety: 'Colorway-90sAnime.ovt', screenburn: 'Colorway-ScreenBurnMonitor.ovt', silkpukian: 'Colorway-Silkpukian24.ovt', olives: 'Colorway-OminousOlives.ovt' }[process.argv[2]];
 const vars = new Map(Object.entries({ ...parse('Colorway.obt'), ...(variant ? parse(variant) : {}) }));
 const tokens = stateTokens(vars);
 const result = { background: resolveAlias(vars, '--bg_base'), windowBackground: resolveAlias(vars, '--bg_window'), sliderInk: resolveAlias(vars, '--text_bright') };
@@ -106,4 +109,7 @@ check_theme latte 'com.myrqyry.Colorway.CatppuccinLatte.Blue' '#eff1f5'
 check_theme monokai 'com.myrqyry.Colorway.Monokai' '#272822'
 check_theme fairyfloss 'com.myrqyry.Colorway.Fairyfloss' '#5a5475'
 check_theme ninety 'com.myrqyry.Colorway.90sAnime' '#13062b'
+check_theme screenburn 'com.myrqyry.Colorway.ScreenBurnMonitor' '#05090f'
+check_theme silkpukian 'com.myrqyry.Colorway.Silkpukian24' '#e8ddca'
+check_theme olives 'com.myrqyry.Colorway.OminousOlives' '#0c1013'
 echo 'All isolated OBS/Qt theme selections verified'

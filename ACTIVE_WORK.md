@@ -1,6 +1,43 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Curated Lospec theme trio (2026-10-30)
+
+**Goal:** Add source-backed Colorway variants of Screen Burn Monitor (dark,
+green monitor), Silkpukian 24 (light, bamboo/paper/cherry blossom), and
+Ominous Olives (dark, charcoal and olive gold), without changing any live
+OBS theme or system settings.
+
+**Sources:** Fetched each source's public `.json` from Lospec and verified
+name, creator, 16/24/16 exact colors, and SHA-256 of the raw response.
+Pinned all three in `data/official-palette-checkpoints.json` and their
+creator/URL/relation in `data/theme-provenance.json`. Core surfaces, text,
+accent and controls use source palette swatches. Danger/error colors were
+lightened in the two dark variants where necessary for legibility.
+
+**Native themes:** Created `Colorway-ScreenBurnMonitor.ovt`,
+`Colorway-Silkpukian24.ovt`, and `Colorway-OminousOlives.ovt` with full
+OBS semantic palette overrides. Registered in catalog and categories; ran
+`pnpm sync:themes` to generate mirrored variants, mixer icons, source
+manifest and offline companion. Updated theme credits for 163 shipped
+variants. Silkpukian has a deliberately frozen source-values annotation;
+its original bamboo hover surface `#c2e8b2` provides >=4.5:1 contrast for
+warning and success status text in the light appearance.
+
+**Verification:** A focused test first failed because these themes did not
+exist, then passed after implementation. Full `pnpm test`: 723 total, 722
+passed, 0 failed, 1 pre-existing network skip. Browser parity, exports,
+slideshow, and offline companion tests passed. All three themes were
+selected by real mouse clicks on the visible Settings style picker in
+Chromium; painted surfaces/accents and author links matched expectations.
+Screenshots were inspected. Isolated native `pnpm check:obs-native` passed
+for all eight cases including these three; OBS 32.2 loaded the variants,
+resolved QSS and icons, and rendered source visibility/lock, properties,
+filters, mixer and zoom states without touching live user configuration.
+
+**Boundary:** These are OBS `.ovt` variants, not GTK or cursor binaries.
+No automatic installation, selection change, push or release.
+
 ## Stop automatic shuffle on real user activity (2026-10-29)
 
 **Behavior:** The 12-second random palette rotation now freezes on the first

@@ -1,6 +1,6 @@
 # Colorway theme provenance and credits
 
-Reviewed: 2026-10-17; 160 shipped OBS color variants.
+Reviewed: 2026-10-30; 163 shipped OBS color variants.
 
 Colorway adapts external palettes into OBS theme roles. A source identity
 does not certify every OBS color mapping. An inspired-by credit does not
@@ -14,7 +14,7 @@ the palettes for OBS, but does not claim to have invented them.
 - original source not established: 23
 - palette roles checked: 60
 - source identified: 62
-- source palette identified: 10
+- source palette identified: 13
 
 ## Sources for every shipped variant
 
@@ -137,6 +137,7 @@ the palettes for OBS, but does not claim to have invented them.
 | Colorway-NightOwl.ovt | adapted | [Sarah Drasner](https://github.com/sdras/night-owl-vscode-theme) | source identified | — |
 | Colorway-Nord.ovt | adapted | [Sven Greb / Nord](https://github.com/nordtheme/nord) | source identified | — |
 | Colorway-OC2.ovt | unverified | Original source not established | original source not established | Do not claim an official palette, license, or upstream author without evidence |
+| Colorway-OminousOlives.ovt | adapted | [StellarBee](https://lospec.com/palette-list/ominous-olives) | source palette identified | Curated OBS semantic adaptation; alert colors may be adjusted for contrast. |
 | Colorway-OneDark.ovt | adapted | [Atom One Dark contributors](https://github.com/atom/one-dark-syntax) | source identified | — |
 | Colorway-OneDarkPro.ovt | adapted | [Binaryify / One Dark Pro](https://github.com/Binaryify/OneDark-Pro) | source identified | — |
 | Colorway-OpenCode.ovt | adapted | [Anomaly / OpenCode](https://github.com/anomalyco/opencode) | source identified | — |
@@ -164,8 +165,10 @@ the palettes for OBS, but does not claim to have invented them.
 | Colorway-RosePineMoon-Rose.ovt | adapted | [Rosé Pine contributors](https://github.com/rose-pine/rose-pine-palette) | palette roles checked | Base, named accent and foreground compared against official palette |
 | Colorway-SLSO8Pixels.ovt | adapted | [Luis Miguel Maldonado (SoloSalsero)](https://lospec.com/palette-list/slso8) | source palette identified | — |
 | Colorway-SailorMoonBackground.ovt | adapted | [OldNinjaCat](https://lospec.com/palette-list/sailor-moon-background) | source palette identified | — |
+| Colorway-ScreenBurnMonitor.ovt | adapted | [SteelSoldier](https://lospec.com/palette-list/screen-burn-monitor) | source palette identified | Curated OBS semantic adaptation; alert colors may be adjusted for contrast. |
 | Colorway-Seafoam.ovt | adapted | [Jimison3](https://lospec.com/palette-list/seafoam) | source palette identified | — |
 | Colorway-ShadesofPurple.ovt | adapted | [Ahmad Awais](https://github.com/ahmadawais/shades-of-purple-vscode) | source identified | — |
+| Colorway-Silkpukian24.ovt | adapted | [Chicknhawk](https://lospec.com/palette-list/silkpukian-24) | source palette identified | Curated OBS semantic adaptation; alert colors may be adjusted for contrast. |
 | Colorway-Soapy10.ovt | adapted | [green guy](https://lospec.com/palette-list/soapy-10) | source palette identified | — |
 | Colorway-SolarizedDark.ovt | adapted | [Ethan Schoonover](https://github.com/altercation/solarized) | source identified | — |
 | Colorway-SolarizedLight.ovt | adapted | [Ethan Schoonover](https://github.com/altercation/solarized) | source identified | — |
@@ -189,7 +192,7 @@ the palettes for OBS, but does not claim to have invented them.
   The six Dawn variants preserve the historical `#575279` text value,
   while the checked current upstream reference reports `#464261`.
   This remains documented as historical source drift, not silently rewritten.
-- All nine identified Lospec palette sources were checked for their
+- All twelve identified Lospec palette sources were checked for their
   authored hex colors. A few Colorway foregrounds are contrast adaptations
   outside the deliberately small source palettes; they are not original swatches.
 - A diff against the pre-October-16 checkpoint found no changes to

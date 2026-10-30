@@ -75,7 +75,7 @@ await send('Page.enable');
 await send('Runtime.enable');
 await send('Emulation.setEmulatedMedia', {features:[{name:'prefers-reduced-motion',value:'reduce'}]});
 await send('Page.navigate',{url:'http://127.0.0.1:' + port + '/'});
-await until(() => evaluate('document.querySelectorAll(".theme-row").length >= 160'), 'theme catalog');
+await until(() => evaluate('document.querySelectorAll(".theme-row").length >= 163'), 'theme catalog');
 await until(() => evaluate('!document.querySelector("#colorway-intro")'), 'intro handoff');
 await until(() => evaluate('document.querySelector("#slideshow-pause")?.getAttribute("aria-pressed") === "false"'), 'initial slideshow playing');
 // System/app initiated pattern changes should not stop it.
@@ -115,7 +115,48 @@ await evaluate('document.querySelector(".colorway-theme-option:not(.selected)").
 await until(() => evaluate('document.querySelector("#active-theme-name").textContent !== '+JSON.stringify(before)), 'manual theme selection');
 assert.equal(await evaluate('document.querySelector("#slideshow-pause").getAttribute("aria-pressed")'), 'true');
 console.log('PASS manual theme selection works while auto cycling remains paused');
-console.log('Chromium slideshow activity PASS');
+// A visible picker path must work; DOM-only catalog entries are not enough.
+const pointerClick = async (selector) => {
+  const expression='(() => {const el=document.querySelector('+JSON.stringify(selector)+');'
+    +'if (!el) return {error:"missing selector"};'
+    +'el.scrollIntoView({block:"nearest"});const r=el.getBoundingClientRect();'
+    +'const x=Math.round(r.left+r.width/2), y=Math.round(r.top+r.height/2);'
+    +'return {x,y,hit:document.elementFromPoint(x,y)?.closest('+JSON.stringify(selector)+')===el,rect:r.toJSON()};})()';
+  const pos=await evaluate(expression);
+  assert.equal(pos.hit,true,'Cannot pointer-click Settings picker: '+selector+' '+JSON.stringify(pos));
+  await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:pos.x,y:pos.y});
+  await send('Input.dispatchMouseEvent',{type:'mousePressed',x:pos.x,y:pos.y,button:'left',clickCount:1});
+  await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:pos.x,y:pos.y,button:'left',clickCount:1});
+};
+for(const [file,name,base,primary,author] of [
+  ['Colorway-ScreenBurnMonitor.ovt','Screen Burn Monitor','#05090f','#208763','SteelSoldier'],
+  ['Colorway-Silkpukian24.ovt','Silkpukian 24','#e8ddca','#17695b','Chicknhawk'],
+  ['Colorway-OminousOlives.ovt','Ominous Olives','#0c1013','#8a7a22','StellarBee'],
+]){
+  await pointerClick('[data-colorway-theme-trigger]');
+  await until(() => evaluate('document.querySelector("[data-colorway-theme-options]")?.hidden === false'),name+' picker');
+  await pointerClick('.colorway-theme-option[data-file="'+file+'"]');
+  await until(() => evaluate('document.querySelector("#active-theme-name")?.textContent === '+JSON.stringify(name)),name+' selection');
+  const painted=await evaluate('(() => ({'
+    +'base:getComputedStyle(document.documentElement).getPropertyValue("--bg_base").trim().toLowerCase(),'
+    +'primary:getComputedStyle(document.documentElement).getPropertyValue("--primary").trim().toLowerCase(),'
+    +'credit:document.querySelector("#active-theme-credit")?.textContent,'
+    +'source:document.querySelector("#active-theme-credit a")?.href,'
+    +'paused:document.querySelector("#slideshow-pause")?.getAttribute("aria-pressed")'
+    +'}))()');
+  assert.equal(painted.base,base,name+' background');
+  assert.equal(painted.primary,primary,name+' accent');
+  assert.ok(painted.credit?.includes(author),name+' credited creator');
+  assert.ok(painted.source?.startsWith('https://lospec.com/palette-list/'),name+' source link');
+  assert.equal(painted.paused,'true',name+' slideshow remains stopped');
+  if(process.env.COLORWAY_CURATED_SCREENSHOT_DIR){
+    const snap=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+    const dest=join(process.env.COLORWAY_CURATED_SCREENSHOT_DIR,'Colorway-'+name.replaceAll(' ','')+'.png');
+    writeFileSync(dest,Buffer.from(snap.data,'base64'));
+  }
+  console.log('PASS real pointer selection, painted colors and credited source',name);
+}
+console.log('Chromium slideshow activity and curated themes PASS');
 } finally {
   ws?.close();
   server.kill('SIGTERM');

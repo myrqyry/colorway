@@ -1,5 +1,5 @@
 {
-  "reviewed": "2026-10-17",
+  "reviewed": "2026-10-30",
   "themes": {
     "Colorway-90sAnime.ovt": {
       "creator": null,
@@ -820,6 +820,13 @@
       "verification": "original source not established",
       "note": "Do not claim an official palette, license, or upstream author without evidence"
     },
+    "Colorway-OminousOlives.ovt": {
+      "creator": "StellarBee",
+      "url": "https://lospec.com/palette-list/ominous-olives",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": "Curated OBS semantic adaptation; alert colors may be adjusted for contrast."
+    },
     "Colorway-OneDark.ovt": {
       "creator": "Atom One Dark contributors",
       "url": "https://github.com/atom/one-dark-syntax",
@@ -1009,6 +1016,13 @@
       "verification": "source palette identified",
       "note": ""
     },
+    "Colorway-ScreenBurnMonitor.ovt": {
+      "creator": "SteelSoldier",
+      "url": "https://lospec.com/palette-list/screen-burn-monitor",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": "Curated OBS semantic adaptation; alert colors may be adjusted for contrast."
+    },
     "Colorway-Seafoam.ovt": {
       "creator": "Jimison3",
       "url": "https://lospec.com/palette-list/seafoam",
@@ -1022,6 +1036,13 @@
       "relation": "adapted",
       "verification": "source identified",
       "note": ""
+    },
+    "Colorway-Silkpukian24.ovt": {
+      "creator": "Chicknhawk",
+      "url": "https://lospec.com/palette-list/silkpukian-24",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": "Curated OBS semantic adaptation; alert colors may be adjusted for contrast."
     },
     "Colorway-Soapy10.ovt": {
       "creator": "green guy",
