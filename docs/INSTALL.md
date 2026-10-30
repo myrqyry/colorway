@@ -95,9 +95,12 @@ user-facing Export tab. Nothing is installed or applied automatically.
   XCursor forms with the selected accent and background.
 
 Each native kit contains `palette.json` (self-contained, flattened color
-roles), `source.ovt`, `README.md`, and `build.sh`. Extract the ZIP and run
-`bash build.sh` after installing the local builder dependencies. The runner
-uses `COLORWAY_CONVERTERS` if set, otherwise `~/loam/orchis-colorways`.
+roles), `source.ovt`, `README.md`, and `build.sh`. **The ZIP is not itself an
+installable theme.** If `~/loam/orchis-colorways` already exists on your Linux
+machine, no new converter checkout is needed. Extract the ZIP and run
+`bash build.sh` using the existing native toolchain. Otherwise, install the
+converter and its native dependencies first. The runner uses
+`COLORWAY_CONVERTERS` if set, otherwise `~/loam/orchis-colorways`.
 Existing installed themes are never overwritten and the current desktop/cursor
 selection is untouched. This is intentionally not a server-side build: a
 public browser can't access the user's local Linux theme toolchains.

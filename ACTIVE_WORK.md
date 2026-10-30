@@ -1,6 +1,35 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Stop automatic shuffle on real user activity (2026-10-29)
+
+**Behavior:** The 12-second random palette rotation now freezes on the first
+trusted mouse/pointer movement, pointer/touch action, wheel, keyboard action,
+or input/change. Merely programmatic changes from the animation itself do not
+stop rotation. Pausing is sticky until the user intentionally presses Play
+(the visible top-right button); Play re-arms activity detection, so the next
+interaction stops the timer again. The progress countdown stays frozen while
+paused. Manual theme selection and manual Next remain usable while paused.
+
+**Implementation:** Shared activity listener in `src/shuffle-activity.js`
+with trusted event filtering, one-shot pause, ignored Play/Pause controls
+(prevents clicks from toggling twice), clean disposal, and explicit re-arming.
+`src/main.js` owns timer state; the visible page header mirrors it through
+existing `colorway:shuffle-state` events.
+
+**Verification:** `node --test test/shuffle-activity.test.js` verifies
+single pause, all relevant input types, synthetic event immunity, ignored
+Play/Pause controls, and resume/re-pause. `pnpm check:shuffle` is a real
+Chromium integration test with reduced motion: mouse movement freezes the
+countdown, top-right Play resumes it, genuine keyboard text input pauses it
+again, and an actual Settings style picker can manually select another theme
+without restarting the automatic slideshow.
+
+**Export kit clarity:** Updated the native ZIP README to state directly that
+it is not an installable theme. If the Linux machine already has
+`~/loam/orchis-colorways`, the converter is present; the user does not
+need to install it again.
+
 ## Visible export surface follow-up — verified (2026-10-29)
 
 **User-facing correction:** The previous implementation added exports to a

@@ -111,6 +111,8 @@ test('native build ZIP includes frozen palette, source, runnable recipe and no b
     assert.match(strFromU8(zip['build.sh']), /--palette-json/);
     assert.doesNotMatch(strFromU8(zip['build.sh']), /sudo|curl.*\|.*bash/);
     assert.match(strFromU8(zip['README.md']), /local build/i);
+    assert.match(strFromU8(zip['README.md']), /already have.*orchis-colorways/i);
+    assert.match(strFromU8(zip['README.md']), /not an installable theme/i);
     assert.equal(zip['build.sh'].length > 40, true);
   }
   assert.throws(() => createNativeBuildKit('other', palette, ''), /Unsupported/);
