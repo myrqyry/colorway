@@ -75,7 +75,7 @@ await send('Page.enable');
 await send('Runtime.enable');
 await send('Emulation.setEmulatedMedia', {features:[{name:'prefers-reduced-motion',value:'reduce'}]});
 await send('Page.navigate',{url:'http://127.0.0.1:' + port + '/'});
-await until(() => evaluate('document.querySelectorAll(".theme-row").length >= 163'), 'theme catalog');
+await until(() => evaluate('document.querySelectorAll(".theme-row").length >= 166'), 'theme catalog');
 await until(() => evaluate('!document.querySelector("#colorway-intro")'), 'intro handoff');
 await until(() => evaluate('document.querySelector("#slideshow-pause")?.getAttribute("aria-pressed") === "false"'), 'initial slideshow playing');
 // System/app initiated pattern changes should not stop it.
@@ -132,6 +132,9 @@ for(const [file,name,base,primary,author] of [
   ['Colorway-ScreenBurnMonitor.ovt','Screen Burn Monitor','#05090f','#208763','SteelSoldier'],
   ['Colorway-Silkpukian24.ovt','Silkpukian 24','#e8ddca','#17695b','Chicknhawk'],
   ['Colorway-OminousOlives.ovt','Ominous Olives','#0c1013','#8a7a22','StellarBee'],
+  ['Colorway-Fogfire.ovt','Fogfire','#1c1820','#e75c13','Quemis guy'],
+  ['Colorway-Vanitas.ovt','Vanitas','#1d1e19','#a39c75','Vsigos'],
+  ['Colorway-PumpkinBrew.ovt','Pumpkin Brew','#2a1838','#ee9048','g0nebatty'],
 ]){
   await pointerClick('[data-colorway-theme-trigger]');
   await until(() => evaluate('document.querySelector("[data-colorway-theme-options]")?.hidden === false'),name+' picker');
@@ -154,6 +157,7 @@ for(const [file,name,base,primary,author] of [
     const dest=join(process.env.COLORWAY_CURATED_SCREENSHOT_DIR,'Colorway-'+name.replaceAll(' ','')+'.png');
     writeFileSync(dest,Buffer.from(snap.data,'base64'));
   }
+  await delay(200); // Let the reduced-motion theme transition settle before reopening the picker.
   console.log('PASS real pointer selection, painted colors and credited source',name);
 }
 console.log('Chromium slideshow activity and curated themes PASS');

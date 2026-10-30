@@ -61,7 +61,7 @@ test('Rosé Pine variants preserve official base and accent; Dawn text drift is 
 });
 test('identified Lospec palette ports use sourced base and primary, and disclose adapted text',()=>{
   const entries=Object.entries(official.lospec);
-  assert.equal(entries.length,12);
+  assert.equal(entries.length,15);
   for(const [file,source] of entries){
     const palette=new Set(source.colors);
     const colors=varsOf(file);

@@ -38,9 +38,9 @@ try{
  await send('Page.enable');await send('Runtime.enable');
  await send('Emulation.setDeviceMetricsOverride',{width:940,height:850,deviceScaleFactor:1,mobile:false});
  await send('Page.navigate',{url:pathToFileURL(resolve('obs-companion/colorway-preview.html')).href});
- for(let i=0;i<70;i++){if(await evaluate('document.querySelectorAll(".theme-row").length')===163)break;if(i===69)throw Error('Theme rows failed');await wait(100);}
+ for(let i=0;i<70;i++){if(await evaluate('document.querySelectorAll(".theme-row").length')===166)break;if(i===69)throw Error('Theme rows failed');await wait(100);}
  const initial=await evaluate('({rows:document.querySelectorAll(".theme-row").length,patterns:document.querySelectorAll(".pattern-card").length,selected:document.querySelector("#theme-name").textContent,background:getComputedStyle(document.documentElement).getPropertyValue("--canvas")})');
- if(initial.rows!==163||initial.patterns!==14||!initial.background.startsWith('#'))throw Error('Initial dock failed '+JSON.stringify(initial));
+ if(initial.rows!==166||initial.patterns!==14||!initial.background.startsWith('#'))throw Error('Initial dock failed '+JSON.stringify(initial));
  const sidebarButton=await evaluate(`(()=>{
    const b=document.querySelector('.theme-row .theme-label');
    return {background:getComputedStyle(b).backgroundColor,color:getComputedStyle(b).color};
@@ -73,7 +73,7 @@ try{
   document.querySelector('[data-filter="light"]').click();
   return {count:document.querySelectorAll('.theme-row').length,active:document.querySelector('[data-filter="light"]').getAttribute('aria-pressed')}
  })()`);
- if(filter.active!=='true'||filter.count>=163||filter.count===0)throw Error('Light filter failed '+JSON.stringify(filter));
+ if(filter.active!=='true'||filter.count>=166||filter.count===0)throw Error('Light filter failed '+JSON.stringify(filter));
  // Return to a rich example for a reproducible offline visual inspection.
  await evaluate(`(()=>{
   document.querySelector('[data-filter="all"]').click();
@@ -86,7 +86,7 @@ try{
  const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
  if(process.env.COLORWAY_COMPANION_SCREENSHOT)
    writeFileSync(process.env.COLORWAY_COMPANION_SCREENSHOT,Buffer.from(shot.data,'base64'));
- console.log('PASS offline dock: 163 theme cards, 14 patterns, palette change, pattern change, light filter; no network server');
+ console.log('PASS offline dock: 166 theme cards, 14 patterns, palette change, pattern change, light filter; no network server');
  console.log('Selected palette',JSON.stringify(selected));
 } finally {
  ws?.close();

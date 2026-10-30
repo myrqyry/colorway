@@ -76,7 +76,7 @@ try {
   await send('Emulation.setEmulatedMedia', {features:[{name:'prefers-reduced-motion',value:'reduce'}]});
   await send('Browser.setDownloadBehavior', {behavior: 'allow', downloadPath: profile});
   await send('Page.navigate', {url: 'http://127.0.0.1:' + port + '/'});
-  await until(() => evaluate('document.querySelectorAll(".theme-row").length >= 163'), 'theme catalog');
+  await until(() => evaluate('document.querySelectorAll(".theme-row").length >= 166'), 'theme catalog');
   await until(() => evaluate('!document.querySelector("#colorway-intro")'), 'opening animation and handoff completed');
   await until(() => evaluate('!!document.querySelector("#workbench-export-list [data-export-kind]")'), 'export panel mount');
   await evaluate('document.querySelector("#slideshow-pause")?.getAttribute("aria-pressed") === "false" && document.querySelector("#slideshow-pause").click()');

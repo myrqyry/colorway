@@ -6,7 +6,7 @@ repo=Path(__file__).resolve().parent.parent
 data=json.loads((repo/'data/theme-provenance.json').read_text())
 themes=data['themes']
 files=sorted(p.name for p in (repo/'themes').glob('Colorway-*.ovt'))
-assert set(files)==set(themes) and len(files)==163
+assert set(files)==set(themes) and len(files)==166
 counts={}
 for entry in themes.values():
     counts[entry['verification']]=counts.get(entry['verification'],0)+1
@@ -15,7 +15,7 @@ tick=chr(96)
 lines=[
     '# Colorway theme provenance and credits',
     '',
-    'Reviewed: '+data['reviewed']+'; 163 shipped OBS color variants.',
+    'Reviewed: '+data['reviewed']+'; 166 shipped OBS color variants.',
     '',
     'Colorway adapts external palettes into OBS theme roles. A source identity',
     'does not certify every OBS color mapping. An inspired-by credit does not',
@@ -51,7 +51,7 @@ lines += [
     '  The six Dawn variants preserve the historical '+tick+'#575279'+tick+' text value,',
     '  while the checked current upstream reference reports '+tick+'#464261'+tick+'.',
     '  This remains documented as historical source drift, not silently rewritten.',
-    '- All twelve identified Lospec palette sources were checked for their',
+    '- All fifteen identified Lospec palette sources were checked for their',
     '  authored hex colors. A few Colorway foregrounds are contrast adaptations',
     '  outside the deliberately small source palettes; they are not original swatches.',
     '- A diff against the pre-October-16 checkpoint found no changes to',
@@ -74,4 +74,4 @@ lines += [
 ]
 out='\n'.join(lines)
 (repo/'docs/THEME_CREDITS.md').write_text(out)
-print('Generated 163 Colorway credits; coverage:',counts)
+print('Generated 166 Colorway credits; coverage:',counts)

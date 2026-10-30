@@ -659,6 +659,13 @@
       "verification": "original source not established",
       "note": "Do not claim an official palette, license, or upstream author without evidence"
     },
+    "Colorway-Fogfire.ovt": {
+      "creator": "Quemis guy",
+      "url": "https://lospec.com/palette-list/fogfire",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": "Semantic OBS adaptation from exact Lospec swatches; status colors marked as derived where source palette cannot provide distinct status hues."
+    },
     "Colorway-GitHub.ovt": {
       "creator": "GitHub Primer contributors",
       "url": "https://github.com/primer/primitives",
@@ -876,6 +883,13 @@
       "verification": "original source not established",
       "note": "Do not claim an official palette, license, or upstream author without evidence"
     },
+    "Colorway-PumpkinBrew.ovt": {
+      "creator": "g0nebatty",
+      "url": "https://lospec.com/palette-list/pumpkin-brew",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": "Semantic OBS adaptation from exact Lospec swatches; status colors marked as derived where source palette cannot provide distinct status hues."
+    },
     "Colorway-RosePine-Foam.ovt": {
       "creator": "Rosé Pine contributors",
       "url": "https://github.com/rose-pine/rose-pine-palette",
@@ -1092,6 +1106,13 @@
       "relation": "unverified",
       "verification": "original source not established",
       "note": "Do not claim an official palette, license, or upstream author without evidence"
+    },
+    "Colorway-Vanitas.ovt": {
+      "creator": "Vsigos",
+      "url": "https://lospec.com/palette-list/vanitas",
+      "relation": "adapted",
+      "verification": "source palette identified",
+      "note": "Semantic OBS adaptation from exact Lospec swatches; status colors marked as derived where source palette cannot provide distinct status hues."
     },
     "Colorway-Vercel.ovt": {
       "creator": "Vercel / Geist",

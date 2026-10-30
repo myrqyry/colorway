@@ -200,6 +200,26 @@
       ],
       "sha256": "48066a69fb707c6deeabe58e44fa1eda9cb900419bc5136e3fbabc045464dae2"
     },
+    "Colorway-Fogfire.ovt": {
+      "url": "https://lospec.com/palette-list/fogfire.json",
+      "name": "Fogfire",
+      "author": "Quemis guy",
+      "colors": [
+        "#a2330f",
+        "#e75c13",
+        "#c8783d",
+        "#efb34f",
+        "#663e2f",
+        "#644740",
+        "#8f5f53",
+        "#d8ba92",
+        "#1c1820",
+        "#433e4e",
+        "#79747f",
+        "#deddec"
+      ],
+      "sha256": "48a507343ff25e5d3ccdaa3923ac378e642cd570a48ffa7f47f3855289616353"
+    },
     "Colorway-Hydrangea11.ovt": {
       "url": "https://lospec.com/palette-list/hydrangea-11.json",
       "name": "Hydrangea 11",
@@ -280,6 +300,22 @@
         "#6f7897"
       ],
       "sha256": "b76904ac99d6287072a223e70536aa898d7f085ffa992bd330d845fc4edaa8e4"
+    },
+    "Colorway-PumpkinBrew.ovt": {
+      "url": "https://lospec.com/palette-list/pumpkin-brew.json",
+      "name": "Pumpkin Brew",
+      "author": "g0nebatty",
+      "colors": [
+        "#f8bc74",
+        "#ee9048",
+        "#c8622e",
+        "#6e2c1c",
+        "#2a1838",
+        "#7a5aa8",
+        "#a884d0",
+        "#f4ecff"
+      ],
+      "sha256": "bbeac80c65177f6d4a5374299e772dfd36b4193462a7badf0edf58aa37944142"
     },
     "Colorway-SLSO8Pixels.ovt": {
       "url": "https://lospec.com/palette-list/slso8.json",
@@ -422,6 +458,30 @@
         "#682b9c"
       ],
       "sha256": "9ae63653ad6ada5731209fae9f89c0f56f5487fe69fcaab595ea5ab2a6609501"
+    },
+    "Colorway-Vanitas.ovt": {
+      "url": "https://lospec.com/palette-list/vanitas.json",
+      "name": "vanitas",
+      "author": "Vsigos",
+      "colors": [
+        "#0a0f0e",
+        "#0e1a15",
+        "#1d1e19",
+        "#372614",
+        "#273d3e",
+        "#5a4507",
+        "#474b3c",
+        "#7a461b",
+        "#335552",
+        "#735e25",
+        "#516664",
+        "#a25d1b",
+        "#6b6f54",
+        "#918c6c",
+        "#a39c75",
+        "#beb2ab"
+      ],
+      "sha256": "0fd36a7b1c855fe02857fb0b892873f34019bef20c4a59fc428d6c5743626df7"
     }
   }
 }

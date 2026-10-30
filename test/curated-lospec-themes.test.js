@@ -33,7 +33,7 @@ const contrast = (a, b) => {
 };
 
 test('all three verified Lospec candidates are discoverable and attributed', () => {
-  assert.equal(THEMES.length, 163);
+  assert.equal(THEMES.length, 166);
   for (const c of candidates) {
     assert.deepEqual(THEMES.find((theme) => theme.file === c.file), {file:c.file,name:c.name});
     assert.equal(getThemeCategory(c.file), c.category);

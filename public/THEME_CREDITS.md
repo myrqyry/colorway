@@ -1,6 +1,6 @@
 # Colorway theme provenance and credits
 
-Reviewed: 2026-10-30; 163 shipped OBS color variants.
+Reviewed: 2026-10-30; 166 shipped OBS color variants.
 
 Colorway adapts external palettes into OBS theme roles. A source identity
 does not certify every OBS color mapping. An inspired-by credit does not
@@ -14,7 +14,7 @@ the palettes for OBS, but does not claim to have invented them.
 - original source not established: 23
 - palette roles checked: 60
 - source identified: 62
-- source palette identified: 13
+- source palette identified: 16
 
 ## Sources for every shipped variant
 
@@ -114,6 +114,7 @@ the palettes for OBS, but does not claim to have invented them.
 | Colorway-FireSpring.ovt | adapted | [Ben Busby / EarthBound Themes](https://github.com/earthbound-themes/vscode/tree/main/themes) | source identified | — |
 | Colorway-Flexoki.ovt | adapted | [Steph Ango / kepano](https://github.com/kepano/flexoki) | source identified | — |
 | Colorway-FluffyDark.ovt | unverified | Original source not established | original source not established | Do not claim an official palette, license, or upstream author without evidence |
+| Colorway-Fogfire.ovt | adapted | [Quemis guy](https://lospec.com/palette-list/fogfire) | source palette identified | Semantic OBS adaptation from exact Lospec swatches; status colors marked as derived where source palette cannot provide distinct status hues. |
 | Colorway-GitHub.ovt | adapted | [GitHub Primer contributors](https://github.com/primer/primitives) | source identified | — |
 | Colorway-Gruvbox.ovt | adapted | [Pavel Pertsev / morhetz](https://github.com/morhetz/gruvbox) | source identified | — |
 | Colorway-HatsuneMiku.ovt | unverified | Original source not established | original source not established | Do not claim an official palette, license, or upstream author without evidence |
@@ -145,6 +146,7 @@ the palettes for OBS, but does not claim to have invented them.
 | Colorway-OsakaJade.ovt | adapted | [Omarchy contributors / Osaka Jade](https://omarchy.gallery/themes/osaka-jade) | source palette identified | Source background #111c18 and foreground #C1C497 match; Colorway accent #2DD5B7 differs from the documented upstream #509475. Needs intentional-adaptation decision; do not claim exact match. |
 | Colorway-Palenight.ovt | adapted | [Olaolu Olawuyi](https://github.com/whizkydee/vscode-palenight-theme) | source identified | Material-inspired original Palenight VS Code theme |
 | Colorway-PastelPixels.ovt | unverified | Original source not established | original source not established | Do not claim an official palette, license, or upstream author without evidence |
+| Colorway-PumpkinBrew.ovt | adapted | [g0nebatty](https://lospec.com/palette-list/pumpkin-brew) | source palette identified | Semantic OBS adaptation from exact Lospec swatches; status colors marked as derived where source palette cannot provide distinct status hues. |
 | Colorway-RosePine-Foam.ovt | adapted | [Rosé Pine contributors](https://github.com/rose-pine/rose-pine-palette) | palette roles checked | Base, named accent and foreground compared against official palette |
 | Colorway-RosePine-Gold.ovt | adapted | [Rosé Pine contributors](https://github.com/rose-pine/rose-pine-palette) | palette roles checked | Base, named accent and foreground compared against official palette |
 | Colorway-RosePine-Iris.ovt | adapted | [Rosé Pine contributors](https://github.com/rose-pine/rose-pine-palette) | palette roles checked | Base, named accent and foreground compared against official palette |
@@ -176,6 +178,7 @@ the palettes for OBS, but does not claim to have invented them.
 | Colorway-Synthwave84.ovt | adapted | [Rob Owen](https://github.com/robb0wen/synthwave-vscode) | source identified | — |
 | Colorway-Tokyonight.ovt | adapted | [folke](https://github.com/folke/tokyonight.nvim) | source identified | — |
 | Colorway-TwitchDark.ovt | unverified | Original source not established | original source not established | Do not claim an official palette, license, or upstream author without evidence |
+| Colorway-Vanitas.ovt | adapted | [Vsigos](https://lospec.com/palette-list/vanitas) | source palette identified | Semantic OBS adaptation from exact Lospec swatches; status colors marked as derived where source palette cannot provide distinct status hues. |
 | Colorway-Vercel.ovt | inspired | [Vercel / Geist](https://vercel.com/geist/colors) | brand inspiration only | No exact original palette identified |
 | Colorway-Vesper.ovt | adapted | [Rauno Freiberg](https://github.com/raunofreiberg/vesper) | source identified | — |
 | Colorway-YouTubeDark.ovt | unverified | Original source not established | original source not established | Do not claim an official palette, license, or upstream author without evidence |
@@ -192,7 +195,7 @@ the palettes for OBS, but does not claim to have invented them.
   The six Dawn variants preserve the historical `#575279` text value,
   while the checked current upstream reference reports `#464261`.
   This remains documented as historical source drift, not silently rewritten.
-- All twelve identified Lospec palette sources were checked for their
+- All fifteen identified Lospec palette sources were checked for their
   authored hex colors. A few Colorway foregrounds are contrast adaptations
   outside the deliberately small source palettes; they are not original swatches.
 - A diff against the pre-October-16 checkpoint found no changes to

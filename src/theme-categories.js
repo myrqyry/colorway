@@ -18,10 +18,10 @@ const CATEGORY_PATTERNS = [
   ['rose-pine', /^RosePine/],
   ['earthbound', /^(CaveOfThePast|DevilsMachine|DustyDunes|EarthBound|FireSpring|Magicant|Moonside|ZombieThreed)(?:-|$)/],
   ['retro', /^(90sAnime|ScreenBurnMonitor|SailorMoonBackground|SpiritedAway|Synthwave84|EtherealWindows7|EtherealY2KAero|SLSO8Pixels|Soapy10|Matrix|HatsuneMiku|MikuBetter|PastelPixels)/],
-  ['nature', /^(AdaptaEvergreen|OminousOlives|Silkpukian24|Everforest|Kanagawa|OsakaJade|Gruvbox|matchalk|LoFiGreenDark|Seafoam|Zenburn|Flexoki)/],
-  ['atmospheric', /^(Aura|BerryNebula|DarkHorizon|DarkMagic|Ethereal|Hydrangea11|Fairyfloss|FluffyDark|InkCrimson)/],
+  ['nature', /^(AdaptaEvergreen|OminousOlives|Silkpukian24|Vanitas|Everforest|Kanagawa|OsakaJade|Gruvbox|matchalk|LoFiGreenDark|Seafoam|Zenburn|Flexoki)/],
+  ['atmospheric', /^(Aura|BerryNebula|DarkHorizon|DarkMagic|Ethereal|Hydrangea11|Fairyfloss|FluffyDark|Fogfire|InkCrimson)/],
   ['technical', /^(Carbonfox|Cyclope6|NOPAL12|OC2|KickDark|Mercury|Cobalt2|Vesper|OpenCode)/],
-  ['playful', /^(Kawaii|Macaroon|ShadesofPurple|ModernPurple)/],
+  ['playful', /^(Kawaii|PumpkinBrew|Macaroon|ShadesofPurple|ModernPurple)/],
   ['modern', /^(AMOLED|Claude|Cursor|GitHub|Material|TwitchDark|Vercel|YouTubeDark|Orng|LucentOrng)/],
   ['classic', /^(Ayu|Dracula|EvondevDracula|Monokai|NightOwl|Nord|OneDark|Palenight|Solarized|Tokyonight)/],
 ];

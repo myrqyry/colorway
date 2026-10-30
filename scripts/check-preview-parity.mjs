@@ -105,7 +105,7 @@ try {
   await send('Runtime.enable');
   await send('Page.navigate', { url: 'http://127.0.0.1:' + port + '/' });
   for (let i = 0; i < 120; i++) {
-    if (await evaluate('document.querySelectorAll(".theme-row").length') >= 163) break;
+    if (await evaluate('document.querySelectorAll(".theme-row").length') >= 166) break;
     if (i === 119) throw Error('Theme catalog did not mount');
     await delay(100);
   }

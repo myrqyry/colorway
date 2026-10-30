@@ -1,6 +1,61 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Second curated Lospec batch (2026-10-30)
+
+**Intent:** Three additional materially distinct, source-backed Colorway
+variants: Fogfire (charcoal, dusty smoke, vivid orange), Vanitas
+(earthy wood, oxidized teal and antique gold), and Pumpkin Brew
+(violet, copper, lavender). Mat liked the first batch but noticed
+some near-black surfaces; the new variants explicitly distribute
+source swatches across docks, panels, inputs, hover and preview
+rather than leaving those controls with default black surfaces.
+The earlier themes were not altered on the basis of that ambiguous
+observation.
+
+**Source evidence:** Fetched Lospec .json for all three, verified
+names, creators and complete 12/16/8 swatch arrays and recorded
+response SHA256 in data/official-palette-checkpoints.json. Stored
+creator/URL/relation in data/theme-provenance.json. Only status
+colors that lacked an appropriate hue in the tiny original palettes
+were derived; source colors remain independently identifiable.
+
+**Legibility correction:** The initial Vanitas primary #a25d1b
+did not contrast at 4.5:1 with either dark or light selected-control
+ink. Real native OBS/Qt probe caught invisible pressed/checked
+icon pixels. The variant now uses original antique-gold #a39c75
+as primary (dark ink is readable) and retains orange #a25d1b
+as a secondary dark-accent role. A test asserts text_inverse/primary
+contrast >= 4.5 on all three new themes. Browser style-picker
+smoke waits for reduced-motion transitions to settle before the next
+immediate pointer click; this prevents artificial rapid-click timing
+that caused an intermittent false failure.
+
+**Integration:** Six newly added records since the 160-theme baseline;
+this batch adds Colorway-Fogfire.ovt, Colorway-Vanitas.ovt,
+Colorway-PumpkinBrew.ovt, for 166 total curated themes. The existing
+deterministic sync builds public files, icon asset variants, offline
+companion, and the complete attribution ledger. Three native Qt
+cases were added to the isolated OBS probe.
+
+**Evidence:** New tests failed before implementation, and passed
+after. Full pnpm test: 733 passing, 0 failures, 1 existing network
+skip; browser preview, exports, offline dock, and real pointer-driven
+style selection passed for all six new Lospec ports. The isolated native OBS/Qt gate passed all eleven selections,
+including Fogfire, corrected Vanitas and Pumpkin Brew. It verified
+the real Qt stylesheet, native source Properties/Filters icons,
+all five relevant button states, source-row glyphs, mixer indicators
+and zoom controls. After that passed, installed only the three new
+.ovt variants plus nine previously absent mixer SVGs into
+~/.config/obs-studio/themes. All twelve destination hashes matched
+their repo originals. Existing common assets and Colorway.obt
+were verified and not modified. OBS remained running and
+user.ini still selects com.myrqyry.Colorway.90sAnime.
+
+**Boundary:** Do not touch OBS user.ini, change current theme,
+overwrite existing installed themes/icons, or push remotely merely
+to make these variants available.
+
 ## Curated Lospec theme trio (2026-10-30)
 
 **Goal:** Add source-backed Colorway variants of Screen Burn Monitor (dark,
