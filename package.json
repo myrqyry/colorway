@@ -10,6 +10,7 @@
     "check:obs-upstream": "node scripts/check-obs-upstream.mjs",
     "check:preview": "pnpm build && node scripts/check-preview-parity.mjs",
     "check:exports": "pnpm build && node scripts/check-export-downloads.mjs",
+    "check:shuffle": "pnpm build && node scripts/check-shuffle-activity.mjs",
     "check:obs-native": "bash scripts/check-obs-native.sh",
     "check:companion": "node scripts/build-obs-companion.mjs && node scripts/check-companion-preview.mjs",
     "install:companion": "node scripts/build-obs-companion.mjs && bash scripts/install-obs-companion.sh",

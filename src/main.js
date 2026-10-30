@@ -5,6 +5,7 @@ import { THEME_CATEGORIES, getThemeCategory, filterThemeCatalog, sortThemesByDis
 import { PALETTE_VARS, PALETTE_GROUPS, applyTheme, loadTheme } from './theme-loader.js';
 import { toNormalizedTheme, serializeOVT, toYamiOVT, downloadThemeText, importThemeFile, fromLospecPalette, lospecSlugFromUrl } from './theme-workbench.js';
 import { downloadThemePackage } from './theme-package.js';
+import { installShuffleActivityPause } from './shuffle-activity.js';
 import { resolveExportPalette, toOpenCodeTui, toOpenCodeDesktop, createNativeBuildKit, exportSlug } from './theme-conversions.js';
 import originalSources from '../data/theme-provenance.json';
 
@@ -871,6 +872,7 @@ function emitShuffleState() {
 
 function setShufflePaused(paused) {
   shufflePaused = paused;
+  if (!paused) shuffleActivity.resume();
 
   if (!slideshowPause) return;
 
@@ -902,11 +904,20 @@ function startShuffle() {
   }, 100);
 }
 
+const shuffleActivity = installShuffleActivityPause(document, () => setShufflePaused(true), {
+  // Pressing Play/Pause must not immediately undo the user's choice.
+  ignore: (event) => Boolean(event.target?.closest?.('#slideshow-pause, .colorway-page-pause')),
+});
+
 slideshowPause?.addEventListener('click', () => {
   setShufflePaused(!shufflePaused);
 });
 shuffleButton?.addEventListener('click', () => {
-  shuffleRemaining = 0;
+  // Manual Next still works even after activity stopped automatic cycling.
+  if (!darkThemeFiles?.length) return;
+  shuffleRemaining = SHUFFLE_MS;
+  setTheme(pickRandomTheme(), { patternFile: pickRandomPattern() });
+  updateShuffleProgress();
 });
 shuffleProgress?.style.setProperty('stroke-dasharray', String(RING_CIRC));
 
