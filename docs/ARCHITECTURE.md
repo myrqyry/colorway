@@ -169,7 +169,7 @@ The shared engine that both the browser UI and any future build pipeline use.
 |---|---|---|
 | `toNormalizedTheme(text)` | Raw `.ovt` text | Normalized theme object |
 | `serializeOVT(theme)` | Normalized theme | Colorway `.ovt` text (extends: `com.myrqyry.Colorway`) |
-| `toYamiOVT(theme)` | Normalized theme | Yami `.ovt` text (extends forced to `com.myrqyry.Colorway`) |
+| `toYamiOVT(theme)` | Normalized theme | Color-only Yami `.ovt` variant (extends `com.obsproject.Yami`) |
 | `importThemeFile(file)` | Browser `File` object | Normalized theme |
 | `downloadThemeText(text, name)` | Text + filename | Triggers browser download, returns blob URL |
 
@@ -483,9 +483,11 @@ HSL lightness (the L in `hsl()`) has well-known perceptual non-uniformity: a yel
 
 The OKLab transform is ~30 lines of matrix math with zero dependencies. Adding a color library (Chroma.js, Culori, Color.js) would add ~10-30KB to the bundle for functionality that's already expressible in a few matrix multiplications. The tradeoff is maintainability of the inline math vs. dependency risk — the matrices are well-established standards that won't change.
 
-### 7.4 Why `extends: 'com.myrqyry.Colorway'` for Yami?
+### 7.4 Why the Yami export is color-only
 
-Yami themes use the same `.ovt` format but target a different base theme. By forcing `extends: 'com.myrqyry.Colorway'`, the Yami variant layers on top of the user's installed Colorway base — they only need to drop the `.ovt` file, not replace the entire theme. This makes Yami output a simple `extends` rewrite of the same token set.
+The optional Yami export extends OBS's built-in `com.obsproject.Yami`; it does not reparent Colorway itself. Yami therefore keeps ownership of widget QSS, geometry, density, fonts, icons, and future upstream widget coverage. `toYamiOVT()` filters the Colorway theme down to Yami-native color variables, maps Colorway surface/text/accent roles onto the Yami palette slots that stock Yami QSS references directly, and derives Yami warning/danger/success ramps from Colorway's semantic colors. Colorway-only state tokens and layout variables are intentionally omitted.
+
+This keeps the two products distinct: native Colorway remains the standalone custom base with its own QSS and assets, while the compatibility export means exactly “stock OBS Yami, recolored by this Colorway palette.”
 
 ### 7.5 Why only 40 palette tokens per variant instead of the base's 274?
 
@@ -574,7 +576,7 @@ The `colors` array is hex strings without `#` prefix. The `assignRoles()` functi
 | OBT | OBS Base Theme — full theme file defining all variables |
 | OVT | OBS Variant Theme — small file overriding a subset of variables on top of a base |
 | Colorway | The design system and base theme (`Colorway.obt`) |
-| Yami | An alternative OBS base theme format; Colorway-to-Yami conversion wraps the same tokens with a different `extends` target |
+| Yami | OBS's built-in base theme; Colorway's optional Yami export is a color-only `.ovt` that leaves Yami's stock QSS/layout/icons in control |
 | OKLCH | Perceptual color space (Lightness, Chroma, Hue) — the standard for color science in CSS Color Level 4 |
 | Lospec | A directory of pixel-art palettes with a JSON API at `lospec.com/palette-list/<slug>.json` |
 | PALETTE_VARS | The 30 tracked variables displayed in the preview palette details pane |

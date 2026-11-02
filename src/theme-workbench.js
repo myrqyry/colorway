@@ -57,18 +57,89 @@ export function serializeOVT(theme) {
   return [formatMeta(theme), '', formatVars(theme.tokens), ''].join('\n');
 }
 
-const YAMI_EXCLUDED = new Set([
-  '--accent_bg_start', '--accent_bg_end',
-  '--bg_dock', '--bg_hover',
-  '--ico', '--ico_selected',
-  '--meter_bg_nom', '--meter_bg_war', '--meter_bg_err',
-  '--meter_fg_nom', '--meter_fg_war', '--meter_fg_err',
-  '--success', '--text_inverse',
+const YAMI_SEMANTIC_COLOR_TOKENS = new Set([
+  '--bg_window', '--bg_base', '--bg_preview',
+  '--primary', '--primary_light', '--primary_lighter', '--primary_dark', '--primary_darker',
+  '--text', '--text_light', '--text_muted', '--text_disabled', '--text_inactive',
+  '--highlight_color', '--border_highlight',
+  '--scrollbar_handle', '--scrollbar_bg', '--scrollbar_hover', '--scrollbar_down', '--scrollbar_border',
+  '--border_color',
+  '--input_bg', '--input_bg_hover', '--input_bg_focus',
+  '--list_item_bg_selected', '--list_item_bg_hover',
+  '--input_border', '--input_border_hover', '--input_border_focus',
+  '--button_bg', '--button_bg_hover', '--button_bg_down', '--button_bg_disabled',
+  '--button_border', '--button_border_hover', '--button_border_focus',
+  '--tab_bg', '--tab_bg_hover', '--tab_bg_down', '--tab_bg_disabled',
+  '--tab_border', '--tab_border_hover', '--tab_border_focus', '--tab_border_selected',
+  '--separator_hover',
 ]);
 
+const YAMI_PALETTE_TOKEN_RE = /^--(?:blue|red|pink|teal|purple|green|yellow|grey|white|black)\d+$/;
+
+function firstToken(tokens, ...keys) {
+  for (const key of keys) {
+    if (tokens[key] != null) return tokens[key];
+  }
+  return undefined;
+}
+
+function assignToken(target, key, value) {
+  if (value != null) target[key] = value;
+}
+
+function assignSemanticRamp(target, family, seed) {
+  if (!/^#[0-9a-f]{6}$/i.test(seed ?? '')) return;
+  const { L, C, h } = hexToOklch(seed);
+  const offsets = [0.16, 0.08, 0, -0.08, -0.16, -0.24];
+  offsets.forEach((offset, index) => {
+    target[`--${family}${index + 1}`] = derive(L, C, h, offset, 0);
+  });
+}
+
+function toYamiColorTokens(source) {
+  const tokens = {};
+
+  for (const [key, value] of Object.entries(source)) {
+    if (YAMI_SEMANTIC_COLOR_TOKENS.has(key) || YAMI_PALETTE_TOKEN_RE.test(key)) {
+      tokens[key] = value;
+    }
+  }
+
+  const mapped = {
+    '--grey1': firstToken(source, '--input_border_hover', '--primary_darker', '--border_color', '--text_muted'),
+    '--grey2': firstToken(source, '--input_border', '--border_color', '--input_bg_hover'),
+    '--grey3': firstToken(source, '--button_bg_hover', '--list_item_bg_hover', '--input_bg_hover'),
+    '--grey4': firstToken(source, '--input_bg', '--border_color', '--button_bg'),
+    '--grey5': firstToken(source, '--bg_dock', '--button_bg', '--input_bg'),
+    '--grey6': firstToken(source, '--bg_base', '--button_bg_disabled'),
+    '--grey7': firstToken(source, '--bg_window', '--button_bg_down', '--input_bg_focus'),
+    '--grey8': firstToken(source, '--bg_preview', '--bg_base'),
+    '--white1': firstToken(source, '--text_light', '--text'),
+    '--white2': firstToken(source, '--text', '--text_light'),
+    '--white3': firstToken(source, '--text', '--text_light'),
+    '--white4': firstToken(source, '--text_muted', '--text_disabled', '--text'),
+    '--white5': firstToken(source, '--text_disabled', '--text_muted', '--text'),
+    '--black3': firstToken(source, '--bg_base', '--bg_window'),
+    '--black4': firstToken(source, '--input_bg', '--bg_base'),
+    '--black5': firstToken(source, '--input_bg_hover', '--border_color', '--input_bg'),
+    '--blue1': firstToken(source, '--primary_lighter', '--primary_light', '--primary'),
+    '--blue2': firstToken(source, '--primary_light', '--primary'),
+    '--blue3': firstToken(source, '--primary'),
+    '--blue4': firstToken(source, '--primary_dark', '--primary'),
+    '--blue5': firstToken(source, '--primary_darker', '--primary_dark', '--primary'),
+    '--blue6': firstToken(source, '--primary_darker', '--primary_dark', '--primary'),
+  };
+
+  for (const [key, value] of Object.entries(mapped)) assignToken(tokens, key, value);
+
+  assignSemanticRamp(tokens, 'red', source['--danger']);
+  assignSemanticRamp(tokens, 'yellow', source['--warning']);
+  assignSemanticRamp(tokens, 'green', source['--success']);
+
+  return tokens;
+}
+
 export function toYamiOVT(theme) {
-  const tokens = { ...theme.tokens };
-  for (const k of YAMI_EXCLUDED) delete tokens[k];
   const yami = {
     ...theme,
     name: theme.name,
@@ -76,7 +147,7 @@ export function toYamiOVT(theme) {
     dark: theme.dark,
     extendsId: 'com.obsproject.Yami',
     id: theme.id ? theme.id.replace(/^com\.myrqyry\./, 'com.yami.') : undefined,
-    tokens,
+    tokens: toYamiColorTokens(theme.tokens),
   };
   return serializeOVT(yami);
 }

@@ -1,6 +1,23 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Yami compatibility export correction — verified (2026-11-01)
+
+**Intent:** The optional Yami export means stock OBS Yami with the selected
+Colorway palette, not a second copy of Colorway's custom widget styling.
+
+**Correction:** `toYamiOVT()` now emits only Yami-native color variables.
+It maps Colorway surface/text/accent roles onto Yami's directly referenced
+palette ramps and derives Yami warning/danger/success ramps, while omitting
+Colorway-only state tokens and all layout/geometry overrides. Native Colorway
+still remains its own standalone base; this does not change that architecture.
+
+**Verification:** The focused workbench regression failed before the fix and
+passes after it. Full `pnpm test`: 736 tests, 735 pass, 0 fail, 1 intended
+network skip. `pnpm check:exports` passes its production build and browser
+export smoke. Against current upstream `Yami.obt`, all 166 catalog Yami
+exports use only variables Yami actually declares.
+
 ## Second curated Lospec batch (2026-10-30)
 
 **Intent:** Three additional materially distinct, source-backed Colorway

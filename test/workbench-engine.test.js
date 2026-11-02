@@ -80,7 +80,7 @@ describe('toYamiOVT', () => {
     assert.match(out, /extends:\s*'com\.obsproject\.Yami'/);
   });
 
-  test('preserves original tokens and name', () => {
+  test('preserves Yami-native color tokens and name', () => {
     const t = toNormalizedTheme(FIXTURE_TEXT);
     const out = toYamiOVT(t);
     assert.match(out, /name:\s*'Test Theme'/);
@@ -88,31 +88,55 @@ describe('toYamiOVT', () => {
     assert.match(out, /--primary:\s*#ff6b6b/);
   });
 
-  test('round-trips for every built-in theme', () => {
+  test('recolors stock Yami palette slots that its QSS references directly', () => {
+    const theme = toNormalizedTheme(read('Colorway-RosePineMoon-Love.ovt'));
+    const vars = parseOVT(toYamiOVT(theme)).vars;
+
+    assert.equal(vars['--grey1'], '#56526e');
+    assert.equal(vars['--grey3'], '#44415a');
+    assert.equal(vars['--grey6'], '#232136');
+    assert.equal(vars['--grey7'], '#232136');
+    assert.equal(vars['--grey8'], '#2a273f');
+    assert.equal(vars['--blue1'], '#f6c177');
+    assert.equal(vars['--blue2'], '#ea9a97');
+    assert.equal(vars['--blue3'], '#eb6f92');
+  });
+
+  test('does not carry Colorway-only or geometry tokens into stock Yami', () => {
+    const theme = toNormalizedTheme(read('Colorway-RosePineMoon-Love.ovt'));
+    theme.tokens['--border_radius'] = '99px';
+    const vars = parseOVT(toYamiOVT(theme)).vars;
+
+    assert.equal(vars['--bg_dock'], undefined);
+    assert.equal(vars['--on_panel_muted'], undefined);
+    assert.equal(vars['--border_radius'], undefined);
+  });
+
+  test('produces stock-Yami color-only variants for every built-in theme', () => {
     const files = readdirSync(ROOT)
       .filter((n) => /^Colorway-.*\.ovt$/.test(n));
-    const excluded = new Set([
-      '--accent_bg_start', '--accent_bg_end',
-      '--bg_dock', '--bg_hover',
-      '--ico', '--ico_selected',
-      '--meter_bg_nom', '--meter_bg_war', '--meter_bg_err',
-      '--meter_fg_nom', '--meter_fg_war', '--meter_fg_err',
-      '--success', '--text_inverse',
-    ]);
+
     for (const file of files) {
-      const text = read(file);
-      const t = toNormalizedTheme(text);
-      const out = toYamiOVT(t);
-      const reparsed = parseOVT(out);
-      assert.equal(reparsed.meta._name, t.name, file);
+      const theme = toNormalizedTheme(read(file));
+      const reparsed = parseOVT(toYamiOVT(theme));
+      const vars = reparsed.vars;
+
+      assert.equal(reparsed.meta._name, theme.name, file);
       assert.equal(reparsed.meta._extends, 'com.obsproject.Yami', file);
-      for (const [k, v] of Object.entries(t.tokens)) {
-        if (excluded.has(k)) {
-          assert.equal(reparsed.vars[k], undefined, `${file} should NOT have ${k} in Yami output`);
-        } else if (!v.startsWith('var(')) {
-          assert.equal(reparsed.vars[k], v, `${file} token ${k}`);
-        }
-      }
+      assert.equal(vars['--bg_base'], theme.tokens['--bg_base'], file);
+      assert.equal(vars['--primary'], theme.tokens['--primary'], file);
+      assert.equal(vars['--text'], theme.tokens['--text'], file);
+      assert.equal(vars['--grey6'], theme.tokens['--bg_base'], file);
+      assert.equal(vars['--grey7'], theme.tokens['--bg_window'], file);
+      assert.equal(vars['--grey8'], theme.tokens['--bg_preview'], file);
+      assert.equal(vars['--blue3'], theme.tokens['--primary'], file);
+      assert.equal(vars['--white1'], theme.tokens['--text_light'], file);
+
+      assert.equal(vars['--bg_dock'], undefined, file);
+      assert.equal(vars['--ico'], undefined, file);
+      assert.equal(vars['--warning'], undefined, file);
+      assert.equal(vars['--border_radius'], undefined, file);
+      assert.equal(Object.keys(vars).some((key) => key.startsWith('--on_')), false, file);
     }
   });
 });

@@ -150,3 +150,23 @@ tracking only; `test/theme-base-contract.test.js` enforces the `themes/` ↔ `pu
 
 **Supersedes:** the earlier `docs/OBS_THEME_COMPATIBILITY.md` wording, which described a
 Yami-inheritance migration as "a supported architecture" and invited exactly this proposal.
+
+## 2026-11-01 — Yami compatibility exports are stock Yami plus Colorway colors
+
+**Decision:** The optional Yami export remains separate from native Colorway architecture. Its
+`.ovt` extends `com.obsproject.Yami`, carries color variables only, and leaves Yami's QSS,
+geometry, fonts, icons, density, and widget coverage untouched.
+
+**Why:** Rewriting only `extends` while forwarding arbitrary Colorway variables was not enough.
+Current Yami QSS references its own palette ramps directly, so unfilled `--grey*` / `--blue*`
+slots leaked stock Yami colors into hover, dock, slider, progress, mixer, and related states.
+Forwarding resolved Colorway state/layout tokens also made the compatibility export less purely
+Yami than its label implied.
+
+**Boundary:** This does **not** supersede the 2026-10-04 decision above. `themes/Colorway.obt`
+remains the native standalone Colorway base. The Yami path is an optional compatibility export,
+not a migration target.
+
+**Verification:** `test/workbench-engine.test.js` now contracts the color-only behavior across
+the whole catalog. On 2026-11-01 all 166 generated Yami variants used only variable names declared
+by current upstream `Yami.obt`; full `pnpm test` and `pnpm check:exports` passed.
