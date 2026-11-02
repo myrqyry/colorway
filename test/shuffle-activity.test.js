@@ -16,26 +16,31 @@ function interactionTarget() {
   };
 }
 
-test('a real pointer movement stops auto-cycling and does not continually pause again', () => {
+test('movement, hover, scrolling, focusing and non-changing gestures keep cycling', () => {
   const page = interactionTarget();
   let pauses = 0;
   const control = installShuffleActivityPause(page, () => { pauses += 1; });
-  page.dispatch('pointermove');
-  page.dispatch('pointermove');
-  assert.equal(pauses, 1);
+  for (const type of ['pointermove', 'pointerdown', 'wheel', 'keydown', 'focusin']) page.dispatch(type);
+  assert.equal(pauses, 0);
   control.dispose();
-  page.dispatch('pointermove');
-  assert.equal(pauses, 1);
 });
 
-test('editing, selecting and using the keyboard stop the slideshow', () => {
-  for (const type of ['pointerdown', 'keydown', 'beforeinput', 'input', 'change', 'wheel']) {
+test('actual choices and edits stop the slideshow', () => {
+  for (const type of ['click', 'beforeinput', 'input', 'change']) {
     const page = interactionTarget();
     let paused = false;
     installShuffleActivityPause(page, () => { paused = true; });
-    page.dispatch(type);
+    page.dispatch(type, true, { closest: () => type === 'click' ? {} : null });
     assert.equal(paused, true, type);
   }
+});
+
+test('clicking inert surfaces does not stop the slideshow', () => {
+  const page = interactionTarget();
+  let pauses = 0;
+  installShuffleActivityPause(page, () => { pauses += 1; });
+  page.dispatch('click', true, { closest: () => null });
+  assert.equal(pauses, 0);
 });
 
 test('synthetic app changes do not stop the automatic slideshow', () => {
@@ -55,9 +60,9 @@ test('Play and Pause controls do not cancel their own user action', () => {
   const control = installShuffleActivityPause(page, () => { pauses += 1; }, {
     ignore: (event) => event.target?.pauseControl === true,
   });
-  page.dispatch('pointerdown', true, { pauseControl: true });
+  page.dispatch('click', true, { pauseControl: true, closest: () => ({}) });
   assert.equal(pauses, 0);
-  page.dispatch('pointerdown');
+  page.dispatch('click', true, { closest: () => ({}) });
   assert.equal(pauses, 1);
   control.dispose();
 });
@@ -66,10 +71,10 @@ test('after explicit resume, the next real interaction stops it again', () => {
   const page = interactionTarget();
   let pauses = 0;
   const control = installShuffleActivityPause(page, () => { pauses += 1; });
-  page.dispatch('pointermove');
+  page.dispatch('change');
   assert.equal(pauses, 1);
   control.resume();
-  page.dispatch('pointermove');
+  page.dispatch('change');
   assert.equal(pauses, 2);
   control.dispose();
 });

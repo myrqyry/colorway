@@ -82,20 +82,35 @@ await until(() => evaluate('document.querySelector("#slideshow-pause")?.getAttri
 await evaluate('document.querySelector("#pattern-select").dispatchEvent(new Event("change", {bubbles:true}))');
 assert.equal(await evaluate('document.querySelector("#slideshow-pause").getAttribute("aria-pressed")'),'false');
 await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:378,y:147});
-await until(() => evaluate('document.querySelector("#slideshow-pause").getAttribute("aria-pressed") === "true"'), 'pointer movement stops slideshow');
-assert.equal(await evaluate('document.querySelector(".colorway-page-pause").getAttribute("aria-label")'), 'Resume slideshow');
+await delay(300);
+assert.equal(await evaluate('document.querySelector("#slideshow-pause").getAttribute("aria-pressed")'),'false','cursor movement does not pause');
+const passivePoint = await evaluate(`(() => {
+  const actionable='button, a[href], select, option, input, textarea, label, summary, [role="button"], [role="option"], [role="menuitem"], [role="tab"], [role="checkbox"], [role="radio"]';
+  for (const y of [700, 550, 400, 250, 100]) for (const x of [1390, 1100, 900, 650, 400, 100]) {
+    const element=document.elementFromPoint(x,y);
+    if(element && !element.closest(actionable)) return {x,y};
+  }
+  return null;
+})()`);
+assert.ok(passivePoint,'find passive visible surface');
+await send('Input.dispatchMouseEvent',{type:'mouseMoved',...passivePoint});
+await send('Input.dispatchMouseEvent',{type:'mousePressed',...passivePoint,button:'left',clickCount:1});
+await send('Input.dispatchMouseEvent',{type:'mouseReleased',...passivePoint,button:'left',clickCount:1});
+// A click on a passive surface must not stop the slideshow.
+assert.equal(await evaluate('document.querySelector("#slideshow-pause").getAttribute("aria-pressed")'),'false','passive surface click does not pause');
+console.log('PASS cursor movement and passive clicks leave slideshow running');
+// A real edit to a visible field pauses, preserving the remaining countdown.
+await evaluate('document.querySelector(".demo-input").focus()');
+await send('Input.insertText',{text:'x'});
+await until(() => evaluate('document.querySelector("#slideshow-pause").getAttribute("aria-pressed") === "true"'), 'real edit pauses slideshow');
 const progressPaused = await evaluate('document.querySelector("#slideshow-progress-fill").parentElement.getAttribute("aria-valuenow")');
 await delay(500);
 assert.equal(await evaluate('document.querySelector("#slideshow-progress-fill").parentElement.getAttribute("aria-valuenow")'),progressPaused,'shuffle countdown continues after stop');
-console.log('PASS pointer movement stops slideshow and freezes remaining countdown');
+console.log('PASS real edit stops slideshow and freezes remaining countdown');
+// Commit the edited field's blur/change before resuming so it cannot re-pause.
+await evaluate('document.activeElement?.blur()');
 // Visible header Play is the only intended automatic-resume path.
-const pausePoint=await evaluate(`(() => {
-  const r=document.querySelector('.colorway-page-pause').getBoundingClientRect();
-  return {x:Math.round(r.left+r.width/2),y:Math.round(r.top+r.height/2)};
-})()`);
-await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:pausePoint.x,y:pausePoint.y});
-await send('Input.dispatchMouseEvent',{type:'mousePressed',x:pausePoint.x,y:pausePoint.y,button:'left',clickCount:1});
-await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:pausePoint.x,y:pausePoint.y,button:'left',clickCount:1});
+await evaluate('document.querySelector(".colorway-page-pause").click()');
 await until(() => evaluate('document.querySelector("#slideshow-pause").getAttribute("aria-pressed") === "false"'), 'visible header resume');
 await delay(400);
 const countdownAfter = await evaluate('Number(document.querySelector("#slideshow-progress-fill").parentElement.getAttribute("aria-valuenow"))');
