@@ -1,6 +1,41 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## OBS 33.0.1 compatibility refresh — source-verified, OBS 32.2 runtime-verified (2026-11-12)
+
+**Outcome:** Updated Colorway's standalone `.obt` styling to cover the new OBS 33
+`InfoChip`, six background status classes with matching text classes, and
+`idian--RowList` title/description hooks. Old `ListHeader`/`RowInfo`
+selectors remain for backward compatibility. Each of the 166 curated variants
+has generated, semantically tinted `--chip_bg_*` containers and legible
+`--chip_fg_*` text. Palette source values and existing custom geometry are
+unchanged; no Yami inheritance or QSS transplant.
+
+**Upstream authority:** Compared the release-tagged OBS 32.2.0 and 33.0.1
+`frontend/data/themes/Yami.obt` source files, verified that OBS 33.0.1 and
+current upstream Yami contents match, reviewed the full stylesheet delta,
+and repinned `scripts/obs-upstream-baseline.json` to Yami commit
+`08069bd01a05c51e2fe80987ae6dd1562f27d8cd`. Theme parser watch unchanged.
+New status/row coverage is independent Colorway styling, not copying Yami.
+Optional Yami exports already omit removed `--warning` / `--danger` globals
+and generate Yami-native color ramps instead.
+
+**Verification:** Three new targeted tests failed before the fix and passed
+after. Full `pnpm test`: 740 total, 739 passed, 0 failures, 1 preexisting
+network-gated skip. `pnpm check:exports` passed production Vite build and real
+browser export smoke; `pnpm check:obs-upstream` passed. All 11 selections in
+`pnpm check:obs-native` passed against locally installed OBS **32.2.0**:
+actual composed QSS, native Properties/Filters icons, source-row controls,
+mixer states, and zoom controls. Independent variant diff audit: 1,841
+`.ovt` additions, all new generated chip tokens; no existing palette edits.
+
+**Remaining verification boundary:** OBS **33.0.1 itself is not installed** on
+the machine; a native OBS 33 render of the new InfoChip widgets is still
+unverified. Do not present OBS 32 native smoke or source comparison as proof
+of OBS 33 runtime rendering. The work updates repository theme sources and
+mirrors only: installed user themes, OBS preferences/current selection and
+remote repositories remain untouched.
+
 ## Yami compatibility export correction — verified (2026-11-01)
 
 **Intent:** The optional Yami export means stock OBS Yami with the selected

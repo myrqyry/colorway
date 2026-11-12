@@ -94,6 +94,10 @@
     --on_section_heading: #4f889f;
     --on_panel_accent: #568da3;
     --on_nav_hover: #e0def4;
+    --chip_bg_primary: #28354d;
+    --chip_fg_primary: #77a3b5;
+    --chip_bg_secondary: #514556;
+    --chip_fg_secondary: #ebbcba;
     --cw_icon_arrow_down_primary: 'url(theme:icons/colorway/mingcute/normal/arrow-down.svg)';
     --cw_icon_arrow_up_primary: 'url(theme:icons/colorway/mingcute/normal/arrow-up.svg)';
     --cw_icon_audio_primary: 'url(theme:icons/colorway/mingcute/normal/audio.svg)';

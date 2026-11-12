@@ -403,6 +403,18 @@
     --on_mixer_muted: #eb6f92;
     --on_mixer_monitor: #37d247;
     --on_mixer_warning: #f6c177;
+    --chip_bg_primary: #494060;
+    --chip_fg_primary: #c4a7e7;
+    --chip_bg_secondary: #3d3652;
+    --chip_fg_secondary: #ad9dbf;
+    --chip_bg_info: #3d3a53;
+    --chip_fg_info: #a7a4bc;
+    --chip_bg_warning: #544647;
+    --chip_fg_warning: #f6c177;
+    --chip_bg_danger: #51344d;
+    --chip_fg_danger: #ef89a5;
+    --chip_bg_success: #2a4a3d;
+    --chip_fg_success: #37d247;
     --on_primary: var(--text_inverse);
     --cw_icon_arrow_down_primary: 'url(theme:icons/colorway/mingcute/selected/arrow-down.svg)';
     --cw_icon_arrow_up_primary: 'url(theme:icons/colorway/mingcute/selected/arrow-up.svg)';
@@ -592,6 +604,22 @@
 .bg-base {
     background-color: var(--bg_base);
 }
+
+/* OBS 33 InfoChip status containers. Colors are derived for each variant by
+   the state-token generator, rather than borrowed from Yami's fixed ramps. */
+.bg-primary { background-color: var(--chip_bg_primary); }
+.bg-secondary { background-color: var(--chip_bg_secondary); }
+.bg-info { background-color: var(--chip_bg_info); }
+.bg-warning { background-color: var(--chip_bg_warning); }
+.bg-danger { background-color: var(--chip_bg_danger); }
+.bg-success { background-color: var(--chip_bg_success); }
+
+.bg-primary.text-primary { color: var(--chip_fg_primary); }
+.bg-secondary.text-secondary { color: var(--chip_fg_secondary); }
+.bg-info.text-info { color: var(--chip_fg_info); }
+.bg-warning.text-warning { color: var(--chip_fg_warning); }
+.bg-danger.text-danger { color: var(--chip_fg_danger); }
+.bg-success.text-success { color: var(--chip_fg_success); }
 
 .text-title {
     font-size: var(--font_large);
@@ -1995,6 +2023,15 @@ idian--RowFrame.hover idian--ExpandButton::indicator {
     border-color: var(--input_border_hover);
 }
 
+/* OBS 33 status labels in the properties and plugin UI. Keep geometry
+   compact and Colorway-shaped; the bg/text utility classes supply colors. */
+InfoChip {
+    font-size: var(--font_small);
+    font-weight: bold;
+    padding: 0 var(--padding_large);
+    border-radius: var(--shape_full);
+}
+
 /* Current Idian widget names (OBS 32+).
    Legacy Idian selectors above stay in place for older OBS releases. */
 idian--ListHeader {
@@ -2014,6 +2051,19 @@ idian--ListHeader .title {
 idian--ListHeader .description,
 idian--RowInfo QLabel.description {
     color: var(--text_muted);
+}
+
+/* OBS 33 paints these labels under RowList, not just ListHeader/RowInfo. */
+idian--RowList .title {
+    font-weight: bold;
+    color: var(--on_preview);
+    padding: 0;
+}
+
+idian--RowList .description {
+    font-size: var(--font_small);
+    color: var(--on_preview_muted);
+    padding: 0;
 }
 
 idian--RowList {

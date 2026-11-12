@@ -4,12 +4,14 @@ Colorway is a custom OBS base theme, so it owns the styling contract for widgets
 
 ## Upstream baseline
 
-Compatibility was audited against:
+Compatibility was reviewed against the shipped OBS **33.0.1** Yami base and the upstream theme-parser watch (2026-11-12):
 
-- `obsproject/obs-studio@ea7536c49cb84420296d3831cda526c232fed3bc`
-- `frontend/data/themes/Yami.obt`
+- `obsproject/obs-studio@08069bd01a05c51e2fe80987ae6dd1562f27d8cd` (`frontend/data/themes/Yami.obt`, matching the 33.0.1 release file)
+- `frontend/OBSApp_Themes.cpp` at its unchanged watched commit `4819d1714b0384b52a3964672c0c3dfbd8a7b2fe`
 
-OBS's wiki recommends using Yami as a base for custom themes, on the grounds that standalone `.obt` base themes do not automatically receive new widget styling. **Colorway deliberately does not follow that recommendation.** It is its own base theme (`themes/Colorway.obt`) and its 160 variants extend `com.myrqyry.Colorway`.
+This establishes source compatibility checks, **not** native OBS 33 runtime verification. The locally installed OBS remains 32.2.0.
+
+OBS's wiki recommends using Yami as a base for custom themes, on the grounds that standalone `.obt` base themes do not automatically receive new widget styling. **Colorway deliberately does not follow that recommendation.** It is its own base theme (`themes/Colorway.obt`) and its 166 variants extend `com.myrqyry.Colorway`.
 
 **This is settled and not up for reconsideration.** Colorway's standalone base carries substantial custom QSS, its own icon set, custom surfaces, mixer, and layout behavior; that is the product, not an accident to be migrated away. Do not propose a `Yami.obt` base, a `Yami.obt → Colorway.ovt → Colorway-*.ovt` inheritance chain, or copying Yami rules into Colorway. Upstream Yami is tracked **only** as a format-drift reference for `pnpm check:obs-upstream`; it is not an architectural target. The cost of owning the base theme is tracked-upstream maintenance, and that is accepted deliberately.
 
@@ -26,6 +28,28 @@ The base theme carries Colorway-styled coverage for newer OBS mechanics while ke
 - `QTableView` checkbox indicators
 - newer spinbox minimum-width behavior
 - top and bottom tab-bar placement
+
+### OBS 33 status and property-row hooks
+
+OBS 33.0.1 adds `InfoChip` plus `.bg-{primary,secondary,info,warning,danger,success}`
+and matching text-pair selectors. Colorway now gives each chip a subtle,
+variant-derived container and a separately contrast-corrected foreground
+(`--chip_bg_*` / `--chip_fg_*`). These are generated for all 166 variants by
+`pnpm sync:themes`, never patched into each curated palette by hand. Status
+label contrast is independently checked at 4.5:1.
+
+OBS 33 also uses `idian--RowList .title` and `.description`; both are styled
+with Colorway's surface-aware text tokens. Older `ListHeader` and `RowInfo`
+selectors remain for OBS 32 compatibility. No Yami QSS, widget geometry,
+font or theme inheritance changes are imported. The source diff also contains
+Yami-specific tab/dock tweaks and removals of internal layout variables,
+which are intentionally not treated as Colorway design requirements.
+
+`test/obs-33-theme-compat.test.js` covers new hooks, color contrast and
+legacy selectors. OBS 32.2 native regression coverage remains available through
+`pnpm check:obs-native`; the new widgets still require a real OBS 33 runtime
+check when that version is installed. Existing installed themes and the selected
+OBS Appearance theme are intentionally not overwritten.
 
 ## Colorway semantic rules
 

@@ -114,6 +114,19 @@ export function stateTokens(vars) {
     tokens.set(name, legibleInk(resolveAlias(vars, foreground),
       backgrounds.map((key) => flattenSurface(vars, key)), minimum));
   }
+  // OBS 33 InfoChip status classes need palette-specific tinted containers and
+  // readable labels. Derive both together; widget QSS cannot do color mixing.
+  const chipSurface = flattenSurface(vars, '--bg_preview');
+  for (const [role, seed] of [
+    ['primary', '--primary'], ['secondary', '--primary_dark'],
+    ['info', '--text_muted'], ['warning', '--warning'],
+    ['danger', '--danger'], ['success', '--success'],
+  ]) {
+    const accent = flattenSurface(vars, seed);
+    const background = mixHex(chipSurface, accent, 0.22);
+    tokens.set(`--chip_bg_${role}`, background);
+    tokens.set(`--chip_fg_${role}`, legibleInk(accent, [background], 4.5));
+  }
   for (const [role, background] of [
     ['primary', '--primary'], ['primary_hover', '--primary_light'],
     ['primary_dark', '--primary_dark'], ['base', '--bg_base'], ['button', '--button_bg'],

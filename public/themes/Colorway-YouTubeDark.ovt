@@ -110,6 +110,16 @@
     --on_input_hover: #f1f1f1;
     --on_input_focus: #f1f1f1;
     --on_mixer_muted: #ff0000;
+    --chip_bg_primary: #4e1616;
+    --chip_fg_primary: #ff5151;
+    --chip_bg_secondary: #431616;
+    --chip_fg_secondary: #e06464;
+    --chip_bg_info: #3b3b3b;
+    --chip_fg_info: #aaaaaa;
+    --chip_bg_warning: #4c4030;
+    --chip_bg_danger: #4e1616;
+    --chip_fg_danger: #ff5151;
+    --chip_bg_success: #224425;
     --on_primary: var(--bg_base);
     --on_primary_hover: var(--bg_base);
     --cw_mixer_muted: 'url(theme:icons/colorway/mingcute/mixer/volume-mute-ff0000.svg)';

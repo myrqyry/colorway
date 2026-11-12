@@ -115,6 +115,17 @@
     --on_input_focus: #f0e6f6;
     --on_mixer_muted: #ff6b6b;
     --on_mixer_warning: #ffd166;
+    --chip_bg_primary: #43323e;
+    --chip_fg_primary: #ffb3d1;
+    --chip_bg_secondary: #432635;
+    --chip_fg_secondary: #ff7fab;
+    --chip_bg_info: #302b38;
+    --chip_fg_info: #a896b8;
+    --chip_bg_warning: #433826;
+    --chip_fg_warning: #ffd166;
+    --chip_bg_danger: #432227;
+    --chip_fg_danger: #ff6b6b;
+    --chip_bg_success: #17381f;
     --on_primary: var(--bg_base);
     --on_primary_hover: var(--bg_base);
     --on_primary_dark: var(--bg_base);

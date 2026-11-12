@@ -120,6 +120,18 @@
     --on_nav_hover: #d4d4d4;
     --on_mixer_muted: #f48771;
     --on_mixer_warning: #cca700;
+    --chip_bg_primary: #46613d;
+    --chip_fg_primary: #afff45;
+    --chip_bg_secondary: #384d38;
+    --chip_fg_secondary: #9cc174;
+    --chip_bg_info: #3b484f;
+    --chip_fg_info: #aab5ba;
+    --chip_bg_warning: #4d4e2e;
+    --chip_fg_warning: #d7bb39;
+    --chip_bg_danger: #564747;
+    --chip_fg_danger: #f7a594;
+    --chip_bg_success: #2c583e;
+    --chip_fg_success: #58da66;
     --cw_icon_cogs_button: 'url(theme:icons/colorway/mingcute/selected/cogs.svg)';
     --cw_icon_filter_button: 'url(theme:icons/colorway/mingcute/selected/filter.svg)';
     --cw_mixer_muted: 'url(theme:icons/colorway/mingcute/mixer/volume-mute-f48771.svg)';

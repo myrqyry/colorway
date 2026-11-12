@@ -1,12 +1,12 @@
 {
   "repository": "obsproject/obs-studio",
-  "reviewed_at": "2026-09-21",
+  "reviewed_at": "2026-11-12",
   "sources": [
     {
       "id": "yami",
       "label": "Yami base theme",
       "path": "frontend/data/themes/Yami.obt",
-      "commit": "b5bfb79093e26ce4b0e71d999f59b6b22f961121",
+      "commit": "08069bd01a05c51e2fe80987ae6dd1562f27d8cd",
       "kind": "theme"
     },
     {
@@ -17,5 +17,5 @@
       "kind": "parser"
     }
   ],
-  "audited_commit": "ea7536c49cb84420296d3831cda526c232fed3bc"
+  "audited_commit": "08069bd01a05c51e2fe80987ae6dd1562f27d8cd"
 }

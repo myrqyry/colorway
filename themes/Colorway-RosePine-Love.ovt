@@ -94,6 +94,10 @@
     --on_section_heading: #eb6f92;
     --on_panel_accent: #eb6f92;
     --on_nav_hover: #e0def4;
+    --chip_bg_primary: #51344d;
+    --chip_fg_primary: #ef89a5;
+    --chip_bg_secondary: #494060;
+    --chip_fg_secondary: #c4a7e7;
     --on_primary: var(--bg_base);
     --on_primary_hover: var(--bg_base);
     --on_primary_dark: var(--bg_base);

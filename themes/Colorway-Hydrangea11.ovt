@@ -117,6 +117,18 @@
     --on_mixer_muted: #c090a7;
     --on_mixer_monitor: #90c0a0;
     --on_mixer_warning: #f1eab6;
+    --chip_bg_primary: #6e6a87;
+    --chip_fg_primary: #f5eef1;
+    --chip_bg_secondary: #656385;
+    --chip_fg_secondary: #eae2eb;
+    --chip_bg_info: #596481;
+    --chip_fg_info: #dde2e6;
+    --chip_bg_warning: #797e8a;
+    --chip_fg_warning: #151510;
+    --chip_bg_danger: #6e6a87;
+    --chip_fg_danger: #f5eef1;
+    --chip_bg_success: #647485;
+    --chip_fg_success: #f4f9f5;
     --cw_mixer_muted: 'url(theme:icons/colorway/mingcute/mixer/volume-mute-c090a7.svg)';
     --cw_mixer_monitor: 'url(theme:icons/colorway/mingcute/mixer/headphone-90c0a0.svg)';
     --cw_mixer_warning: 'url(theme:icons/colorway/mingcute/mixer/warning-f1eab6.svg)';
