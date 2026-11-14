@@ -20,3 +20,14 @@ test('OBS-themed web preview keeps playful controls without a fake state-test mo
   assert.doesNotMatch(refineStyles, /\.obs-sim-(?:state-test|state-lab)/);
   assert.match(parity, /Removed state lab is still mounted/);
 });
+
+test('preview parity refuses a port that is not serving this Colorway build', () => {
+  // The readiness probe used to accept any HTTP 200. An unrelated dev server left
+  // on the port then satisfied it, and the run failed later with the misleading
+  // "Theme catalog did not mount" instead of naming the real conflict.
+  assert.match(parity, /COLORWAY_PREVIEW_PORT/);
+  assert.match(parity, /servedAsColorway/);
+  assert.match(parity, /Colorway OBS Theme Preview/);
+  assert.match(parity, /did not start serving Colorway/);
+  assert.doesNotMatch(parity, /if \(\(await fetch\('http:\/\/127\.0\.0\.1:' \+ port\)\)\.ok\) break;/);
+});

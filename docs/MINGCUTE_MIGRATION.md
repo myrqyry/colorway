@@ -1,6 +1,6 @@
 # MingCute icons in Colorway
 
-The **Colorway OBS base theme**, all 160 curated variants, the web preview, ZIP
+The **Colorway OBS base theme**, all 166 curated variants, the web preview, ZIP
 exports and the direct installer use MingCute SVG assets. There is no Iconamoon
 or legacy OBS-design status artwork in the distribution.
 
@@ -75,7 +75,7 @@ on the same medium-dark accent. The affected shipped variants were
 matches `--on_primary` or `--on_primary_hover` text *when* the asset still
 meets 3:1 minimum silhouette contrast. It uses the maximally contrasting
 polarity only if the matching one cannot be read. This keeps the intended
-accent backgrounds and 160 authored palette seed colors unchanged.
+accent backgrounds and the authored palette seed colors unchanged.
 
 All corpus-wide contrast checks, Qt normal/pressed/checked icon checks for
 these variants, and native stylesheet/parser checks must continue to pass.

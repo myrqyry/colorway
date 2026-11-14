@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-Colorway is a theme system for OBS Studio that distributes custom `.ovt` (OBS Variant Theme) files through a static preview site. A variant theme is a small text file that overrides the 40 tracked palette tokens — backgrounds, text colors, accent hues, borders — on top of a full base theme (`Colorway.obt`, 274 variables). Each variant also restates a handful of layout properties (72 custom properties per variant in total); everything else cascades from the base. The site provides real-time previews of all 166 variants, direct downloads, upload-based conversion from any `.ovt` into the Colorway format, and algorithmic generation of OBS themes from any Lospec palette.
+Colorway is a theme system for OBS Studio that distributes custom `.ovt` (OBS Variant Theme) files through a static preview site. A variant theme is a small text file that overrides the 40 tracked palette tokens — backgrounds, text colors, accent hues, borders — on top of a full base theme (`Colorway.obt`, 4,096 lines declaring 489 variables). Each variant also restates layout and state properties on top of those palette tokens — 35–240 custom properties per variant, median 68 — and everything else cascades from the base. The site provides real-time previews of all 166 variants, direct downloads, upload-based conversion from any `.ovt` into the Colorway format, and algorithmic generation of OBS themes from any Lospec palette.
 
 The system is entirely client-side (no server), deployed as a Vite-built static site on Vercel.
 
@@ -24,7 +24,7 @@ The system is entirely client-side (no server), deployed as a Vite-built static 
 │                           │                     │              │
 │                    ┌──────▼───────┐     ┌────────▼──────────┐ │
 │                    │   main.js    │     │  src/styles.css   │ │
-│                    │  (UI shell)  │     │  (1166 lines CSS)  │ │
+│                    │  (UI shell)  │     │  (1230 lines CSS)  │ │
 │                    └──────┬───────┘     └───────────────────┘ │
 │                           │                                     │
 │         ┌─────────────────▼──────────────────┐                  │
@@ -32,11 +32,11 @@ The system is entirely client-side (no server), deployed as a Vite-built static 
 │         │  no exports; loaded by index.html  │                  │
 │         │  shares state through the DOM      │                  │
 │         ├────────────────────────────────────┤                  │
-│         │  obs-preview.js         654 lines  │ ← builds the UI  │
-│         │  obs-preview-refine.js  520 lines  │ ← fidelity       │
-│         │  obs-preview-actions.js 414 lines  │ ← import/export  │
-│         │  page-shell-sync.js     290 lines  │ ← page chrome    │
-│         │  obs-preview-ambient.js 175 lines  │ ← backdrop       │
+│         │  obs-preview.js         562 lines  │ ← builds the UI  │
+│         │  obs-preview-refine.js  422 lines  │ ← fidelity       │
+│         │  obs-preview-actions.js 539 lines  │ ← import/export  │
+│         │  page-shell-sync.js     289 lines  │ ← page chrome    │
+│         │  obs-preview-ambient.js 174 lines  │ ← backdrop       │
 │         └─────────────────┬──────────────────┘                  │
 │                           │                                     │
 │                    ┌──────▼───────┐                             │
@@ -50,8 +50,8 @@ The system is entirely client-side (no server), deployed as a Vite-built static 
                     ┌─────────▼─────────┐
                     │   Colorway.obt     │
                     │   (base theme)     │
-                    │   ~3659 lines      │
-                    │   ~274 variables   │
+                    │   4,096 lines      │
+                    │   489 variables    │
                     └───────────────────┘
          Each variant extends this via `extends:`
 ```
@@ -81,7 +81,7 @@ OVT (OBS Variant Theme) is a text-based format with two blocks:
 }
 ```
 
-Fields parsed by `parseOVT()` in `src/theme-loader.js:83`:
+Fields parsed by `parseOVT()` in `src/theme-loader.js`:
 - `name` — display name
 - `id` — unique reverse-domain identifier
 - `extends` — parent theme ID (resolved to a file by `findThemeFile()`)
@@ -96,7 +96,7 @@ Fields parsed by `parseOVT()` in `src/theme-loader.js:83`:
     --text: #cdd6f4;
     --primary: #cba6f7;
     --border_color: #313244;
-    /* ... ~25 more variables */
+    /* ... plus the remaining tracked palette tokens */
 }
 ```
 
@@ -105,11 +105,11 @@ Each line is `--<name>: <value>;`. Values can be:
 - `var()` references: `var(--primary)` — resolved during inheritance
 - `rgba()`: `rgba(130, 170, 255, 0.3)` — used for accent gradient overlays
 
-The base theme `Colorway.obt` (3659 lines) defines 274 variables including gray scales, color ramps, spacing tokens, icon paths, and sizing. Variants only override the 40 tracked palette variables (`PALETTE_VARS`) plus a few layout properties — everything else cascades via the base theme.
+The base theme `Colorway.obt` (4,096 lines) declares 489 variables including gray scales, color ramps, spacing tokens, icon paths, and sizing. Variants override the 40 tracked palette variables (`PALETTE_VARS`) plus a set of layout and generated state properties — 35 to 240 declarations per variant, median 68 — and everything else cascades via the base theme.
 
 ### Inheritance Resolution
 
-File: `src/theme-loader.js:119`
+File: `src/theme-loader.js`, `resolveTheme()`
 
 ```
 resolveTheme(file):
@@ -135,10 +135,10 @@ The browser-side resolver at `src/theme-workbench.js` uses `parseOVT()` (pure pa
 | `parseOVT(text)` | Extracts `{ meta, vars }` via regex. Pure function, no I/O. |
 | `loadTheme(file)` | Fetches from `/themes/<file>`, caches raw + resolved, returns inherited var map |
 | `applyTheme(vars)` | Sets each `--var: value` on `document.documentElement.style`, cleans previous |
-| `PALETTE_VARS` | Flat array of `[name, label]` pairs for the 30 previewed variables |
+| `PALETTE_VARS` | Flat array of `[name, label]` pairs for the 40 tracked palette variables |
 | `PALETTE_GROUPS` | Grouped by UI role (Backgrounds, Text, Accent, Inputs, Buttons, UI Elements) |
 
-**Parser detail** (`parseOVT`, line 83): Uses three regex passes:
+**Parser detail** (`parseOVT`): Uses three regex passes:
 1. Match `@OBSThemeVars \{(...)\}` block
 2. Split into lines, match `^\s*(--[\w-]+)\s*:\s*(.+?);`
 3. Separate regex for meta fields (`name`, `dark`, `extends`)
@@ -177,23 +177,23 @@ The shared engine that both the browser UI and any future build pipeline use.
 
 Single-page app with four screen regions:
 
-1. **Header**: Theme picker (scrollable list with 6-color palette previews), pattern selector, active theme info
-2. **Workbench tabs**: Browse / Import / Export
-3. **Showcase grid**: 9 demo widgets (buttons, inputs, sliders, checkboxes, radio buttons, list items, tabs, audio mixer, status indicators, progress bar) that reflect the current CSS variables
-4. **Palette details**: Collapsible group showing all 30 tracked variables with live swatches
+1. **Header**: Theme picker (scrollable list with 6-color palette previews), pattern selector, shuffle and pause controls, active theme info and credit
+2. **Workbench tabs**: Browse / Import / Export. These stay mounted as plumbing but are hidden by `page-shell-sync.css` (`display: none !important`); the simulated OBS Settings dialog owns the visible import/export actions.
+3. **Showcase grid**: 9 demo widgets (buttons, text inputs, sliders, checkboxes, radio buttons, list items, tabs, audio mixer, progress bar) plus a collapsible palette card, all reflecting the current CSS variables
+4. **Palette details**: Collapsible group showing all 40 tracked palette variables with live swatches
 
-**Tab functionality (Post-workbench addition):**
+**Workbench tab functionality (not the visible path):**
 
 | Tab | Content |
 |---|---|
-| Browse | Active theme name, "Download Yami variant" button |
+| Browse | Active theme name, "Yami variant" button |
 | Import | Upload `.ovt` (drag-drop or file picker) + Lospec palette generator (URL input) |
-| Export | Download active theme as Colorway `.ovt` or Yami-compatible `.ovt` |
+| Export | Colorway `.ovt`, Yami-compatible `.ovt`, OpenCode Terminal/Desktop JSON, Orchis and Bibata build kits |
 
 ### 3.4 `src/theme-catalog.js` — Registry
 
 Static catalog containing:
-- `THEMES` — Array of `{ file, name }` for all 166 built-in variants (generated by `scripts/sync-theme-mirrors.mjs`)
+- `THEMES` — Array of `{ file, name }` for all 166 built-in variants. This catalog is hand-maintained; `scripts/sync-theme-mirrors.mjs` reads it and does not generate it.
 - `PATTERNS` — 14 SVG background patterns for the preview backdrop
 - `DEFAULT_THEME` — `'Colorway-CatppuccinMocha.ovt'`
 - `DEFAULT_PATTERN` — `'pattern.svg'`
@@ -202,16 +202,19 @@ Static catalog containing:
 
 Node.js script (run via `pnpm sync:themes`) that:
 1. Reads all `Colorway-*.ovt` from `themes/`
-2. Parses each via the same regex parser
+2. Parses each with the same regex rules as `parseOVT()`
 3. Resolves inheritance chains (handles `var()` references, detects cycles)
-4. Injects a palette reference comment block into each source file
-5. Mirrors the augmented file into `public/themes/`
+4. Injects generated state-token blocks and a resolved palette reference comment into each source file
+5. Mirrors the augmented files into `public/themes/`
+6. Regenerates the MingCute icon set, mirrors `patterns/`, `icons/`, and `fonts/`, and writes
+   `public/theme-assets.json`, `public/INSTALL.md`, and `public/THEME_CREDITS.md`
+7. Builds the companion: `obs-companion/colorway-preview.html` plus its `public/companion/` copy
 
-This ensures every theme file in `public/themes/` is identical to the `themes/` version and includes a human-readable palette reference comment.
+This ensures every theme file in `public/themes/` is identical to the `themes/` version and includes a human-readable palette reference comment. Regeneration is expected to be a no-op on a clean tree.
 
 ### 3.6 The OBS preview layer — five side-effect modules
 
-Sections 3.1–3.5 describe the *theme engine*, which owns parsing, resolution, and the workbench. The other half of `src/` is the **OBS preview layer**: five modules that build and drive the simulated OBS Studio window that the whole site exists to show. Together they are the majority of the shipped UI code (2,048 of 3,859 lines of JS in `src/`).
+Sections 3.1–3.5 describe the *theme engine*, which owns parsing, resolution, and the workbench. The other half of `src/` is the **OBS preview layer**: five modules that build and drive the simulated OBS Studio window that the whole site exists to show. Together they are the majority of the shipped UI code (1,986 of 4,435 lines of JS in `src/`, measured 2026-11-12).
 
 They do not behave like the engine modules, and the difference matters when you change them.
 
@@ -254,9 +257,9 @@ assert.match(actions, /className = 'colorway-dialog-brand'/);
 
 So for these five modules a green `pnpm test` proves the source still contains certain strings. It does **not** prove the UI works, and it can break on a behavior-preserving refactor that changes a literal. Interaction and visual claims about the preview must be verified in a browser (`pnpm dev`). The theme engine and the generator contracts are different — those are real behavioral tests.
 
-### 3.7 `src/obs-preview.js` — Shell construction (654 lines)
+### 3.7 `src/obs-preview.js` — Shell construction (562 lines)
 
-The only module that *creates* the OBS UI. `mountObsPreview()` (line 638) is the entry point; everything else builds its markup.
+The only module that *creates* the OBS UI. `mountObsPreview()` is the entry point; everything else builds its markup.
 
 - **Markup builders** — `dock`, `controlsDock`, `settingsMarkup`, `previewMarkup`, `sceneRows`, `sourceRows`, `mixerChannel`.
 - **Icon system** — `escapeHtml`, `iconPath`, `iconMarkup`, `setIcon`, `buttonIcon` resolve icons from `icons/` and inject them as inline SVG.
@@ -265,7 +268,7 @@ The only module that *creates* the OBS UI. `mountObsPreview()` (line 638) is the
 
 A `MutationObserver` inside `syncStyleName` keeps the displayed style name current as the host element changes.
 
-### 3.8 `src/obs-preview-refine.js` — Control fidelity (520 lines)
+### 3.8 `src/obs-preview-refine.js` — Control fidelity (422 lines)
 
 Replaces the page's default form controls with OBS-like equivalents. Imports `THEMES`, `PATTERNS`, and `DEFAULT_PATTERN` from `theme-catalog.js`.
 
@@ -273,7 +276,7 @@ Replaces the page's default form controls with OBS-like equivalents. Imports `TH
 - **Appearance controls** — `syncVisibleControls` and `ensureAppearanceControls` keep the permanent theme/pattern picker aligned with the active theme. The obsolete state-test modal and launcher have been removed.
 - `makeSettingsPermanent` pins the Settings dock open; `removeTopYamiShortcut` strips a shortcut that should not be there.
 
-### 3.9 `src/obs-preview-actions.js` — Import, export, branding (414 lines)
+### 3.9 `src/obs-preview-actions.js` — Import, export, branding (539 lines)
 
 The user-facing I/O layer of the preview. Imports `applyTheme` from `theme-loader.js` plus workbench functions.
 
@@ -282,13 +285,13 @@ The user-facing I/O layer of the preview. Imports `applyTheme` from `theme-loade
 - **Import** — `stageImportedFile`, `triggerImport`, `importFromSettings`, `applyExternalTheme`. A `settingsImportGeneration` token guards against a slow workbench initialization clobbering a fast Settings-path import; the contract test asserts the observer is *not* attached to the apply button.
 - **Lospec** — `parseGeneratedPreview`, `generatedId`, `wireWorkbenchSnapshots` keep the generated-palette preview current.
 
-### 3.10 `src/obs-preview-ambient.js` — Ambient backdrop (175 lines)
+### 3.10 `src/obs-preview-ambient.js` — Ambient backdrop (174 lines)
 
 The smallest of the five. Derives a deterministic ambient gradient for the preview area from the active theme and pattern names: `hashString` seeds `mulberry32`, and `appliedPalette` supplies the colors that `ensureAmbientLayer` / `syncAmbient` paint.
 
 Because the backdrop is seeded from *names* rather than time or randomness, the same theme + pattern always produces the same gradient — re-rendering never causes a visible shift.
 
-### 3.11 `src/page-shell-sync.js` — Page chrome mirror (290 lines)
+### 3.11 `src/page-shell-sync.js` — Page chrome mirror (289 lines)
 
 Mirrors theme state to the parts of the page *outside* `.obs-real-preview`, so the marketing shell around the simulated OBS window agrees with it.
 
@@ -303,7 +306,7 @@ This is the only module that consumes a custom event rather than inferring state
 
 ## 4. Lospec Palette Import — Role Assignment Algorithm
 
-File: `src/theme-workbench.js:115`
+File: `src/theme-workbench.js`, `assignRoles()`
 
 The algorithm that converts any flat hex color array into semantically assigned OBS tokens.
 
@@ -402,8 +405,8 @@ All matrix values are the standard OKLab constants from Björn Ottosson's 2020 p
 ```
 colorway/
 ├── themes/
-│   ├── Colorway.obt                       # Base theme (~3659 lines, 274 vars)
-│   └── Colorway-*.ovt                     # 166 variant themes (40 palette tokens each)
+│   ├── Colorway.obt                       # Base theme (4,096 lines, 489 vars)
+│   └── Colorway-*.ovt                     # 166 variant themes (40 palette tokens + layout/state overrides)
 ├── patterns/                              # 14 SVG background patterns (source of truth)
 ├── fonts/                                 # Bundled font (BricolageGrotesqueVariable.ttf) + OFL.txt
 ├── public/
@@ -412,20 +415,33 @@ colorway/
 │   └── icons/                             # OBS-style SVG icon set
 ├── src/
 │   ├── main.js                            # UI shell, event wiring
-│   ├── styles.css                         # All preview + workbench CSS
 │   ├── theme-catalog.js                   # Static theme/pattern registry
 │   ├── theme-loader.js                    # Parser, resolver, applier
-│   └── theme-workbench.js                 # Normalizer, serializer, Lospec
+│   ├── theme-workbench.js                 # Normalizer, serializer, Lospec
+│   ├── theme-conversions.js               # OpenCode / Orchis / Bibata exports
+│   ├── theme-package.js                   # Catalog ZIP packaging
+│   ├── theme-categories.js                # Categories and upstream presets
+│   ├── obs-preview*.js, page-shell-sync.js # OBS preview layer (side-effect modules)
+│   └── styles.css                         # All preview + workbench CSS
 ├── test/
-│   ├── preview-contract.test.js           # 8 UI contract tests
-│   ├── new-themes-contract.test.js        # 461 per-theme validation tests
+│   ├── preview-contract.test.js           # UI contract checks
+│   ├── new-themes-contract.test.js        # Per-theme validation
 │   ├── workbench-engine.test.js           # Serializer round-trip tests
 │   └── lospec-import.test.js              # Color math + role assignment tests
 ├── scripts/
-│   ├── sync-theme-mirrors.mjs             # Build-time mirror + palette comments
-│   └── copy-themes.sh                     # Install themes into ~/.config/obs-studio/themes
-├── docs/
-│   └── patterns-preview.html              # Standalone pattern picker helper page
+│   ├── sync-theme-mirrors.mjs             # Build-time mirror, state tokens, assets
+│   ├── generate-catppuccin-siblings.mjs   # Sibling palette generator
+│   ├── build-obs-companion.mjs            # Offline OBS dock builder
+│   ├── copy-themes.sh                     # Install themes into ~/.config/obs-studio/themes
+│   ├── install-obs-companion.sh           # Install the optional companion files
+│   ├── check-preview-parity.mjs           # Chromium paint vs QSS roles
+│   ├── check-export-downloads.mjs         # Real export download smoke
+│   ├── check-shuffle-activity.mjs         # Slideshow pause/resume smoke
+│   ├── check-companion-preview.mjs        # Offline dock render check
+│   ├── check-obs-native.sh                # Native OBS/Qt probe
+│   └── check-obs-upstream.mjs             # Upstream OBS format-drift watch
+├── obs-companion/                         # Optional OBS Lua picker + offline dock
+├── docs/                                  # Architecture, install, compatibility, provenance
 ├── package.json                           # Vite + Tailwind v4 + autoprefixer
 └── vercel.json                            # pnpm build, dist/ output
 ```
@@ -489,11 +505,11 @@ The optional Yami export extends OBS's built-in `com.obsproject.Yami`; it does n
 
 This keeps the two products distinct: native Colorway remains the standalone custom base with its own QSS and assets, while the compatibility export means exactly “stock OBS Yami, recolored by this Colorway palette.”
 
-### 7.5 Why only 40 palette tokens per variant instead of the base's 274?
+### 7.5 Why only 40 palette tokens per variant instead of the base's 489?
 
 The base theme (`Colorway.obt`) defines all infrastructure variables: spacing, font sizes, border radii, icon paths, gray scale ramps, color scales (`--blue1`–`--blue6`, etc.), scrollbar sizing, toggle dimensions, and padding. A variant only needs to override the color tokens tracked in `PALETTE_VARS` — everything else cascades. This makes each variant small (~100 lines), easy to read, and focused on what it actually changes.
 
-The 40 tracked tokens are the *palette* vocabulary, not the variant's total property count: a shipped variant declares 72 custom properties, because the palette tokens plus a small set of layout overrides together cover what OBS needs to render correctly. The number that matters for review is `PALETTE_VARS.length` (40), because that is what the palette comment, the frozen-source contract, and the Lospec role assignment are all keyed to.
+The 40 tracked tokens are the *palette* vocabulary, not the variant's total property count: a shipped variant declares between 35 and 240 custom properties (median 68), because the palette tokens plus layout overrides plus generated state tokens together cover what OBS needs to render correctly. The number that matters for review is `PALETTE_VARS.length` (40), because that is what the palette comment, the frozen-source contract, and the Lospec role assignment are all keyed to.
 
 ---
 
@@ -532,8 +548,8 @@ All variables tracked in `PALETTE_GROUPS`:
 | `--list_item_bg_hover` | Buttons | Hover highlight |
 | `--list_item_bg_selected` | Buttons | Selection highlight |
 | `--border_color` | UI | Subtle separators |
-| `--ico` | UI | Same as text |
-| `--ico_selected` | UI | Inverse/selected |
+| `--ico` | UI | Same as text (declared by variants; the base omits it) |
+| `--ico_selected` | UI | Inverse/selected (declared by variants; the base omits it) |
 | `--accent_bg_start` | UI | Gradient start (rgba) |
 | `--accent_bg_end` | UI | Gradient end (rgba) |
 | `--warning` | UI | Yellow-orange |
@@ -566,7 +582,7 @@ The `colors` array is hex strings without `#` prefix. The `assignRoles()` functi
 1. Create `Colorway-MyTheme.ovt` in `themes/` with `@OBSThemeMeta` and `@OBSThemeVars` blocks, extending `com.myrqyry.Colorway`
 2. Add entry to `THEMES` array in `src/theme-catalog.js`
 3. Run `pnpm sync:themes` to mirror to `public/themes/`
-4. Run `npm test` — the per-theme contract tests will validate variable overrides and contrast ratios
+4. Run `pnpm test` — the per-theme contract tests will validate variable overrides and contrast ratios
 5. Build and deploy
 
 ### D. Glossary
@@ -579,4 +595,4 @@ The `colors` array is hex strings without `#` prefix. The `assignRoles()` functi
 | Yami | OBS's built-in base theme; Colorway's optional Yami export is a color-only `.ovt` that leaves Yami's stock QSS/layout/icons in control |
 | OKLCH | Perceptual color space (Lightness, Chroma, Hue) — the standard for color science in CSS Color Level 4 |
 | Lospec | A directory of pixel-art palettes with a JSON API at `lospec.com/palette-list/<slug>.json` |
-| PALETTE_VARS | The 30 tracked variables displayed in the preview palette details pane |
+| PALETTE_VARS | The 40 tracked palette variables displayed in the preview palette details pane |

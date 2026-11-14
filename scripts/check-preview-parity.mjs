@@ -8,7 +8,24 @@ import { setTimeout as delay } from 'node:timers/promises';
 const chromium = process.env.CHROMIUM_PATH || '/usr/bin/chromium';
 if (!existsSync(chromium)) throw new Error('Chromium unavailable; set CHROMIUM_PATH');
 const profile = mkdtempSync('/tmp/colorway-parity-');
-const port = 5189;
+const port = Number(process.env.COLORWAY_PREVIEW_PORT || 5189);
+// The served document must be Colorway's own build. A bare HTTP 200 is not enough:
+// any unrelated dev server left on this port would satisfy a status-only probe and
+// the run would then fail later with a misleading "catalog did not mount".
+// `pnpm build` emits a hashed /assets/ bundle and rewrites the module entry, so the
+// title plus an #app mount point is the stable marker across dev and preview.
+const servedAsColorway = async (url) => {
+  try {
+    const body = await (await fetch(url)).text();
+    return body.includes('Colorway OBS Theme Preview') && body.includes('id="app"');
+  } catch {
+    return false;
+  }
+};
+if (await servedAsColorway(`http://127.0.0.1:${port}/`)) {
+  throw Error(`Port ${port} already serves a Colorway build; refusing to reuse a foreign server. ` +
+    'Stop it or set COLORWAY_PREVIEW_PORT to a free port.');
+}
 const server = spawn('./node_modules/.bin/vite', ['preview', '--host', '127.0.0.1', '--port', String(port), '--strictPort'], { stdio: 'ignore' });
 const browser = spawn(chromium, [
   '--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage',
@@ -59,9 +76,9 @@ function inspect() {
 try {
   for (let i = 0; i < 100; i++) {
     try {
-      if ((await fetch('http://127.0.0.1:' + port)).ok) break;
+      if (await servedAsColorway('http://127.0.0.1:' + port + '/')) break;
     } catch {}
-    if (i === 99) throw Error('Vite preview did not start');
+    if (i === 99) throw Error(`Vite preview did not start serving Colorway on port ${port}`);
     await delay(100);
   }
   let chromePort;

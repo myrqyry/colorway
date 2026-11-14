@@ -72,7 +72,7 @@ have verified live-reload settings for that configuration.
    that looks like `file:///home/username/.config/obs-studio/colorway-companion/colorway-preview.html`.
 4. Apply and open the Colorway Library dock from the Docks menu.
 
-The browser dock is a **self-contained HTML file** with 160 real OBS theme
+The browser dock is a **self-contained HTML file** with 166 real OBS theme
 palettes and all 14 SVG patterns embedded. It works offline; no local server
 needed. It provides search, dark/light filters, local favorites, and a
 representative preview of OBS scenes, sources, audio mixer, and controls.

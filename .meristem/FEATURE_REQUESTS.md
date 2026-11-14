@@ -44,20 +44,18 @@ existing import path.
 **Related project state / references:** §5.3 and §6.3 of the reorg plan; DECISIONS.md records
 "do not nest `src/`" as a current constraint, which this request may revisit.
 
-## Decide whether a root README should exist
+## ~~Decide whether a root README should exist~~ — resolved 2026-11-12
 
 **Capability:** A root `README.md`, or an explicit decision that `docs/ARCHITECTURE.md` is the
 entry point.
 
-**Why it matters:** The repository root has no README. A new contributor or agent starts at
-`docs/ARCHITECTURE.md` by convention rather than by instruction. Note that the `/*` allowlist
-means a root README is trackable by default, but a new root file still needs verifying against
-the ignore rules.
+**Resolution:** `README.md` now exists. It covers purpose, quick start, layout, the theme-sync
+contract, verification commands, and a documentation index that links to the existing
+authorities instead of restating them. `docs/ARCHITECTURE.md` remains the deep architecture
+reference. `git check-ignore -v README.md` exits 1 (not ignored), so the `/*` allowlist tracks it.
 
-**Current gap:** No entry document at the root, and no statement of which document is canonical.
-
-**Constraints:** The allowlist in `.gitignore` negates specific directories; a new root file
-should be confirmed with `git check-ignore -v`.
+**Original rationale:** The repository root had no README, so a new contributor or agent started
+at `docs/ARCHITECTURE.md` by convention rather than by instruction.
 
 **Related project state / references:** `docs/ARCHITECTURE.md`, `UBIQUITOUS_LANGUAGE.md`.
 

@@ -251,7 +251,7 @@ unselected category labels, and checkbox outlines. These were not absent
 palette tokens: the styled controls were painted on a different surface from
 the one their source foregrounds had been chosen for.
 
-An audit of the 160 variants plus base found, before repair:
+An audit of the then-160 variants plus base found, before repair:
 - 94/161 with disabled text below 3:1 on group panels;
 - 83/161 with sidebar muted text below 4.5:1 on dock surfaces;
 - 20/161 with ordinary button text below 4.5:1 on button surfaces;
@@ -351,7 +351,7 @@ ZIP, separate from the OBS theme search directory:
   unchanged byte of the base triggers OBS 32.2's QFileSystemWatcher; this was
   tested in disposable OBS/Xvfb and confirmed in native logs. Without that
   setting a restart is reported as required.
-- The single-file browser dock embeds **all 160 source palettes** with their
+- The single-file browser dock embeds **all 166 source palettes** with their
   actual `.ovt` ancestry and 14 SVG patterns, rendered without a server.
   It offers search, favorites, light/dark filters, and focused OBS widget
   previews. It is not a native Qt screenshot or theme-changing control.

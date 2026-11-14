@@ -199,7 +199,7 @@ the palettes for OBS, but does not claim to have invented them.
   authored hex colors. A few Colorway foregrounds are contrast adaptations
   outside the deliberately small source palettes; they are not original swatches.
 - A diff against the pre-October-16 checkpoint found no changes to
-  authored theme palette seeds in any of the 160 variants.
+  authored theme palette seeds in any of the then-160 variants.
 - The incorrect Rosé Pine values shown for unrelated variants came from
   the web parser incorrectly reading commented palette snapshots as
   active declarations, not from native OBS theme overrides.

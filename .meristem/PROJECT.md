@@ -4,7 +4,7 @@
 ## Purpose
 
 Colorway is a browser-based workbench for authoring, previewing, and installing OBS Studio
-color themes (`.ovt`). It ships 160 curated themes plus a generator for Catppuccin-inspired
+color themes (`.ovt`). It ships 166 curated themes plus a generator for Catppuccin-inspired
 sibling palettes, a Lospec palette importer that distills an arbitrary palette into the full
 OBS token set, a live two-way OBS theme mirror, and a set of contracts that treat the theme
 files themselves as the product artifact rather than as generated noise.
@@ -96,8 +96,6 @@ modules under `test/` are not collected as tests that pass on containing no asse
   removed.
 - src/ remains intentionally flat; main.js is large enough that a future split may be worthwhile,
   but only for a concrete maintenance or feature need.
-- There is no root `README.md`. `docs/ARCHITECTURE.md` is the de facto entry document; whether a
-  root README should exist or point at it is undecided.
 - `patterns/` has a `public/patterns/` mirror that, unlike the themes mirror, has no generator
   script and no parity assertion. Whether that unguarded duplicate should be brought under the
   same contract as `themes/` is undecided.
@@ -106,6 +104,24 @@ modules under `test/` are not collected as tests that pass on containing no asse
   `page-shell-sync.js` export nothing, so their tests assert on source text via regex. A green suite
   proves those literals are present, not that the UI works. Documented in `docs/ARCHITECTURE.md` §3.6
   as of 2026-10-04; whether to add a DOM-based harness is undecided.
+
+## Closed 2026-11-12
+
+- **Stale figures in `docs/ARCHITECTURE.md` and the theme-count claims.** Corrected against
+  measurement: the base declares 489 variables in 4,096 lines (was 274 / 3,659); `styles.css` is
+  1,230 lines (was 1,166); the OBS preview layer is 1,986 of 4,435 lines of `src/` JS (was 2,048 of
+  3,859); the per-variant property count is a 35–240 range with median 68 (was a flat "72");
+  `PALETTE_VARS` is 40 everywhere (three "~30" claims corrected); the five preview-layer per-module
+  line counts were refreshed; and the "160 curated themes" count became 166 across `PROJECT.md`,
+  `MINGCUTE_MIGRATION.md`, `OBS_THEME_COMPATIBILITY.md`, `THEME_CREDITS.md`, and
+  `obs-companion/README.md`. `theme-catalog.js` is hand-maintained, so the claim that
+  `sync-theme-mirrors.mjs` generates `THEMES` was removed. The last `npm test` in
+  `docs/ARCHITECTURE.md` appendix C became `pnpm test`. Stale line-number references in
+  `docs/ARCHITECTURE.md` now name functions instead of line numbers.
+- **A root `README.md` now exists.** It is the entry point: purpose, quick start, layout, the
+  theme-sync contract, verification commands, and a documentation index that links to existing
+  authorities rather than duplicating them. `docs/ARCHITECTURE.md` remains the deep architecture
+  reference.
 
 ## Closed 2026-10-04
 
