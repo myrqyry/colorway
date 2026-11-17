@@ -9,6 +9,8 @@ The site is a Vite single-page app with no backend. It previews every variant in
 OBS Appearance workflow, downloads single themes or complete ZIP packages, converts an uploaded
 `.ovt` into the Colorway format, and generates a theme from any Lospec palette.
 
+![Six Colorway theme variants cycling through the native OBS Studio interface](docs/assets/obs-colorway-themes.webp)
+
 ## Quick start
 
 ```bash
