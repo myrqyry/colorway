@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {readFileSync,mkdtempSync,rmSync} from 'node:fs';
+import {tmpdir} from 'node:os';
 import {createHash} from 'node:crypto';
 import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
@@ -37,18 +38,20 @@ test('native skin generation produces verified blank frames, indicator states an
   assert.notEqual(data.skins.slider.normal.src,data.skins.slider.hover.src);
 });
 
-test('every catalog skin pack is present and matches its source digest', async () => {
+test('optional skin generator writes a reference pack and matching WebP digest', {skip: !available}, async () => {
   const {skinDigest} = await import('../scripts/build-qt-preview-skins.mjs');
-  const catalog = referenceCatalog();
-  for(const file of catalog.keys()) {
-    if(!file.endsWith('.ovt')) continue;
-    const pack=JSON.parse(readFileSync(join(root,'public/qt-skins',file+'.json'),'utf8'));
+  const catalog=referenceCatalog(), file='Colorway-Monokai.ovt';
+  const output=mkdtempSync(join(tmpdir(),'colorway-skin-test-'));
+  try {
+    const result=spawnSync(process.execPath,[join(root,'scripts/build-qt-preview-skins.mjs'),'--theme',file,'--output',output],{encoding:'utf8',timeout:30000});
+    assert.equal(result.status,0,result.stderr+result.stdout);
+    const pack=JSON.parse(readFileSync(join(output,file+'.json'),'utf8'));
     assert.equal(pack.sourceDigest,skinDigest(catalog,file));
     assert.equal(pack.file,file);
-    const atlas=readFileSync(join(root,'public/qt-skins',file+'.webp'));
+    const atlas=readFileSync(join(output,file+'.webp'));
     assert.equal(atlas.subarray(8,12).toString(),'WEBP');
     assert.equal(pack.atlasSha256,createHash('sha256').update(atlas).digest('hex'));
     assert.ok(pack.skins.combo.normal.src.startsWith('data:image/webp;'));
     assert.ok(pack.skins.checkbox.checked.src.startsWith('data:image/'));
-  }
+  } finally { rmSync(output,{recursive:true,force:true}); }
 });

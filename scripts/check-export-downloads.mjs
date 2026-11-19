@@ -93,15 +93,15 @@ try {
   })()`);
   assert.ok(visibleToggle, 'visible product Download menu toggle missing');
   const clickExportToggle = async () => {
-    await evaluate('document.querySelector("[data-colorway-download-toggle]").scrollIntoView({block:"center"})');
+    await evaluate('document.querySelector("[data-colorway-download-toggle]").scrollIntoView({block:"center",behavior:"instant"})');
     const hit = await evaluate(`(() => {
       const button = document.querySelector('[data-colorway-download-toggle]');
       const rect = button.getBoundingClientRect();
       const x = Math.round(rect.left + rect.width / 2);
       const y = Math.round(rect.top + rect.height / 2);
-      return {x, y, reachable:document.elementFromPoint(x,y)?.closest('[data-colorway-download-toggle]') === button};
+      return {x, y, reachable:document.elementFromPoint(x,y)?.closest('[data-colorway-download-toggle]') === button, rect:rect.toJSON(), hit:document.elementFromPoint(x,y)?.outerHTML.slice(0,240)};
     })()`);
-    assert.equal(hit.reachable, true, 'Export button is not pointer-reachable');
+    assert.equal(hit.reachable, true, 'Export button is not pointer-reachable: '+JSON.stringify(hit));
     await send('Input.dispatchMouseEvent', {type:'mousePressed',x:hit.x,y:hit.y,button:'left',clickCount:1});
     await send('Input.dispatchMouseEvent', {type:'mouseReleased',x:hit.x,y:hit.y,button:'left',clickCount:1});
   };
@@ -123,7 +123,7 @@ try {
       const menu=document.querySelector('[data-colorway-download-menu]');
       const option=menu.querySelector('[data-colorway-download-kind="${kind}"]');
       if (!option || menu.hidden || option.disabled) return { error: 'missing or disabled' };
-      option.scrollIntoView({block:'nearest'});
+      option.scrollIntoView({block:'nearest',behavior:'instant'});
       const rect=option.getBoundingClientRect();
       const x=Math.round(rect.left+rect.width/2), y=Math.round(rect.top+rect.height/2);
       const hit=document.elementFromPoint(x,y)?.closest('[data-colorway-download-kind]');
@@ -181,7 +181,7 @@ try {
   })()`);
   await until(() => evaluate('document.querySelector("#theme-status")?.textContent?.startsWith("Imported")'), 'visible Settings import applied');
   assert.equal(await evaluate('document.documentElement.hasAttribute("data-colorway-catalog")'), false, 'custom imports retain the non-catalog styling path');
-  assert.equal(await evaluate('document.documentElement.hasAttribute("data-colorway-skin")'), false, 'external palettes must not inherit catalog pixels');
+  assert.equal(await evaluate('!!document.querySelector("[data-obs-capture-image][data-file]")'), false, 'external palettes must not retain an unrelated OBS screenshot');
   assert.equal(await evaluate('document.querySelector("#active-theme-name").textContent'), 'Imported Sandbox');
   await pointerClick('opencode-tui');
   const importedFile = join(profile, 'colorway-imported-sandbox-opencode-tui.json');

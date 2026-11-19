@@ -134,7 +134,7 @@ console.log('PASS manual theme selection works while auto cycling remains paused
 const pointerClick = async (selector) => {
   const expression='(() => {const el=document.querySelector('+JSON.stringify(selector)+');'
     +'if (!el) return {error:"missing selector"};'
-    +'el.scrollIntoView({block:"nearest"});const r=el.getBoundingClientRect();'
+    +'el.scrollIntoView({block:"nearest",behavior:"instant"});const r=el.getBoundingClientRect();'
     +'const x=Math.round(r.left+r.width/2), y=Math.round(r.top+r.height/2);'
     +'return {x,y,hit:document.elementFromPoint(x,y)?.closest('+JSON.stringify(selector)+')===el,rect:r.toJSON()};})()';
   const pos=await evaluate(expression);

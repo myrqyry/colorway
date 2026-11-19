@@ -1,7 +1,31 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
-## Interactive native image-backed preview (2026-11-18)
+## Real OBS screenshot catalog (2026-11-18)
+
+**Objective:** Browse all 166 Colorway themes without installing each one
+into personal OBS. User rejected standalone Qt widget skins because they
+did not reliably reproduce the authored theme icons.
+
+**Outcome:** A real OBS 32.2.0 subprocess renders each variant in its own
+Xvfb display and temporary configuration, with the exact inherited theme,
+MingCute assets and patterns. A synthetic scene containing color sources and
+a muted local silent audio source makes real source and mixer controls visible.
+Lossless WebP round trips are checked against the captured pixels. All 166
+captures completed at 1280×960, approximately 6.3 MB on disk, in 85 seconds
+using five concurrent capture workers. The catalog digest and image hashes
+are checked by Node tests. The browser uses the current theme's screenshot
+as its primary preview; search, selection, previous/next and full-size view
+are separate from the existing interactive workbench.
+
+**Boundary:** Real captures at one OBS version, default pattern/density,
+and one Linux display configuration. Arbitrary imported themes, changed
+patterns, other OBS versions and live states do not have native screenshots.
+No personal themes, profiles, scenes, audio devices or streaming settings
+are changed by capture. Keep the existing interactive workbench clearly
+identified as an approximation; do not confuse its CSS with OBS render pixels.
+
+## Superseded: interactive native image-backed preview (2026-11-18)
 
 **Intent:** Use lossless WebP from real Qt rendering to improve the live
 Colorway website, not simply generate screenshots. Keep the existing

@@ -1,4 +1,6 @@
 import './obs-preview.css';
+import './obs-screenshot.css';
+import { mountObsScreenshot } from './obs-screenshot.js';
 
 function escapeHtml(value) {
   return String(value)
@@ -221,6 +223,24 @@ function previewMarkup() {
         </div>
       </div>
 
+      <section class="obs-capture" data-obs-capture aria-label="Actual OBS theme screenshots">
+        <div class="obs-capture-bar">
+          <h2>Actual OBS preview</h2>
+          <input type="search" aria-label="Find a theme screenshot" placeholder="Find theme…">
+          <button type="button" data-obs-capture-step="-1" aria-label="Previous theme">‹</button>
+          <select aria-label="Preview theme"></select>
+          <button type="button" data-obs-capture-step="1" aria-label="Next theme">›</button>
+          <span data-obs-capture-count></span>
+        </div>
+        <div class="obs-capture-frame">
+          <img data-obs-capture-image alt="" width="1280" height="960" hidden decoding="async">
+        </div>
+        <div class="obs-capture-footer">
+          <span data-obs-capture-status aria-live="polite">Loading theme…</span>
+          <a data-obs-capture-full target="_blank" rel="noopener noreferrer" hidden>Open full size</a>
+        </div>
+      </section>
+      <p class="obs-interactive-label">Interactive theme workbench · browser approximation</p>
       <div class="obs-sim-window" data-obs-window>
         <div class="obs-sim-titlebar">
           <strong>OBS Studio — Colorway theme preview</strong>
@@ -550,7 +570,7 @@ function mountObsPreview() {
   if (!grid) return false;
   grid.insertAdjacentHTML('beforebegin', previewMarkup());
   const root = document.querySelector('.obs-real-preview');
-  if (root) wirePreview(root);
+  if (root) { wirePreview(root); mountObsScreenshot(root); }
   return Boolean(root);
 }
 

@@ -120,7 +120,7 @@ try {
   };
   await send('Page.enable');
   await send('Runtime.enable');
-  if (process.argv.includes('--qt-reference') || process.argv.includes('--qt-skins')) {
+  if (process.argv.includes('--qt-reference') || process.argv.includes('--obs-screenshots')) {
     await send('Emulation.setFocusEmulationEnabled', {enabled: true});
     await send('Emulation.setEmulatedMedia', {features: [{name: 'prefers-reduced-motion', value: 'reduce'}]});
     await send('Emulation.setDeviceMetricsOverride', {width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false});
@@ -147,156 +147,36 @@ try {
       if (i === 59) throw Error('Theme selection did not settle: ' + file);
       await delay(100);
     }
-    if (process.argv.includes('--qt-skins')) {
-      for (let i=0;i<80;i++) {
-        if (await evaluate('document.documentElement.getAttribute("data-colorway-skin")') === file) break;
-        if (i===79) fail('Native skin failed to load', file);
+    if (process.argv.includes('--obs-screenshots')) {
+      const expected='/obs-renders/'+encodeURIComponent(file)+'.webp';
+      for(let i=0;i<100;i++){
+        const ready=await evaluate('document.querySelector("[data-obs-capture-image]")?.dataset.file === '+JSON.stringify(file));
+        if(ready)break;
+        if(i===99)fail('Native OBS screenshot did not load',file);
         await delay(100);
       }
-      const skin = await evaluate(`(() => {
-        const root=document.documentElement;
-        const combo=document.querySelector('[data-obs-pattern-select]');
-        const check=document.querySelector('.demo-check input:not(:disabled)');
-        const input=document.querySelector('.demo-input:not(:disabled)');
-        const button=document.querySelector('.demo-button:not(.primary):not(.recording):not(:disabled)');
-        const slider=document.querySelector('.demo-slider');
-        const radio=document.querySelector('.demo-radio input:not(:disabled):checked');
-        return {combo:getComputedStyle(combo).borderImageSource, field:getComputedStyle(input).borderImageSource,
-          button:getComputedStyle(button).borderImageSource, check:getComputedStyle(check).backgroundImage,
-          radio:getComputedStyle(radio).backgroundImage, slider:getComputedStyle(slider,'::-webkit-slider-thumb').backgroundImage,
-          widths:[combo,input,button,check,radio,slider].map(el=>el.getBoundingClientRect().width),
-          variables:getComputedStyle(root).getPropertyValue('--qt-combo-normal').trim()};
+      const info=await evaluate(`(() => {
+        const im=document.querySelector('[data-obs-capture-image]');
+        const panel=document.querySelector('[data-obs-capture]');
+        const picker=panel.querySelector('select');
+        const r=im.getBoundingClientRect();
+        return {src:im.getAttribute('src'),width:im.naturalWidth,height:im.naturalHeight,
+          visible:!im.hidden && r.width>0 && r.height>0,
+          selected:picker.value, count:picker.options.length, href:panel.querySelector('[data-obs-capture-full]').getAttribute('href')};
       })()`);
-      for(const family of ['combo','field','button','check','radio'])
-        if(!skin[family].includes('data:image/')) fail('Native skin not used by ' + family, {file,skin:skin[family].slice(0,80)});
-      if(skin.widths.some(w=>w<=0)) fail('Native control not laid out', skin.widths);
-      const pack=JSON.parse(readFileSync('public/qt-skins/'+file+'.json','utf8'));
-      if (!skin.combo.includes(pack.skins.combo.normal.src) && !skin.combo.includes(pack.skins.combo.hover.src)
-          && !skin.combo.includes(pack.skins.combo.focus.src)) fail('Stale combo asset',file);
-      const point = await evaluate(`(() => {
-        const check=document.querySelector('.demo-check input:not(:disabled)');
-        check.scrollIntoView({block:'center',behavior:'instant'});
-        const r=check.getBoundingClientRect();
-        return {x:r.x+r.width/2,y:r.y+r.height/2,checked:check.checked};
+      if(info.src!==expected||info.href!==expected||info.width!==1280||info.height!==960||
+         !info.visible||info.selected!==file||info.count!==166)fail('Wrong or invisible real OBS screenshot',{file,info});
+      const bytes=await evaluate(`(async()=>{
+        const response=await fetch(${JSON.stringify(expected)});
+        const digest=await crypto.subtle.digest('SHA-256',await response.arrayBuffer());
+        return [...new Uint8Array(digest)].map(n=>n.toString(16).padStart(2,'0')).join('');
       })()`);
-      if (!await evaluate('document.elementFromPoint('+point.x+','+point.y+') === document.querySelector(".demo-check input:not(:disabled)")')) fail('Checkbox is obscured',point);
-      await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:point.x,y:point.y});
-      await send('Input.dispatchMouseEvent',{type:'mousePressed',x:point.x,y:point.y,button:'left',clickCount:1});
-      await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:point.x,y:point.y,button:'left',clickCount:1});
-      const toggled = await evaluate(`(() => {
-        const check=document.querySelector('.demo-check input:not(:disabled)');
-        return {checked:check.checked, image:getComputedStyle(check).backgroundImage};
-      })()`);
-      if(toggled.checked===point.checked)fail('Native-backed checkbox did not toggle',file);
-      const state=toggled.checked?'checkedHover':'hover';
-      if(!toggled.image.includes(pack.skins.checkbox[state].src))fail('Checkbox image state did not update',state);
-      await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:0,y:0});
-      const clip=await evaluate(`(() => {
-        const check=document.querySelector('.demo-check input:not(:disabled)');
-        check.blur();
-        const r=check.getBoundingClientRect();
-        return {x:r.x+scrollX,y:r.y+scrollY,width:r.width,height:r.height,scale:1};
-      })()`);
-      const expected=pack.skins.checkbox[toggled.checked?'checked':'normal'];
-      if(clip.width!==expected.width||clip.height!==expected.height)fail('Indicator dimensions differ from Qt',{clip,expected:[expected.width,expected.height]});
-      const shot=await send('Page.captureScreenshot',{format:'png',clip});
-      const comparison=await evaluate(`(async () => {
-        const decode=async src=>{const img=new Image();img.src=src;await img.decode();const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);return ctx.getImageData(0,0,c.width,c.height).data;};
-        const a=await decode(${JSON.stringify(expected.src)}), b=await decode(${JSON.stringify('data:image/png;base64,'+shot.data)});
-        let compared=0, matching=0;
-        for(let i=0;i<a.length;i+=4)if(a[i+3]===255){
-          compared++;
-          if(Math.max(...[0,1,2].map(c=>Math.abs(a[i+c]-b[i+c])))<=1)matching++;
-        }
-        return {compared,matching};
-      })()`);
-      if(comparison.compared<50||comparison.matching/comparison.compared<0.95)fail('Visible indicator paint differs from Qt',comparison);
-      // Real browser keyboard text editing; do not bake the specimen's text into its skin.
-      const original=await evaluate(`(() => {
-        const el=document.querySelector('.demo-input:not(:disabled)');const value=el.value;el.scrollIntoView({block:'center',behavior:'instant'});el.focus();el.select();return value;
-      })()`);
-      await send('Input.insertText',{text:'Live value'});
-      if(await evaluate('document.querySelector(".demo-input:not(:disabled)").value')!=='Live value')fail('Native-backed field is not editable',file);
-      await evaluate('document.querySelector(".demo-input:not(:disabled)").value='+JSON.stringify(original)+';document.querySelector(".demo-input:not(:disabled)").blur()');
-      // The Pattern selector remains a genuine select; exercise its keyboard
-      // selection and assert the entire native arrow strip is painted.
-      const comboClip=await evaluate(`(() => {
-        const el=document.querySelector('[data-obs-pattern-select]');
-        el.scrollIntoView({block:'center',behavior:'instant'});el.blur();
-        const r=el.getBoundingClientRect();
-        return {x:r.right+scrollX-30,y:r.y+scrollY,width:30,height:r.height,scale:1};
-      })()`);
-      const comboShot=await send('Page.captureScreenshot',{format:'png',clip:comboClip});
-      const arrow=await evaluate(`(async () => {
-        async function decode(src){const img=new Image();img.src=src;await img.decode();return img;}
-        const a=await decode(${JSON.stringify(pack.skins.combo.normal.src)}),b=await decode(${JSON.stringify('data:image/png;base64,'+comboShot.data)});
-        const c=document.createElement('canvas');c.width=30;c.height=b.naturalHeight;
-        const ctx=c.getContext('2d');
-        ctx.drawImage(a,a.naturalWidth-30,0,30,a.naturalHeight,0,0,30,c.height);
-        const expected=ctx.getImageData(0,0,c.width,c.height).data;
-        ctx.clearRect(0,0,c.width,c.height);ctx.drawImage(b,0,0);
-        const seen=ctx.getImageData(0,0,c.width,c.height).data;
-        let matching=0,total=0;
-        for(let y=2;y<c.height-2;y++)for(let x=2;x<28;x++){
-          let i=(y*c.width+x)*4;total++;
-          if(Math.max(...[0,1,2].map(n=>Math.abs(expected[i+n]-seen[i+n])))<=3)matching++;
-        }
-        return {matching,total,height:c.height,nativeHeight:a.naturalHeight};
-      })()`);
-      if(arrow.matching/arrow.total<0.85)fail('Visible combo arrow strip differs from Qt',arrow);
-      const pattern=await evaluate(`(() => {
-        const el=document.querySelector('[data-obs-pattern-select]');el.focus();return {index:el.selectedIndex,count:el.options.length};
-      })()`);
-      if(pattern.count<2)fail('Pattern catalog missing options',file);
-      const key=pattern.index<pattern.count-1?'ArrowDown':'ArrowUp';
-      await send('Input.dispatchKeyEvent',{type:'keyDown',key,code:key,windowsVirtualKeyCode:key==='ArrowDown'?40:38});
-      await send('Input.dispatchKeyEvent',{type:'keyUp',key,code:key,windowsVirtualKeyCode:key==='ArrowDown'?40:38});
-      if(await evaluate('document.querySelector("[data-obs-pattern-select]").selectedIndex')===pattern.index)fail('Native-backed select did not change option',file);
-      await evaluate('(()=>{const el=document.querySelector("[data-obs-pattern-select]");el.selectedIndex='+pattern.index+';el.dispatchEvent(new Event("change",{bubbles:true}));el.blur()})()');
-      const before=await evaluate(`(() => {
-        const el=document.querySelector('.demo-slider');el.scrollIntoView({block:'center',behavior:'instant'});el.focus();return Number(el.value);
-      })()`);
-      await send('Input.dispatchKeyEvent',{type:'keyDown',key:'ArrowRight',code:'ArrowRight',windowsVirtualKeyCode:39});
-      await send('Input.dispatchKeyEvent',{type:'keyUp',key:'ArrowRight',code:'ArrowRight',windowsVirtualKeyCode:39});
-      const slider=await evaluate(`(() => {
-        const el=document.querySelector('.demo-slider'), r=el.getBoundingClientRect(), root=getComputedStyle(document.documentElement);
-        el.blur();const w=parseFloat(root.getPropertyValue('--qt-slider-normal-w')), h=parseFloat(root.getPropertyValue('--qt-slider-normal-h'));
-        const pct=(Number(el.value)-Number(el.min))/(Number(el.max)-Number(el.min));
-        return {value:Number(el.value),clip:{x:r.x+scrollX+(r.width-w)*pct,y:r.y+scrollY+(r.height-h)/2,width:w,height:h,scale:1}};
-      })()`);
-      if(slider.value===before)fail('Native-backed slider did not change value',file);
-      const sliderShot=await send('Page.captureScreenshot',{format:'png',clip:slider.clip});
-      const thumb=await evaluate(`(async () => {
-        const decode=async(src)=>{const img=new Image();img.src=src;await img.decode();const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);return ctx.getImageData(0,0,c.width,c.height).data;};
-        const a=await decode(${JSON.stringify(pack.skins.slider.normal.src)}),b=await decode(${JSON.stringify('data:image/png;base64,'+sliderShot.data)});
-        let matching=0,total=0;
-        for(let i=0;i<a.length;i+=4)if(a[i+3]===255){total++;if(Math.max(...[0,1,2].map(c=>Math.abs(a[i+c]-b[i+c])))<=3)matching++;}
-        return {matching,total};
-      })()`);
-      if(thumb.total<30||thumb.matching/thumb.total<0.9)fail('Visible slider thumb differs from Qt',thumb);
-      await evaluate('(()=>{const el=document.querySelector(".demo-slider");el.value='+before+';el.dispatchEvent(new Event("input",{bubbles:true}));})()');
-      const atlas=await evaluate(`(async () => {
-        const details=document.querySelector('[data-qt-atlas]'), image=details.querySelector('img');
-        const loadedWhileClosed=!details.open && image.hasAttribute('src');
-        if(!details.open)details.open=true;
-        for(let i=0;i<50&&!image.getAttribute('src');i++) await new Promise(r=>setTimeout(r,20));
-        await image.decode();
-        return {hidden:details.hidden,src:image.getAttribute('src'),width:image.naturalWidth,loadedWhileClosed};
-      })()`);
-      if(atlas.hidden||atlas.loadedWhileClosed||atlas.src!=='/qt-skins/'+encodeURIComponent(file)+'.webp'||atlas.width<1000)fail('Native WebP reference failed',atlas);
-      console.log('Native packs and visible Qt paint PASS',file,{indicator:comparison,arrow,thumb,atlas:atlas.width});
+      const manifest=JSON.parse(readFileSync('public/obs-renders/index.json','utf8')).themes.find(t=>t.file===file);
+      if(bytes!==manifest.sha256)fail('Browser fetched incorrect native screenshot',file);
+      console.log('Actual OBS WebP PASS',file,info.width+'x'+info.height);
     }
     const data = await evaluate('(' + inspect.toString() + ')()');
     if (process.argv.includes('--qt-reference')) {
-      // Keep the original color-role gate for the CSS fallback, separately
-      // from the image-backed preview gate.
-      for (let i=0;i<80;i++) {
-        if (await evaluate('document.documentElement.getAttribute("data-colorway-skin")') === file) break;
-        if (i===79) fail('Native skin failed to settle before fallback test',file);
-        await delay(100);
-      }
-      const mountedSkin = await evaluate('document.documentElement.getAttribute("data-colorway-skin")');
-      await evaluate('document.documentElement.removeAttribute("data-colorway-skin")');
       const result = spawnSync(process.env.COLORWAY_QT_PYTHON || '/usr/bin/python3',
         ['scripts/qt-preview-reference.py'], {
           input: JSON.stringify({ base: readFileSync('themes/Colorway.obt', 'utf8'),
@@ -391,7 +271,6 @@ try {
       if (!projected.icon.includes('/mingcute/') || !projected.icon.includes('check'))
         fail('Native checkbox SVG missing from the browser', projected.icon);
       console.log('CSS fallback projection PASS', file, projected.checks.length, 'checks');
-      if (mountedSkin) await evaluate('document.documentElement.setAttribute("data-colorway-skin", ' + JSON.stringify(mountedSkin) + ')');
     }
     if (!data.actualAsset.includes('/icons/colorway/mingcute/') || !data.renderedAsset.includes('/icons/colorway/mingcute/'))
       fail('Icon is not the authored OBS SVG', data);
@@ -404,6 +283,45 @@ try {
       fail('OBS active-control color mismatch', data);
     if (data.statusActive.some((value) => value !== 'active')) fail('Status states did not react', data);
     console.log('PASS', file, polarity, 'icon, ink, QSS active roles, pattern, statuses');
+  }
+  if(process.argv.includes('--obs-screenshots')){
+    // Exercise the new visible browser, rather than only the hidden data rows.
+    const point=await evaluate(`(()=>{
+      const search=document.querySelector('[data-obs-capture] input');
+      search.scrollIntoView({block:'center',behavior:'instant'});
+      const r=search.getBoundingClientRect();
+      return {x:r.x+r.width/2,y:r.y+r.height/2};
+    })()`);
+    if(!await evaluate('document.elementFromPoint('+point.x+','+point.y+') === document.querySelector("[data-obs-capture] input")'))fail('Native preview search is obscured',point);
+    await send('Input.dispatchMouseEvent',{type:'mousePressed',...point,button:'left',clickCount:1});
+    await send('Input.dispatchMouseEvent',{type:'mouseReleased',...point,button:'left',clickCount:1});
+    await send('Input.insertText',{text:'Fairyfloss'});
+    const matches=await evaluate('Array.from(document.querySelector("[data-obs-capture] select").options).map(o=>o.value)');
+    if(matches.length!==1||matches[0]!=='Colorway-Fairyfloss.ovt')fail('Screenshot search did not filter catalog',matches);
+    await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+    await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+    for(let i=0;i<80;i++){
+      if(await evaluate('document.querySelector("[data-obs-capture-image]").dataset.file')==='Colorway-Fairyfloss.ovt')break;
+      if(i===79)fail('Visible search did not select real screenshot',matches);
+      await delay(100);
+    }
+    await evaluate('(()=>{const el=document.querySelector("[data-obs-capture] input");el.value="";el.dispatchEvent(new Event("input",{bubbles:true}));el.blur()})()');
+    const next=await evaluate(`(()=>{
+      const panel=document.querySelector('[data-obs-capture]');
+      const picker=panel.querySelector('select'), btn=panel.querySelector('[data-obs-capture-step="1"]');
+      const expected=picker.options[(picker.selectedIndex+1)%picker.options.length].value;
+      btn.scrollIntoView({block:'center',behavior:'instant'});
+      const r=btn.getBoundingClientRect();
+      return {expected,x:r.x+r.width/2,y:r.y+r.height/2};
+    })()`);
+    await send('Input.dispatchMouseEvent',{type:'mousePressed',x:next.x,y:next.y,button:'left',clickCount:1});
+    await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:next.x,y:next.y,button:'left',clickCount:1});
+    for(let i=0;i<80;i++){
+      if(await evaluate('document.querySelector("[data-obs-capture-image]").dataset.file')===next.expected)break;
+      if(i===79)fail('Next theme button did not select real screenshot',next);
+      await delay(100);
+    }
+    console.log('Visible screenshot search and next-theme navigation PASS');
   }
   const discardedPopup = await evaluate(`(() => ({
     lab: !!document.querySelector('[data-state-lab]'),

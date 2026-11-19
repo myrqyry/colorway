@@ -1,4 +1,4 @@
-import { activateNativeSkin } from './native-qt-skins.js';
+import { presentObsScreenshot } from './obs-screenshot.js';
 import { THEMES } from './theme-catalog.js';
 import { decodeObsFunctionValue } from './theme-value-codec.js';
 
@@ -185,7 +185,7 @@ let _appliedVars = new Set();
 export function applyTheme(vars, { catalog = false, file = null } = {}) {
   const root = document.documentElement;
   root.toggleAttribute('data-colorway-catalog', catalog);
-  void activateNativeSkin(catalog ? file : null);
+  void presentObsScreenshot(catalog ? file : null);
   _appliedVars.forEach(key => root.style.removeProperty(key));
   Object.entries(vars).forEach(([key, value]) => {
     if (key.startsWith('--')) {

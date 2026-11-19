@@ -26,7 +26,7 @@ function main() {
   const {values}=parseArgs({options:{theme:{type:'string',multiple:true}, output:{type:'string'}}});
   const catalog=referenceCatalog();
   const files=values.theme || [...catalog.keys()].filter(f=>f.endsWith('.ovt'));
-  const output=resolve(values.output || join(root,'public/qt-skins'));
+  const output=resolve(values.output || join(tmpdir(),'colorway-qt-skins'));
   for(const file of files) themeLayers(catalog,file);
   mkdirSync(output,{recursive:true});
   const temp=mkdtempSync(join(tmpdir(),'colorway-native-atlas-'));

@@ -1,6 +1,5 @@
 import './styles.css';
 import './qt-preview.generated.css';
-import './native-qt-skins.css';
 import { gsap } from 'gsap';
 import { THEMES, DEFAULT_THEME, PATTERNS, DEFAULT_PATTERN } from './theme-catalog.js';
 import { THEME_CATEGORIES, getThemeCategory, filterThemeCatalog, sortThemesByDisplayName } from './theme-categories.js';
@@ -398,13 +397,6 @@ function renderApp() {
             <div class="demo-progress" role="progressbar" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100" aria-label="Progress: 57%"><div class="demo-progress-fill" style="width:57%"></div></div>
           </div>
         </section>
-        <details class="showcase-card qt-native-atlas" data-qt-atlas hidden>
-          <summary class="card-header">Native Qt reference <span>17 widget families · 80 states per theme</span></summary>
-          <div class="qt-native-atlas-body">
-            <p>Actual Qt renders at 100% scale, for comparing controls and states against the interactive preview.</p>
-            <img data-qt-atlas-image alt="Native Qt widget and state reference for the active theme" decoding="async">
-          </div>
-        </details>
       </div>
       <div class="theme-download-menu" id="theme-download-menu" hidden role="menu" aria-label="Download options">
         <label class="theme-download-toggle">
