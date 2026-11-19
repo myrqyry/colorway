@@ -1,0 +1,64 @@
+/* Generated from themes/Colorway.obt by scripts/generate-preview-css.mjs. Do not edit. */
+:where(:root[data-colorway-catalog]) .demo-check input, :where(:root[data-colorway-catalog]) .demo-radio input { opacity: 1; background-repeat: no-repeat; background-position: center; background-size: contain; }
+:where(:root[data-colorway-catalog]) .demo-check input::after, :where(:root[data-colorway-catalog]) .demo-radio input::after { display: none; }
+:where(:root[data-colorway-catalog]) .demo-button:not(.primary):not(.recording):focus-visible { background: radial-gradient(ellipse at center, var(--button_bg) 0%, var(--button_bg) 50%, var(--primary) 100%); }
+:where(:root[data-colorway-catalog]) .demo-button:not(.primary):not(.recording) { background-color: var(--button_bg); color: var(--on_button); border: 2px solid var(--button_bg); border-radius: var(--border_radius); font-weight: 500; }
+:where(:root[data-colorway-catalog]) .demo-button:not(.primary):not(.recording):hover { color: var(--button_hover_text); border-color: var(--primary); background: radial-gradient(ellipse at center, var(--button_bg) 0%, var(--button_bg) 50%, var(--primary) 100%); }
+:where(:root[data-colorway-catalog]) .demo-button:not(.primary):not(.recording):active { background: var(--primary); border-color: var(--primary); color: var(--on_primary); }
+:where(:root[data-colorway-catalog]) .demo-button:not(.primary):not(.recording):disabled { background-color: var(--button_bg_disabled); border-color: var(--button_bg_disabled); color: var(--on_button_disabled); }
+:where(:root[data-colorway-catalog]) .demo-select { border: 2px solid var(--border_base); background: var(--bg_input); border-radius: var(--border_radius_small); color: var(--on_input); }
+:where(:root[data-colorway-catalog]) .obs-sim-select { border: 2px solid var(--border_base); background: var(--bg_input); border-radius: var(--border_radius_small); color: var(--on_input); }
+:where(:root[data-colorway-catalog]) .demo-input { border: 2px solid var(--border_base); background: var(--bg_input); border-radius: var(--border_radius_small); color: var(--on_input); }
+:where(:root[data-colorway-catalog]) .obs-sim-window input.obs-sim-number { border: 2px solid var(--border_base); background: var(--bg_input); border-radius: var(--border_radius_small); color: var(--on_input); }
+:where(:root[data-colorway-catalog]) .obs-sim-window input.obs-sim-input { border: 2px solid var(--border_base); background: var(--bg_input); border-radius: var(--border_radius_small); color: var(--on_input); }
+:where(:root[data-colorway-catalog]) .demo-select:focus { border: 2px solid var(--border_focus); background-color: var(--input_bg_focus); color: var(--on_input_focus); }
+:where(:root[data-colorway-catalog]) .obs-sim-select:focus { border: 2px solid var(--border_focus); background-color: var(--input_bg_focus); color: var(--on_input_focus); }
+:where(:root[data-colorway-catalog]) .demo-input:focus { border: 2px solid var(--border_focus); background-color: var(--input_bg_focus); color: var(--on_input_focus); }
+:where(:root[data-colorway-catalog]) .obs-sim-window input.obs-sim-number:focus { border: 2px solid var(--border_focus); background-color: var(--input_bg_focus); color: var(--on_input_focus); }
+:where(:root[data-colorway-catalog]) .obs-sim-window input.obs-sim-input:focus { border: 2px solid var(--border_focus); background-color: var(--input_bg_focus); color: var(--on_input_focus); }
+:where(:root[data-colorway-catalog]) .demo-select:hover { background: var(--input_bg_hover); border-color: var(--input_border_hover); color: var(--on_input_hover); }
+:where(:root[data-colorway-catalog]) .obs-sim-select:hover { background: var(--input_bg_hover); border-color: var(--input_border_hover); color: var(--on_input_hover); }
+:where(:root[data-colorway-catalog]) .demo-input:hover { background: var(--input_bg_hover); border-color: var(--input_border_hover); color: var(--on_input_hover); }
+:where(:root[data-colorway-catalog]) .obs-sim-window input.obs-sim-number:hover { background: var(--input_bg_hover); border-color: var(--input_border_hover); color: var(--on_input_hover); }
+:where(:root[data-colorway-catalog]) .obs-sim-window input.obs-sim-input:hover { background: var(--input_bg_hover); border-color: var(--input_border_hover); color: var(--on_input_hover); }
+:where(:root[data-colorway-catalog]) .demo-slider::-webkit-slider-thumb { background: var(--text_bright); border-radius: var(--slider_handle_radius); }
+:where(:root[data-colorway-catalog]) .demo-slider::-moz-range-thumb { background: var(--text_bright); border-radius: var(--slider_handle_radius); }
+:where(:root[data-colorway-catalog]) .demo-slider:hover::-webkit-slider-thumb { background: var(--primary_hover); }
+:where(:root[data-colorway-catalog]) .demo-slider:hover::-moz-range-thumb { background: var(--primary_hover); }
+:where(:root[data-colorway-catalog]) .demo-slider:active::-webkit-slider-thumb { background: var(--primary); }
+:where(:root[data-colorway-catalog]) .demo-slider:active::-moz-range-thumb { background: var(--primary); }
+:where(:root[data-colorway-catalog]) .demo-slider:disabled::-webkit-slider-thumb { background-color: var(--text_disabled); }
+:where(:root[data-colorway-catalog]) .demo-slider:disabled::-moz-range-thumb { background-color: var(--text_disabled); }
+:where(:root[data-colorway-catalog]) .demo-check input { border: 2px solid var(--border_base); border-radius: var(--checkbox_corner_radius); background-color: var(--bg_base); }
+:where(:root[data-colorway-catalog]) .demo-radio input { border: 2px solid var(--border_base); border-radius: var(--checkbox_corner_radius); background-color: var(--bg_base); }
+:where(:root[data-colorway-catalog]) .demo-radio input { border-radius: var(--radio_indicator_radius); }
+:where(:root[data-colorway-catalog]) .demo-check input:hover { border-color: var(--primary); background-color: var(--bg_hover); }
+:where(:root[data-colorway-catalog]) .demo-radio input:hover { border-color: var(--primary); background-color: var(--bg_hover); }
+:where(:root[data-colorway-catalog]) .demo-check input:not(:checked):hover { border-color: var(--primary); background-color: var(--bg_hover); }
+:where(:root[data-colorway-catalog]) .demo-radio input:not(:checked):hover { border-color: var(--primary); background-color: var(--bg_hover); }
+:where(:root[data-colorway-catalog]) .demo-check input:not(:checked) { background-image: none; }
+:where(:root[data-colorway-catalog]) .demo-check input:not(:checked):disabled { border-color: var(--button_bg_disabled); background-color: var(--button_bg_disabled); }
+:where(:root[data-colorway-catalog]) .demo-radio input:not(:checked):disabled { border-color: var(--button_bg_disabled); background-color: var(--button_bg_disabled); }
+:where(:root[data-colorway-catalog]) .demo-check input:checked { background-color: var(--bg_base); border-color: var(--primary); background-image: var(--checkbox_check_icon); }
+:where(:root[data-colorway-catalog]) .demo-check input:checked:hover { background-color: var(--bg_base); border-color: var(--primary_light); }
+:where(:root[data-colorway-catalog]) .demo-radio input:checked:hover { background-color: var(--bg_base); border-color: var(--primary_light); }
+:where(:root[data-colorway-catalog]) .demo-radio input:checked:hover { background-color: var(--primary_light); }
+:where(:root[data-colorway-catalog]) .demo-radio input:checked { background-color: var(--primary); border: 3px solid var(--bg_base); }
+:where(:root[data-colorway-catalog]) .demo-check input:disabled { border-color: var(--button_bg_disabled); background-color: var(--button_bg_disabled); }
+:where(:root[data-colorway-catalog]) .demo-radio input:disabled { border-color: var(--button_bg_disabled); background-color: var(--button_bg_disabled); }
+:where(:root[data-colorway-catalog]) .demo-check input:checked:disabled { background-color: var(--button_bg_disabled); border-color: var(--button_bg_disabled); color: var(--text_disabled); }
+:where(:root[data-colorway-catalog]) .demo-radio input:checked:disabled { background-color: var(--button_bg_disabled); border-color: var(--button_bg_disabled); color: var(--text_disabled); }
+:where(:root[data-colorway-catalog]) .demo-list-item.selected { background: var(--primary); color: var(--on_primary); }
+:where(:root[data-colorway-catalog]) .demo-list-item:not(.selected):hover { background: var(--list_item_bg_hover); color: var(--on_list_hover); }
+:where(:root[data-colorway-catalog]) .demo-tab { background: var(--bg_base); color: var(--on_base_muted); }
+:where(:root[data-colorway-catalog]) .demo-tab.active { background: var(--surface1); color: var(--on_panel_accent); border-bottom: 2px solid var(--primary); font-weight: bold; }
+:where(:root[data-colorway-catalog]) .demo-tab:not(.active):hover { background: var(--surface2); color: var(--on_nav_hover); border-bottom: 2px solid var(--border_base); }
+:where(:root[data-colorway-catalog]) .demo-tab:active { background: var(--tab_bg_down); }
+:where(:root[data-colorway-catalog]) .demo-progress { border: 1px solid var(--border_base); border-radius: var(--shape_full); background: var(--bg_base); color: var(--text_base); }
+:where(:root[data-colorway-catalog]) .demo-progress-fill { background: var(--primary); border-radius: var(--shape_full); }
+:where(:root[data-colorway-catalog]) .demo-list-item.selected { background-color: var(--primary); border-color: var(--primary_light); color: var(--on_primary); }
+:where(:root[data-colorway-catalog]) .demo-select:hover { background-color: var(--input_bg_hover); border-color: var(--input_border_hover); }
+:where(:root[data-colorway-catalog]) .obs-sim-select:hover { background-color: var(--input_bg_hover); border-color: var(--input_border_hover); }
+:where(:root[data-colorway-catalog]) .demo-select:focus { background-color: var(--input_bg_focus); border-color: var(--border_focus); }
+:where(:root[data-colorway-catalog]) .obs-sim-select:focus { background-color: var(--input_bg_focus); border-color: var(--border_focus); }
+:where(:root[data-colorway-catalog]) .demo-check input, :where(:root[data-colorway-catalog]) .demo-radio input { background-repeat: no-repeat; background-position: center; background-size: contain; }

@@ -1,6 +1,28 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Programmatic Qt atlas and browser projection (2026-11-18)
+
+**Outcome:** Extended the combo proof into a 17-family registry and catalog
+batch generator. Parent IDs are followed recursively, including nested
+variants. A whitelist compiler projects supported QSS declaration values
+onto the existing live browser showcase; generated CSS is checked for drift
+and refreshed by `pnpm sync:themes`. Corrects checkbox/radio fill and glyph,
+input, standard button, slider thumb, tab/list and progress styling without
+replacing the site or changing native theme files. External partial palettes
+retain their earlier styling path via the shared theme application function.
+
+**Evidence:** 167 sheets / 13,360 specimens generated locally at
+`/tmp/colorway-native-atlas-20261118`. Qt 6.11 render and browser state checks
+for Monokai and Latte Blue plus nine visible projection roles per variant;
+visible import/export smoke passes after catalog-scope correction.
+Full Node suite and production build verified. No OBS config changes.
+
+**Boundary:** Atlas is a local reference tool, not shipped static assets;
+native custom OBS classes, .ui forms, full geometry/JIT translation and
+pixel-level parity remain unimplemented. Pointer-hover specimens use widget
+center rather than guaranteeing individual subcontrol targeting.
+
 ## Standalone Qt preview reference — combo slice (2026-11-18)
 
 **Intent:** Use real Qt rendering from Colorway theme files to improve the

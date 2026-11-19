@@ -1,4 +1,5 @@
 import './styles.css';
+import './qt-preview.generated.css';
 import { gsap } from 'gsap';
 import { THEMES, DEFAULT_THEME, PATTERNS, DEFAULT_PATTERN } from './theme-catalog.js';
 import { THEME_CATEGORIES, getThemeCategory, filterThemeCatalog, sortThemesByDisplayName } from './theme-categories.js';
@@ -410,7 +411,7 @@ function renderApp() {
 }
 
 function applyThemeState(file, theme, patternFile) {
-  applyTheme(theme);
+  applyTheme(theme, { catalog: true });
 
   const name = document.querySelector('#active-theme-name');
   const status = document.querySelector('#theme-status');

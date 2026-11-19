@@ -5,7 +5,7 @@ import re
 def compose_qss(payload):
     variables = {'--obsFontScale': '10', '--obsPadding': str(payload.get('obsPadding', 4))}
     css = []
-    for source in [payload['base'], payload.get('variant', '')]:
+    for source in [payload['base'], *payload.get('ancestors', []), payload.get('variant', '')]:
         source = re.sub(r'/\*.*?\*/', '', source, flags=re.S)
         block = re.search(r'@OBSThemeVars\s*\{(.*?)\}', source, re.S)
         if block:

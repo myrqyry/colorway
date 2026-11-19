@@ -181,8 +181,9 @@ export function browserThemeAssetValue(value) {
 
 let _appliedVars = new Set();
 
-export function applyTheme(vars) {
+export function applyTheme(vars, { catalog = false } = {}) {
   const root = document.documentElement;
+  root.toggleAttribute('data-colorway-catalog', catalog);
   _appliedVars.forEach(key => root.style.removeProperty(key));
   Object.entries(vars).forEach(([key, value]) => {
     if (key.startsWith('--')) {

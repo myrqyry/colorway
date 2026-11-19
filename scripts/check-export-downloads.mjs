@@ -180,6 +180,7 @@ try {
     input.dispatchEvent(new Event('change', { bubbles: true }));
   })()`);
   await until(() => evaluate('document.querySelector("#theme-status")?.textContent?.startsWith("Imported")'), 'visible Settings import applied');
+  assert.equal(await evaluate('document.documentElement.hasAttribute("data-colorway-catalog")'), false, 'custom imports retain the non-catalog styling path');
   assert.equal(await evaluate('document.querySelector("#active-theme-name").textContent'), 'Imported Sandbox');
   await pointerClick('opencode-tui');
   const importedFile = join(profile, 'colorway-imported-sandbox-opencode-tui.json');

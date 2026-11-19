@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "test": "node --test \"test/**/*.test.js\"",
-    "sync:themes": "node scripts/sync-theme-mirrors.mjs && node scripts/build-obs-companion.mjs",
+    "sync:themes": "node scripts/sync-theme-mirrors.mjs && node scripts/build-obs-companion.mjs && node scripts/generate-preview-css.mjs",
     "check:obs-upstream": "node scripts/check-obs-upstream.mjs",
     "check:preview": "pnpm build && node scripts/check-preview-parity.mjs",
+    "generate:preview-css": "node scripts/generate-preview-css.mjs",
+    "generate:qt-atlas": "node scripts/build-qt-reference-atlas.mjs",
     "check:preview-qt": "pnpm build && node scripts/check-preview-parity.mjs --qt-reference",
     "check:exports": "pnpm build && node scripts/check-export-downloads.mjs",
     "check:shuffle": "pnpm build && node scripts/check-shuffle-activity.mjs",
