@@ -1,6 +1,32 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Interactive native image-backed preview (2026-11-18)
+
+**Intent:** Use lossless WebP from real Qt rendering to improve the live
+Colorway website, not simply generate screenshots. Keep the existing
+interactive showcase, special OBS states and static Vercel deployment.
+
+**Implemented:** All 166 curated variants have checked-in native state
+packs and WebP atlas sheets. Standard input, combo, push-button, checkbox,
+radio and slider thumb appearance uses native image primitives; field,
+combo and button frames use nine-slice WebP and transparent indicators
+and handles use PNG. Text/value, keyboard, pointer and slider behavior
+remain native HTML; the dynamic groove remains CSS. Catalog selection
+loads and decodes only its own pack, rejects stale completions, and
+returns to CSS on missing assets or imported palettes. A lazy disclosure
+shows all 17 reference families (80 states), with original image scale.
+Native source files remain untouched. Regenerate the packs using
+`pnpm generate:qt-skins`; the digest contract catches drift.
+
+**Verification boundary:** Chromium on Monokai and Catppuccin Latte Blue
+checks visible screenshot regions, pointer checkbox toggling, dropdown and
+slider keyboard changes, editable text, reference sheet loading and the
+separate CSS fallback. This is not full OBS UI parity: native capture
+uses Qt 6.11 Fusion and default font/padding; special OBS states, font,
+density, dynamic slider grooves and remaining control families still
+use CSS. Do not stretch or bake live text into image assets.
+
 ## Native SVG / lossless raster format study (2026-11-18)
 
 **Intent:** Investigate native image assets for visual parity beyond

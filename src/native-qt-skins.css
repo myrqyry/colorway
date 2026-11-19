@@ -1,0 +1,206 @@
+/* Actual native Qt pixels back the controls; DOM text and behavior stay live.
+   The nine-slice frame keeps the corner and dropdown geometry unscaled. */
+:root[data-colorway-skin] :is(.demo-input, .obs-sim-input, .obs-sim-number) {
+  --qt-frame: var(--qt-field-normal);
+  border-image-source: var(--qt-frame);
+  border-image-slice: 10 12 10 12 fill;
+  border-image-width: 10px 12px;
+  border-image-repeat: stretch;
+}
+:root[data-colorway-skin] :is(.demo-input, .obs-sim-input, .obs-sim-number):focus {
+  --qt-frame: var(--qt-field-focus);
+}
+:root[data-colorway-skin] :is(.demo-input, .obs-sim-input, .obs-sim-number):hover {
+  --qt-frame: var(--qt-field-hover);
+}
+:root[data-colorway-skin] :is(.demo-input, .obs-sim-input, .obs-sim-number):disabled {
+  --qt-frame: var(--qt-field-disabled);
+}
+:root[data-colorway-skin] :is(.demo-select, .obs-sim-select) {
+  --qt-frame: var(--qt-combo-normal);
+  appearance: none;
+  padding-right: max(30px, var(--input_text_padding, 8px));
+  border-image-source: var(--qt-frame);
+  border-image-slice: 10 30 10 12 fill;
+  border-image-width: 10px 30px 10px 12px;
+  border-image-repeat: stretch;
+}
+:root[data-colorway-skin] :is(.demo-select, .obs-sim-select):focus {
+  --qt-frame: var(--qt-combo-focus);
+}
+:root[data-colorway-skin] :is(.demo-select, .obs-sim-select):hover {
+  --qt-frame: var(--qt-combo-hover);
+}
+:root[data-colorway-skin] :is(.demo-select, .obs-sim-select):disabled {
+  --qt-frame: var(--qt-combo-disabled);
+}
+/* Active stream/record/mode buttons and export actions have special OBS
+   theme roles; don't paint them with an ordinary QPushButton frame. */
+:root[data-colorway-skin] :is(.demo-button:not(.primary):not(.recording):not([style]), .obs-sim-control:not(.active)) {
+  --qt-frame: var(--qt-button-normal);
+  border-image-source: var(--qt-frame);
+  border-image-slice: 10 12 fill;
+  border-image-width: 10px 12px;
+  border-image-repeat: stretch;
+}
+:root[data-colorway-skin] :is(.demo-button:not(.primary):not(.recording):not([style]), .obs-sim-control:not(.active)):focus-visible {
+  --qt-frame: var(--qt-button-focus);
+}
+:root[data-colorway-skin] :is(.demo-button:not(.primary):not(.recording):not([style]), .obs-sim-control:not(.active)):hover {
+  --qt-frame: var(--qt-button-hover);
+}
+:root[data-colorway-skin] :is(.demo-button:not(.primary):not(.recording):not([style]), .obs-sim-control:not(.active)):active {
+  --qt-frame: var(--qt-button-pressed);
+}
+:root[data-colorway-skin] :is(.demo-button:not(.primary):not(.recording):not([style]), .obs-sim-control:not(.active)):disabled {
+  --qt-frame: var(--qt-button-disabled);
+}
+
+:root[data-colorway-skin] .demo-check input {
+  --qt-indicator: var(--qt-checkbox-normal);
+  --qt-indicator-w: var(--qt-checkbox-normal-w);
+  --qt-indicator-h: var(--qt-checkbox-normal-h);
+}
+:root[data-colorway-skin] .demo-radio input {
+  --qt-indicator: var(--qt-radio-normal);
+  --qt-indicator-w: var(--qt-radio-normal-w);
+  --qt-indicator-h: var(--qt-radio-normal-h);
+}
+:root[data-colorway-skin] .demo-check input:focus-visible {
+  --qt-indicator: var(--qt-checkbox-focus);
+  --qt-indicator-w: var(--qt-checkbox-focus-w);
+  --qt-indicator-h: var(--qt-checkbox-focus-h);
+}
+:root[data-colorway-skin] .demo-check input:hover {
+  --qt-indicator: var(--qt-checkbox-hover);
+  --qt-indicator-w: var(--qt-checkbox-hover-w);
+  --qt-indicator-h: var(--qt-checkbox-hover-h);
+}
+:root[data-colorway-skin] .demo-check input:checked {
+  --qt-indicator: var(--qt-checkbox-checked);
+  --qt-indicator-w: var(--qt-checkbox-checked-w);
+  --qt-indicator-h: var(--qt-checkbox-checked-h);
+}
+:root[data-colorway-skin] .demo-check input:checked:hover {
+  --qt-indicator: var(--qt-checkbox-checkedHover);
+  --qt-indicator-w: var(--qt-checkbox-checkedHover-w);
+  --qt-indicator-h: var(--qt-checkbox-checkedHover-h);
+}
+:root[data-colorway-skin] .demo-check input:disabled {
+  --qt-indicator: var(--qt-checkbox-disabled);
+  --qt-indicator-w: var(--qt-checkbox-disabled-w);
+  --qt-indicator-h: var(--qt-checkbox-disabled-h);
+}
+:root[data-colorway-skin] .demo-check input:checked:disabled {
+  --qt-indicator: var(--qt-checkbox-checkedDisabled);
+  --qt-indicator-w: var(--qt-checkbox-checkedDisabled-w);
+  --qt-indicator-h: var(--qt-checkbox-checkedDisabled-h);
+}
+:root[data-colorway-skin] .demo-radio input:focus-visible {
+  --qt-indicator: var(--qt-radio-focus);
+  --qt-indicator-w: var(--qt-radio-focus-w);
+  --qt-indicator-h: var(--qt-radio-focus-h);
+}
+:root[data-colorway-skin] .demo-radio input:hover {
+  --qt-indicator: var(--qt-radio-hover);
+  --qt-indicator-w: var(--qt-radio-hover-w);
+  --qt-indicator-h: var(--qt-radio-hover-h);
+}
+:root[data-colorway-skin] .demo-radio input:checked {
+  --qt-indicator: var(--qt-radio-checked);
+  --qt-indicator-w: var(--qt-radio-checked-w);
+  --qt-indicator-h: var(--qt-radio-checked-h);
+}
+:root[data-colorway-skin] .demo-radio input:checked:hover {
+  --qt-indicator: var(--qt-radio-checkedHover);
+  --qt-indicator-w: var(--qt-radio-checkedHover-w);
+  --qt-indicator-h: var(--qt-radio-checkedHover-h);
+}
+:root[data-colorway-skin] .demo-radio input:disabled {
+  --qt-indicator: var(--qt-radio-disabled);
+  --qt-indicator-w: var(--qt-radio-disabled-w);
+  --qt-indicator-h: var(--qt-radio-disabled-h);
+}
+:root[data-colorway-skin] .demo-radio input:checked:disabled {
+  --qt-indicator: var(--qt-radio-checkedDisabled);
+  --qt-indicator-w: var(--qt-radio-checkedDisabled-w);
+  --qt-indicator-h: var(--qt-radio-checkedDisabled-h);
+}
+
+:root[data-colorway-skin] :is(.demo-check, .demo-radio) input {
+  width: var(--qt-indicator-w);
+  height: var(--qt-indicator-h);
+  background: var(--qt-indicator) center / 100% 100% no-repeat;
+  border: 0;
+  border-radius: 0;
+  transition: none;
+}
+:root[data-colorway-skin] :is(.demo-check, .demo-radio) input::after {
+  display: none;
+}
+:root[data-colorway-skin] :is(.demo-slider, .obs-sim-font-slider, .obs-sim-vfader) {
+  --qt-thumb: var(--qt-slider-normal);
+}
+:root[data-colorway-skin] :is(.demo-slider, .obs-sim-font-slider, .obs-sim-vfader):focus-visible {
+  --qt-thumb: var(--qt-slider-focus);
+}
+:root[data-colorway-skin] :is(.demo-slider, .obs-sim-font-slider, .obs-sim-vfader):hover {
+  --qt-thumb: var(--qt-slider-hover);
+}
+:root[data-colorway-skin] :is(.demo-slider, .obs-sim-font-slider, .obs-sim-vfader):active {
+  --qt-thumb: var(--qt-slider-pressed);
+}
+:root[data-colorway-skin] :is(.demo-slider, .obs-sim-font-slider, .obs-sim-vfader):disabled {
+  --qt-thumb: var(--qt-slider-disabled);
+}
+
+:root[data-colorway-skin] :is(.demo-slider, .obs-sim-font-slider, .obs-sim-vfader)::-webkit-slider-thumb {
+  width: var(--qt-slider-normal-w);
+  height: var(--qt-slider-normal-h);
+  background: var(--qt-thumb) center / 100% 100% no-repeat !important;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+:root[data-colorway-skin] :is(.demo-slider, .obs-sim-font-slider, .obs-sim-vfader)::-moz-range-thumb {
+  width: var(--qt-slider-normal-w);
+  height: var(--qt-slider-normal-h);
+  background: var(--qt-thumb) center / 100% 100% no-repeat !important;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.qt-native-atlas {
+  grid-column: 1 / -1;
+}
+.qt-native-atlas[hidden] {
+  display: none;
+}
+.qt-native-atlas summary {
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.qt-native-atlas summary span {
+  color: var(--text_muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+.qt-native-atlas-body {
+  padding: 12px;
+  overflow-x: auto;
+}
+.qt-native-atlas-body p {
+  color: var(--text_muted);
+  margin: 0 0 10px;
+}
+.qt-native-atlas-body img {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: auto;
+}

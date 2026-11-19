@@ -11,6 +11,8 @@
     "check:preview": "pnpm build && node scripts/check-preview-parity.mjs",
     "generate:preview-css": "node scripts/generate-preview-css.mjs",
     "generate:qt-atlas": "node scripts/build-qt-reference-atlas.mjs",
+    "generate:qt-skins": "node scripts/build-qt-preview-skins.mjs",
+    "check:preview-skins": "pnpm build && node scripts/check-preview-parity.mjs --qt-skins",
     "check:qt-formats": "node scripts/check-qt-image-formats.mjs",
     "check:preview-qt": "pnpm build && node scripts/check-preview-parity.mjs --qt-reference",
     "check:exports": "pnpm build && node scripts/check-export-downloads.mjs",
