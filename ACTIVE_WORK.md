@@ -1,6 +1,25 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Native SVG / lossless raster format study (2026-11-18)
+
+**Intent:** Investigate native image assets for visual parity beyond
+translated CSS; preserve the existing interactive preview.
+
+**Implemented:** Direct Qt SVG paint and verified lossless WebP/PNG exports,
+per-state preferred raster metadata and catalog batch format options.
+A Chromium image-decoding comparison samples all 80 states of two themes.
+160/160 native WebP round trips exact; 144/160 Chromium WebP exact;
+16 transparent sliders differ slightly at blended edges. Chromium SVG
+exact 0/160. Both opaque WebP sheets exact in Chromium. Individual
+specimen bytes: PNG 229,775; WebP 143,992; SVG 1,531,992.
+Qt 6.11 cannot decode some valid tiny WebP streams; Pillow verifies those.
+
+**Boundary:** Native image exports and format checks only; the site has
+not been converted to image-backed controls yet. PNG is preferred for
+transparent specimens, WebP for opaque. Native reference still Qt Fusion,
+not a full OBS widget tree or other platform/browser proof.
+
 ## Programmatic Qt atlas and browser projection (2026-11-18)
 
 **Outcome:** Extended the combo proof into a 17-family registry and catalog

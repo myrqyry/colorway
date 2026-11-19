@@ -43,8 +43,13 @@ export function referencePayload(catalog, file, directory = root) {
 }
 
 function main() {
-  const { values } = parseArgs({ options: { output: {type:'string'}, theme: {type:'string', multiple:true} } });
+  const { values } = parseArgs({ options: { output: {type:'string'}, theme: {type:'string', multiple:true}, format: {type:'string', multiple:true}, specimens: {type:'boolean'} } });
   if (!values.output) throw Error('Use --output DIRECTORY (optional --theme FILE, repeatable)');
+  const formats = [...new Set(values.format || ['png'])];
+  if (formats.some(format => !['png', 'webp', 'svg'].includes(format))) throw Error('Expected png, webp or svg');
+  if (formats.includes('svg') && !values.specimens) throw Error('SVG export requires --specimens');
+  const rasterFormats = formats.filter(format => format !== 'svg');
+  if (!rasterFormats.length) throw Error('Include png or webp for the atlas sheet');
   const output = resolve(values.output);
   const catalog = referenceCatalog();
   const files = [...new Set(values.theme || catalog.keys())];
@@ -56,14 +61,17 @@ function main() {
     const dir = basename(file, file.endsWith('.ovt') ? '.ovt' : '.obt');
     const destination = join(output, dir);
     const result = spawnSync(process.env.COLORWAY_QT_PYTHON || '/usr/bin/python3',
-      [join(root, 'scripts/qt-preview-reference.py'), '--output', destination, '--atlas-only'],
+      [join(root, 'scripts/qt-preview-reference.py'), '--output', destination,
+        ...(!values.specimens ? ['--atlas-only'] : []), ...formats.flatMap(format => ['--format', format])],
       { input: JSON.stringify(referencePayload(catalog, file)), encoding: 'utf8', timeout: 15000 });
     if (result.status !== 0) throw Error(file + ': ' + (result.error || result.stderr));
     const report = JSON.parse(result.stdout);
     const {qtVersion, style, ...families} = report;
     const specimens = Object.values(families).reduce((sum, states) => sum + Object.keys(states).length, 0);
+    if (values.specimens) writeFileSync(join(destination, 'report.json'), result.stdout);
     themes.push({ file, name: catalog.get(file).name, layers: themeLayers(catalog, file).map(t => t.file),
-      image: dir + '/atlas.png', qtVersion, style, specimens, families: Object.keys(families) });
+      image: dir + '/atlas.' + rasterFormats[0], images: Object.fromEntries(rasterFormats.map(format => [format, dir + '/atlas.' + format])),
+      ...(values.specimens ? { report: dir + '/report.json', specimenFormats: formats } : {}), qtVersion, style, specimens, families: Object.keys(families) });
     console.log(file + ': ' + specimens + ' specimens');
   }
   writeFileSync(join(output, 'index.json'), JSON.stringify({ themes }, null, 2) + '\n');

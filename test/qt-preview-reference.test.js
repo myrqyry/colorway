@@ -9,6 +9,7 @@ import { spawnSync } from 'node:child_process';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const python = process.env.COLORWAY_QT_PYTHON || '/usr/bin/python3';
 const available = spawnSync(python, ['-c', 'import PyQt6.QtWidgets']).status === 0;
+const formatsAvailable = available && spawnSync(python, ['-c', 'from PyQt6.QtSvg import QSvgGenerator; from PyQt6.QtGui import QImageWriter; from PIL import Image; assert b"webp" in [bytes(f) for f in QImageWriter.supportedImageFormats()]']).status === 0;
 const base = readFileSync(join(root, 'themes/Colorway.obt'), 'utf8');
 test('standalone Qt reference renders theme-dependent combo pixels and real PNG files', { skip: !available }, () => {
   const dir = mkdtempSync(join(tmpdir(), 'colorway-reference-'));
@@ -83,5 +84,47 @@ test('atlas batch writes a real contact sheet and index for a nested theme', { s
     assert.equal(index.themes.length, 1);
     assert.deepEqual(index.themes[0].layers, ['Colorway.obt', 'Colorway-Dracula.ovt', 'Colorway-DraculaRefined.ovt']);
     assert.equal(readFileSync(join(dir, index.themes[0].image)).subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('optional native image exports include true Qt SVG and pixel-exact lossless WebP', { skip: !formatsAvailable }, () => {
+  const dir = mkdtempSync(join(tmpdir(), 'colorway-image-formats-'));
+  try {
+    const result = spawnSync(python, [join(root, 'scripts/qt-preview-reference.py'), '--output', dir,
+      '--family', 'combo', '--family', 'checkbox', '--format', 'png', '--format', 'webp', '--format', 'svg'], {
+      input: JSON.stringify({ base, root }), encoding: 'utf8', timeout: 15000,
+    });
+    assert.equal(result.status, 0, result.stderr + result.stdout);
+    const report = JSON.parse(result.stdout);
+    for (const [family, states] of Object.entries({combo: report.combo, checkbox: report.checkbox})) {
+      for (const [state, sample] of Object.entries(states)) {
+        const stem = join(dir, family + '-' + state);
+        const svg = readFileSync(stem + '.svg', 'utf8');
+        assert.match(svg, /<svg\b/);
+        assert.match(svg, /<(path|rect|text)\b/);
+        assert.equal(readFileSync(stem + '.webp').subarray(8, 12).toString(), 'WEBP');
+        assert.equal(sample.formats.webp.pixelExact, true);
+        assert.ok(sample.formats.svg.bytes > 0);
+      }
+    }
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('catalog exports lossless WebP sheets and optional individual SVG specimens', { skip: !formatsAvailable }, () => {
+  const dir = mkdtempSync(join(tmpdir(), 'colorway-catalog-formats-'));
+  try {
+    const result = spawnSync(process.execPath, [join(root, 'scripts/build-qt-reference-atlas.mjs'),
+      '--output', dir, '--theme', 'Colorway-Monokai.ovt', '--format', 'webp', '--format', 'svg', '--specimens'], {
+      encoding: 'utf8', timeout: 15000, env: { ...process.env, COLORWAY_QT_PYTHON: python },
+    });
+    assert.equal(result.status, 0, result.stderr + result.stdout);
+    const entry = JSON.parse(readFileSync(join(dir, 'index.json'), 'utf8')).themes[0];
+    assert.equal(readFileSync(join(dir, entry.image)).subarray(8, 12).toString(), 'WEBP');
+    const report = JSON.parse(readFileSync(join(dir, entry.report), 'utf8'));
+    assert.ok(report.combo.normal.formats.webp.pixelExact);
+    assert.equal(report.combo.normal.preferredRaster, 'webp');
+    assert.equal(report.slider.normal.hasTransparency, true);
+    assert.equal(report.slider.normal.preferredRaster, 'png');
+    assert.match(readFileSync(join(dir, 'Colorway-Monokai/combo-normal.svg'), 'utf8'), /<svg\b/);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });

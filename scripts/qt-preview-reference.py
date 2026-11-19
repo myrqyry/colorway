@@ -68,6 +68,55 @@ CHECKABLE = {'pushButton', 'toolButton', 'checkbox', 'radio'}
 SELECTABLE = {'list', 'tabs'}
 
 
+def export_raster(image, path, format):
+    if not image.save(str(path), format.upper(), 100 if format == 'webp' else -1):
+        raise RuntimeError(f'Could not save {path}')
+    decoded = QImage(str(path))
+    rgba = QImage.Format.Format_RGBA8888
+    reference = image.convertToFormat(rgba)
+    if format == 'webp' and decoded.isNull():
+        # Qt 6.11 rejects some minimal, valid VP8L streams (e.g. solid
+        # disabled scrollbars). Verify with a separate decoder in that case.
+        try:
+            from PIL import Image
+        except ImportError as exc:
+            raise RuntimeError('Install Pillow to verify WebP when Qt cannot decode it') from exc
+        with Image.open(path) as fallback:
+            raw = reference.constBits().asstring(reference.sizeInBytes())
+            exact = fallback.size == (reference.width(), reference.height()) and fallback.convert('RGBA').tobytes() == raw
+    else:
+        exact = decoded.convertToFormat(rgba) == reference
+    if not exact:
+        raise RuntimeError(f'Lossless {format} round trip differed: {path}')
+    return dict(bytes=path.stat().st_size, pixelExact=exact)
+
+
+def export_svg(widget, image, path):
+    from PyQt6.QtSvg import QSvgGenerator, QSvgRenderer
+    generator = QSvgGenerator()
+    generator.setFileName(str(path))
+    generator.setSize(widget.size())
+    generator.setViewBox(widget.rect())
+    generator.setResolution(widget.logicalDpiX())
+    painter = QPainter(generator)
+    if not painter.isActive():
+        raise RuntimeError(f'Could not paint {path}')
+    # Render the actual widget to Qt's SVG paint device, not a traced PNG.
+    widget.render(painter)
+    painter.end()
+    renderer = QSvgRenderer(str(path))
+    if not renderer.isValid():
+        raise RuntimeError(f'Invalid SVG: {path}')
+    raster = QImage(image.size(), QImage.Format.Format_ARGB32_Premultiplied)
+    raster.fill(Qt.GlobalColor.transparent)
+    painter = QPainter(raster)
+    renderer.render(painter)
+    painter.end()
+    rgba = QImage.Format.Format_RGBA8888
+    return dict(bytes=path.stat().st_size,
+                qtRasterPixelExact=raster.convertToFormat(rgba) == image.convertToFormat(rgba))
+
+
 def render_specimen(app, family, factory, width, height, output, images):
     host = QWidget()
     layout = QVBoxLayout(host)
@@ -98,9 +147,14 @@ def render_specimen(app, family, factory, width, height, output, images):
             raise RuntimeError(f'Empty specimen: {family}/{state}')
         if output and images is not None:
             images.append((family, state, image))
+        formats = {}
         if output and not output[1]:
-            if not image.save(str(output[0] / f'{family}-{state}.png')):
-                raise RuntimeError('Could not save specimen')
+            rgba = image.convertToFormat(QImage.Format.Format_RGBA8888)
+            transparent = any(alpha != 255 for alpha in rgba.constBits().asstring(rgba.sizeInBytes())[3::4])
+            for format in output[2]:
+                path = output[0] / f'{family}-{state}.{format}'
+                formats[format] = (export_svg(widget, image, path) if format == 'svg'
+                                   else export_raster(image, path, format))
         y = image.height() // 2
         # Flat-area reference values are only used for mapped controls.
         # Other widgets expose actual PNGs + metrics, not claims of uniform fill.
@@ -111,7 +165,9 @@ def render_specimen(app, family, factory, width, height, output, images):
                              background=image.pixelColor(x, y).name(),
                              border=image.pixelColor(min(1, image.width()-1), y).name(),
                              outerBorder=image.pixelColor(0, y).name(),
-                             innerBorder=image.pixelColor(min(2, image.width()-1), y).name())
+                             innerBorder=image.pixelColor(min(2, image.width()-1), y).name(),
+                             **(dict(formats=formats, hasTransparency=transparent,
+                                     preferredRaster='png' if transparent else 'webp') if formats else {}))
 
     neutral()
     if family == 'list':
@@ -152,7 +208,7 @@ def render_specimen(app, family, factory, width, height, output, images):
     return states
 
 
-def save_atlas(images, directory, token):
+def save_atlas(images, directory, token, formats):
     # Compact contact sheet; each specimen is the original, unscaled Qt grab.
     families = list(SPECIMENS)
     states = list(dict.fromkeys(state for _, state, _ in images))
@@ -176,18 +232,25 @@ def save_atlas(images, directory, token):
                                   y + (heights[family] - image.height()) // 2, image)
         y += heights[family]
     painter.end()
-    if not atlas.save(str(directory / 'atlas.png')):
-        raise RuntimeError('Could not save atlas')
+    for format in formats:
+        if format != 'svg':
+            export_raster(atlas, directory / f'atlas.{format}', format)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, help='Optional directory for specimen PNGs')
     parser.add_argument('--atlas-only', action='store_true', help='Save only the contact sheet')
+    parser.add_argument('--format', choices=['png', 'webp', 'svg'], action='append', help='Image formats (default: png)')
     parser.add_argument('--family', choices=SPECIMENS, action='append', help='Limit rendered families')
     args = parser.parse_args()
     if args.atlas_only and (not args.output or args.family):
         parser.error('--atlas-only requires --output and all families')
+    formats = list(dict.fromkeys(args.format or ['png']))
+    if args.format and not args.output:
+        parser.error('--format requires --output')
+    if args.atlas_only and 'svg' in formats:
+        parser.error('SVG is per specimen; omit --atlas-only')
     payload = json.load(sys.stdin)
     qss, token = compose_qss(payload)
     app = QApplication([])
@@ -196,14 +259,14 @@ def main():
     app.setStyleSheet(qss)
     if args.output:
         args.output.mkdir(parents=True, exist_ok=True)
-    output = (args.output, args.atlas_only) if args.output else None
+    output = (args.output, args.atlas_only, formats) if args.output else None
     images = []
     report = dict(qtVersion=QT_VERSION_STR, style='Fusion')
     for family, (factory, width, height) in SPECIMENS.items():
         if not args.family or family in args.family:
             report[family] = render_specimen(app, family, factory, width, height, output, images)
     if args.output and not args.family:
-        save_atlas(images, args.output, token)
+        save_atlas(images, args.output, token, formats)
     print(json.dumps(report))
 
 

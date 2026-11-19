@@ -461,3 +461,31 @@ The Chromium comparison verifies combo/text input normal/focus/hover colors
 against Qt pixels for Monokai and Catppuccin Latte Blue and checks nine
 visible projection roles per variant, plus the checkbox asset path. This is
 not a full pixel equivalence test of all 17 widget classes or all variants.
+
+### Native image format fidelity
+
+The renderer can export individual states directly to SVG using
+`QSvgGenerator` and `QWidget.render`, without vector tracing. Qt may embed
+raster primitives and SVG text uses the viewer's fonts/rasterization. For
+strict visual parity, the PNG grab remains the reference. Lossless WebP is
+encoded at quality 100 and decoded back to verify exact RGBA; Qt 6.11
+rejects some valid tiny VP8L streams, so Pillow provides an independent
+decoder fallback. Format support is optional for the default PNG path.
+
+`pnpm check:qt-formats` renders both Monokai and Catppuccin Latte Blue (160
+specimens) and compares decoded pixels in real Chromium canvas at 1:1.
+Native WebP round trips were exact for all 160; Chromium matched 144
+exactly and differed slightly at semitransparent slider edges for 16.
+Both opaque WebP contact sheets matched the PNG reference exactly in
+Chromium. Direct SVG matched 0/160 in Chromium and was considerably
+larger. The per-state report identifies transparency and recommends PNG
+for transparent specimens, WebP for opaque specimens. These findings do
+not prove identical results for every browser, platform, zoom or Qt style.
+
+Batch commands accept repeated `--format png|webp|svg`; SVG requires
+`--specimens` and at least one raster format for the contact sheet.
+Optional individual specimens include a JSON report and format metadata.
+These assets are not yet connected to live browser controls. Use an
+image-backed rendering path with real DOM interactions when moving to
+a native-skin preview, keeping text/value/geometry and state-dependent
+subcontrols explicit.
