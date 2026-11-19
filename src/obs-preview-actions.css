@@ -1,5 +1,5 @@
 /* Final product-surface polish. This layer intentionally comes after the base
-   OBS mock and obs-preview-refine.css so Colorway.obt-derived variables win. */
+   OBS simulator and obs-preview-refine.css so Colorway.obt-derived variables win. */
 
 .obs-sim-preview-area > .obs-sim-dialog-backdrop {
   background: color-mix(in srgb, var(--bg_preview, var(--bg_base)) 62%, transparent) !important;
@@ -129,8 +129,7 @@
   padding: var(--spacing_base, 2px) var(--padding_base, 2px) !important;
 }
 
-.obs-sim-appearance-card,
-.obs-sim-settings-placeholder {
+.obs-sim-appearance-card {
   border-width: var(--input_border_width, 1px);
   border-color: var(--border_color);
   border-radius: var(--border_radius, 9px);

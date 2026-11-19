@@ -213,7 +213,7 @@ try {
             fail('Browser control below Qt minimum', {file, native: native[state], web: web[state]});
         }
       }
-      // Validate the actual visible showcase, not detached mock elements.
+      // Validate the actual visible showcase, rather than detached test elements.
       const projected = await evaluate(`(() => {
         const probe = document.createElement('span');
         document.body.append(probe);

@@ -188,7 +188,7 @@ try {
   assert.equal(JSON.parse(readFileSync(importedFile, 'utf8')).defs.primary, '#eb6f92');
   console.log('PASS visible Settings import exports its applied palette');
 
-  // The converter cannot build light GTK themes; don't offer a fake build.
+  // The converter cannot build light GTK themes; do not offer an unsupported build.
   await evaluate('document.querySelector('+JSON.stringify('.theme-row[data-file="Colorway-CatppuccinLatte-Blue.ovt"]')+').click()');
   await until(() => evaluate('document.querySelector(".theme-row.active")?.dataset.file === "Colorway-CatppuccinLatte-Blue.ovt"'), 'light theme selection');
   assert.equal(await evaluate('document.querySelector("[data-colorway-download-kind=orchis]").disabled'), true);
