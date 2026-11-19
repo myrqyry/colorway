@@ -2,7 +2,7 @@ import { cleanupBrowserProfile } from './browser-profile-cleanup.mjs';
 // Runtime gate: compare browser paint with OBS QSS-derived roles and asset URLs.
 // Run via pnpm check:preview; requires local Chromium, no external network.
 import { spawn, spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { setTimeout as delay } from 'node:timers/promises';
 
 const chromium = process.env.CHROMIUM_PATH || '/usr/bin/chromium';
@@ -120,7 +120,7 @@ try {
   };
   await send('Page.enable');
   await send('Runtime.enable');
-  if (process.argv.includes('--qt-reference') || process.argv.includes('--obs-screenshots')) {
+  if (process.argv.includes('--qt-reference') || process.argv.includes('--obs-screenshots') || process.argv.includes('--replica-reference')) {
     await send('Emulation.setFocusEmulationEnabled', {enabled: true});
     await send('Emulation.setEmulatedMedia', {features: [{name: 'prefers-reduced-motion', value: 'reduce'}]});
     await send('Emulation.setDeviceMetricsOverride', {width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false});
@@ -146,6 +146,65 @@ try {
       if (await evaluate('document.querySelector(".theme-row.active")?.dataset.file') === file) break;
       if (i === 59) throw Error('Theme selection did not settle: ' + file);
       await delay(100);
+    }
+    if (process.argv.includes('--replica-reference')) {
+      // The state gate exercises active controls after each capture. Start
+      // each screenshot with the same idle controls as the OBS reference.
+      await evaluate('document.querySelectorAll(".obs-sim-control[data-control][aria-pressed=true]").forEach(button => button.click())');
+      // Actual production replica: use its own layout and the normal visible UI.
+      const geometry=await evaluate(`(async()=>{
+        await document.fonts.ready;
+        const root=document.querySelector('.obs-sim-window');
+        root.scrollIntoView({block:'start',behavior:'instant'});
+        const origin=root.getBoundingClientRect();
+        const rect=selector=>{
+          const r=root.querySelector(selector).getBoundingClientRect();
+          return {x:r.x-origin.x,y:r.y-origin.y,width:r.width,height:r.height};
+        };
+        const boxes=Object.fromEntries(Object.entries({
+          sceneBody:'.scenes .obs-sim-dock-body',sourceBody:'.sources .obs-sim-dock-body',
+          sceneTitle:'.scenes .obs-sim-dock-title',sceneFooter:'.scenes .obs-sim-dock-footer',
+          mixerBody:'.mixer .obs-sim-dock-body',controlsBody:'.controls .obs-sim-dock-body',
+          left:'.obs-sim-left-column',right:'.obs-sim-main-column',
+          mixer:'.obs-sim-mixer-slot',transitions:'.obs-sim-transition-slot',controls:'.obs-sim-controls-slot',
+          sceneRow:'.scenes .obs-sim-list-row.selected',sourceRow:'.sources .obs-sim-list-row.selected',
+          indicator:'.sources .obs-sim-icon-button',title:'.obs-sim-titlebar'
+        }).map(([key,selector])=>[key,rect(selector)]));
+        return {clip:{x:origin.x+scrollX,y:origin.y+scrollY,width:origin.width,height:origin.height,scale:1},boxes};
+      })()`);
+      const shot=await send('Page.captureScreenshot',{format:'png',clip:geometry.clip,captureBeyondViewport:true});
+      const path=profile+'/'+file+'.png';
+      writeFileSync(path,Buffer.from(shot.data,'base64'));
+      if(process.env.COLORWAY_REPLICA_REPORT){
+        writeFileSync(process.env.COLORWAY_REPLICA_REPORT+'/'+file+'.png',Buffer.from(shot.data,'base64'));
+        writeFileSync(process.env.COLORWAY_REPLICA_REPORT+'/'+file+'.json',JSON.stringify(geometry,null,2));
+      }
+      const compare=spawnSync('/usr/bin/python3',['scripts/compare-replica-regions.py','public/obs-renders/'+file+'.webp',path,JSON.stringify(geometry)],{encoding:'utf8'});
+      console.log(compare.stdout);
+      if(compare.status!==0)fail('Replica differs from measured native regions',compare.stderr);
+      const mixer=await evaluate(`(()=>{
+        const ch=document.querySelector('.obs-sim-vchannel');
+        const stage=ch.querySelector('.obs-sim-vchannel-stage').getBoundingClientRect();
+        const fader=ch.querySelector('.obs-sim-vfader').getBoundingClientRect();
+        const meter=ch.querySelector('.obs-sim-vmeter').getBoundingClientRect();
+        const action=ch.querySelector('.obs-sim-vchannel-actions').getBoundingClientRect();
+        const mute=ch.querySelector('[data-mute]'), monitor=ch.querySelector('[data-monitor]');
+        const vars=getComputedStyle(document.documentElement);
+        const check=(button,token)=>{
+          button.click();
+          const img=getComputedStyle(button.querySelector('.obs-sim-svg-icon')).backgroundImage;
+          const expected=vars.getPropertyValue(token).trim().match(/url\(["']?([^"')]+)["']?\)/)?.[1];
+          const good=button.getAttribute('aria-pressed')==='true'&&expected&&img.includes(expected);
+          button.click();
+          return good&&button.getAttribute('aria-pressed')==='false';
+        };
+        return {stageBottom:stage.bottom,faderBottom:fader.bottom,meterBottom:meter.bottom,actionTop:action.top,
+          mute:check(mute,'--cw_mixer_muted'),monitor:check(monitor,'--cw_mixer_monitor')};
+      })()`);
+      if(Math.max(mixer.faderBottom,mixer.meterBottom,mixer.stageBottom)>mixer.actionTop+1 || !mixer.mute || !mixer.monitor)
+        fail('Mixer controls overlap or use incorrect authored state icons',mixer);
+      console.log('Mixer bounds and authored mute/monitor icons PASS',file);
+
     }
     if (process.argv.includes('--obs-screenshots')) {
       const expected='/obs-renders/'+encodeURIComponent(file)+'.webp';

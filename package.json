@@ -13,6 +13,7 @@
     "generate:qt-atlas": "node scripts/build-qt-reference-atlas.mjs",
     "generate:qt-skins": "node scripts/build-qt-preview-skins.mjs",
     "generate:obs-screenshots": "node scripts/build-obs-screenshots.mjs",
+    "check:replica-reference": "pnpm build && node scripts/check-preview-parity.mjs --replica-reference",
     "check:obs-screenshots": "pnpm build && node scripts/check-preview-parity.mjs --obs-screenshots",
     "check:qt-formats": "node scripts/check-qt-image-formats.mjs",
     "check:preview-qt": "pnpm build && node scripts/check-preview-parity.mjs --qt-reference",

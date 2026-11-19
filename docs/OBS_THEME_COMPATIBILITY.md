@@ -536,3 +536,19 @@ Run `pnpm generate:obs-screenshots --jobs 5` to regenerate the entire
 catalog, followed by `pnpm check:obs-screenshots` and `pnpm test`.
 The generated screenshots represent default density/pattern in a synthetic
 scene at 1280×960, not every possible OBS layout or version.
+
+### Screenshot-calibrated browser replica
+
+Run `pnpm check:replica-reference` (Chromium and Python Pillow required)
+to compare the actual browser screenshot with the captured OBS images.
+Seven equivalent flat regions are compared by dominant RGB color and four
+horizontal dock widths by their proportional geometry. The initial
+calibration uses the Monokai and Catppuccin Latte Blue captures. The gate
+also verifies that visible mixer controls fit their layout and that
+mute/monitor states select the authored theme asset URLs. To retain the
+browser screenshots and geometry reports, create a local directory and
+set `COLORWAY_REPLICA_REPORT` to that path before running the check.
+
+These are targeted visual and interaction assertions, not full-image
+equivalence. The existing Appearance controller and synthetic live scene
+remain intentionally different from the native capture fixture.

@@ -105,7 +105,7 @@ function mixerChannel(name, level = 72) {
       </div>
       <div class="obs-sim-vchannel-actions">
         <button type="button" class="obs-sim-audio-icon" data-mute aria-pressed="false" title="Mute">${iconMarkup('volume-high')}</button>
-        <button type="button" class="obs-sim-audio-icon" title="Audio properties">${iconMarkup('settings')}</button>
+        <button type="button" class="obs-sim-audio-icon" data-monitor aria-pressed="false" title="Monitor audio" aria-label="Monitor audio">${iconMarkup('headphone-off')}</button>
       </div>
     </div>
   `;
@@ -188,8 +188,8 @@ function settingsMarkup() {
 function previewMarkup() {
   const sceneFooter = `
     ${buttonIcon('plus', 'Add scene')}
-    ${buttonIcon('minus', 'Remove scene')}
-    ${buttonIcon('dots-vert', 'Scene menu')}
+    ${buttonIcon('trash', 'Remove scene')}
+    ${buttonIcon('filter', 'Scene menu')}
     <span class="obs-sim-footer-spacer"></span>
     ${buttonIcon('arrow-up', 'Move scene up')}
     ${buttonIcon('arrow-down', 'Move scene down')}
@@ -197,7 +197,7 @@ function previewMarkup() {
   const sourceFooter = `
     <span class="obs-sim-tool-group" data-toolbar-group="source-edit">
       ${buttonIcon('plus', 'Add source')}
-      ${buttonIcon('minus', 'Remove source')}
+      ${buttonIcon('trash', 'Remove source')}
     </span>
     <span class="obs-sim-tool-group" data-toolbar-group="source-order">
       ${buttonIcon('arrow-up', 'Move source up')}
@@ -453,8 +453,13 @@ function wirePreview(root) {
       const nextMuted = button.getAttribute('aria-pressed') !== 'true';
       button.setAttribute('aria-pressed', nextMuted ? 'true' : 'false');
       button.classList.toggle('muted', nextMuted);
-      setIcon(button.querySelector('.obs-sim-svg-icon'), nextMuted ? 'volume-mute' : 'volume-high');
       button.closest('.obs-sim-vchannel')?.classList.toggle('muted', nextMuted);
+    });
+  });
+
+  root.querySelectorAll('[data-monitor]').forEach(button => {
+    button.addEventListener('click', () => {
+      button.setAttribute('aria-pressed', String(button.getAttribute('aria-pressed') !== 'true'));
     });
   });
 

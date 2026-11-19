@@ -1,6 +1,37 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Screenshot-calibrated interactive replica (2026-11-19)
+
+**Objective:** Improve the existing browser replica against actual OBS
+captures rather than introduce another user-facing preview or replace authored
+icons. The real screenshot browser and the permanent Appearance controller
+remain intact.
+
+**Changes:** Use the native base surface for Scenes/Sources lists, opaque
+dock surfaces for headings/footers, selected-row outlines, observed
+horizontal dock proportions, more compact dock headings, 32px toolbars,
+and authored source-indicator/toolbar glyphs. Mixer controls use the
+authored mute/monitor state-specific assets, including a working local
+monitor toggle; constrain the fader/meter to their grid row so controls
+do not overlap. All changes are browser-only.
+
+**Evidence:** The new `pnpm check:replica-reference` gate captures the real
+rendered browser replica and compares dominant colors in seven equivalent
+regions with checked-in 1280x960 OBS 32.2.0 screenshots, plus four
+horizontal dock proportions. The pre-change Latte Blue replica failed
+five checks (two surfaces, three proportions). After changes, seven
+sampled surfaces match exactly in both Latte Blue and Monokai; all four
+width proportions match within tolerance. The mixer bounds gate also
+reproduced a 12px overlap and now passes, along with state-icon checks.
+
+**Boundary:** This is a focused calibration of dock surfaces and proportions,
+not whole-image parity. The native fixture and browser's example scene,
+permanent Settings controller, font, density, dynamic controls and viewport
+dimensions intentionally differ. The native images remain untouched.
+Use the reproducible region comparison for future calibration rather than
+comparing non-equivalent scene content.
+
 ## Real OBS screenshot catalog (2026-11-18)
 
 **Objective:** Browse all 166 Colorway themes without installing each one

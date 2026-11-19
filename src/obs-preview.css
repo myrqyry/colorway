@@ -177,7 +177,7 @@
   display: grid;
   height: calc(100% - 81px);
   min-height: 0;
-  grid-template-columns: 18% minmax(0, 1fr);
+  grid-template-columns: 21.9% minmax(0, 1fr);
   background: var(--bg_window);
 }
 
@@ -206,7 +206,7 @@
   display: grid;
   min-width: 0;
   min-height: 0;
-  grid-template-rows: minmax(290px, 1fr) 36px 235px;
+  grid-template-rows: minmax(290px, 1fr) 36px minmax(210px, 32.5%);
 }
 
 .obs-sim-preview-area {
@@ -363,7 +363,7 @@
   display: grid;
   min-width: 0;
   min-height: 0;
-  grid-template-columns: minmax(0, 1fr) 23% 23%;
+  grid-template-columns: minmax(0, 1fr) 18.5% 22.3%;
   background: var(--bg_window);
 }
 
@@ -383,15 +383,15 @@
 
 .obs-sim-dock-title {
   display: flex;
-  min-height: calc(22px * var(--obs-sim-density));
+  min-height: calc(18px * var(--obs-sim-density));
   flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
   padding: 0 calc(5px * var(--obs-sim-density));
   border-bottom: 1px solid var(--border_color);
-  background: var(--bg_window);
+  background: var(--bg_dock, var(--bg_base));
   color: var(--text);
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .obs-sim-dock-title-actions {
@@ -409,23 +409,23 @@
 
 .obs-sim-dock-footer {
   display: flex;
-  min-height: calc(24px * var(--obs-sim-density));
+  min-height: calc(32px * var(--obs-sim-density));
   flex: 0 0 auto;
   align-items: center;
   gap: 2px;
   padding: 1px 3px;
   border-top: 1px solid var(--border_color);
-  background: var(--bg_window);
+  background: var(--bg_dock, var(--bg_base));
   color: var(--text_muted);
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .obs-sim-footer-spacer { flex: 1; }
 
 .obs-sim-tool {
   display: inline-grid;
-  width: 22px;
-  height: 20px;
+  width: 27px;
+  height: 26px;
   place-items: center;
   border: 0;
   border-radius: var(--shape_xs, 3px);
@@ -440,10 +440,10 @@
 .obs-sim-list-row {
   display: flex;
   width: 100%;
-  min-height: calc(27px * var(--obs-sim-density));
+  min-height: calc(26px * var(--obs-sim-density));
   align-items: center;
   gap: 5px;
-  border: 0;
+  border: 1px solid transparent;
   border-radius: var(--border_radius_small, 5px);
   padding: 2px 5px;
   background: transparent;
@@ -456,11 +456,13 @@
 }
 
 .obs-sim-list-row.selected {
+  border-color: var(--primary_light);
   background: var(--primary);
   color: var(--on_primary);
 }
 
 .obs-sim-list-row.selected:hover {
+  border-color: var(--primary_lighter);
   background: var(--primary_light);
   color: var(--on_primary_hover);
 }
@@ -521,9 +523,9 @@
 
 .obs-sim-vchannel {
   display: grid;
-  width: 104px;
-  min-width: 104px;
-  grid-template-rows: auto auto 1fr auto;
+  width: 110px;
+  min-width: 110px;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   border-right: 1px solid var(--border_color);
   padding: 2px 5px 3px;
 }
@@ -551,6 +553,7 @@
   display: grid;
   min-height: 0;
   grid-template-columns: 28px 15px 23px;
+  grid-template-rows: minmax(0, 1fr);
   align-items: stretch;
   justify-content: center;
   gap: 3px;
@@ -774,7 +777,8 @@
   gap: 10px;
   padding: 0 7px;
   border-top: 1px solid var(--border_color);
-  background: color-mix(in srgb, var(--bg_window) 92%, black);
+  background: var(--bg_window);
+  background-image: var(--pattern_eyes);
   color: var(--text_muted);
   font-size: 9px;
 }
@@ -1134,4 +1138,73 @@
 /* Match the compact-safe minimum of standard OBS dropdowns. */
 .obs-sim-select {
   min-height: 27px;
+}
+
+/* Calibrated against actual 1280x960 Colorway OBS captures. Keep the
+   permanent Appearance controller and dynamic showcase behavior. */
+.obs-sim-dock.scenes .obs-sim-dock-body,
+.obs-sim-dock.sources .obs-sim-dock-body {
+  background: var(--bg_base);
+  border: 1px solid var(--border_color);
+  border-radius: var(--border_radius_small, 5px);
+  padding: 0;
+}
+.obs-sim-dock {
+  border: 1px solid var(--border_color);
+  border-top: 0;
+  border-radius: 0 0 var(--shape_lg, 9px) var(--shape_lg, 9px);
+}
+.obs-sim-menubar {
+  background-image: var(--pattern_eyes);
+  font-size: calc(13px * var(--obs-sim-font-scale));
+}
+.obs-sim-dock, .obs-sim-properties-row {
+  font-size: calc(13px * var(--obs-sim-font-scale));
+}
+.obs-sim-menubar .obs-sim-menu-button { padding-inline: 10px; }
+.obs-sim-dock.scenes .obs-sim-row-icon { display: none; }
+.obs-sim-dock.scenes .obs-sim-dock-footer .obs-sim-footer-spacer { flex: 0; }
+.obs-sim-dock.sources .obs-sim-icon-button {
+  width: calc(var(--source_toggle_icon_size, 12px) + 2px);
+  height: calc(var(--source_toggle_icon_size, 12px) + 2px);
+  background: var(--bg_base);
+  border: 1px solid var(--border_base, var(--border_color));
+  border-radius: var(--border_radius_small, 5px);
+  opacity: 1;
+}
+.obs-sim-dock.sources .obs-sim-row-actions { gap: 6px; }
+.obs-sim-dock.sources .obs-sim-icon-button.active { border-color: var(--primary); }
+.obs-sim-dock.sources .obs-sim-icon-button:hover,
+.obs-sim-dock.sources .obs-sim-icon-button:focus-visible { border-color: var(--primary_lighter); }
+.obs-sim-dock.sources .obs-sim-row-actions .obs-sim-svg-icon {
+  width: var(--source_toggle_icon_size, 12px);
+  height: var(--source_toggle_icon_size, 12px);
+}
+.obs-sim-audio-icon {
+  width: 22px;
+  height: 22px;
+  padding: 2px;
+  border: 1px solid transparent;
+  border-radius: var(--border_radius, 8px);
+  background: var(--bg_base);
+}
+.obs-sim-audio-icon:hover, .obs-sim-audio-icon:focus-visible {
+  background: var(--bg_base);
+  border-color: var(--primary_lighter);
+}
+.obs-sim-audio-icon[data-mute].muted {
+  border-color: var(--on_mixer_muted, var(--danger));
+}
+.obs-sim-audio-icon[data-mute].muted .obs-sim-svg-icon { --obs-icon: var(--cw_mixer_muted) !important; }
+.obs-sim-audio-icon[data-monitor][aria-pressed="true"] {
+  border-color: var(--on_mixer_monitor, var(--success));
+}
+.obs-sim-audio-icon[data-monitor][aria-pressed="true"] .obs-sim-svg-icon { --obs-icon: var(--cw_mixer_monitor) !important; }
+.obs-sim-properties-row {
+  background: var(--bg_dock);
+}
+.obs-sim-properties-row strong {
+  flex: 0 1 19%;
+  margin-right: 4px;
+  font-weight: 400;
 }
