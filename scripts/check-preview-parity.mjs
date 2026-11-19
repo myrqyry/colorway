@@ -1,7 +1,7 @@
 import { cleanupBrowserProfile } from './browser-profile-cleanup.mjs';
 // Runtime gate: compare browser paint with OBS QSS-derived roles and asset URLs.
 // Run via pnpm check:preview; requires local Chromium, no external network.
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
 import { setTimeout as delay } from 'node:timers/promises';
 
@@ -120,6 +120,11 @@ try {
   };
   await send('Page.enable');
   await send('Runtime.enable');
+  if (process.argv.includes('--qt-reference')) {
+    await send('Emulation.setFocusEmulationEnabled', {enabled: true});
+    await send('Emulation.setEmulatedMedia', {features: [{name: 'prefers-reduced-motion', value: 'reduce'}]});
+    await send('Emulation.setDeviceMetricsOverride', {width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false});
+  }
   await send('Page.navigate', { url: 'http://127.0.0.1:' + port + '/' });
   for (let i = 0; i < 120; i++) {
     if (await evaluate('document.querySelectorAll(".theme-row").length') >= 166) break;
@@ -143,6 +148,66 @@ try {
       await delay(100);
     }
     const data = await evaluate('(' + inspect.toString() + ')()');
+    if (process.argv.includes('--qt-reference')) {
+      const result = spawnSync(process.env.COLORWAY_QT_PYTHON || '/usr/bin/python3',
+        ['scripts/qt-preview-reference.py'], {
+          input: JSON.stringify({ base: readFileSync('themes/Colorway.obt', 'utf8'),
+            variant: readFileSync('themes/' + file, 'utf8'), root: process.cwd() }),
+          encoding: 'utf8', timeout: 15000,
+        });
+      if (result.status !== 0) fail('Qt reference unavailable', result.stderr);
+      const native = JSON.parse(result.stdout).combo;
+      const selector = '[data-obs-pattern-select]';
+      await send('Input.dispatchMouseEvent', {type: 'mouseMoved', x: 0, y: 0});
+      const web = await evaluate(`(async () => {
+        const combo = document.querySelector(${JSON.stringify(selector)});
+        if (!combo || !combo.getBoundingClientRect().height) throw Error('Pattern combo not visible');
+        const hex = value => '#' + value.match(/\\d+/g).slice(0, 3).map(n => Number(n).toString(16).padStart(2, '0')).join('');
+        const sample = () => { const css = getComputedStyle(combo); return {
+          background: hex(css.backgroundColor), border: hex(css.borderLeftColor),
+          height: combo.getBoundingClientRect().height, borderWidth: css.borderLeftWidth,
+          focused: combo.matches(':focus'), hovered: combo.matches(':hover')
+        }; };
+        const settle = () => new Promise(resolve => setTimeout(resolve, 250));
+        combo.blur();
+        await settle();
+        const normal = sample();
+        combo.focus({preventScroll: true});
+        if (document.activeElement !== combo) throw Error('Pattern combo cannot receive focus');
+        await settle();
+        const focus = sample();
+        combo.blur();
+        combo.scrollIntoView({block: 'center', inline: 'center', behavior: 'instant'});
+        const rect = combo.getBoundingClientRect();
+        const point = {x: rect.x + rect.width / 2, y: rect.y + rect.height / 2};
+        if (document.elementFromPoint(point.x, point.y) !== combo) throw Error('Pattern combo is obscured: ' + JSON.stringify({point, hit: document.elementFromPoint(point.x, point.y)?.outerHTML.slice(0, 300)}));
+        return {normal, focus, point};
+      })()`);
+      await send('Input.dispatchMouseEvent', {type: 'mouseMoved', ...web.point});
+      await delay(250);
+      web.hover = await evaluate(`(() => {
+        const combo = document.querySelector(${JSON.stringify(selector)});
+        const css = getComputedStyle(combo);
+        const hex = value => '#' + value.match(/\\d+/g).slice(0, 3).map(n => Number(n).toString(16).padStart(2, '0')).join('');
+        return {background: hex(css.backgroundColor), border: hex(css.borderLeftColor),
+          height: combo.getBoundingClientRect().height, borderWidth: css.borderLeftWidth,
+          focused: combo.matches(':focus'), hovered: combo.matches(':hover')};
+      })()`);
+      if (!web.hover.hovered || web.hover.focused || !web.focus.focused || web.focus.hovered || web.normal.focused || web.normal.hovered)
+        fail('Browser combo state did not settle', web);
+      await send('Input.dispatchMouseEvent', {type: 'mouseMoved', x: 0, y: 0});
+      delete web.point;
+      console.log('Qt comparison', file, JSON.stringify({native, web}));
+      for (const state of ['normal', 'focus', 'hover']) {
+        for (const field of ['background', 'border']) {
+          if (web[state][field] !== native[state][field])
+            fail('Qt combo ' + state + ' ' + field + ' mismatch', {file, native: native[state], web: web[state]});
+        }
+        if (web[state].borderWidth !== '2px') fail('Browser combo frame differs from native QSS', web[state]);
+        if (web[state].height < native[state].minimumHeight)
+          fail('Browser combo below Qt minimum', {file, native: native[state], web: web[state]});
+      }
+    }
     if (!data.actualAsset.includes('/icons/colorway/mingcute/') || !data.renderedAsset.includes('/icons/colorway/mingcute/'))
       fail('Icon is not the authored OBS SVG', data);
     const polarity = data.actualAsset.match(/\/(normal|selected)\/eye\.svg/)?.[0];

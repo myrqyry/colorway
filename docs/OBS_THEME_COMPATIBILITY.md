@@ -408,3 +408,27 @@ It watches:
 When an upstream source changes, the command prints the new upstream commit plus structural additions/removals and exits non-zero. It does **not** automatically copy Yami rules into Colorway or advance the baseline. The baseline only moves after a human review determines whether the upstream change matters to Colorway.
 
 `.github/workflows/obs-upstream-watch.yml` runs the same deterministic check weekly and can also be triggered manually.
+
+## Standalone Qt preview reference
+
+`pnpm check:preview-qt` extends the Chromium preview check with genuine Qt
+6 Fusion samples, without launching OBS. The shared
+`scripts/qt_theme.py` adapter is extracted from the preexisting native-widget
+test fixture; it resolves the Colorway base and one variant, not arbitrary
+OBS themes or custom OBS widgets. The reference samples the flat interior
+and frame of a 220px combo box in normal, focused and hovered states. The
+browser side checks the visible Pattern dropdown, including actual pointer
+hit-testing and hover, comparing computed colors and minimum geometry.
+This is a state/color parity gate, not a full screenshot pixel-diff or
+a claim of platform-wide OBS parity.
+
+To save native Qt specimen PNGs locally from the repository root:
+
+```bash
+node --input-type=module -e 'import {readFileSync as r} from "node:fs"; console.log(JSON.stringify({base:r("themes/Colorway.obt","utf8"),variant:r("themes/Colorway-Monokai.ovt","utf8"),root:process.cwd()}))' |
+  "${COLORWAY_QT_PYTHON:-/usr/bin/python3}" scripts/qt-preview-reference.py --output /tmp/colorway-monokai-preview
+```
+
+The website remains a static Vite application. Neither Qt nor Python is
+required by website visitors. Native OBS checks remain the separate oracle
+for OBS-specific widget behavior and custom painting.

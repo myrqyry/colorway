@@ -1,6 +1,26 @@
 <!-- meristem-template:v1 -->
 # Active Work
 
+## Standalone Qt preview reference — combo slice (2026-11-18)
+
+**Intent:** Use real Qt rendering from Colorway theme files to improve the
+existing interactive website without launching OBS or replacing the web UI.
+Preserve the fun element showcase and static hosting.
+
+**Implemented:** Extracted the existing offscreen QSS test adapter into
+`scripts/qt_theme.py`; added `scripts/qt-preview-reference.py` (JSON metrics
+and optional real PNGs) and `pnpm check:preview-qt`. The first comparison
+exposed a light-theme border mismatch; the browser combo now uses the
+actual native QSS frame and input ink/state roles. Retained compact sizing.
+No native theme, OBS configuration or deployment changes.
+
+**Verification boundary:** Qt 6.11 Fusion vs Chromium, Monokai and Catppuccin
+Latte Blue, normal/focused/hovered background and frame colors and 27px
+visible Pattern selector. Browser samples computed colors; Qt samples
+pixels. Full screenshot comparison, OBS .ui forms, custom widgets,
+generated catalog thumbnails and JIT QSS compilation remain exploratory,
+not implemented. Existing native OBS integration gate is separate.
+
 ## OBS 33.0.1 compatibility refresh — source-verified, OBS 32.2 runtime-verified (2026-11-12)
 
 **Outcome:** Updated Colorway's standalone `.obt` styling to cover the new OBS 33

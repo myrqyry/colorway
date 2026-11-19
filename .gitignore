@@ -20,3 +20,6 @@ docs/superpowers/
 # meristem:local-ignore:start
 .meristem/local/
 # meristem:local-ignore:end
+
+# Local Python Qt adapter bytecode
+__pycache__/

@@ -169,6 +169,11 @@
   padding: var(--input_padding, 4px) var(--input_text_padding, 8px);
 }
 
+.obs-sim-settings-row .obs-sim-select,
+.obs-sim-pattern-row .obs-sim-select {
+  border-width: 2px;
+}
+
 .colorway-theme-trigger {
   min-height: calc(1.85 * var(--font_base, 10pt));
 }

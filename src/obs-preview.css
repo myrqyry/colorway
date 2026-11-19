@@ -656,6 +656,24 @@
   background: var(--input_bg_focus, var(--input_bg));
 }
 
+/* Standard QComboBox uses the base border and state-specific input ink
+   in Colorway.obt, not the separate browser input-border role. */
+.obs-sim-select {
+  border: 2px solid var(--border_base, var(--border_color));
+  background: var(--bg_input, var(--input_bg));
+  color: var(--on_input, var(--text));
+}
+.obs-sim-select:focus {
+  border-color: var(--border_focus, var(--primary));
+  background: var(--input_bg_focus, var(--input_bg));
+  color: var(--on_input_focus, var(--on_input));
+}
+.obs-sim-select:hover {
+  border-color: var(--input_border_hover, var(--primary));
+  background: var(--input_bg_hover, var(--input_bg));
+  color: var(--on_input_hover, var(--on_input));
+}
+
 .obs-sim-dock.transitions .obs-sim-dock-body {
   display: flex;
   flex-direction: column;
@@ -668,6 +686,11 @@
   width: 100%;
   min-width: 0;
   padding: 5px 6px;
+}
+
+/* Preserve the compact transition row after matching Qt's 2px frame. */
+.obs-sim-dock.transitions .obs-sim-select {
+  padding-block: 4px;
 }
 
 .obs-sim-transition-duration {

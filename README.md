@@ -67,6 +67,7 @@ registered by hand in `THEMES` in `src/theme-catalog.js`. Nothing generates that
 pnpm test              # Node suite; Qt checks run when PyQt6 is available
 pnpm build             # Vite production build
 pnpm check:preview     # build, then compare browser paint to QSS-derived roles in Chromium
+pnpm check:preview-qt  # also compare visible combo states to real offscreen Qt
 pnpm check:exports     # build, then exercise real export downloads and build-kit syntax
 pnpm check:shuffle     # build, then verify slideshow pause/resume in Chromium
 pnpm check:companion   # build the companion, then render the offline dock in Chromium
@@ -82,6 +83,14 @@ install and never touches `~/.config/obs-studio`.
 
 `check:preview` serves the built site on port 5189 and refuses to start if that port is already
 serving something else. To use a different port, set `COLORWAY_PREVIEW_PORT`.
+
+The optional native reference gate additionally requires PyQt6 (override
+the Python executable with `COLORWAY_QT_PYTHON`). It runs without OBS,
+compares rendered Qt combo-box surface/frame pixels against the visible
+browser Pattern selector's normal, focus and hover computed colors, and
+checks the compact minimum height. The Qt adapter accepts the base and
+variant text as JSON on stdin; it can also save specimen PNGs with `--output`.
+See [native reference rendering](docs/OBS_THEME_COMPATIBILITY.md#standalone-qt-preview-reference).
 
 ## Installing a theme
 
